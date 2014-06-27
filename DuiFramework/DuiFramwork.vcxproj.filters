@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="base">
+      <UniqueIdentifier>{d9ba4507-132b-4cf2-ae0f-41496cd8b2e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="render">
+      <UniqueIdentifier>{ba8da845-2d24-478f-aab4-19e0d2274e47}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="build">
+      <UniqueIdentifier>{0c7100c1-6198-40d3-8d4a-d670e580e3dd}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>build</Filter>
+    </ClCompile>
+    <ClCompile Include="render\rect.cpp">
+      <Filter>render</Filter>
+    </ClCompile>
+    <ClCompile Include="render\point.cpp">
+      <Filter>render</Filter>
+    </ClCompile>
+    <ClCompile Include="render\size.cpp">
+      <Filter>render</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>build</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>build</Filter>
+    </ClInclude>
+    <ClInclude Include="base\basictypes.h">
+      <Filter>base</Filter>
+    </ClInclude>
+    <ClInclude Include="base\scoped_ptr.h">
+      <Filter>base</Filter>
+    </ClInclude>
+    <ClInclude Include="render\rect.h">
+      <Filter>render</Filter>
+    </ClInclude>
+    <ClInclude Include="render\point.h">
+      <Filter>render</Filter>
+    </ClInclude>
+    <ClInclude Include="render\size.h">
+      <Filter>render</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
