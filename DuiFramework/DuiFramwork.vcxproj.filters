@@ -10,6 +10,12 @@
     <Filter Include="build">
       <UniqueIdentifier>{0c7100c1-6198-40d3-8d4a-d670e580e3dd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="core">
+      <UniqueIdentifier>{af679ec0-ee8a-4b9b-9adb-b09139e5c9fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="utils">
+      <UniqueIdentifier>{2f70c853-ad50-4153-8016-e947fb8fc271}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -26,6 +32,21 @@
     </ClCompile>
     <ClCompile Include="render\size.cpp">
       <Filter>render</Filter>
+    </ClCompile>
+    <ClCompile Include="core\app.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="utils\app_init_helper.cpp">
+      <Filter>utils</Filter>
+    </ClCompile>
+    <ClCompile Include="utils\utils.cpp">
+      <Filter>utils</Filter>
+    </ClCompile>
+    <ClCompile Include="core\widget.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="core\view.cpp">
+      <Filter>core</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -49,6 +70,21 @@
     </ClInclude>
     <ClInclude Include="render\size.h">
       <Filter>render</Filter>
+    </ClInclude>
+    <ClInclude Include="core\app.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="utils\app_init_helper.h">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="utils\utils.h">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="core\widget.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="core\view.h">
+      <Filter>core</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

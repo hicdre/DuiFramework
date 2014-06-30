@@ -42,7 +42,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(ProjectDir)..\Build\$(Configuration)\Lib\</OutDir>
-    <IntDir>$(ProjectDir)..\Build\$(Configuration)\Obj\</IntDir>
+    <IntDir>$(ProjectDir)..\Build\$(Configuration)\$(ProjectName)\Obj\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -84,21 +84,31 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="core\app.cpp" />
+    <ClCompile Include="core\view.cpp" />
+    <ClCompile Include="core\widget.cpp" />
     <ClCompile Include="render\point.cpp" />
     <ClCompile Include="render\rect.cpp" />
     <ClCompile Include="render\size.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="utils\app_init_helper.cpp" />
+    <ClCompile Include="utils\utils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="base\basictypes.h" />
     <ClInclude Include="base\scoped_ptr.h" />
+    <ClInclude Include="core\app.h" />
+    <ClInclude Include="core\view.h" />
+    <ClInclude Include="core\widget.h" />
     <ClInclude Include="render\point.h" />
     <ClInclude Include="render\rect.h" />
     <ClInclude Include="render\size.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="utils\app_init_helper.h" />
+    <ClInclude Include="utils\utils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
