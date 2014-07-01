@@ -17,5 +17,9 @@
 #include <memory.h>
 #include <tchar.h>
 
+#include <algorithm>
+
+#pragma warning (disable : 4244)
+
 
 // TODO: reference additional headers your program requires here

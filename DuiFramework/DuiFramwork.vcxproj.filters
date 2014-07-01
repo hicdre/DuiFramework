@@ -48,6 +48,15 @@
     <ClCompile Include="core\view.cpp">
       <Filter>core</Filter>
     </ClCompile>
+    <ClCompile Include="render\painter.cpp">
+      <Filter>render</Filter>
+    </ClCompile>
+    <ClCompile Include="render\transform.cpp">
+      <Filter>render</Filter>
+    </ClCompile>
+    <ClCompile Include="render\border.cpp">
+      <Filter>render</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -85,6 +94,18 @@
     </ClInclude>
     <ClInclude Include="core\view.h">
       <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="render\painter.h">
+      <Filter>render</Filter>
+    </ClInclude>
+    <ClInclude Include="render\transform.h">
+      <Filter>render</Filter>
+    </ClInclude>
+    <ClInclude Include="render\color.h">
+      <Filter>render</Filter>
+    </ClInclude>
+    <ClInclude Include="render\border.h">
+      <Filter>render</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

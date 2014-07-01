@@ -61,6 +61,8 @@ namespace ui
 		wc.lpfnWndProc = WndProc;
 		wc.hInstance = GetModuleHandle(NULL);
 		wc.lpszClassName = kWidgetClassName;
+		wc.style = CS_HREDRAW | CS_VREDRAW | CS_DROPSHADOW;
+		wc.hbrBackground = reinterpret_cast<HBRUSH>(GetStockObject(COLOR_BACKGROUND));
 		RegisterClassEx(&wc);
 	}
 
@@ -96,6 +98,8 @@ namespace ui
 	void Widget::SetView(View* view)
 	{
 		view_ = view;
+		Rect view_rect = GetWindowScreenBounds();
+		view_->SetBounds(0,0,view_rect.width(),view_rect.height());
 	}
 
 	View* Widget::GetView()
@@ -302,6 +306,10 @@ namespace ui
 
 	BOOL Widget::ProcessWindowMessage(HWND window, UINT message, WPARAM w_param, LPARAM l_param, LRESULT& result, DWORD msg_map_id /*= 0*/)
 	{
+		if (message == WM_PAINT)
+		{
+			OnPaint(w_param, l_param, result);
+		}
 		return FALSE;
 	}
 
@@ -315,6 +323,14 @@ namespace ui
 		{
 			::SetCursor(previous_cursor_);
 			previous_cursor_ = NULL;
+		}
+	}
+
+	void Widget::OnPaint(WPARAM w_param, LPARAM l_param, LRESULT& result)
+	{
+		Painter painter(this);
+		if (view_) {
+			view_->DoPaint(&painter);
 		}
 	}
 

@@ -109,6 +109,8 @@ namespace ui
 			LRESULT& result,
 			DWORD msg_map_id = 0);
 
+		void OnPaint(WPARAM w_param, LPARAM l_param, LRESULT& result);
+
 		View* view_;
 
 		// The restored bounds used for the initial show. This is only used if

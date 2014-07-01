@@ -87,9 +87,12 @@
     <ClCompile Include="core\app.cpp" />
     <ClCompile Include="core\view.cpp" />
     <ClCompile Include="core\widget.cpp" />
+    <ClCompile Include="render\border.cpp" />
+    <ClCompile Include="render\painter.cpp" />
     <ClCompile Include="render\point.cpp" />
     <ClCompile Include="render\rect.cpp" />
     <ClCompile Include="render\size.cpp" />
+    <ClCompile Include="render\transform.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
     </ClCompile>
@@ -102,9 +105,13 @@
     <ClInclude Include="core\app.h" />
     <ClInclude Include="core\view.h" />
     <ClInclude Include="core\widget.h" />
+    <ClInclude Include="render\border.h" />
+    <ClInclude Include="render\color.h" />
+    <ClInclude Include="render\painter.h" />
     <ClInclude Include="render\point.h" />
     <ClInclude Include="render\rect.h" />
     <ClInclude Include="render\size.h" />
+    <ClInclude Include="render\transform.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="utils\app_init_helper.h" />

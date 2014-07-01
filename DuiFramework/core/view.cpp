@@ -1,18 +1,13 @@
 #include "stdafx.h"
 #include "view.h"
 
+#include <algorithm>
 #include <cassert>
 
 namespace ui
 {
 
 	View::View()
-		: parent_(NULL)
-		, first_child_(NULL)
-		, last_child_(NULL)
-		, next_sibling_(NULL)
-		, prev_sibling_(NULL)
-		, child_count_(0)
 	{
 
 	}
@@ -191,5 +186,292 @@ namespace ui
 			return InsertAfter(last_child_, child);
 		}
 	}
+
+	const Widget* View::GetWidget() const
+	{
+		if (owned_widget_)
+			return owned_widget_;
+		return parent_ ? parent_->GetWidget() : NULL;
+	}
+
+	Widget* View::GetWidget()
+	{
+		return const_cast<Widget*>(const_cast<const View*>(this)->GetWidget());
+	}
+
+	void View::SetOwnedWidget(Widget* w)
+	{
+		owned_widget_ = w;
+	}
+
+	void View::SetBounds(int x, int y, int width, int height)
+	{
+		SetBoundsRect(Rect(x, y, (std::max)(0, width), (std::max)(0, height)));
+	}
+
+	void View::SetBoundsRect(const Rect& bounds)
+	{
+		if (bounds == bounds_) {
+			if (needs_layout_) {
+				needs_layout_ = false;
+				Layout();
+				SchedulePaint();
+			}
+			return;
+		}
+
+		if (visible_) {
+			// Paint where the view is currently.
+			SchedulePaint();
+		}
+
+		Rect prev = bounds_;
+		bounds_ = bounds;
+		if (prev.size() != size()) {
+			needs_layout_ = false;
+			Layout();
+			SchedulePaint();
+		}
+	}
+
+	void View::SetSize(const Size& size)
+	{
+		SetBounds(x(), y(), size.width(), size.height());
+	}
+
+	void View::SetPosition(const Point& position)
+	{
+		SetBounds(position.x(), position.y(), width(), height());
+	}
+
+	void View::SetX(int x)
+	{
+		SetBounds(x, y(), width(), height());
+	}
+
+	void View::SetY(int y)
+	{
+		SetBounds(x(), y, width(), height());
+	}
+
+	Rect View::GetLocalBounds() const
+	{
+		return Rect(width(), height());
+	}
+
+	void View::SetVisible(bool visible)
+	{
+		if (visible != visible_) {
+			// If the View is currently visible, schedule paint to refresh parent.
+			// TODO(beng): not sure we should be doing this if we have a layer.
+			if (visible_)
+				SchedulePaint();
+
+			visible_ = visible;
+
+			OnVisibleChanged();
+
+			// Notify the parent.
+			//if (parent_)
+			//	parent_->ChildVisibilityChanged(this);
+
+			// This notifies all sub-views recursively.
+			//PropagateVisibilityNotifications(this, visible_);
+			//UpdateLayerVisibility();
+
+			// If we are newly visible, schedule paint.
+			if (visible_)
+				SchedulePaint();
+		}
+	}
+
+	bool View::IsDrawn() const
+	{
+		return visible_ && parent_ ? parent_->IsDrawn() : false;
+	}
+
+	void View::SetEnabled(bool enabled)
+	{
+		if (enabled != enabled_) {
+			enabled_ = enabled;
+			OnEnabledChanged();
+		}
+	}
+
+
+	void View::Layout()
+	{
+		needs_layout_ = false;
+
+		// If we have a layout manager, let it handle the layout for us.
+		//if (layout_manager_.get())
+		//	layout_manager_->Layout(this);
+
+		// Make sure to propagate the Layout() call to any children that haven't
+		// received it yet through the layout manager and need to be laid out. This
+		// is needed for the case when the child requires a layout but its bounds
+		// weren't changed by the layout manager. If there is no layout manager, we
+		// just propagate the Layout() call down the hierarchy, so whoever receives
+		// the call can take appropriate action.
+		for (View* child = first_child(); child != NULL; child = child->next_sibling()) {
+			if (child->needs_layout_ /*|| !layout_manager_.get()*/) {
+				child->needs_layout_ = false;
+				child->Layout();
+			}
+		}
+	}
+
+	void View::OnVisibleChanged()
+	{
+
+	}
+
+	void View::OnEnabledChanged()
+	{
+
+	}
+
+
+	void View::SchedulePaint()
+	{
+		SchedulePaintInRect(GetLocalBounds());
+	}
+
+	void View::SchedulePaintInRect(const Rect& r)
+	{
+		if (!visible_ || !painting_enabled_)
+			return;
+
+		if (parent_) {
+			// Translate the requested paint rect to the parent's coordinate system
+			// then pass this notification up to the parent.
+			parent_->SchedulePaintInRect(ConvertRectToParent(r));
+		}
+	}
+
+	void View::DoPaint(Painter* painter)
+	{
+		PaintBackground(painter);
+		PaintBorder(painter);
+		OnPaint(painter);
+
+		for (View* p = first_child_; p != NULL; p = p->next_sibling())
+		{
+			if (p)
+			{
+				ScopedPainter helper(painter,
+					p->GetTransform());
+				p->DoPaint(painter);
+			}
+		}
+	}
+
+	void View::OnPaint(Painter* painter)
+	{
+
+	}
+
+	Transform View::GetTransform() const
+	{
+		return Transform(1.0, 0, 0, 1.0, x(), y());
+	}
+
+	/*void View::ConvertPointToView(const View* source, const View* target, Point* point)
+	{
+		if (source == target)
+			return;
+
+		// |source| can be NULL.
+		const View* root = target->root();
+		if (source) {
+			assert(source->root() == root);
+
+			if (source != root)
+				source->ConvertPointForAncestor(root, point);
+		}
+
+		if (target != root)
+			target->ConvertPointFromAncestor(root, point);
+
+		// API defines NULL |source| as returning the point in screen coordinates.
+		if (!source) {
+			*point = point->Subtract(
+				root->GetWidget()->GetClientAreaScreenBounds().origin());
+		}
+	}
+
+	void View::ConvertPointToWidget(const View* src, Point* point)
+	{
+
+	}
+
+	void View::ConvertPointFromWidget(const View* dest, Point* p)
+	{
+
+	}
+
+	void View::ConvertPointToScreen(const View* src, Point* point)
+	{
+
+	}
+
+	void View::ConvertPointFromScreen(const View* dst, Point* point)
+	{
+
+	}*/
+
+	Rect View::ConvertRectToParent(const Rect& rect) const
+	{
+		Rect x_rect = rect;
+		GetTransform().TransformRect(x_rect);
+		return x_rect;
+	}
+
+	Rect View::ConvertRectToWidget(const Rect& rect) const
+	{
+		Rect x_rect = rect;
+		for (const View* v = this; v; v = v->parent())
+			x_rect = v->ConvertRectToParent(x_rect);
+		return x_rect;
+	}
+
+	void View::PaintBackground(Painter* painter)
+	{
+		painter->FillRect(GetLocalBounds(), background_color_);
+	}
+
+	void View::SetBorder(Border* border)
+	{
+		border_.reset(border);
+	}
+
+	Border* View::border() const
+	{
+		return border_.get();
+	}
+
+	void View::PaintBorder(Painter* painter)
+	{
+		if (!border_.get())
+			return;
+
+		border_->DoPaint(this, painter);
+	}
+
+	
+
+	/*bool View::ConvertPointForAncestor(const View* ancestor, Point* point) const
+	{
+
+	}
+
+	bool View::ConvertPointFromAncestor(const View* ancestor, Point* point) const
+	{
+
+	}*/
+
+	
+
+	
 
 }
