@@ -47,6 +47,36 @@ namespace ui
 		::DeleteObject(hPen);
 	}
 
+	void Painter::DrawImage(ImageClip* clip, const Rect& dest_rect)
+	{
+		Image* image = clip->image();
+		if (!image)
+			return;
+		DrawImage(image, clip->rect(), dest_rect);
+	}
+
+	void Painter::DrawImage(Image* image, const Rect& src_rect, const Rect& dest_rect)
+	{
+		HDC src_dc = ::CreateCompatibleDC(dc_);
+		HBITMAP hOldBitmap = (HBITMAP) ::SelectObject(src_dc, image->ToHBITMAP());
+		BLENDFUNCTION bf = { AC_SRC_OVER, 0, 255, AC_SRC_ALPHA };
+		::AlphaBlend(dc_, dest_rect.x(), dest_rect.y(), dest_rect.width(), dest_rect.height(),
+			src_dc, src_rect.x(), src_rect.y(), src_rect.width(), src_rect.height(),
+			bf);
+		::SelectObject(src_dc, hOldBitmap);
+		::DeleteDC(src_dc);
+	}
+
+	void Painter::DrawStringRect(const std::wstring& text, const Font& font, Color color, const Rect& rect)
+	{
+		DrawStringRectWithFlags(text, font, color, rect, TEXT_ALIGN_LEFT);
+	}
+
+	void Painter::DrawStringRectWithFlags(const std::wstring& text, const Font& font, Color color, const Rect& rect, int flags)
+	{
+
+	}
+
 
 
 	ScopedPainter::ScopedPainter(Painter* painter, const Transform& m)

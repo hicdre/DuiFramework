@@ -169,5 +169,13 @@ namespace ui
 		}
 	}
 
+	ImageStore* App::DefaultImageStore()
+	{
+		if (!image_store_.get()) {
+			image_store_.reset(new ImageStore);
+		}
+		return image_store_.get();
+	}
+
 
 }

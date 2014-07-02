@@ -7,6 +7,7 @@
 #include "render/transform.h"
 #include "render/painter.h"
 #include "render/border.h"
+#include "render/background.h"
 #include <vector>
 
 namespace ui
@@ -76,7 +77,9 @@ namespace ui
 		virtual void Layout();
 
 		// Painting ------------------------------------------------------------------
-		void set_background_color(Color color) { background_color_ = color; }
+		void set_background_color(Color color);
+		void set_background_image_id(const std::string& id);
+		void SetBackground(Background* background);
 		
 		virtual void SchedulePaint();
 		virtual void SchedulePaintInRect(const Rect& r);
@@ -141,8 +144,9 @@ namespace ui
 
 		bool needs_layout_{ true };
 
-		Color background_color_{0xFFFFFFFF};
+		//Color background_color_{0xFFFFFFFF};
 
 		scoped_ptr<Border> border_;
+		scoped_ptr<Background> background_{ new NormalBackground(0xFFFFFFFF) };
 	};
 }

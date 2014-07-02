@@ -6,6 +6,8 @@
 #include "render/transform.h"
 #include "render/rect.h"
 #include "render/color.h"
+#include "render/image.h"
+#include "render/font.h"
 
 #include <string>
 
@@ -22,6 +24,12 @@ namespace ui
 
 		void FillRect(const Rect& rect, Color color);
 		void DrawLine(const Rect& rect, int line_size, DWORD color, int nStyle = PS_SOLID);
+
+		void DrawImage(ImageClip* clip, const Rect& dest_rect);
+		void DrawImage(Image* image, const Rect& src_rect, const Rect& dest_rect);
+
+		void DrawStringRect(const std::wstring& text, const Font& font, Color color, const Rect& rect);
+		void DrawStringRectWithFlags(const std::wstring& text, const Font& font, Color color, const Rect& rect, int flags);
 
 	private:
 		Widget* widget_;

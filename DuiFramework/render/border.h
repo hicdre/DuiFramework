@@ -9,6 +9,13 @@ namespace ui
 	class Border
 	{
 	public:
+		virtual ~Border() {}
+		virtual void DoPaint(View* view, Painter* painter) = 0;
+	};
+
+	class NormalBorder : public Border
+	{
+	public:
 		enum Direction{
 			LEFT = 0,
 			TOP,
@@ -16,8 +23,8 @@ namespace ui
 			BOTTOM,
 		};
 
-		Border();
-		~Border();
+		NormalBorder();
+		~NormalBorder();
 
 		void SetBorder(Direction direction, int size, Color color);
 		void SetBorder(int size, Color color);
@@ -35,7 +42,7 @@ namespace ui
 		Color right_color() const;
 		Color bottom_color() const;
 
-		void DoPaint(View* view, Painter* painter);
+		virtual void DoPaint(View* view, Painter* painter) override;
 	private:
 		int border_size_[4];
 		Color border_color_[4];

@@ -7,23 +7,23 @@
 namespace ui
 {
 
-	Border::Border()
+	NormalBorder::NormalBorder()
 	{
 		SetBorder(0, ColorSetRGB(0, 0, 0));
 	}
 
-	Border::~Border()
+	NormalBorder::~NormalBorder()
 	{
 
 	}
 
-	void Border::SetBorder(Direction direction, int size, Color color)
+	void NormalBorder::SetBorder(Direction direction, int size, Color color)
 	{
 		border_size_[direction] = size;
 		border_color_[direction] = color;
 	}
 
-	void Border::SetBorder(int size, Color color)
+	void NormalBorder::SetBorder(int size, Color color)
 	{
 		SetBorder(LEFT, size, color);
 		SetBorder(TOP, size, color);
@@ -31,17 +31,17 @@ namespace ui
 		SetBorder(BOTTOM, size, color);
 	}
 
-	int Border::size(Direction direction) const
+	int NormalBorder::size(Direction direction) const
 	{
 		return border_size_[direction];
 	}
 
-	Color Border::color(Direction direction) const
+	Color NormalBorder::color(Direction direction) const
 	{
 		return border_color_[direction];
 	}
 
-	void Border::DoPaint(View* view, Painter* painter)
+	void NormalBorder::DoPaint(View* view, Painter* painter)
 	{
 		//ио->вС->об->ср
 		painter->FillRect(Rect(0, 0, view->width(), top()), top_color());
@@ -52,42 +52,42 @@ namespace ui
 			view->height()), right_color());
 	}
 
-	int Border::left() const
+	int NormalBorder::left() const
 	{
 		return size(LEFT);
 	}
 
-	int Border::top() const
+	int NormalBorder::top() const
 	{
 		return size(TOP);
 	}
 
-	int Border::right() const
+	int NormalBorder::right() const
 	{
 		return size(RIGHT);
 	}
 
-	int Border::bottom() const
+	int NormalBorder::bottom() const
 	{
 		return size(BOTTOM);
 	}
 
-	Color Border::left_color() const
+	Color NormalBorder::left_color() const
 	{
 		return color(LEFT);
 	}
 
-	Color Border::top_color() const
+	Color NormalBorder::top_color() const
 	{
 		return color(TOP);
 	}
 
-	Color Border::right_color() const
+	Color NormalBorder::right_color() const
 	{
 		return color(RIGHT);
 	}
 
-	Color Border::bottom_color() const
+	Color NormalBorder::bottom_color() const
 	{
 		return color(BOTTOM);
 	}

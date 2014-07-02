@@ -437,7 +437,10 @@ namespace ui
 
 	void View::PaintBackground(Painter* painter)
 	{
-		painter->FillRect(GetLocalBounds(), background_color_);
+		if (!background_.get())
+			return;
+
+		background_->DoPaint(this, painter);
 	}
 
 	void View::SetBorder(Border* border)
@@ -456,6 +459,42 @@ namespace ui
 			return;
 
 		border_->DoPaint(this, painter);
+	}
+
+	void View::SetBackground(Background* background)
+	{
+		background_.reset(background);
+	}
+
+	void View::set_background_color(Color color)
+	{
+		if (!background_.get()) {
+			background_.reset(new NormalBackground);
+		}
+
+		NormalBackground* normal_background 
+			= dynamic_cast<NormalBackground*>(background_.get());
+		if (!normal_background)
+			return;
+
+		normal_background->SetColor(color);
+	}
+
+	void View::set_background_image_id(const std::string& id)
+	{
+		if (id.empty())
+			return;
+
+		if (!background_.get()) {
+			background_.reset(new NormalBackground);
+		}
+
+		NormalBackground* normal_background
+			= dynamic_cast<NormalBackground*>(background_.get());
+		if (!normal_background)
+			return;
+
+		normal_background->SetImageId(id);
 	}
 
 	

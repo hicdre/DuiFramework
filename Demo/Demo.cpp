@@ -20,6 +20,8 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 
 	ui::App* app = ui::App::Get();
 
+	ui::ImageStore::Default()->AddImageRecord("test", LR"(E:\work\xinyi\RomasterPC\bin\skin\avatar.png)");
+
 	ui::Widget* widget = ui::Widget::Create(NULL, ui::Rect(100,100,200,200));
 	widget->SetCursor(::LoadCursor(NULL, IDC_ARROW));
 	{
@@ -34,7 +36,7 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 			ui::View* child_view = new ui::View;
 			child_view->SetBounds(0, 50, 50, 50);
 			{
-				ui::Border* border = new ui::Border;
+				ui::NormalBorder* border = new ui::NormalBorder;
 				border->SetBorder(1, ui::ColorSetRGB(255, 0, 0));
 				child_view->SetBorder(border);
 			}
@@ -44,10 +46,10 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 			ui::View* child_view = new ui::View;
 			child_view->SetBounds(0, 100, 50, 50);
 			{
-				ui::Border* border = new ui::Border;
-				border->SetBorder(ui::Border::LEFT, 2, ui::ColorSetRGB(0, 255, 0));
-				border->SetBorder(ui::Border::RIGHT, 2, ui::ColorSetRGB(0, 255, 0));
-				border->SetBorder(ui::Border::BOTTOM, 2, ui::ColorSetRGB(0, 255, 0));
+				ui::NormalBorder* border = new ui::NormalBorder;
+				border->SetBorder(ui::NormalBorder::LEFT, 2, ui::ColorSetRGB(0, 255, 0));
+				border->SetBorder(ui::NormalBorder::RIGHT, 2, ui::ColorSetRGB(0, 255, 0));
+				border->SetBorder(ui::NormalBorder::BOTTOM, 2, ui::ColorSetRGB(0, 255, 0));
 				child_view->SetBorder(border);
 			}
 			root_view->Append(child_view);
@@ -57,14 +59,15 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 			child_view->SetBounds(0, 150, 50, 50);
 			child_view->set_background_color(ui::ColorSetRGB(0, 255, 255));
 			{
-				ui::Border* border = new ui::Border;
-				border->SetBorder(ui::Border::TOP, 10, ui::ColorSetRGB(125, 255, 0));
-				border->SetBorder(ui::Border::BOTTOM, 2, ui::ColorSetRGB(0, 100, 125));
+				ui::NormalBorder* border = new ui::NormalBorder;
+				border->SetBorder(ui::NormalBorder::TOP, 10, ui::ColorSetRGB(125, 255, 0));
+				border->SetBorder(ui::NormalBorder::BOTTOM, 2, ui::ColorSetRGB(0, 100, 125));
 				child_view->SetBorder(border);
 			}
 			root_view->Append(child_view);
 		}
-		root_view->set_background_color(ui::ColorSetRGB(255, 255, 0));
+		//root_view->set_background_color(ui::ColorSetRGB(255, 255, 0));
+		root_view->set_background_image_id("test");
 		widget->SetView(root_view);
 	}
 	widget->Show(SW_SHOWNORMAL);

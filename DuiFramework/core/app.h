@@ -1,4 +1,6 @@
 #pragma once
+#include "base/scoped_ptr.h"
+#include "utils/image_store.h"
 
 namespace ui
 {
@@ -9,6 +11,7 @@ namespace ui
 
 		void Run();
 
+		ImageStore* DefaultImageStore();
 	private:
 		App();
 		~App();
@@ -28,5 +31,7 @@ namespace ui
 
 		HWND message_hwnd_;
 		HINSTANCE instance_;
+
+		scoped_ptr<ImageStore> image_store_;
 	};
 }

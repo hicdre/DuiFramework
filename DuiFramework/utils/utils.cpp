@@ -111,4 +111,45 @@ namespace ui
 		AdjustWindowToFit(window, window_bounds, !parent);
 	}
 
+	bool ReadFileToString(const std::wstring& path, std::string* contents)
+	{
+		if (contents)
+			contents->clear();
+
+		HANDLE hFile = CreateFile(path.c_str(), GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+		if (hFile == NULL || hFile == INVALID_HANDLE_VALUE)
+			return false;
+
+		char buf[1 << 16];
+		DWORD len;
+		DWORD size = 0;
+		bool read_status = true;
+
+		// Many files supplied in |path| have incorrect size (proc files etc).
+		// Hence, the file is read sequentially as opposed to a one-shot read.
+		while (ReadFile(hFile, buf, sizeof(buf), &len, NULL) && len > 0) {
+			if (contents)
+				contents->append(buf, len);
+			size += len;
+		}
+		CloseHandle(hFile);
+
+		return true;
+	}
+
+	HBITMAP CreateDIB(int width, int height, void** pBits)
+	{
+		BITMAPINFO bmi = { 0 };
+		bmi.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
+		bmi.bmiHeader.biWidth = width;
+		bmi.bmiHeader.biHeight = -height;
+		bmi.bmiHeader.biPlanes = 1;
+		bmi.bmiHeader.biBitCount = 32;
+		bmi.bmiHeader.biCompression = BI_RGB;
+		bmi.bmiHeader.biSizeImage = width * height * 4;
+
+		bool bAlphaChannel = false;
+		return ::CreateDIBSection(NULL, &bmi, DIB_RGB_COLORS, pBits, NULL, 0);
+	}
+
 }

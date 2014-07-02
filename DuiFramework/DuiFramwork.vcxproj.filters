@@ -16,6 +16,9 @@
     <Filter Include="utils">
       <UniqueIdentifier>{2f70c853-ad50-4153-8016-e947fb8fc271}</UniqueIdentifier>
     </Filter>
+    <Filter Include="third_party">
+      <UniqueIdentifier>{a73f685d-3e44-4e0b-aef3-1e041f5d6ccb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -55,6 +58,27 @@
       <Filter>render</Filter>
     </ClCompile>
     <ClCompile Include="render\border.cpp">
+      <Filter>render</Filter>
+    </ClCompile>
+    <ClCompile Include="third_party\stb_image.cpp">
+      <Filter>third_party</Filter>
+    </ClCompile>
+    <ClCompile Include="render\image.cpp">
+      <Filter>render</Filter>
+    </ClCompile>
+    <ClCompile Include="render\background.cpp">
+      <Filter>render</Filter>
+    </ClCompile>
+    <ClCompile Include="utils\image_store.cpp">
+      <Filter>utils</Filter>
+    </ClCompile>
+    <ClCompile Include="render\font.cpp">
+      <Filter>render</Filter>
+    </ClCompile>
+    <ClCompile Include="render\render_text.cpp">
+      <Filter>render</Filter>
+    </ClCompile>
+    <ClCompile Include="render\range.cpp">
       <Filter>render</Filter>
     </ClCompile>
   </ItemGroup>
@@ -105,6 +129,33 @@
       <Filter>render</Filter>
     </ClInclude>
     <ClInclude Include="render\border.h">
+      <Filter>render</Filter>
+    </ClInclude>
+    <ClInclude Include="third_party\stb_image.h">
+      <Filter>third_party</Filter>
+    </ClInclude>
+    <ClInclude Include="render\image.h">
+      <Filter>render</Filter>
+    </ClInclude>
+    <ClInclude Include="base\ref_counted.h">
+      <Filter>base</Filter>
+    </ClInclude>
+    <ClInclude Include="render\background.h">
+      <Filter>render</Filter>
+    </ClInclude>
+    <ClInclude Include="utils\image_store.h">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="render\font.h">
+      <Filter>render</Filter>
+    </ClInclude>
+    <ClInclude Include="render\render_text.h">
+      <Filter>render</Filter>
+    </ClInclude>
+    <ClInclude Include="render\range.h">
+      <Filter>render</Filter>
+    </ClInclude>
+    <ClInclude Include="render\text_constants.h">
       <Filter>render</Filter>
     </ClInclude>
   </ItemGroup>
