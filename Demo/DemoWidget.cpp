@@ -6,9 +6,19 @@
 void DemoWidget::OnInit()
 {
 	{
+		ui::Label* label = new ui::Label(L"Hello world!");
+		label->SetBounds(0, 0, 100, 50);
+		label->SetFont(L"Consolas", 14);
+		label->SetHorizontalAlignment(ui::ALIGN_CENTER);
+		label->SetTextColor(ui::ColorSetRGB(0, 255, 0));
+		label->SetCursor(::LoadCursor(NULL, IDC_IBEAM));
+		view()->Append(label);
+	}
+	{
 		ui::View* child_view = new ui::View;
 		child_view->SetBounds(100, 50, 50, 100);
 		child_view->set_background_color(ui::ColorSetRGB(0, 255, 0));
+		child_view->SetCursor(::LoadCursor(NULL, IDC_HAND));
 		view()->Append(child_view);
 	}
 	{
@@ -19,6 +29,7 @@ void DemoWidget::OnInit()
 			border->SetBorder(1, ui::ColorSetRGB(255, 0, 0));
 			child_view->SetBorder(border);
 		}
+		child_view->SetCursor(::LoadCursor(NULL, IDC_HELP));
 		view()->Append(child_view);
 	}
 	{
@@ -31,6 +42,7 @@ void DemoWidget::OnInit()
 			border->SetBorder(ui::NormalBorder::BOTTOM, 2, ui::ColorSetRGB(0, 255, 0));
 			child_view->SetBorder(border);
 		}
+		child_view->SetCursor(::LoadCursor(NULL, IDC_CROSS));
 		view()->Append(child_view);
 	}
 	{
@@ -45,14 +57,7 @@ void DemoWidget::OnInit()
 		}
 		view()->Append(child_view);
 	}
-	{
-		ui::Label* label = new ui::Label(L"Hello world!");
-		label->SetBounds(0, 0, 100, 50);
-		label->SetFont(L"Consolas", 14);
-		label->SetHorizontalAlignment(ui::ALIGN_CENTER);
-		label->SetTextColor(ui::ColorSetRGB(0, 255, 0));
-		view()->Append(label);
-	}
+	
 	view()->set_background_image_id("test");
 }
 

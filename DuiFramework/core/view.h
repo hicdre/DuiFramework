@@ -41,11 +41,12 @@ namespace ui
 		View* InsertAfter(View* ref, View* child);
 		View* InsertBefore(View* ref, View* child);
 
+		View* Hittest(const Point& pt);//pt在本坐标系
+		bool Hittest(const Point& pt, Views& views);
 
 		// Get the Widget that hosts this View, if any.
 		virtual const Widget* GetWidget() const;
 		virtual Widget* GetWidget();
-		void SetOwnedWidget(Widget* w);
 
 
 		// Size and disposition ------------------------------------------------------
@@ -116,6 +117,9 @@ namespace ui
 		void SetBorder(Border* border);
 		Border* border() const;
 
+		void SetCursor(HCURSOR cursor);
+		virtual HCURSOR GetCursor();
+
 	public:
 		virtual void OnVisibleChanged();
 		virtual void OnEnabledChanged();
@@ -146,5 +150,7 @@ namespace ui
 
 		scoped_ptr<Border> border_;
 		scoped_ptr<Background> background_;
+
+		HCURSOR cursor_{ NULL };
 	};
 }

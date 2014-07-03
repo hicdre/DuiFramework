@@ -187,6 +187,48 @@ namespace ui
 		}
 	}
 
+
+	View* View::Hittest(const Point& pt)
+	{
+		//hittest self
+		if (!GetLocalBounds().Contains(pt))
+			return NULL;
+
+		for (View* p = last_child_; p != NULL; p = p->prev_sibling())
+		{
+			if (p)
+			{
+				Point pt_in_child = p->GetTransform().Invert().Apply(pt);
+				View* v = p->Hittest(pt_in_child);
+				if (v)
+					return v;
+			}
+		}
+
+		return this;
+	}
+
+	bool View::Hittest(const Point& pt, Views& views)
+	{
+		if (!GetLocalBounds().Contains(pt))
+			return false;
+
+		bool child_hittested = false;
+		for (View* p = last_child_; p != NULL; p = p->prev_sibling())
+		{
+			if (p)
+			{
+				child_hittested = Hittest(pt, views) || child_hittested;
+			}
+		}
+
+		if (!child_hittested)
+			views.push_back(this);
+
+		return true;
+	}
+
+
 	const Widget* View::GetWidget() const
 	{
 		return parent_ ? parent_->GetWidget() : NULL;
@@ -488,6 +530,18 @@ namespace ui
 			return;
 
 		normal_background->SetImageId(id);
+	}
+
+
+	void View::SetCursor(HCURSOR cursor)
+	{
+		cursor_ = cursor;
+	}
+
+
+	HCURSOR View::GetCursor()
+	{
+		return cursor_ ? cursor_ : parent_->GetCursor();
 	}
 
 	

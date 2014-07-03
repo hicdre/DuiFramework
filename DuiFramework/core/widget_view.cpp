@@ -26,8 +26,9 @@ namespace ui
 
 	void WidgetView::Init()
 	{
+		SetCursor(::LoadCursor(NULL, IDC_ARROW));
+
 		owned_widget_ = ui::Widget::Create(NULL, GetInitialRect());
-		owned_widget_->SetCursor(::LoadCursor(NULL, IDC_ARROW));
 		owned_widget_->SetMessageHanler(this);
 		Rect view_rect = owned_widget_->GetWindowScreenBounds();
 		SetBounds(0, 0, view_rect.width(), view_rect.height());
@@ -52,6 +53,14 @@ namespace ui
 			Painter painter(owned_widget_);
 			DoPaint(&painter);
 			return TRUE;
+		}
+		else if (message == WM_MOUSEMOVE)
+		{
+			Point pt(((int)(short)LOWORD(l_param)), ((int)(short)HIWORD(l_param)));
+			View* v = Hittest(pt);
+			HCURSOR cursor = v->GetCursor();
+			widget()->SetCursor(cursor);
+
 		}
 		return FALSE;
 	}
