@@ -134,8 +134,6 @@ namespace ui
 		View* prev_sibling_{ NULL };
 		int32 child_count_{ 0 };
 
-		Widget* owned_widget_{ NULL };
-
 		// This View's bounds in the parent coordinate system.
 		Rect bounds_;
 		bool visible_{ true };// Whether this view is visible.
@@ -147,6 +145,6 @@ namespace ui
 		//Color background_color_{0xFFFFFFFF};
 
 		scoped_ptr<Border> border_;
-		scoped_ptr<Background> background_{ new NormalBackground(0xFFFFFFFF) };
+		scoped_ptr<Background> background_;
 	};
 }

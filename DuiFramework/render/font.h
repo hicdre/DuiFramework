@@ -22,7 +22,7 @@ namespace ui
 			ITALIC = 2,
 			UNDERLINE = 4,
 		};
-
+		Font();
 		// Creates a font that is a clone of another font object.
 		Font(const Font& other);
 		Font& operator=(const Font& other);
@@ -50,7 +50,10 @@ namespace ui
 		int GetFontSize() const; //pixels
 
 		HFONT ToHFONT() const;
+
+		
 	private:
+		friend class App;
 		class HFontRef : public RefCounted<HFontRef> {
 		public:
 			// This constructor takes control of the HFONT, and will delete it when
@@ -108,8 +111,15 @@ namespace ui
 		void InitWithFontNameAndSize(const std::wstring& font_name,
 			int font_size);
 
+		//static void InitFont(const std::wstring& font_name,
+		//	int font_size);
+		static void UnInitFont();
+
 		static HFontRef* CreateHFontRef(HFONT font);
 		static HFontRef* CreateHFontRef(HFONT font, const TEXTMETRIC& font_metrics);
+		static HFontRef* CreateDefalutHFontRef();
+
+		static Font::HFontRef* base_font_ref_;
 
 		HFontRef* font_ref_;
 	};

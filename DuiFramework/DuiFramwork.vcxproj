@@ -85,17 +85,20 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="core\app.cpp" />
+    <ClCompile Include="core\label.cpp" />
     <ClCompile Include="core\view.cpp" />
     <ClCompile Include="core\widget.cpp" />
+    <ClCompile Include="core\widget_delegate.cpp" />
+    <ClCompile Include="core\widget_view.cpp" />
     <ClCompile Include="render\background.cpp" />
     <ClCompile Include="render\border.cpp" />
     <ClCompile Include="render\font.cpp" />
     <ClCompile Include="render\image.cpp" />
+    <ClCompile Include="render\padding.cpp" />
     <ClCompile Include="render\painter.cpp" />
     <ClCompile Include="render\point.cpp" />
     <ClCompile Include="render\range.cpp" />
     <ClCompile Include="render\rect.cpp" />
-    <ClCompile Include="render\render_text.cpp" />
     <ClCompile Include="render\size.cpp" />
     <ClCompile Include="render\transform.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -111,20 +114,23 @@
     <ClInclude Include="base\ref_counted.h" />
     <ClInclude Include="base\scoped_ptr.h" />
     <ClInclude Include="core\app.h" />
+    <ClInclude Include="core\constants.h" />
+    <ClInclude Include="core\label.h" />
     <ClInclude Include="core\view.h" />
     <ClInclude Include="core\widget.h" />
+    <ClInclude Include="core\widget_delegate.h" />
+    <ClInclude Include="core\widget_view.h" />
     <ClInclude Include="render\background.h" />
     <ClInclude Include="render\border.h" />
     <ClInclude Include="render\color.h" />
     <ClInclude Include="render\font.h" />
     <ClInclude Include="render\image.h" />
+    <ClInclude Include="render\padding.h" />
     <ClInclude Include="render\painter.h" />
     <ClInclude Include="render\point.h" />
     <ClInclude Include="render\range.h" />
     <ClInclude Include="render\rect.h" />
-    <ClInclude Include="render\render_text.h" />
     <ClInclude Include="render\size.h" />
-    <ClInclude Include="render\text_constants.h" />
     <ClInclude Include="render\transform.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />

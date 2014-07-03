@@ -5,9 +5,9 @@
 #include "Demo.h"
 
 #include "core/app.h"
-#include "core/widget.h"
-#include "core/view.h"
-#include "render/rect.h"
+#include "core/widget_view.h"
+
+#include "DemoWidget.h"
 
 
 int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
@@ -22,57 +22,12 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 
 	ui::ImageStore::Default()->AddImageRecord("test", LR"(E:\work\xinyi\RomasterPC\bin\skin\avatar.png)");
 
-	ui::Widget* widget = ui::Widget::Create(NULL, ui::Rect(100,100,200,200));
-	widget->SetCursor(::LoadCursor(NULL, IDC_ARROW));
-	{
-		ui::View* root_view = new ui::View;
-		{
-			ui::View* child_view = new ui::View;
-			child_view->SetBounds(100, 50, 50, 100);
-			child_view->set_background_color(ui::ColorSetRGB(0, 255, 0));
-			root_view->Append(child_view);
-		}
-		{
-			ui::View* child_view = new ui::View;
-			child_view->SetBounds(0, 50, 50, 50);
-			{
-				ui::NormalBorder* border = new ui::NormalBorder;
-				border->SetBorder(1, ui::ColorSetRGB(255, 0, 0));
-				child_view->SetBorder(border);
-			}
-			root_view->Append(child_view);
-		}
-		{
-			ui::View* child_view = new ui::View;
-			child_view->SetBounds(0, 100, 50, 50);
-			{
-				ui::NormalBorder* border = new ui::NormalBorder;
-				border->SetBorder(ui::NormalBorder::LEFT, 2, ui::ColorSetRGB(0, 255, 0));
-				border->SetBorder(ui::NormalBorder::RIGHT, 2, ui::ColorSetRGB(0, 255, 0));
-				border->SetBorder(ui::NormalBorder::BOTTOM, 2, ui::ColorSetRGB(0, 255, 0));
-				child_view->SetBorder(border);
-			}
-			root_view->Append(child_view);
-		}
-		{
-			ui::View* child_view = new ui::View;
-			child_view->SetBounds(0, 150, 50, 50);
-			child_view->set_background_color(ui::ColorSetRGB(0, 255, 255));
-			{
-				ui::NormalBorder* border = new ui::NormalBorder;
-				border->SetBorder(ui::NormalBorder::TOP, 10, ui::ColorSetRGB(125, 255, 0));
-				border->SetBorder(ui::NormalBorder::BOTTOM, 2, ui::ColorSetRGB(0, 100, 125));
-				child_view->SetBorder(border);
-			}
-			root_view->Append(child_view);
-		}
-		//root_view->set_background_color(ui::ColorSetRGB(255, 255, 0));
-		root_view->set_background_image_id("test");
-		widget->SetView(root_view);
-	}
+	ui::Widget* widget = ui::WidgetView::CreateWidget(new DemoWidget);
 	widget->Show(SW_SHOWNORMAL);
 
 	app->Run();
+
+	delete widget;
 
 	return 0;
 }

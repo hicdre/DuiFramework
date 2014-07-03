@@ -19,6 +19,9 @@
 
 #include <algorithm>
 
+#include <comdef.h>
+#include <gdiplus.h>
+
 #pragma warning (disable : 4244)
 
 

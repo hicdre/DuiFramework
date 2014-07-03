@@ -7,6 +7,8 @@ namespace ui
 	{
 		const int kTextMetricWeightBold = 700;
 
+		
+
 		void GetTextMetricsForFont(HDC hdc, HFONT font, TEXTMETRIC* text_metrics) {
 			HGDIOBJ hprev = ::SelectObject(hdc, font);
 			::GetTextMetrics(hdc, text_metrics);
@@ -32,6 +34,12 @@ namespace ui
 			font_info->lfWeight = (font_style & Font::BOLD) ? FW_BOLD : FW_NORMAL;
 		}
 	}
+
+	Font::Font()
+		: font_ref_(CreateDefalutHFontRef())
+	{
+	}
+
 
 	Font::Font(const Font& other)
 	{
@@ -172,6 +180,50 @@ namespace ui
 		return new HFontRef(font, font_size, height, baseline, cap_height,
 			ave_char_width, style);
 	}
+
+	Font::HFontRef* Font::base_font_ref_ = NULL;
+
+	/*void Font::InitFont(const std::wstring& font_name, int font_size)
+	{
+
+		HFONT hf = ::CreateFont(-font_size, 0, 0, 0, FW_DONTCARE, FALSE, FALSE, FALSE,
+			DEFAULT_CHARSET,
+			OUT_DEFAULT_PRECIS,
+			CLIP_DEFAULT_PRECIS,
+			DEFAULT_QUALITY,
+			DEFAULT_PITCH | FF_DONTCARE,
+			font_name.c_str());
+		base_font_ref_ = CreateHFontRef(hf);
+		if (base_font_ref_)
+			base_font_ref_->AddRef();
+	}*/
+
+	void Font::UnInitFont()
+	{
+		if (base_font_ref_)
+			base_font_ref_->Release();
+	}
+
+	Font::HFontRef* Font::CreateDefalutHFontRef()
+	{
+		if (!base_font_ref_)
+		{
+			NONCLIENTMETRICS metrics;
+			static const UINT SIZEOF_NONCLIENTMETRICS =	sizeof(NONCLIENTMETRICS);
+			metrics.cbSize = sizeof(NONCLIENTMETRICS);
+			SystemParametersInfo(SPI_GETNONCLIENTMETRICS,
+				SIZEOF_NONCLIENTMETRICS, &metrics,
+				0);
+			metrics.lfMessageFont.lfHeight =
+				AdjustFontSize(metrics.lfMessageFont.lfHeight, 0);
+			HFONT font = CreateFontIndirect(&metrics.lfMessageFont);
+			base_font_ref_ = CreateHFontRef(font);
+			base_font_ref_->AddRef();
+		}
+		return base_font_ref_;
+	}
+
+	
 
 	Font::HFontRef::HFontRef(HFONT hfont, int font_size,
 		int height,

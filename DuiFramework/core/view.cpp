@@ -189,19 +189,12 @@ namespace ui
 
 	const Widget* View::GetWidget() const
 	{
-		if (owned_widget_)
-			return owned_widget_;
 		return parent_ ? parent_->GetWidget() : NULL;
 	}
 
 	Widget* View::GetWidget()
 	{
 		return const_cast<Widget*>(const_cast<const View*>(this)->GetWidget());
-	}
-
-	void View::SetOwnedWidget(Widget* w)
-	{
-		owned_widget_ = w;
 	}
 
 	void View::SetBounds(int x, int y, int width, int height)
@@ -368,7 +361,7 @@ namespace ui
 
 	void View::OnPaint(Painter* painter)
 	{
-
+		//painter->DrawStringRect(L"≤‚ ‘", Font(L"Œ¢»Ì—≈∫⁄", 18), ColorSetRGB(255,0,0,0), GetLocalBounds());
 	}
 
 	Transform View::GetTransform() const

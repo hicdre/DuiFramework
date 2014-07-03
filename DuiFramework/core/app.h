@@ -17,6 +17,7 @@ namespace ui
 		~App();
 
 		void Init();
+		void UnInit();
 		void InitMessageWndClass();
 
 		static LRESULT CALLBACK WndProcThunk(HWND hwnd, UINT message, WPARAM wparam, LPARAM lparam);
@@ -33,5 +34,7 @@ namespace ui
 		HINSTANCE instance_;
 
 		scoped_ptr<ImageStore> image_store_;
+
+		ULONG_PTR gdiplusToken_;
 	};
 }

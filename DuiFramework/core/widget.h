@@ -9,6 +9,17 @@ namespace ui
 	class Widget
 	{
 	public:
+		class MessageHandler {
+		public:
+			virtual ~MessageHandler() {}
+
+			virtual BOOL ProcessWindowMessage(HWND window,
+				UINT message,
+				WPARAM w_param,
+				LPARAM l_param,
+				LRESULT& result) = 0;
+		};
+
 		Widget();
 		virtual ~Widget();
 
@@ -44,8 +55,8 @@ namespace ui
 		// be one contents view child of this Widget's RootView. This view is sized to
 		// fit the entire size of the RootView. The RootView takes ownership of this
 		// View, unless it is set as not being parent-owned.
-		void SetView(View* view);
-		View* GetView();
+		void SetMessageHanler(MessageHandler* view);
+		MessageHandler* GetMessageHanler();
 
 		// Returns the bounds of the Widget in screen coordinates.
 		Rect GetWindowScreenBounds() const;
@@ -71,6 +82,8 @@ namespace ui
 		int  SetWindowRgn(HRGN region, BOOL redraw);
 		BOOL GetClientRect(RECT* rect) const;
 		void SetCursor(HCURSOR cursor);
+
+		void InvalidateRect(const Rect& r);
 
 
 		void Close();
@@ -106,12 +119,9 @@ namespace ui
 			UINT message,
 			WPARAM w_param,
 			LPARAM l_param,
-			LRESULT& result,
-			DWORD msg_map_id = 0);
+			LRESULT& result);
 
-		void OnPaint(WPARAM w_param, LPARAM l_param, LRESULT& result);
-
-		View* view_;
+		MessageHandler* handler_;
 
 		// The restored bounds used for the initial show. This is only used if
 		// |saved_show_state_| is maximized.

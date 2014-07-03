@@ -4,6 +4,7 @@
 #include <cassert>
 #include "core/widget.h"
 #include "utils/utils.h"
+#include "render/font.h"
 
 namespace ui
 {
@@ -45,13 +46,25 @@ namespace ui
 			WaitForWork();  // Wait (sleep) until we have work to do again.
 		}
 
+		UnInit();
 	}
 
 	void App::Init()
 	{
+		Gdiplus::GdiplusStartupInput gdiplusStartupInput;
+		GdiplusStartup(&gdiplusToken_, &gdiplusStartupInput, NULL);
+
 		InitMessageWndClass();
 		Widget::InitClass();
 	}
+
+
+	void App::UnInit()
+	{
+		Font::UnInitFont();
+		Gdiplus::GdiplusShutdown(gdiplusToken_);
+	}
+
 
 	void App::InitMessageWndClass()
 	{

@@ -75,11 +75,20 @@
     <ClCompile Include="render\font.cpp">
       <Filter>render</Filter>
     </ClCompile>
-    <ClCompile Include="render\render_text.cpp">
-      <Filter>render</Filter>
-    </ClCompile>
     <ClCompile Include="render\range.cpp">
       <Filter>render</Filter>
+    </ClCompile>
+    <ClCompile Include="core\label.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="render\padding.cpp">
+      <Filter>render</Filter>
+    </ClCompile>
+    <ClCompile Include="core\widget_view.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="core\widget_delegate.cpp">
+      <Filter>core</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -149,14 +158,23 @@
     <ClInclude Include="render\font.h">
       <Filter>render</Filter>
     </ClInclude>
-    <ClInclude Include="render\render_text.h">
-      <Filter>render</Filter>
-    </ClInclude>
     <ClInclude Include="render\range.h">
       <Filter>render</Filter>
     </ClInclude>
-    <ClInclude Include="render\text_constants.h">
+    <ClInclude Include="core\constants.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="core\label.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="render\padding.h">
       <Filter>render</Filter>
+    </ClInclude>
+    <ClInclude Include="core\widget_view.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="core\widget_delegate.h">
+      <Filter>core</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

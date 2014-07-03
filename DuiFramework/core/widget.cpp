@@ -17,8 +17,7 @@ namespace ui
 	static const DWORD kWindowDefaultExStyle = WS_EX_WINDOWEDGE;
 
 	Widget::Widget()
-		: view_(NULL)
-		, hwnd_(NULL)
+		: hwnd_(NULL)
 		, window_style_(0)
 		, window_ex_style_(kWindowDefaultExStyle)
 		, previous_cursor_(NULL)
@@ -95,16 +94,14 @@ namespace ui
 		SetWindowLong(GWL_STYLE, (dwStyle & ~WS_CAPTION));
 	}
 
-	void Widget::SetView(View* view)
+	void Widget::SetMessageHanler(MessageHandler* handler)
 	{
-		view_ = view;
-		Rect view_rect = GetWindowScreenBounds();
-		view_->SetBounds(0,0,view_rect.width(),view_rect.height());
+		handler_ = handler;
 	}
 
-	View* Widget::GetView()
+	Widget::MessageHandler* Widget::GetMessageHanler()
 	{
-		return view_;
+		return handler_;
 	}
 
 	Rect Widget::GetWindowScreenBounds() const
@@ -304,12 +301,10 @@ namespace ui
 		return window->OnWndProc(message, w_param, l_param);
 	}
 
-	BOOL Widget::ProcessWindowMessage(HWND window, UINT message, WPARAM w_param, LPARAM l_param, LRESULT& result, DWORD msg_map_id /*= 0*/)
+	BOOL Widget::ProcessWindowMessage(HWND window, UINT message, WPARAM w_param, LPARAM l_param, LRESULT& result)
 	{
-		if (message == WM_PAINT)
-		{
-			OnPaint(w_param, l_param, result);
-		}
+		if (handler_)
+			return handler_->ProcessWindowMessage(window, message, w_param, l_param, result);
 		return FALSE;
 	}
 
@@ -326,13 +321,11 @@ namespace ui
 		}
 	}
 
-	void Widget::OnPaint(WPARAM w_param, LPARAM l_param, LRESULT& result)
+	void Widget::InvalidateRect(const Rect& r)
 	{
-		Painter painter(this);
-		if (view_) {
-			view_->DoPaint(&painter);
-		}
+		::InvalidateRect(hwnd_, &r.ToRECT(), FALSE);
 	}
+
 
 	
 

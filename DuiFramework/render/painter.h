@@ -31,6 +31,8 @@ namespace ui
 		void DrawStringRect(const std::wstring& text, const Font& font, Color color, const Rect& rect);
 		void DrawStringRectWithFlags(const std::wstring& text, const Font& font, Color color, const Rect& rect, int flags);
 
+		static void CalcStringRectWithFlags(const std::wstring& text, const Font& font, const Rect& rect, int flags,
+			Rect& out, size_t* len = NULL, int* lines = NULL);
 	private:
 		Widget* widget_;
 

@@ -1,11 +1,47 @@
 #include "stdafx.h"
 #include "painter.h"
 
+#include "base/scoped_ptr.h"
 #include "core/widget.h"
+#include "core/constants.h"
+//#include "render/render_text.h"
+
+#include <vector>
 
 namespace ui
 {
+	namespace
+	{
+		void GetStringFormat(Gdiplus::StringFormat& format, int flags)
+		{
+			//水平布局
+			if (flags & TEXT_CENTER) 
+				format.SetAlignment(Gdiplus::StringAlignmentCenter);
+			else if (flags & TEXT_RIGHT)
+				format.SetAlignment(Gdiplus::StringAlignmentFar);
+			else 
+				format.SetAlignment(Gdiplus::StringAlignmentNear);
+			//垂直布局
+			if (flags & TEXT_VCENTER)
+				format.SetLineAlignment(Gdiplus::StringAlignmentCenter);
+			else if (flags & TEXT_BOTTOM)
+				format.SetLineAlignment(Gdiplus::StringAlignmentFar);
+			else
+				format.SetLineAlignment(Gdiplus::StringAlignmentNear);
 
+			if (flags & TEXT_NOCLIP)
+				format.SetFormatFlags(Gdiplus::StringFormatFlagsNoClip);
+
+			if (flags & TEXT_PATH_ELLIPSIS)
+				format.SetTrimming(Gdiplus::StringTrimmingEllipsisPath);
+			else if (flags & TEXT_END_ELLIPSIS)
+				format.SetTrimming(Gdiplus::StringTrimmingEllipsisCharacter);
+			else if (flags & TEXT_END_WORD_ELLIPSIS)
+				format.SetTrimming(Gdiplus::StringTrimmingEllipsisWord);
+			else
+				format.SetTrimming(Gdiplus::StringTrimmingNone);
+		}
+	}
 
 	Painter::Painter(Widget* widget)
 		: widget_(widget)
@@ -69,12 +105,39 @@ namespace ui
 
 	void Painter::DrawStringRect(const std::wstring& text, const Font& font, Color color, const Rect& rect)
 	{
-		DrawStringRectWithFlags(text, font, color, rect, TEXT_ALIGN_LEFT);
+		DrawStringRectWithFlags(text, font, color, rect, TEXT_LEFT | TEXT_VCENTER | TEXT_END_ELLIPSIS);
 	}
 
 	void Painter::DrawStringRectWithFlags(const std::wstring& text, const Font& font, Color color, const Rect& rect, int flags)
 	{
+		Gdiplus::Graphics graphics(dc_);
+		Gdiplus::SolidBrush  brush(Gdiplus::Color((unsigned int)color));
+		Gdiplus::Font        gdi_font(dc_, font.ToHFONT());
+		Gdiplus::StringFormat format;
+		Gdiplus::RectF       rectF(rect.x(), rect.y(), rect.width(), rect.height());
 
+		GetStringFormat(format, flags);
+		graphics.SetTextRenderingHint(Gdiplus::TextRenderingHintAntiAlias);
+		graphics.DrawString(text.c_str(), text.size(), &gdi_font, rectF, &format, &brush);
+
+	}
+
+	void Painter::CalcStringRectWithFlags(const std::wstring& text, const Font& font, const Rect& rect, int flags, Rect& out, size_t* len, int* lines)
+	{
+		HDC hdc = GetDC(NULL);
+		Gdiplus::Graphics graphics(hdc);
+		Gdiplus::Font        gdi_font(hdc, font.ToHFONT());
+		Gdiplus::StringFormat format;
+		Gdiplus::RectF       rectF(rect.x(), rect.y(), rect.width(), rect.height());
+
+		Gdiplus::RectF outF;
+
+		GetStringFormat(format, flags);
+		graphics.SetTextRenderingHint(Gdiplus::TextRenderingHintAntiAlias);
+		graphics.MeasureString(text.c_str(), text.size(), &gdi_font, rectF, &format, &outF, (int*)len, lines);
+
+		out.SetRect(outF.X, outF.Y, outF.Width, outF.Height);
+		::ReleaseDC(NULL, hdc);
 	}
 
 

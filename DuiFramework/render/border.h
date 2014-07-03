@@ -11,6 +11,7 @@ namespace ui
 	public:
 		virtual ~Border() {}
 		virtual void DoPaint(View* view, Painter* painter) = 0;
+		virtual Padding GetPadding() = 0;
 	};
 
 	class NormalBorder : public Border
@@ -43,6 +44,7 @@ namespace ui
 		Color bottom_color() const;
 
 		virtual void DoPaint(View* view, Painter* painter) override;
+		virtual Padding GetPadding() override;
 	private:
 		int border_size_[4];
 		Color border_color_[4];

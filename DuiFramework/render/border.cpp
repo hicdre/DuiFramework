@@ -92,4 +92,9 @@ namespace ui
 		return color(BOTTOM);
 	}
 
+	ui::Padding NormalBorder::GetPadding()
+	{
+		return Padding(left(), top(), right(), bottom());
+	}
+
 }
