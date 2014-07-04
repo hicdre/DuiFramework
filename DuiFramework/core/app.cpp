@@ -190,5 +190,13 @@ namespace ui
 		return image_store_.get();
 	}
 
+	EventDispatcher* App::DefaultEventDispatcher()
+	{
+		if (!dispatcher_.get()) {
+			dispatcher_.reset(new EventDispatcher);
+		}
+		return dispatcher_.get();
+	}
+
 
 }

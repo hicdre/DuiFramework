@@ -187,6 +187,11 @@ namespace ui
 		return ::SetWindowPos(hwnd(), hwnd_after, x, y, cx, cy, flags);
 	}
 
+	BOOL Widget::SetWindowPos(int x, int y)
+	{
+		return SetWindowPos(NULL, x, y, 0, 0, SWP_NOSIZE | SWP_NOZORDER);
+	}
+
 	BOOL Widget::MoveWindow(int x, int y, int width, int height)
 	{
 		return MoveWindow(x, y, width, height, TRUE);

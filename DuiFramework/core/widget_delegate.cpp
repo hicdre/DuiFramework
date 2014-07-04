@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "widget_delegate.h"
 
+#include "core/widget_view.h"
+
 namespace ui
 {
 

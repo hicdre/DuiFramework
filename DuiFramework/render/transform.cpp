@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "transform.h"
+#include <cmath>
 
 namespace ui
 {
@@ -61,15 +62,15 @@ namespace ui
 
 	void Transform::TransformPoint(Point& point) const
 	{
-		float x = (float)((double)a * point.x() + (double)c * point.y() + tx);
-		float y = (float)((double)b * point.x() + (double)d * point.y() + ty);
+		float x = (float)std::floor((double)a * point.x() + (double)c * point.y() + tx);
+		float y = (float)std::floor((double)b * point.x() + (double)d * point.y() + ty);
 		point.SetPoint(x, y);
 	}
 
 	void Transform::TransformSize(Size& size) const
 	{
-		float w = (float)((double)a * size.width() + (double)c * size.height());
-		float h = (float)((double)b * size.width() + (double)d * size.height());
+		float w = (float)std::floor((double)a * size.width() + (double)c * size.height());
+		float h = (float)std::floor((double)b * size.width() + (double)d * size.height());
 		size.SetSize(w, h);
 	}
 

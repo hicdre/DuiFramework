@@ -15,7 +15,7 @@ namespace ui
 
 		virtual void OnInit() = 0;
 		virtual Rect GetInitialRect() = 0;
-		
+
 		WidgetView* view() const { return widget_view_; }
 	protected:
 

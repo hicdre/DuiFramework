@@ -8,6 +8,7 @@
 #include "render/painter.h"
 #include "render/border.h"
 #include "render/background.h"
+#include "core/event.h"
 #include <vector>
 
 namespace ui
@@ -40,6 +41,9 @@ namespace ui
 		View* Remove(View* child);
 		View* InsertAfter(View* ref, View* child);
 		View* InsertBefore(View* ref, View* child);
+
+		bool HasChild(View* child, int* step = NULL);
+		View* GetAncestorTo(View* other);
 
 		View* Hittest(const Point& pt);//pt在本坐标系
 		bool Hittest(const Point& pt, Views& views);
@@ -91,27 +95,19 @@ namespace ui
 		// Coordinate conversion -----------------------------------------------------
 		Transform GetTransform() const;
 
-		// Convert a point from the coordinate system of one View to another.
-		//
-		// |source| and |target| must be in the same widget, but doesn't need to be in
-		// the same view hierarchy.
-		// |source| can be NULL in which case it means the screen coordinate system.
-		//static void ConvertPointToView(const View* source, const View* target, Point* point);
-		// Convert a point from a View's coordinate system to that of its Widget.
-		//static void ConvertPointToWidget(const View* src, Point* point);
-		// Convert a point from the coordinate system of a View's Widget to that
-		// View's coordinate system.
-		//static void ConvertPointFromWidget(const View* dest, Point* p);
-		// Convert a point from a View's coordinate system to that of the screen.
-		//static void ConvertPointToScreen(const View* src, Point* point);
-		// Convert a point from a View's coordinate system to that of the screen.
-		//static void ConvertPointFromScreen(const View* dst, Point* point);
-		// Applies transformation on the rectangle, which is in the view's coordinate
-		// system, to convert it into the parent's coordinate system.
+		bool GetTransformRelativeTo(const View* ancestor,
+			Transform* transform) const;
+
+		// Convert a point from the coordinate system of source to target.
+		Point ConvertPointFromParent(const Point& pt) const;
+		Point ConvertPointFromWidget(const Point& pt) const;
+
+		Point ConvertPointToParent(const Point& pt) const;
+		Point ConvertPointToWidget(const Point& pt) const;
 		Rect ConvertRectToParent(const Rect& rect) const;
-		// Converts a rectangle from this views coordinate system to its widget
-		// coordinate system.
 		Rect ConvertRectToWidget(const Rect& rect) const;
+
+		static void ConvertPointToTarget(View* source, View* target, Point* pt);
 
 		// Attributes---------------------------------------------
 		void SetBorder(Border* border);
@@ -120,14 +116,20 @@ namespace ui
 		void SetCursor(HCURSOR cursor);
 		virtual HCURSOR GetCursor();
 
+		// Event---------------------------------------------
+		void RegisterEventListener(EventListener* listener);
+		void UnRegisterEventListener(EventListener* listener);
+
+		void OnMouseMove(MouseEvent& event);
+
 	public:
 		virtual void OnVisibleChanged();
 		virtual void OnEnabledChanged();
 
 	protected:
 		// Coordinate conversion -----------------------------------------------------
-		//bool ConvertPointForAncestor(const View* ancestor, Point* point) const;
-		//bool ConvertPointFromAncestor(const View* ancestor, Point* point) const;
+		bool ConvertPointForAncestor(const View* ancestor, Point* point) const;
+		bool ConvertPointFromAncestor(const View* ancestor, Point* point) const;
 		void PaintBackground(Painter* painter);
 		void PaintBorder(Painter* painter);
 

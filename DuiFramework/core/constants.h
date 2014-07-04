@@ -32,4 +32,35 @@ namespace ui
 		TEXT_END_ELLIPSIS = 1 << 8,//超出结尾用省略号
 		TEXT_END_WORD_ELLIPSIS = 1 << 9,//超出结尾用省略号
 	};
+
+	enum EventType{
+		EVENT_UNKNOWN = 0,
+		EVENT_MOUSE_PRESSED,
+		EVENT_MOUSE_DRAGGED,
+		EVENT_MOUSE_RELEASED,
+		EVENT_MOUSE_MOVE,
+		EVENT_MOUSE_ENTERED,
+		EVENT_MOUSE_EXITED,
+		EVENT_KEY_PRESSED,
+		EVENT_KEY_RELEASED,
+		EVENT_MOUSEWHEEL,
+	};
+
+	enum NoneFlag{
+		FLAG_NONE = 0,
+	};
+
+	enum KeyFlag{
+		KEY_CAPS_LOCK = 1 << 0,
+		KEY_SHIFT = 1 << 1,
+		KEY_CONTROL = 1 << 2,
+		KEY_ALT = 1 << 3,
+	};
+
+	enum MouseFlag{
+		MOUSE_LEFT = 1 << 4,
+		MOUSE_MIDDLE = 1 << 5,
+		MOUSE_RIGHT = 1 << 6,
+	};
+
 }

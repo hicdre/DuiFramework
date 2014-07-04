@@ -14,7 +14,7 @@ namespace ui
 
 	View::~View()
 	{
-
+		EventDispatcher::Default()->UnRegistAll(this);
 	}
 
 	View* View::parent() const
@@ -185,6 +185,63 @@ namespace ui
 		{
 			return InsertAfter(last_child_, child);
 		}
+	}
+
+
+	bool View::HasChild(View* child, int* step)
+	{
+		*step = 0;
+		for (View* v = child; v; v = v->parent(), (*step)++)
+		{
+			if (v == this)
+				return true;
+		}
+		return false;
+	}
+
+	View* View::GetAncestorTo(View* other)
+	{
+		View* root_view = root();
+		int step_this = 0;
+		int step_that = 0;
+		if (!root_view->HasChild(other, &step_that))
+			return NULL;
+
+		if (step_that == 0)
+			return other;
+
+		if (root_view == this)
+			return this;
+
+		root_view->HasChild(this, &step_this);
+
+		View* view_this = this;
+		View* view_that = other;
+		do 
+		{
+			if (step_this > step_that)
+			{
+				step_this--;
+				view_this = view_this->parent();
+			}
+			else if (step_this < step_that)
+			{
+				step_that--;
+				view_that = view_that->parent();
+			}
+			else
+			{
+				if (view_this == view_that)
+					return view_this;
+
+				step_this--;
+				step_that--;
+				view_this = view_this->parent();
+				view_that = view_that->parent();
+			}
+		} while (step_this > 0 && step_that > 0 && view_this && view_that);
+		assert(0);
+		return NULL;
 	}
 
 
@@ -411,6 +468,20 @@ namespace ui
 		return Transform(1.0, 0, 0, 1.0, x(), y());
 	}
 
+
+	bool View::GetTransformRelativeTo(const View* ancestor, Transform* transform) const
+	{
+		const View* p = this;
+
+		while (p && p != ancestor) {
+			transform->Concat(p->GetTransform());
+			p = p->parent_;
+		}
+
+		return p == ancestor;
+	}
+
+
 	/*void View::ConvertPointToView(const View* source, const View* target, Point* point)
 	{
 		if (source == target)
@@ -455,11 +526,40 @@ namespace ui
 
 	}*/
 
+	Point View::ConvertPointFromWidget(const Point& pt) const
+	{
+		Views vs;
+		for (const View* v = this; v; v = v->parent())
+			vs.push_back(const_cast<View*>(v));
+
+		Point x_pt = pt;
+		for (View* v : vs) {
+			x_pt = v->ConvertPointFromParent(x_pt);
+		}
+		return x_pt;
+	}
+
+	Point View::ConvertPointFromParent(const Point& pt) const
+	{
+		return GetTransform().Invert().Apply(pt);
+	}
+
+	Point View::ConvertPointToParent(const Point& pt) const
+	{
+		return GetTransform().Apply(pt);
+	}
+
+	Point View::ConvertPointToWidget(const Point& pt) const
+	{
+		Point x_pt = pt;
+		for (const View* v = this; v; v = v->parent())
+			x_pt = v->ConvertPointToParent(x_pt);
+		return x_pt;
+	}
+
 	Rect View::ConvertRectToParent(const Rect& rect) const
 	{
-		Rect x_rect = rect;
-		GetTransform().TransformRect(x_rect);
-		return x_rect;
+		return GetTransform().Apply(rect);
 	}
 
 	Rect View::ConvertRectToWidget(const Rect& rect) const
@@ -544,17 +644,55 @@ namespace ui
 		return cursor_ ? cursor_ : parent_->GetCursor();
 	}
 
+	void View::OnMouseMove(MouseEvent& event)
+	{
+		EventDispatcher::Default()->DispatchMouseMove(this, event);
+	}
+
+	void View::ConvertPointToTarget(View* source, View* target, Point* pt)
+	{
+		if (source == target)
+			return;
+
+		View* ancestor = source->GetAncestorTo(target);
+
+		source->ConvertPointForAncestor(ancestor, pt);
+		target->ConvertPointFromAncestor(ancestor, pt);
+	}
+
 	
 
-	/*bool View::ConvertPointForAncestor(const View* ancestor, Point* point) const
-	{
+	
 
+	
+
+	
+
+	bool View::ConvertPointForAncestor(const View* ancestor, Point* point) const
+	{
+		Transform trans;
+		bool result = GetTransformRelativeTo(ancestor, &trans);
+		trans.TransformPoint(*point);
+		return result;
 	}
 
 	bool View::ConvertPointFromAncestor(const View* ancestor, Point* point) const
 	{
+		Transform trans;
+		bool result = GetTransformRelativeTo(ancestor, &trans);
+		trans.Invert().TransformPoint(*point);
+		return result;
+	}
 
-	}*/
+	void View::RegisterEventListener(EventListener* listener)
+	{
+		EventDispatcher::Default()->Regist(this, listener);
+	}
+
+	void View::UnRegisterEventListener(EventListener* listener)
+	{
+		EventDispatcher::Default()->UnRegist(this, listener);
+	}
 
 	
 

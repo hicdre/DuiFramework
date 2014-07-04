@@ -90,6 +90,9 @@
     <ClCompile Include="core\widget_delegate.cpp">
       <Filter>core</Filter>
     </ClCompile>
+    <ClCompile Include="core\event.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -174,6 +177,9 @@
       <Filter>core</Filter>
     </ClInclude>
     <ClInclude Include="core\widget_delegate.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="core\event.h">
       <Filter>core</Filter>
     </ClInclude>
   </ItemGroup>

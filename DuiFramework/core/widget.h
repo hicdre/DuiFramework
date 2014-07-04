@@ -77,6 +77,7 @@ namespace ui
 		BOOL GetWindowRect(RECT* rect) const;
 		LONG SetWindowLong(int index, LONG new_long);
 		BOOL SetWindowPos(HWND hwnd_after, int x, int y, int cx, int cy, UINT flags);
+		BOOL SetWindowPos(int x, int y);
 		BOOL MoveWindow(int x, int y, int width, int height);
 		BOOL MoveWindow(int x, int y, int width, int height, BOOL repaint);
 		int  SetWindowRgn(HRGN region, BOOL redraw);

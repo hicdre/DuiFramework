@@ -1,6 +1,7 @@
 #pragma once
 #include "base/scoped_ptr.h"
 #include "utils/image_store.h"
+#include "core/event.h"
 
 namespace ui
 {
@@ -12,6 +13,8 @@ namespace ui
 		void Run();
 
 		ImageStore* DefaultImageStore();
+
+		EventDispatcher* DefaultEventDispatcher();
 	private:
 		App();
 		~App();
@@ -34,6 +37,8 @@ namespace ui
 		HINSTANCE instance_;
 
 		scoped_ptr<ImageStore> image_store_;
+
+		scoped_ptr<EventDispatcher> dispatcher_;
 
 		ULONG_PTR gdiplusToken_;
 	};
