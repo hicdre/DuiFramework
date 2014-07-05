@@ -14,7 +14,7 @@ namespace ui
 
 	View::~View()
 	{
-		EventDispatcher::Default()->UnRegistAll(this);
+		EventDispatcher::Default()->RemoveView(this);
 	}
 
 	View* View::parent() const
@@ -474,7 +474,7 @@ namespace ui
 		const View* p = this;
 
 		while (p && p != ancestor) {
-			transform->Concat(p->GetTransform());
+			transform->ConcatTransform(p->GetTransform());
 			p = p->parent_;
 		}
 
@@ -644,10 +644,7 @@ namespace ui
 		return cursor_ ? cursor_ : parent_->GetCursor();
 	}
 
-	void View::OnMouseMove(MouseEvent& event)
-	{
-		EventDispatcher::Default()->DispatchMouseMove(this, event);
-	}
+	
 
 	void View::ConvertPointToTarget(View* source, View* target, Point* pt)
 	{
@@ -684,15 +681,13 @@ namespace ui
 		return result;
 	}
 
-	void View::RegisterEventListener(EventListener* listener)
+	void View::HandleEvent(Event* event)
 	{
-		EventDispatcher::Default()->Regist(this, listener);
+		EventDispatcher::Default()->DispatchEvent(this, event);
 	}
 
-	void View::UnRegisterEventListener(EventListener* listener)
-	{
-		EventDispatcher::Default()->UnRegist(this, listener);
-	}
+
+
 
 	
 

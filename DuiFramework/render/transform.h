@@ -19,6 +19,7 @@ namespace ui
 		explicit Transform(const XFORM& xform);
 		Transform& operator=(const XFORM& xform);
 
+		void SetTransform(float a, float b, float c, float d, float tx, float ty);
 		bool IsEqual(const Transform& t) const;
 
 		Point Apply(const Point& point) const;
@@ -29,6 +30,7 @@ namespace ui
 		void TransformSize(Size& size) const;
 		void TransformRect(Rect& rect) const;
 
+		void ConcatTransform(const Transform& t);
 		/**
 		*
 		*	    [ 1, 0, tx ]

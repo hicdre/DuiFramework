@@ -22,6 +22,17 @@ namespace ui
 	}
 
 
+	void Transform::SetTransform(float xa, float xb, float xc, float xd, float xtx, float xty)
+	{
+		a = xa;
+		b = xb;
+		c = xc;
+		d = xd;
+		tx = xtx;
+		ty = xty;
+	}
+
+
 	Transform& Transform::operator=(const XFORM& xform)
 	{
 		a = xform.eM11;
@@ -123,6 +134,16 @@ namespace ui
 			tx * t.a + ty * t.c + t.tx,                  //tx
 			tx * t.b + ty * t.d + t.ty);                  //ty
 	}
+
+
+	void Transform::ConcatTransform(const Transform& t)
+	{
+		SetTransform(a * t.a + b * t.c, a * t.b + b * t.d, //a,b
+			c * t.a + d * t.c, c * t.b + d * t.d, //c,d
+			tx * t.a + ty * t.c + t.tx,                  //tx
+			tx * t.b + ty * t.d + t.ty);
+	}
+
 
 	Transform Transform::Invert() const
 	{

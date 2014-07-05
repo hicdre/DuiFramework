@@ -3,6 +3,7 @@
 #include "render/point.h"
 #include <unordered_map>
 #include <unordered_set>
+#include <functional>
 
 namespace ui
 {
@@ -18,8 +19,8 @@ namespace ui
 				type_ == EVENT_MOUSE_DRAGGED ||
 				type_ == EVENT_MOUSE_RELEASED ||
 				type_ == EVENT_MOUSE_MOVE ||
-				type_ == EVENT_MOUSE_ENTERED ||
-				type_ == EVENT_MOUSE_EXITED ||
+				type_ == EVENT_MOUSE_ENTER ||
+				type_ == EVENT_MOUSE_LEAVE ||
 				type_ == EVENT_MOUSEWHEEL;
 		}
 
@@ -70,26 +71,28 @@ namespace ui
 	};
 
 	class EventListener;
+	typedef std::function<void(Event* evt)> EventAction;
+	typedef std::unordered_set<EventAction> EventActionList;
+	typedef std::unordered_map<View*, std::unordered_map<EventType, EventAction>>  EventListenMap;
+
 	class EventDispatcher
 	{
 	public:
 		EventDispatcher();
 		~EventDispatcher();
 
-		void Regist(View* v, EventListener* l);
-		void UnRegist(View* v, EventListener* l);
+		void AddListener(EventListener* listener);
+		void RemoveListener(EventListener* listener); 
 
-		void UnRegistAll(View* v);
-		void UnRegistListener(EventListener* l);
+		void RemoveView(View* v);
 
-		void DispatchMouseMove(View* v, MouseEvent& e);
+		void DispatchEvent(View* v, Event* e);
 
 		static EventDispatcher* Default();
 	private:
-		std::unordered_map<View*, std::unordered_set<EventListener*>> listener_map_;
+		std::vector<EventListener*> listener_list_;
 	};
 
-	
 
 	class EventListener
 	{
@@ -97,7 +100,13 @@ namespace ui
 		EventListener();
 		virtual ~EventListener();
 
-		virtual void OnMouseMove(View* v, MouseEvent& event) {}
+		void Listen(View* from, EventType type, EventAction action);
+		void UnListen(View* from, EventType type);
+		void UnListen(View* from);
+
+		void DispatchEvent(View* v, Event* e);
+	private:
+		EventListenMap event_map_;
 	};
 
 	Point GetMouseLocation(const MSG& msg);

@@ -117,10 +117,8 @@ namespace ui
 		virtual HCURSOR GetCursor();
 
 		// Event---------------------------------------------
-		void RegisterEventListener(EventListener* listener);
-		void UnRegisterEventListener(EventListener* listener);
 
-		void OnMouseMove(MouseEvent& event);
+		void HandleEvent(Event* event);
 
 	public:
 		virtual void OnVisibleChanged();

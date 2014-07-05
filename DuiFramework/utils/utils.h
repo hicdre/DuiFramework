@@ -13,5 +13,5 @@ namespace ui
 	bool ReadFileToString(const std::wstring& path,	std::string* contents);
 
 	//创建出的坐标系与屏幕坐标系一致
-	HBITMAP CreateDIB(int width, int height, void** pBits);
+	HBITMAP CreateDIB(int width, int height, void** pBits = NULL);
 }

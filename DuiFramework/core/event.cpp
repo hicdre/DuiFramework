@@ -260,6 +260,8 @@ namespace ui
 
 	void MouseEvent::DispathTo(View* v)
 	{
+		if (sender_ == v)
+			return;
 		View::ConvertPointToTarget(sender_, v, &pt_);
 		sender_ = v;
 	}
@@ -275,48 +277,42 @@ namespace ui
 
 	}
 
-	void EventDispatcher::Regist(View* v, EventListener* l)
+	void EventDispatcher::AddListener(EventListener* listener)
 	{
-		listener_map_[v].insert(l);
+		listener_list_.push_back(listener);
 	}
 
-	void EventDispatcher::UnRegist(View* v, EventListener* l)
+	void EventDispatcher::RemoveListener(EventListener* listener)
 	{
-		listener_map_[v].erase(l);
-	}
-
-	void EventDispatcher::UnRegistAll(View* v)
-	{
-		auto iter = listener_map_.find(v);
-		if (iter == listener_map_.end())
-			return;
-
-		listener_map_.erase(iter);
-	}
-
-	void EventDispatcher::UnRegistListener(EventListener* l)
-	{
-		for (auto iter : listener_map_)
+		for (auto iter = listener_list_.begin(); iter != listener_list_.end(); iter++)
 		{
-			iter.second.erase(l);
+			if (*iter == listener)
+			{
+				listener_list_.erase(iter);
+				return;
+			}
 		}
 	}
+
 
 	EventDispatcher* EventDispatcher::Default()
 	{
 		return App::Get()->DefaultEventDispatcher();
 	}
 
-	void EventDispatcher::DispatchMouseMove(View* v, MouseEvent& e)
+	void EventDispatcher::DispatchEvent(View* v, Event* e)
 	{
-		auto iter = listener_map_.find(v);
-		if (iter == listener_map_.end())
-			return;
-
-		const std::unordered_set<EventListener*> list = iter->second;
-		for (EventListener* l : list)
+		for (EventListener* l : listener_list_)
 		{
-			l->OnMouseMove(v, e);
+			l->DispatchEvent(v, e);
+		}
+	}
+
+	void EventDispatcher::RemoveView(View* v)
+	{
+		for (EventListener* l : listener_list_)
+		{
+			l->UnListen(v);
 		}
 	}
 
@@ -325,12 +321,39 @@ namespace ui
 
 	EventListener::EventListener()
 	{
-
+		EventDispatcher::Default()->AddListener(this);
 	}
 
 	EventListener::~EventListener()
 	{
-		EventDispatcher::Default()->UnRegistListener(this);
+		EventDispatcher::Default()->RemoveListener(this);
+	}
+
+	void EventListener::Listen(View* from, EventType type, EventAction action)
+	{
+		event_map_[from][type] = action;
+	}
+
+	void EventListener::UnListen(View* from, EventType type)
+	{
+		event_map_[from].erase(type);
+	}
+
+	void EventListener::UnListen(View* from)
+	{
+		event_map_.erase(from);
+	}
+
+	void EventListener::DispatchEvent(View* v, Event* e)
+	{
+		if (!event_map_.count(v))
+			return;
+
+		EventType type = e->type();
+		if (!event_map_[v].count(type))
+			return;
+
+		event_map_[v][type](e);
 	}
 
 }

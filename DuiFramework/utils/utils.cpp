@@ -149,7 +149,11 @@ namespace ui
 		bmi.bmiHeader.biSizeImage = width * height * 4;
 
 		bool bAlphaChannel = false;
-		return ::CreateDIBSection(NULL, &bmi, DIB_RGB_COLORS, pBits, NULL, 0);
+		if (pBits)
+			return ::CreateDIBSection(NULL, &bmi, DIB_RGB_COLORS, pBits, NULL, 0);
+
+		PVOID pIgnore = NULL;
+		return ::CreateDIBSection(NULL, &bmi, DIB_RGB_COLORS, &pIgnore, NULL, 0);
 	}
 
 }

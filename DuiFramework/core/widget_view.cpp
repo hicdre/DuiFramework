@@ -65,14 +65,6 @@ namespace ui
 			result = HandleMouseEvent(message, w_param, l_param);
 			return TRUE;
 		}
-		else if (message == WM_MOUSEMOVE)
-		{
-			Point pt(((int)(short)LOWORD(l_param)), ((int)(short)HIWORD(l_param)));
-			View* v = Hittest(pt);
-			HCURSOR cursor = v->GetCursor();
-			widget()->SetCursor(cursor);
-
-		}
 		return FALSE;
 	}
 
@@ -119,22 +111,81 @@ namespace ui
 			DispatchMouseMoveEvent(hitttest_view_);
 		}
 
+		if (old_view == hitttest_view_)
+			return;
+
+		if (old_view == NULL) {
+			DispatchMouseEnterEvent(old_view, hitttest_view_);
+
+			TRACKMOUSEEVENT tme = { 0 };
+			tme.cbSize = sizeof(TRACKMOUSEEVENT);
+			tme.dwFlags = TME_LEAVE;
+			tme.hwndTrack = widget()->hwnd();
+			tme.dwHoverTime = HOVER_DEFAULT;
+			::TrackMouseEvent(&tme);
+			return;
+		}
+
 		if (hitttest_view_ == NULL) {
 			DispatchMouseLeaveEvent(old_view, hitttest_view_);
 			return;
 		}
-			
+		
+		View* public_ancestor = hitttest_view_->GetAncestorTo(old_view);
+		if (public_ancestor == NULL)
+			return;
+		DispatchMouseLeaveEvent(old_view, public_ancestor);
+		DispatchMouseEnterEvent(public_ancestor, hitttest_view_);
 		//DispatchMouseMoveEvent(new_pos);
 	}
 
-	void WidgetView::DispatchMouseLeaveEvent(View* form, View* to)
+	void WidgetView::DispatchMouseLeaveEvent(View* from, View* to)
 	{
+		MouseEvent event(EVENT_MOUSE_LEAVE,
+			from->ConvertPointFromWidget(mouse_position_),
+			from,
+			GetEventFlags(msg_));
 
+		if (to == NULL)
+			to = this;
+
+		for (View* v = from; v != to;)
+		{
+			event.DispathTo(v);
+			v->HandleEvent(&event);
+			v = v->parent();
+		}
+
+		event.DispathTo(to);
+		to->HandleEvent(&event);
 	}
 
-	void WidgetView::DispatchMouseEnterEvent(View* form, View* to)
+	void WidgetView::DispatchMouseEnterEvent(View* from, View* to)
 	{
+		Views views;
+		if (from == NULL)
+			from = this;
+		for (View* v = to; v != from; v = v->parent())
+			views.push_back(v);
+		views.push_back(from);
 
+
+		auto iter = views.rbegin();
+		View* v = *iter;
+		MouseEvent event(EVENT_MOUSE_ENTER,
+			v->ConvertPointFromWidget(mouse_position_),
+			v,
+			GetEventFlags(msg_));
+		v->HandleEvent(&event);
+		iter++;
+		while (iter != views.rend())
+		{
+			v = *iter;
+			event.DispathTo(v);
+			v->HandleEvent(&event);
+			iter++;
+		}
+		
 	}
 
 	void WidgetView::DispatchMouseMoveEvent(View* from)
@@ -146,7 +197,7 @@ namespace ui
 			GetEventFlags(msg_));
 		for (View* v = from; v != NULL; )
 		{
-			v->OnMouseMove(event);
+			v->HandleEvent(&event);
 			v = v->parent();
 			event.DispathTo(v);
 		}

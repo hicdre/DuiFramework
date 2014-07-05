@@ -4,6 +4,7 @@
 #include "base/scoped_ptr.h"
 #include "core/widget.h"
 #include "core/constants.h"
+#include "utils/utils.h"
 //#include "render/render_text.h"
 
 #include <vector>
@@ -46,14 +47,38 @@ namespace ui
 	Painter::Painter(Widget* widget)
 		: widget_(widget)
 	{
-		dc_ = BeginPaint(widget->hwnd(), &ps_);
+		HDC wnd_dc = BeginPaint(widget->hwnd(), &ps_);
+		//SetGraphicsMode(wnd_dc, GM_ADVANCED);
+		//SetMapMode(wnd_dc, MM_TEXT);
+		//SetBkMode(wnd_dc, TRANSPARENT);
+
+		dc_ = ::CreateCompatibleDC(wnd_dc);
 		SetGraphicsMode(dc_, GM_ADVANCED);
 		SetMapMode(dc_, MM_TEXT);
-		SetBkMode(dc_, TRANSPARENT);
+		SetBkMode(dc_, OPAQUE);
+
+		RECT rc;
+		::GetClientRect(widget->hwnd(), &rc);
+		rect_ = rc;
+
+		bitmap_ = CreateDIB(rect_.width(), rect_.height());
+		bitmap_prev_ = (HBITMAP)::SelectObject(dc_, bitmap_);
 	}
 
 	Painter::~Painter()
 	{
+// 		BLENDFUNCTION bf = { AC_SRC_OVER, 0, 255, AC_SRC_ALPHA };
+// 		::AlphaBlend(ps_.hdc, 0, 0, rect_.width(), rect_.height(),
+// 			dc_, 0, 0, rect_.width(), rect_.height(),
+// 			bf);
+
+		::StretchBlt(ps_.hdc, 0, 0, rect_.width(), rect_.height(),
+			dc_, 0, 0, rect_.width(), rect_.height(),
+			SRCCOPY);
+		::SelectObject(dc_, bitmap_prev_);
+		::DeleteObject(bitmap_);
+		::DeleteDC(dc_);
+
 		EndPaint(widget_->hwnd(), &ps_);
 	}
 

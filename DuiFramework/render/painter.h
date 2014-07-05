@@ -38,6 +38,10 @@ namespace ui
 
 		HDC dc_;
 		PAINTSTRUCT ps_;
+
+		HBITMAP bitmap_;
+		HBITMAP bitmap_prev_;
+		Rect rect_;
 	};
 
 	class ScopedPainter
