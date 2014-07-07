@@ -84,13 +84,18 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="control\button.cpp" />
     <ClCompile Include="core\app.cpp" />
-    <ClCompile Include="core\event.cpp" />
     <ClCompile Include="core\label.cpp" />
     <ClCompile Include="core\view.cpp" />
     <ClCompile Include="core\widget.cpp" />
     <ClCompile Include="core\widget_delegate.cpp" />
     <ClCompile Include="core\widget_view.cpp" />
+    <ClCompile Include="event\event.cpp" />
+    <ClCompile Include="event\event_listen_manager.cpp" />
+    <ClCompile Include="event\event_listener.cpp" />
+    <ClCompile Include="event\event_dispatcher.cpp" />
+    <ClCompile Include="event\mouse_event.cpp" />
     <ClCompile Include="render\background.cpp" />
     <ClCompile Include="render\border.cpp" />
     <ClCompile Include="render\font.cpp" />
@@ -114,14 +119,19 @@
     <ClInclude Include="base\basictypes.h" />
     <ClInclude Include="base\ref_counted.h" />
     <ClInclude Include="base\scoped_ptr.h" />
+    <ClInclude Include="control\button.h" />
     <ClInclude Include="core\app.h" />
     <ClInclude Include="core\constants.h" />
-    <ClInclude Include="core\event.h" />
     <ClInclude Include="core\label.h" />
     <ClInclude Include="core\view.h" />
     <ClInclude Include="core\widget.h" />
     <ClInclude Include="core\widget_delegate.h" />
     <ClInclude Include="core\widget_view.h" />
+    <ClInclude Include="event\event.h" />
+    <ClInclude Include="event\event_listen_manager.h" />
+    <ClInclude Include="event\event_listener.h" />
+    <ClInclude Include="event\event_dispatcher.h" />
+    <ClInclude Include="event\mouse_event.h" />
     <ClInclude Include="render\background.h" />
     <ClInclude Include="render\border.h" />
     <ClInclude Include="render\color.h" />

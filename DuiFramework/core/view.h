@@ -8,19 +8,30 @@
 #include "render/painter.h"
 #include "render/border.h"
 #include "render/background.h"
-#include "core/event.h"
+#include "event/event.h"
 #include <vector>
 
 namespace ui
 {
 	class Widget;
+	class View;
+	typedef std::vector<View*> Views;
+
 	class View
 	{
 	public:
+		class EventDelegate {
+		public:
+			virtual ~EventDelegate() {}
+
+			virtual void OnMouseEnter(View* v, Event* evt) {}
+			virtual void OnMouseLeave(View* v, Event* evt) {}
+			virtual void OnMouseDown(View* v, Event* evt) {}
+			virtual void OnMouseUp(View* v, Event* evt) {}
+			virtual void OnMouseMove(View* v, Event* evt) {}
+		};
 		View();
 		virtual ~View();
-
-		typedef std::vector<View*> Views;
 
 		// Tree operations -----------------------------------------------------------
 		View* parent() const;
@@ -71,6 +82,8 @@ namespace ui
 		const Size& size() const { return bounds_.size(); }
 
 		Rect GetLocalBounds() const;
+		//È¥³ýborderÖ®ºó
+		Rect GetContentBounds() const;
 
 		void SetVisible(bool visible);
 		bool visible() const { return visible_; }
@@ -120,6 +133,7 @@ namespace ui
 
 		void HandleEvent(Event* event);
 
+		void SetEventDelegate(EventDelegate* delegate);
 	public:
 		virtual void OnVisibleChanged();
 		virtual void OnEnabledChanged();
@@ -152,5 +166,7 @@ namespace ui
 		scoped_ptr<Background> background_;
 
 		HCURSOR cursor_{ NULL };
+
+		scoped_ptr<EventDelegate> event_delegate_;
 	};
 }

@@ -4,6 +4,8 @@
 #include <algorithm>
 #include <cassert>
 
+#include "event/event_listen_manager.h"
+
 namespace ui
 {
 
@@ -14,7 +16,7 @@ namespace ui
 
 	View::~View()
 	{
-		EventDispatcher::Default()->RemoveView(this);
+		EventListenManager::Default()->RemoveView(this);
 	}
 
 	View* View::parent() const
@@ -351,6 +353,18 @@ namespace ui
 		return Rect(width(), height());
 	}
 
+
+	Rect View::GetContentBounds() const
+	{
+		if (!border_.get())
+			return GetLocalBounds();
+
+		Rect rc(GetLocalBounds());
+		rc.Inset(border_->GetPadding());
+		return rc;
+	}
+
+
 	void View::SetVisible(bool visible)
 	{
 		if (visible != visible_) {
@@ -683,7 +697,26 @@ namespace ui
 
 	void View::HandleEvent(Event* event)
 	{
-		EventDispatcher::Default()->DispatchEvent(this, event);
+		EventListenManager::Default()->DispatchEvent(this, event);
+		if (!event_delegate_.get())
+			return;
+
+		EventType event_type = event->type();
+		switch (event_type)
+		{
+		case EVENT_MOUSE_DOWN: event_delegate_->OnMouseDown(this, event); break;
+		case EVENT_MOUSE_UP: event_delegate_->OnMouseUp(this, event); break;
+		case EVENT_MOUSE_MOVE: event_delegate_->OnMouseMove(this, event); break;
+		case EVENT_MOUSE_ENTER: event_delegate_->OnMouseEnter(this, event); break;
+		case EVENT_MOUSE_LEAVE: event_delegate_->OnMouseLeave(this, event); break;
+		default:
+			break;
+		}
+	}
+
+	void View::SetEventDelegate(EventDelegate* delegate)
+	{
+		event_delegate_.reset(delegate);
 	}
 
 

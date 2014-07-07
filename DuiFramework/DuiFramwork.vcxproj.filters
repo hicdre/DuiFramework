@@ -19,6 +19,12 @@
     <Filter Include="third_party">
       <UniqueIdentifier>{a73f685d-3e44-4e0b-aef3-1e041f5d6ccb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="event">
+      <UniqueIdentifier>{a58917d1-4790-4a79-bd8e-8730d572f302}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="control">
+      <UniqueIdentifier>{ae402361-0d1b-48b8-8b0e-98caf1de9803}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -90,8 +96,23 @@
     <ClCompile Include="core\widget_delegate.cpp">
       <Filter>core</Filter>
     </ClCompile>
-    <ClCompile Include="core\event.cpp">
-      <Filter>core</Filter>
+    <ClCompile Include="event\event.cpp">
+      <Filter>event</Filter>
+    </ClCompile>
+    <ClCompile Include="event\event_listener.cpp">
+      <Filter>event</Filter>
+    </ClCompile>
+    <ClCompile Include="event\mouse_event.cpp">
+      <Filter>event</Filter>
+    </ClCompile>
+    <ClCompile Include="event\event_listen_manager.cpp">
+      <Filter>event</Filter>
+    </ClCompile>
+    <ClCompile Include="event\event_dispatcher.cpp">
+      <Filter>event</Filter>
+    </ClCompile>
+    <ClCompile Include="control\button.cpp">
+      <Filter>control</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -179,8 +200,23 @@
     <ClInclude Include="core\widget_delegate.h">
       <Filter>core</Filter>
     </ClInclude>
-    <ClInclude Include="core\event.h">
-      <Filter>core</Filter>
+    <ClInclude Include="event\event.h">
+      <Filter>event</Filter>
+    </ClInclude>
+    <ClInclude Include="event\event_listener.h">
+      <Filter>event</Filter>
+    </ClInclude>
+    <ClInclude Include="event\mouse_event.h">
+      <Filter>event</Filter>
+    </ClInclude>
+    <ClInclude Include="event\event_listen_manager.h">
+      <Filter>event</Filter>
+    </ClInclude>
+    <ClInclude Include="event\event_dispatcher.h">
+      <Filter>event</Filter>
+    </ClInclude>
+    <ClInclude Include="control\button.h">
+      <Filter>control</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

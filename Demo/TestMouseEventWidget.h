@@ -1,6 +1,7 @@
 #pragma once
 #include "core/widget_delegate.h"
-#include "core/event.h"
+#include "event/mouse_event.h"
+#include "event/event_listener.h"
 #include "core/label.h"
 
 class TestMouseModel
@@ -19,16 +20,18 @@ public:
 
 	void SetMouseIn(bool v);
 
+	void SetMouseDown(bool v);
+
 	std::wstring ToString();
 private:
 	ui::Point pt_;
 	bool is_mouse_in_{ false };
+	bool is_mouse_down_{ false };
 	Observer* ob_{ NULL };
 };
 
 class TestMouseEventWidget
 	: public ui::WidgetDelegate
-	, public ui::EventListener
 	, public TestMouseModel::Observer
 {
 public:

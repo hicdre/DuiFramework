@@ -190,12 +190,12 @@ namespace ui
 		return image_store_.get();
 	}
 
-	EventDispatcher* App::DefaultEventDispatcher()
+	EventListenManager* App::DefaultEventListenManager()
 	{
-		if (!dispatcher_.get()) {
-			dispatcher_.reset(new EventDispatcher);
+		if (!listen_manager_.get()) {
+			listen_manager_.reset(new EventListenManager);
 		}
-		return dispatcher_.get();
+		return listen_manager_.get();
 	}
 
 

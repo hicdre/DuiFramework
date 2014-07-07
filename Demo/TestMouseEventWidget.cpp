@@ -2,6 +2,7 @@
 #include "TestMouseEventWidget.h"
 #include "core/widget_view.h"
 #include "core/label.h"
+#include "control/button.h"
 
 std::wstring PointToString(const ui::Point& pt)
 {
@@ -24,10 +25,18 @@ void TestMouseEventWidget::OnInit()
 		listener_.Listen(green_view, ui::EVENT_MOUSE_ENTER, [this](ui::Event* evt)
 		{
 			green_model_.SetMouseIn(true);
-		});
-		listener_.Listen(green_view, ui::EVENT_MOUSE_LEAVE, [this](ui::Event* evt)
+		})
+		.Listen(green_view, ui::EVENT_MOUSE_LEAVE, [this](ui::Event* evt)
 		{
 			green_model_.SetMouseIn(false);
+		})
+		.Listen(green_view, ui::EVENT_MOUSE_DOWN, [this](ui::Event* evt)
+		{
+			green_model_.SetMouseDown(true);
+		})
+		.Listen(green_view, ui::EVENT_MOUSE_UP, [this](ui::Event* evt)
+		{
+			green_model_.SetMouseDown(false);
 		});
 
 		{
@@ -48,10 +57,15 @@ void TestMouseEventWidget::OnInit()
 			listener_.Listen(red_view, ui::EVENT_MOUSE_ENTER, [this](ui::Event* evt)
 			{
 				red_model_.SetMouseIn(true);
-			});
-			listener_.Listen(red_view, ui::EVENT_MOUSE_LEAVE, [this](ui::Event* evt)
+			}).Listen(red_view, ui::EVENT_MOUSE_LEAVE, [this](ui::Event* evt)
 			{
 				red_model_.SetMouseIn(false);
+			}).Listen(red_view, ui::EVENT_MOUSE_DOWN, [this](ui::Event* evt)
+			{
+				red_model_.SetMouseDown(true);
+			}).Listen(red_view, ui::EVENT_MOUSE_UP, [this](ui::Event* evt)
+			{
+				red_model_.SetMouseDown(false);
 			});
 			{
 				red_labe_ = new ui::Label(L"Red View");
@@ -60,6 +74,17 @@ void TestMouseEventWidget::OnInit()
 				red_labe_->SetHorizontalAlignment(ui::ALIGN_LEFT);
 				red_labe_->SetTextColor(ui::ColorSetRGB(0, 0, 0));
 				red_view->Append(red_labe_);
+			}
+			{
+				ui::Button* btn = new ui::Button(L"Button Test");
+				btn->SetBounds(50, 50, 60, 20);
+				btn->SetFont(L"Consolas", 12);
+				btn->SetHorizontalAlignment(ui::ALIGN_CENTER);
+				btn->SetTextColor(ui::ColorSetRGB(0, 0, 0));
+				btn->SetStateColor(ui::Button::NORMAL, 0xffffff);
+				btn->SetStateColor(ui::Button::HOVERED, 0x449d44);
+				btn->SetStateColor(ui::Button::PRESSED, ui::ColorSetRGB(60, 139, 60));
+				red_view->Append(btn);
 			}
 		}
 	}
@@ -139,6 +164,16 @@ void TestMouseModel::SetMouseIn(bool v)
 	}
 }
 
+void TestMouseModel::SetMouseDown(bool v)
+{
+	if (v != is_mouse_down_)
+	{
+		is_mouse_down_ = v;
+		if (ob_)
+			ob_->OnModelChanged(this);
+	}
+}
+
 std::wstring TestMouseModel::ToString()
 {
 	std::wstring text = PointToString(pt_);
@@ -146,5 +181,12 @@ std::wstring TestMouseModel::ToString()
 		text += L" in";
 	else
 		text += L" out";
+
+	if (is_mouse_down_)
+		text += L", down";
+	else
+		text += L", up";
 	return text;
 }
+
+

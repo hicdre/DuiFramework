@@ -1,7 +1,7 @@
 #pragma once
 #include "base/scoped_ptr.h"
 #include "utils/image_store.h"
-#include "core/event.h"
+#include "event/event_listen_manager.h"
 
 namespace ui
 {
@@ -14,7 +14,7 @@ namespace ui
 
 		ImageStore* DefaultImageStore();
 
-		EventDispatcher* DefaultEventDispatcher();
+		EventListenManager* DefaultEventListenManager();
 	private:
 		App();
 		~App();
@@ -38,7 +38,7 @@ namespace ui
 
 		scoped_ptr<ImageStore> image_store_;
 
-		scoped_ptr<EventDispatcher> dispatcher_;
+		scoped_ptr<EventListenManager> listen_manager_;
 
 		ULONG_PTR gdiplusToken_;
 	};
