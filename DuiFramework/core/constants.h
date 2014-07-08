@@ -24,7 +24,7 @@ namespace ui
 		TEXT_BOTTOM = 1 << 3,
 
 		//TEXT_WORDBREAK = 1 << 4, //按单词换行
-		//TEXT_MUTLILINE = 1 << 5, //多行, 否则单行
+		TEXT_MUTLILINE = 1 << 5, //多行, 否则单行
 		TEXT_NOCLIP = 1 << 6,//不进行裁剪
 
 
@@ -44,6 +44,8 @@ namespace ui
 		EVENT_KEY_PRESSED,
 		EVENT_KEY_RELEASED,
 		EVENT_MOUSEWHEEL,
+
+		EVENT_BUTTON_CLICKED,
 	};
 
 	enum NoneFlag{

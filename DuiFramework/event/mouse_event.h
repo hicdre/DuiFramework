@@ -3,32 +3,35 @@
 
 namespace ui
 {
+	class View;
 	class MouseEvent : public Event
 	{
 	public:
-		int flags() const;
+		MouseEvent(EventType type, const Point& pt_in_widget, View* sender);
 
-		bool IsOnlyLeftMouseButton() const;
+		Point GetPosition(View* v) const;
 
-		bool IsLeftMouseButton() const;
+		int GetMouseKeyFlags() const;
 
-		bool IsOnlyMiddleMouseButton() const;
+		bool HasMouseDown() const;
 
-		bool IsMiddleMouseButton() const;
-
-		bool IsOnlyRightMouseButton() const;
-
-		bool IsRightMouseButton() const;
-
-		bool IsAnyButton() const;
-
-		Point GetPosition() const;
-
-		static void DispatchTo(MouseEvent* event, View* v);
 	protected:
-		friend class EventDispatcher;
-		MouseEvent(EventType type, const Point& pt, View* owner);
-		Point pt_; //在sender_坐标系中
-		int flags_{ 0 };//mouse flags;
+		Point pt_in_widget_; 
+		int flags_{ 0 };//mouse key flags;
+		
 	};
+
+	class MouseDownEvent : public MouseEvent
+	{
+	public:
+		MouseDownEvent(EventType type, const Point& pt_in_widget, View* sender, int buttons);
+
+		int GetMouseButtons() const;
+	protected:
+		int buttons_;//mouse buttons;
+	};
+
+	typedef MouseDownEvent MouseUpEvent;
+	typedef MouseDownEvent MouseDbClickEvent;
+
 }

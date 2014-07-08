@@ -30,9 +30,6 @@ namespace ui
 			else
 				format.SetLineAlignment(Gdiplus::StringAlignmentNear);
 
-			if (flags & TEXT_NOCLIP)
-				format.SetFormatFlags(Gdiplus::StringFormatFlagsNoClip);
-
 			if (flags & TEXT_PATH_ELLIPSIS)
 				format.SetTrimming(Gdiplus::StringTrimmingEllipsisPath);
 			else if (flags & TEXT_END_ELLIPSIS)
@@ -41,6 +38,13 @@ namespace ui
 				format.SetTrimming(Gdiplus::StringTrimmingEllipsisWord);
 			else
 				format.SetTrimming(Gdiplus::StringTrimmingNone);
+
+			int format_flags = 0;
+			if (flags & TEXT_NOCLIP)
+				format_flags |= Gdiplus::StringFormatFlagsNoClip;
+			if (!(flags & TEXT_MUTLILINE))
+				format_flags |= Gdiplus::StringFormatFlagsNoWrap;
+			format.SetFormatFlags(format_flags);
 		}
 	}
 

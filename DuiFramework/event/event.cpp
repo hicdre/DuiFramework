@@ -115,7 +115,7 @@ namespace ui
 		return (::GetKeyState(VK_MBUTTON) & 0x8000) == 0x8000;
 	}
 
-	int GetKeyFlags() {
+	int GetMouseKeyFlags() {
 		int flags = 0;
 		flags |= IsAltPressed() ? KEY_ALT : FLAG_NONE;
 		flags |= IsShiftPressed() ? KEY_SHIFT : FLAG_NONE;
@@ -128,9 +128,16 @@ namespace ui
 	}
 
 
-	Event::Event(EventType type, View* owner)
+	Event::Event(EventType type, View* sender)
 		: type_(type)
-		, owner_(owner)
+		, sender_(sender)
+	{
+
+	}
+
+	Event::Event(EventType type)
+		: type_(type)
+		, sender_(NULL)
 	{
 
 	}
@@ -143,16 +150,6 @@ namespace ui
 	void Event::StopPropagation()
 	{
 		is_propagation_ = false;
-	}
-
-	void Event::SetOwner(View* v)
-	{
-		owner_ = v;
-	}
-
-	View* Event::owner() const
-	{
-		return owner_;
 	}
 
 	void Event::SetSender(View* v)

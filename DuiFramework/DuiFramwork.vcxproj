@@ -95,6 +95,7 @@
     <ClCompile Include="event\event_listen_manager.cpp" />
     <ClCompile Include="event\event_listener.cpp" />
     <ClCompile Include="event\event_dispatcher.cpp" />
+    <ClCompile Include="event\key_event.cpp" />
     <ClCompile Include="event\mouse_event.cpp" />
     <ClCompile Include="render\background.cpp" />
     <ClCompile Include="render\border.cpp" />
@@ -127,10 +128,12 @@
     <ClInclude Include="core\widget.h" />
     <ClInclude Include="core\widget_delegate.h" />
     <ClInclude Include="core\widget_view.h" />
+    <ClInclude Include="duiframework.h" />
     <ClInclude Include="event\event.h" />
     <ClInclude Include="event\event_listen_manager.h" />
     <ClInclude Include="event\event_listener.h" />
     <ClInclude Include="event\event_dispatcher.h" />
+    <ClInclude Include="event\key_event.h" />
     <ClInclude Include="event\mouse_event.h" />
     <ClInclude Include="render\background.h" />
     <ClInclude Include="render\border.h" />

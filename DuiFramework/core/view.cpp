@@ -719,6 +719,11 @@ namespace ui
 		event_delegate_.reset(delegate);
 	}
 
+	EventDispatcher* View::GetEventDispatcher() const
+	{
+		return parent() ? parent()->GetEventDispatcher() : NULL;
+	}
+
 
 
 

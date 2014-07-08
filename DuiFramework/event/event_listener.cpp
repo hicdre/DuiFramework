@@ -39,6 +39,6 @@ namespace ui
 		if (!event_map_[v].count(type))
 			return;
 
-		event_map_[v][type](e);
+		event_map_[v][type](v, e);
 	}
 }

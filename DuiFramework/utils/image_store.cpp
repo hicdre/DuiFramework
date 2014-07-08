@@ -87,6 +87,7 @@ namespace ui
 		if (!image) {
 			return NULL;
 		}
+		image->AddRef();
 		image_map_[path] = image;
 		return image;
 	}

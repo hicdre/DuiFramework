@@ -12,21 +12,25 @@ namespace ui
 		EventDispatcher(WidgetView* view);
 
 		BOOL ProcessWindowMessage(HWND window, UINT message, WPARAM w_param, LPARAM l_param, LRESULT& result);
+
+		void DispatchPropagation(Event* evt, View* from);
 	private:
 		LRESULT HandleMouseEvent(UINT message,
 			WPARAM w_param,
 			LPARAM l_param);
 
-		void HandleMouseMove(const Point& pt);
+		LRESULT HandleKeyEvent(UINT message,
+			WPARAM w_param,
+			LPARAM l_param);
 
-		MouseEvent* CreateMouseEvent(EventType type, View* owner);
+		void HandleMouseMove(const Point& pt);
 
 		void DispatchMouseLeaveEvent(View* from, View* to);
 		void DispatchMouseEnterEvent(View* from, View* to);
 		void DispatchMouseMoveEvent(View* from);
-		void DispatchMouseDownEvent(View* from);
-		void DispatchMouseUpEvent(View* from);
-		void DispatchMouseDbClickEvent(View* from);//click和dbclick事件先暂时放一边
+		void DispatchMouseDownEvent(View* from, int buttons);
+		void DispatchMouseUpEvent(View* from, int buttons);
+		void DispatchMouseDbClickEvent(View* from, int buttons);//click和dbclick事件先暂时放一边
 
 		WidgetView* view() const { return view_; }
 		Widget* widget() const;

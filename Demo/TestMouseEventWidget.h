@@ -38,13 +38,15 @@ public:
 	virtual void OnInit() override;
 	virtual ui::Rect GetInitialRect() override;
 
-	void OnGreenViewMove(ui::Event* event);
-	void OnRedViewMove(ui::Event* event);
+	void OnGreenViewMove(ui::View* target, ui::Event* event);
+	void OnRedViewMove(ui::View* target, ui::Event* event);
 
 	virtual void OnModelChanged(TestMouseModel* model) override;
 private:
 	ui::Label* green_labe_;
 	ui::Label* red_labe_;
+
+	int clicked_times_{ 0 };
 
 	ui::EventListener listener_;
 

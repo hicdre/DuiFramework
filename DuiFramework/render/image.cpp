@@ -82,7 +82,7 @@ namespace ui
 	ImageClip::ImageClip(Image* image, const Rect& rect)
 		: image_(image), rect_(rect)
 	{
-		image_->Release();
+		image_->AddRef();
 	}
 
 	ImageClip::ImageClip(Image* image)

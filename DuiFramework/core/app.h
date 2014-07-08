@@ -15,6 +15,8 @@ namespace ui
 		ImageStore* DefaultImageStore();
 
 		EventListenManager* DefaultEventListenManager();
+
+		void Quit();
 	private:
 		App();
 		~App();
@@ -35,6 +37,8 @@ namespace ui
 
 		HWND message_hwnd_;
 		HINSTANCE instance_;
+
+		bool should_quit_{ false };
 
 		scoped_ptr<ImageStore> image_store_;
 

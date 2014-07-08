@@ -19,6 +19,7 @@ namespace ui
 			virtual void SetStateColor(State state, Color color) {}
 			virtual void OnPaint(Button* btn, Painter* painter) {}
 		};
+		Button();
 		Button(const std::wstring& text);
 		virtual ~Button();
 
@@ -29,6 +30,8 @@ namespace ui
 
 		void SetState(State state);
 		State state() const;
+
+		void TriggerClicked();
 
 		virtual void OnPaint(Painter* painter) override;
 	private:
@@ -44,6 +47,8 @@ namespace ui
 		virtual void OnMouseLeave(View* v, Event* evt) override;
 		virtual void OnMouseDown(View* v, Event* evt) override;
 		virtual void OnMouseUp(View* v, Event* evt) override;
+
+
 	};
 
 	class DefaultButtonDelegate : public Button::Delegate
@@ -60,5 +65,4 @@ namespace ui
 		} button_frames_[3];
 	};
 
-		
 }

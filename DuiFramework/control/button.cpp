@@ -14,6 +14,12 @@ namespace ui
 		SetButtonDelegate(new DefaultButtonDelegate);
 	}
 
+	Button::Button()
+		: Button(L"")
+	{
+
+	}
+
 	Button::~Button()
 	{
 
@@ -62,6 +68,12 @@ namespace ui
 		delegate_.reset(delegate);
 	}
 
+	void Button::TriggerClicked()
+	{
+		Event evt(EVENT_BUTTON_CLICKED, this);
+		GetEventDispatcher()->DispatchPropagation(&evt, this);
+	}
+
 
 
 	DefaultButtonEventDelegate::~DefaultButtonEventDelegate()
@@ -74,7 +86,7 @@ namespace ui
 		Button* btn = static_cast<Button*>(v);
 		MouseEvent* mevt = static_cast<MouseEvent*>(evt);
 
-		if (mevt->IsAnyButton())
+		if (mevt->HasMouseDown())
 		{
 			btn->SetState(Button::PRESSED);
 		}
@@ -100,6 +112,7 @@ namespace ui
 	{
 		Button* btn = static_cast<Button*>(v);
 		btn->SetState(Button::HOVERED);
+		btn->TriggerClicked();
 	}
 
 

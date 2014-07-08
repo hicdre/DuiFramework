@@ -21,20 +21,17 @@ void TestMouseEventWidget::OnInit()
 		green_view->SetBounds(100, 0, 300, 300);
 		green_view->set_background_color(ui::ColorSetRGB(0, 255, 0));
 		listener_.Listen(green_view, ui::EVENT_MOUSE_MOVE,
-			std::bind(&TestMouseEventWidget::OnGreenViewMove, this, std::placeholders::_1));
-		listener_.Listen(green_view, ui::EVENT_MOUSE_ENTER, [this](ui::Event* evt)
+			std::bind(&TestMouseEventWidget::OnGreenViewMove, this, std::placeholders::_1, std::placeholders::_2));
+		listener_.Listen(green_view, ui::EVENT_MOUSE_ENTER, [this](ui::View* target, ui::Event* evt)
 		{
 			green_model_.SetMouseIn(true);
-		})
-		.Listen(green_view, ui::EVENT_MOUSE_LEAVE, [this](ui::Event* evt)
+		}).Listen(green_view, ui::EVENT_MOUSE_LEAVE, [this](ui::View* target, ui::Event* evt)
 		{
 			green_model_.SetMouseIn(false);
-		})
-		.Listen(green_view, ui::EVENT_MOUSE_DOWN, [this](ui::Event* evt)
+		}).Listen(green_view, ui::EVENT_MOUSE_DOWN, [this](ui::View* target, ui::Event* evt)
 		{
 			green_model_.SetMouseDown(true);
-		})
-		.Listen(green_view, ui::EVENT_MOUSE_UP, [this](ui::Event* evt)
+		}).Listen(green_view, ui::EVENT_MOUSE_UP, [this](ui::View* target, ui::Event* evt)
 		{
 			green_model_.SetMouseDown(false);
 		});
@@ -53,17 +50,17 @@ void TestMouseEventWidget::OnInit()
 			red_view->SetBounds(20, 50, 200, 200);
 			red_view->set_background_color(ui::ColorSetRGB(255, 0, 0));
 			listener_.Listen(red_view, ui::EVENT_MOUSE_MOVE,
-				std::bind(&TestMouseEventWidget::OnRedViewMove, this, std::placeholders::_1));
-			listener_.Listen(red_view, ui::EVENT_MOUSE_ENTER, [this](ui::Event* evt)
+				std::bind(&TestMouseEventWidget::OnRedViewMove, this, std::placeholders::_1, std::placeholders::_2));
+			listener_.Listen(red_view, ui::EVENT_MOUSE_ENTER, [this](ui::View* target, ui::Event* evt)
 			{
 				red_model_.SetMouseIn(true);
-			}).Listen(red_view, ui::EVENT_MOUSE_LEAVE, [this](ui::Event* evt)
+			}).Listen(red_view, ui::EVENT_MOUSE_LEAVE, [this](ui::View* target, ui::Event* evt)
 			{
 				red_model_.SetMouseIn(false);
-			}).Listen(red_view, ui::EVENT_MOUSE_DOWN, [this](ui::Event* evt)
+			}).Listen(red_view, ui::EVENT_MOUSE_DOWN, [this](ui::View* target, ui::Event* evt)
 			{
 				red_model_.SetMouseDown(true);
-			}).Listen(red_view, ui::EVENT_MOUSE_UP, [this](ui::Event* evt)
+			}).Listen(red_view, ui::EVENT_MOUSE_UP, [this](ui::View* target, ui::Event* evt)
 			{
 				red_model_.SetMouseDown(false);
 			});
@@ -85,10 +82,15 @@ void TestMouseEventWidget::OnInit()
 				btn->SetStateColor(ui::Button::HOVERED, 0x449d44);
 				btn->SetStateColor(ui::Button::PRESSED, ui::ColorSetRGB(60, 139, 60));
 				red_view->Append(btn);
+				listener_.Listen(btn, ui::EVENT_BUTTON_CLICKED, [this](ui::View* target, ui::Event* evt)
+				{
+					clicked_times_++;
+					static_cast<ui::Button*>(target)->SetText(std::to_wstring(clicked_times_));
+					
+				});
 			}
 		}
 	}
-
 	
 	view()->set_background_color(ui::ColorSetRGB(255, 255, 255));
 
@@ -101,15 +103,15 @@ ui::Rect TestMouseEventWidget::GetInitialRect()
 }
 
 
-void TestMouseEventWidget::OnGreenViewMove(ui::Event* event)
+void TestMouseEventWidget::OnGreenViewMove(ui::View* target, ui::Event* event)
 {
-	ui::Point pt = static_cast<ui::MouseEvent*>(event)->GetPosition();
+	ui::Point pt = static_cast<ui::MouseEvent*>(event)->GetPosition(target);
 	green_model_.SetPoint(pt);
 }
 
-void TestMouseEventWidget::OnRedViewMove(ui::Event* event)
+void TestMouseEventWidget::OnRedViewMove(ui::View* target, ui::Event* event)
 {
-	ui::Point pt = static_cast<ui::MouseEvent*>(event)->GetPosition();
+	ui::Point pt = static_cast<ui::MouseEvent*>(event)->GetPosition(target);
 	red_model_.SetPoint(pt);
 }
 

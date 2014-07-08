@@ -19,6 +19,8 @@ namespace ui
 
 		void CenterWidget();
 
+		void Close();
+
 		virtual BOOL ProcessWindowMessage(HWND window,
 			UINT message,
 			WPARAM w_param,
@@ -26,6 +28,8 @@ namespace ui
 			LRESULT& result) override;
 
 		virtual void SchedulePaintInRect(const Rect& r) override;
+
+		virtual EventDispatcher* GetEventDispatcher() const override;
 	private:
 
 		Rect GetInitialRect();

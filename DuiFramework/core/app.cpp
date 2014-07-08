@@ -43,6 +43,9 @@ namespace ui
 
 			ProcessNextWindowsMessage();
 
+			if (should_quit_)
+				break;
+
 			WaitForWork();  // Wait (sleep) until we have work to do again.
 		}
 
@@ -138,6 +141,7 @@ namespace ui
 		if (WM_QUIT == msg.message) {
 			// Repost the QUIT message so that it will be retrieved by the primary
 			// GetMessage() loop.
+			should_quit_ = true;
 			PostQuitMessage(static_cast<int>(msg.wParam));
 			return false;
 		}
@@ -196,6 +200,11 @@ namespace ui
 			listen_manager_.reset(new EventListenManager);
 		}
 		return listen_manager_.get();
+	}
+
+	void App::Quit()
+	{
+		::PostQuitMessage(0);
 	}
 
 

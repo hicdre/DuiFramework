@@ -9,6 +9,7 @@
 #include "render/border.h"
 #include "render/background.h"
 #include "event/event.h"
+#include "event/event_dispatcher.h"
 #include <vector>
 
 namespace ui
@@ -132,8 +133,9 @@ namespace ui
 		// Event---------------------------------------------
 
 		void HandleEvent(Event* event);
-
 		void SetEventDelegate(EventDelegate* delegate);
+
+		virtual EventDispatcher* GetEventDispatcher() const;
 	public:
 		virtual void OnVisibleChanged();
 		virtual void OnEnabledChanged();

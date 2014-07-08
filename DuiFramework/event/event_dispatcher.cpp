@@ -34,6 +34,14 @@ namespace ui
 			result = HandleMouseEvent(message, w_param, l_param);
 			return TRUE;
 		}
+		else if ( message == WM_KEYDOWN
+			|| message == WM_KEYUP
+			|| message == WM_SYSKEYDOWN
+			|| message == WM_SYSKEYUP)
+		{
+			result = HandleMouseEvent(message, w_param, l_param);
+			return TRUE;
+		}
 		return FALSE;
 	}
 
@@ -47,33 +55,51 @@ namespace ui
 		{
 		case WM_LBUTTONDOWN:
 		case WM_NCLBUTTONDOWN:
+			DispatchMouseDownEvent(hitttest_view_, MOUSE_LEFT);
+			break;
 		case WM_MBUTTONDOWN:
 		case WM_NCMBUTTONDOWN:
+			DispatchMouseDownEvent(hitttest_view_, MOUSE_MIDDLE);
+			break;
 		case WM_RBUTTONDOWN:
 		case WM_NCRBUTTONDOWN:
+			DispatchMouseDownEvent(hitttest_view_, MOUSE_RIGHT);
+			break;
 		case WM_XBUTTONDOWN:
 		case WM_NCXBUTTONDOWN:
-			DispatchMouseDownEvent(hitttest_view_);
+			//DispatchMouseDownEvent(hitttest_view_, MOUSE_LEFT);
 			break;
 		case WM_LBUTTONUP:
 		case WM_NCLBUTTONUP:
+			DispatchMouseUpEvent(hitttest_view_, MOUSE_LEFT);
+			break;
 		case WM_MBUTTONUP:
 		case WM_NCMBUTTONUP:
+			DispatchMouseUpEvent(hitttest_view_, MOUSE_MIDDLE);
+			break;
 		case WM_RBUTTONUP:
 		case WM_NCRBUTTONUP:
+			DispatchMouseUpEvent(hitttest_view_, MOUSE_RIGHT);
+			break;
 		case WM_XBUTTONUP:
 		case WM_NCXBUTTONUP:
-			DispatchMouseUpEvent(hitttest_view_);
+			//DispatchMouseUpEvent(hitttest_view_);
 			break;
 		case WM_LBUTTONDBLCLK:
 		case WM_NCLBUTTONDBLCLK:
+			DispatchMouseDbClickEvent(hitttest_view_, MOUSE_LEFT);
+			break;
 		case WM_MBUTTONDBLCLK:
 		case WM_NCMBUTTONDBLCLK:
+			DispatchMouseDbClickEvent(hitttest_view_, MOUSE_MIDDLE);
+			break;
 		case WM_RBUTTONDBLCLK:
 		case WM_NCRBUTTONDBLCLK:
+			DispatchMouseDbClickEvent(hitttest_view_, MOUSE_RIGHT);
+			break;
 		case WM_XBUTTONDBLCLK:
 		case WM_NCXBUTTONDBLCLK:
-			DispatchMouseDbClickEvent(hitttest_view_);
+			//DispatchMouseDbClickEvent(hitttest_view_);
 			break;
 		default:
 			break;
@@ -126,33 +152,24 @@ namespace ui
 		DispatchMouseEnterEvent(public_ancestor, hitttest_view_);
 	}
 
-	MouseEvent* EventDispatcher::CreateMouseEvent(EventType type, View* owner)
-	{
-		return new MouseEvent(type, mouse_position_, owner);
-	}
-
 	void EventDispatcher::DispatchMouseMoveEvent(View* from)
 	{
-		scoped_ptr<MouseEvent> evt(CreateMouseEvent(EVENT_MOUSE_MOVE, from));
-		for (View* v = from; v != NULL; v = v->parent())
-		{
-			if (!evt->stopped_propagation())
-				MouseEvent::DispatchTo(evt.get(), v);
-		}
+		MouseEvent evt(EVENT_MOUSE_MOVE, mouse_position_, from);
+		DispatchPropagation(&evt, from);
 	}
 
 	void EventDispatcher::DispatchMouseLeaveEvent(View* from, View* to)
 	{
 		if (to == NULL)
 			to = view();
-		scoped_ptr<MouseEvent> evt(CreateMouseEvent(EVENT_MOUSE_LEAVE, from));
+		
 		for (View* v = from; v != to; v = v->parent())
 		{
-			if (!evt->stopped_propagation())
-				MouseEvent::DispatchTo(evt.get(), v);
+			MouseEvent evt(EVENT_MOUSE_LEAVE, mouse_position_, v);
+			v->HandleEvent(&evt);
 		}
-		if (!evt->stopped_propagation())
-			MouseEvent::DispatchTo(evt.get(), to);
+		MouseEvent evt(EVENT_MOUSE_LEAVE, mouse_position_, to);
+		to->HandleEvent(&evt);
 	}
 
 	void EventDispatcher::DispatchMouseEnterEvent(View* from, View* to)
@@ -164,41 +181,44 @@ namespace ui
 			views.push_back(v);
 		views.push_back(from);
 
-		scoped_ptr<MouseEvent> evt(CreateMouseEvent(EVENT_MOUSE_ENTER, to));
 		for (auto iter = views.rbegin(); iter != views.rend(); iter++)
 		{
-			MouseEvent::DispatchTo(evt.get(), *iter);
+			MouseEvent evt(EVENT_MOUSE_ENTER, mouse_position_, *iter);
+			(*iter)->HandleEvent(&evt);
 		}
 	}
 
-	void EventDispatcher::DispatchMouseDownEvent(View* from)
+	void EventDispatcher::DispatchMouseDownEvent(View* from, int buttons)
 	{
-		scoped_ptr<MouseEvent> evt(CreateMouseEvent(EVENT_MOUSE_DOWN, from));
+		MouseDownEvent evt(EVENT_MOUSE_DOWN, mouse_position_, from, buttons);
+		DispatchPropagation(&evt, from);
+	}
+
+	void EventDispatcher::DispatchMouseUpEvent(View* from, int buttons)
+	{
+		MouseUpEvent evt(EVENT_MOUSE_UP, mouse_position_, from, buttons);
+		DispatchPropagation(&evt, from);
+	}
+
+	void EventDispatcher::DispatchMouseDbClickEvent(View* from, int buttons)
+	{
+		MouseUpEvent evt(EVENT_MOUSE_DBCLICK, mouse_position_, from, buttons);
+		DispatchPropagation(&evt, from);
+	}
+
+	void EventDispatcher::DispatchPropagation(Event* evt, View* from)
+	{
 		for (View* v = from; v != NULL; v = v->parent())
 		{
-			if (!evt->stopped_propagation())
-				MouseEvent::DispatchTo(evt.get(), v);
+			if (!evt->stopped_propagation()) {
+				v->HandleEvent(evt);
+			}
 		}
 	}
 
-	void EventDispatcher::DispatchMouseUpEvent(View* from)
+	LRESULT EventDispatcher::HandleKeyEvent(UINT message, WPARAM w_param, LPARAM l_param)
 	{
-		scoped_ptr<MouseEvent> evt(CreateMouseEvent(EVENT_MOUSE_UP, from));
-		for (View* v = from; v != NULL; v = v->parent())
-		{
-			if (!evt->stopped_propagation())
-				MouseEvent::DispatchTo(evt.get(), v);
-		}
-	}
 
-	void EventDispatcher::DispatchMouseDbClickEvent(View* from)
-	{
-		scoped_ptr<MouseEvent> evt(CreateMouseEvent(EVENT_MOUSE_DBCLICK, from));
-		for (View* v = from; v != NULL; v = v->parent())
-		{
-			if (!evt->stopped_propagation())
-				MouseEvent::DispatchTo(evt.get(), v);
-		}
 	}
 
 	

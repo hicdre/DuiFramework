@@ -114,6 +114,9 @@
     <ClCompile Include="control\button.cpp">
       <Filter>control</Filter>
     </ClCompile>
+    <ClCompile Include="event\key_event.cpp">
+      <Filter>event</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -217,6 +220,10 @@
     </ClInclude>
     <ClInclude Include="control\button.h">
       <Filter>control</Filter>
+    </ClInclude>
+    <ClInclude Include="duiframework.h" />
+    <ClInclude Include="event\key_event.h">
+      <Filter>event</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

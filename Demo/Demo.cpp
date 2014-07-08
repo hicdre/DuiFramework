@@ -9,6 +9,7 @@
 
 #include "DemoWidget.h"
 #include "TestMouseEventWidget.h"
+#include "TestWidget.h"
 
 
 int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
@@ -24,7 +25,7 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 	//ui::ImageStore::Default()->AddImageRecord("test", LR"(E:\work\xinyi\RomasterPC\bin\skin\avatar.png)");
 
 	//ui::Widget* widget = ui::WidgetView::CreateWidget(new DemoWidget);
-	ui::Widget* widget = ui::WidgetView::CreateWidget(new TestMouseEventWidget);
+	ui::Widget* widget = ui::WidgetView::CreateWidget(new TestWidget);
 	widget->Show(SW_SHOWNORMAL);
 
 	app->Run();

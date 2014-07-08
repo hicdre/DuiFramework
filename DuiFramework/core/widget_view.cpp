@@ -100,5 +100,15 @@ namespace ui
 			widget()->InvalidateRect(invalid_rect);
 	}
 
+	EventDispatcher* WidgetView::GetEventDispatcher() const
+	{
+		return dispatcher_.get();
+	}
+
+	void WidgetView::Close()
+	{
+		widget()->Close();
+	}
+
 
 }
