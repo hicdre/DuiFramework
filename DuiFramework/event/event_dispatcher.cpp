@@ -37,10 +37,16 @@ namespace ui
 		else if ( message == WM_KEYDOWN
 			|| message == WM_KEYUP
 			|| message == WM_SYSKEYDOWN
-			|| message == WM_SYSKEYUP)
+			|| message == WM_SYSKEYUP
+			|| message == WM_CHAR)
 		{
-			result = HandleMouseEvent(message, w_param, l_param);
+			result = HandleKeyEvent(message, w_param, l_param);
 			return TRUE;
+		}
+		else if (message == WM_SETFOCUS
+			|| message == WM_KILLFOCUS)
+		{//Ö»´¦Àíkillfocus
+			result = HandleFocus(message, w_param, l_param);
 		}
 		return FALSE;
 	}
@@ -218,9 +224,54 @@ namespace ui
 
 	LRESULT EventDispatcher::HandleKeyEvent(UINT message, WPARAM w_param, LPARAM l_param)
 	{
+		View* focused_view = view()->GetFocusedView();
+		if (!focused_view)
+			return 0;
 
+		switch (message)
+		{
+		case WM_KEYDOWN :
+		case WM_SYSKEYDOWN:
+			DispatchMousePressEvent(focused_view, w_param, l_param);
+			break;
+		case WM_KEYUP:
+		case WM_SYSKEYUP:
+			DispatchMouseReleaseEvent(focused_view, w_param, l_param);
+			break;
+		case WM_CHAR:
+			DispatchMousePressEvent(focused_view, w_param, l_param);
+			DispatchMouseReleaseEvent(focused_view, w_param, l_param);
+			break;
+		default:
+			break;
+		}
+		return 0;
 	}
 
-	
+	void EventDispatcher::DispatchMousePressEvent(View* from, WPARAM w_param, LPARAM l_param)
+	{
+		KeyEvent evt(EVENT_KEY_PRESSED, w_param, from, l_param);
+		DispatchPropagation(&evt, from);
+	}
+
+	void EventDispatcher::DispatchMouseReleaseEvent(View* from, WPARAM w_param, LPARAM l_param)
+	{
+		KeyEvent evt(EVENT_KEY_RELEASED, w_param, from, l_param);
+		DispatchPropagation(&evt, from);
+	}
+
+
+	LRESULT EventDispatcher::HandleFocus(UINT message, WPARAM w_param, LPARAM l_param)
+	{
+		if (message == WM_SETFOCUS)
+		{
+			view()->GetFocusManager()->GainFocus((HWND)w_param);
+			return 0;
+		}
+
+		view()->GetFocusManager()->LoseFocus((HWND)w_param);
+		return 0;
+	}
+
 
 }

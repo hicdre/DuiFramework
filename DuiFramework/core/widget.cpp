@@ -331,6 +331,11 @@ namespace ui
 		::InvalidateRect(hwnd_, &r.ToRECT(), FALSE);
 	}
 
+	void Widget::SetFocus()
+	{
+		::SetFocus(hwnd_);
+	}
+
 
 	
 

@@ -10,6 +10,8 @@
 #include "render/background.h"
 #include "event/event.h"
 #include "event/event_dispatcher.h"
+#include "core/focus_manager.h"
+#include "layout/layout_manager.h"
 #include <vector>
 
 namespace ui
@@ -95,6 +97,8 @@ namespace ui
 		// Layout --------------------------------------------------------------------
 		virtual void Layout();
 
+		void SetLayout(LayoutManager* layout);
+
 		// Painting ------------------------------------------------------------------
 		void set_background_color(Color color);
 		void set_background_image_id(const std::string& id);
@@ -136,6 +140,12 @@ namespace ui
 		void SetEventDelegate(EventDelegate* delegate);
 
 		virtual EventDispatcher* GetEventDispatcher() const;
+
+		void SetFocus();
+		void SetFocusable(bool focusable);
+		bool IsFocusable() const;
+
+		virtual FocusManager* GetFocusManager() const;
 	public:
 		virtual void OnVisibleChanged();
 		virtual void OnEnabledChanged();
@@ -162,10 +172,14 @@ namespace ui
 
 		bool needs_layout_{ true };
 
+		bool focusable_{ false };
+
 		//Color background_color_{0xFFFFFFFF};
 
 		scoped_ptr<Border> border_;
 		scoped_ptr<Background> background_;
+
+		scoped_ptr<LayoutManager> layout_manager_;
 
 		HCURSOR cursor_{ NULL };
 

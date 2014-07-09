@@ -10,5 +10,5 @@ public:
 
 private:
 	ui::EventListener listener_;
-
+	ui::Label* label_;
 };

@@ -84,6 +84,8 @@ namespace ui
 		BOOL GetClientRect(RECT* rect) const;
 		void SetCursor(HCURSOR cursor);
 
+		void SetFocus();
+
 		void InvalidateRect(const Rect& r);
 
 

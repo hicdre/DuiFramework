@@ -33,9 +33,23 @@ void TestWidget::OnInit()
 			});
 		}
 	}
+	{
+		label_ = new ui::Label;
+		label_->SetBounds(0, 50, 100, 20);
+		label_->SetFont(L"Consolas", 12);
+		label_->SetHorizontalAlignment(ui::ALIGN_CENTER);
+		label_->SetTextColor(ui::ColorSetRGB(0, 0, 0));
+		view()->Append(label_);
+	}
 
 	view()->set_background_color(ui::ColorSetRGB(255, 255, 255));
 	view()->CenterWidget();
+	view()->SetFocus();
+	listener_.Listen(view(), ui::EVENT_KEY_PRESSED, [this](ui::View* target, ui::Event* evt)
+	{
+		ui::KeyEvent* key_event = evt->To<ui::KeyEvent>();
+		label_->SetText(std::wstring(1, (wchar_t)key_event->GetKey()));
+	});
 }
 
 ui::Rect TestWidget::GetInitialRect()

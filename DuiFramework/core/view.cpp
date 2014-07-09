@@ -219,29 +219,29 @@ namespace ui
 
 		View* view_this = this;
 		View* view_that = other;
-		do 
-		{
-			if (step_this > step_that)
-			{
-				step_this--;
-				view_this = view_this->parent();
-			}
-			else if (step_this < step_that)
-			{
-				step_that--;
-				view_that = view_that->parent();
-			}
-			else
-			{
-				if (view_this == view_that)
-					return view_this;
 
-				step_this--;
-				step_that--;
-				view_this = view_this->parent();
-				view_that = view_that->parent();
+		if (step_this > step_that) {
+			int delta = step_this - step_that;
+			while (delta) {
+				delta--;
+				view_this = view_this->parent_;
 			}
-		} while (step_this > 0 && step_that > 0 && view_this && view_that);
+		} else if (step_this < step_that) {
+			int delta = step_that - step_this;
+			while (delta) {
+				delta--;
+				view_that = view_that->parent_;
+			}
+		}
+		//然后同时向前查找
+		while (view_this && view_that && view_this != view_that)
+		{
+			view_this = view_this->parent_;
+			view_that = view_that->parent_;
+		}
+
+		if (view_this == view_that)
+			return view_this;
 		assert(0);
 		return NULL;
 	}
@@ -410,8 +410,8 @@ namespace ui
 		needs_layout_ = false;
 
 		// If we have a layout manager, let it handle the layout for us.
-		//if (layout_manager_.get())
-		//	layout_manager_->Layout(this);
+		if (layout_manager_.get())
+			layout_manager_->Layout(this);
 
 		// Make sure to propagate the Layout() call to any children that haven't
 		// received it yet through the layout manager and need to be laid out. This
@@ -722,6 +722,31 @@ namespace ui
 	EventDispatcher* View::GetEventDispatcher() const
 	{
 		return parent() ? parent()->GetEventDispatcher() : NULL;
+	}
+
+	void View::SetFocus()
+	{
+		if (!focusable_)
+			return;
+		FocusManager* manager = GetFocusManager();
+		if (manager) {
+			manager->SetFocus(this);
+		}
+	}
+
+	void View::SetFocusable(bool focusable)
+	{
+		focusable_ = focusable;
+	}
+
+	bool View::IsFocusable() const
+	{
+		return focusable_;
+	}
+
+	FocusManager* View::GetFocusManager() const
+	{
+		return parent_ ? parent_->GetFocusManager() : NULL;
 	}
 
 

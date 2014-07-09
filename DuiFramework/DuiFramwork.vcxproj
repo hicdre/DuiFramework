@@ -86,6 +86,7 @@
   <ItemGroup>
     <ClCompile Include="control\button.cpp" />
     <ClCompile Include="core\app.cpp" />
+    <ClCompile Include="core\focus_manager.cpp" />
     <ClCompile Include="core\label.cpp" />
     <ClCompile Include="core\view.cpp" />
     <ClCompile Include="core\widget.cpp" />
@@ -123,6 +124,7 @@
     <ClInclude Include="control\button.h" />
     <ClInclude Include="core\app.h" />
     <ClInclude Include="core\constants.h" />
+    <ClInclude Include="core\focus_manager.h" />
     <ClInclude Include="core\label.h" />
     <ClInclude Include="core\view.h" />
     <ClInclude Include="core\widget.h" />
@@ -135,6 +137,7 @@
     <ClInclude Include="event\event_dispatcher.h" />
     <ClInclude Include="event\key_event.h" />
     <ClInclude Include="event\mouse_event.h" />
+    <ClInclude Include="layout\layout_manager.h" />
     <ClInclude Include="render\background.h" />
     <ClInclude Include="render\border.h" />
     <ClInclude Include="render\color.h" />

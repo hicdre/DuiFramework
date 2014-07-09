@@ -25,6 +25,9 @@
     <Filter Include="control">
       <UniqueIdentifier>{ae402361-0d1b-48b8-8b0e-98caf1de9803}</UniqueIdentifier>
     </Filter>
+    <Filter Include="layout">
+      <UniqueIdentifier>{976275d3-241b-4dc1-a6f5-ae39f65d41b6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -116,6 +119,9 @@
     </ClCompile>
     <ClCompile Include="event\key_event.cpp">
       <Filter>event</Filter>
+    </ClCompile>
+    <ClCompile Include="core\focus_manager.cpp">
+      <Filter>core</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -224,6 +230,12 @@
     <ClInclude Include="duiframework.h" />
     <ClInclude Include="event\key_event.h">
       <Filter>event</Filter>
+    </ClInclude>
+    <ClInclude Include="core\focus_manager.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="layout\layout_manager.h">
+      <Filter>layout</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -36,6 +36,7 @@ namespace ui
 		SetBounds(0, 0, view_rect.width(), view_rect.height());
 
 		dispatcher_.reset(new EventDispatcher(this));
+		focus_manager_.reset(new FocusManager(this));
 
 		event_delegate_->Init(this);
 	}
@@ -108,6 +109,17 @@ namespace ui
 	void WidgetView::Close()
 	{
 		widget()->Close();
+	}
+
+	View* WidgetView::GetFocusedView() const
+	{
+		return focus_manager_.get() ? focus_manager_->GetFocusedView()
+			: NULL;
+	}
+
+	FocusManager* WidgetView::GetFocusManager() const
+	{
+		return focus_manager_.get();
 	}
 
 

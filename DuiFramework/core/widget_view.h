@@ -2,6 +2,7 @@
 #include "core/view.h"
 #include "core/widget.h"
 #include "core/widget_delegate.h"
+#include "core/focus_manager.h"
 
 namespace ui
 {
@@ -30,6 +31,9 @@ namespace ui
 		virtual void SchedulePaintInRect(const Rect& r) override;
 
 		virtual EventDispatcher* GetEventDispatcher() const override;
+
+		View* GetFocusedView() const;
+		virtual FocusManager* GetFocusManager() const override;
 	private:
 
 		Rect GetInitialRect();
@@ -38,5 +42,6 @@ namespace ui
 
 		scoped_ptr<WidgetDelegate> event_delegate_;
 		scoped_ptr<EventDispatcher> dispatcher_;
+		scoped_ptr<FocusManager> focus_manager_;
 	};
 }
