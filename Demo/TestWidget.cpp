@@ -20,7 +20,7 @@ void TestWidget::OnInit()
 		header->SetBounds(0, 0, 400, 50);
 		header->set_background_image_id("title");
 		{
-			ui::Button* btn = new ui::Button;
+			ui::Button* btn = ui::Button::Create();
 			header->Append(btn);
 			btn->SetBounds(360, 20, 10, 10);
 			btn->SetStateImage(ui::Button::NORMAL, "close.normal");

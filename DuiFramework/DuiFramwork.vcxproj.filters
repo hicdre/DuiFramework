@@ -123,6 +123,12 @@
     <ClCompile Include="core\focus_manager.cpp">
       <Filter>core</Filter>
     </ClCompile>
+    <ClCompile Include="core\complex_view.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="layout\fill_layout.cpp">
+      <Filter>layout</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -235,6 +241,12 @@
       <Filter>core</Filter>
     </ClInclude>
     <ClInclude Include="layout\layout_manager.h">
+      <Filter>layout</Filter>
+    </ClInclude>
+    <ClInclude Include="core\complex_view.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="layout\fill_layout.h">
       <Filter>layout</Filter>
     </ClInclude>
   </ItemGroup>

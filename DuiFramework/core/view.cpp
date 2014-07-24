@@ -354,7 +354,7 @@ namespace ui
 	}
 
 
-	Rect View::GetContentBounds() const
+	Rect View::GetContentsBounds() const
 	{
 		if (!border_.get())
 			return GetLocalBounds();
@@ -405,6 +405,17 @@ namespace ui
 	}
 
 
+	void View::SetLayout(LayoutManager* layout)
+	{
+		if (layout_manager_.get())
+			layout_manager_->Uninstalled(this);
+
+		layout_manager_.reset(layout);
+		if (layout_manager_.get())
+			layout_manager_->Installed(this);
+	}
+
+
 	void View::Layout()
 	{
 		needs_layout_ = false;
@@ -425,6 +436,13 @@ namespace ui
 				child->Layout();
 			}
 		}
+	}
+
+	Size View::GetPreferredSize() const
+	{
+		if (layout_manager_.get())
+			return layout_manager_->GetPreferredSize(this);
+		return Size();
 	}
 
 	void View::OnVisibleChanged()
@@ -457,10 +475,23 @@ namespace ui
 
 	void View::DoPaint(Painter* painter)
 	{
+		if (!visible_)
+			return;
+
 		PaintBackground(painter);
 		PaintBorder(painter);
 		OnPaint(painter);
+		OnPaintChildren(painter);
+	}
 
+	void View::OnPaint(Painter* painter)
+	{
+		//painter->DrawStringRect(L"²âÊÔ", Font(L"Î¢ÈíÑÅºÚ", 18), ColorSetRGB(255,0,0,0), GetLocalBounds());
+	}
+
+
+	void View::OnPaintChildren(Painter* painter)
+	{
 		for (View* p = first_child_; p != NULL; p = p->next_sibling())
 		{
 			if (p)
@@ -472,10 +503,6 @@ namespace ui
 		}
 	}
 
-	void View::OnPaint(Painter* painter)
-	{
-		//painter->DrawStringRect(L"²âÊÔ", Font(L"Î¢ÈíÑÅºÚ", 18), ColorSetRGB(255,0,0,0), GetLocalBounds());
-	}
 
 	Transform View::GetTransform() const
 	{
@@ -698,31 +725,28 @@ namespace ui
 	void View::HandleEvent(Event* event)
 	{
 		EventListenManager::Default()->DispatchEvent(this, event);
-		if (!event_delegate_.get())
-			return;
-
-		EventType event_type = event->type();
-		switch (event_type)
-		{
-		case EVENT_MOUSE_DOWN: event_delegate_->OnMouseDown(this, event); break;
-		case EVENT_MOUSE_UP: event_delegate_->OnMouseUp(this, event); break;
-		case EVENT_MOUSE_MOVE: event_delegate_->OnMouseMove(this, event); break;
-		case EVENT_MOUSE_ENTER: event_delegate_->OnMouseEnter(this, event); break;
-		case EVENT_MOUSE_LEAVE: event_delegate_->OnMouseLeave(this, event); break;
-		default:
-			break;
-		}
 	}
 
-	void View::SetEventDelegate(EventDelegate* delegate)
-	{
-		event_delegate_.reset(delegate);
-	}
+// 	void View::SetEventDelegate(EventDelegate* delegate)
+// 	{
+// 		event_delegate_.reset(delegate);
+// 	}
 
 	EventDispatcher* View::GetEventDispatcher() const
 	{
 		return parent() ? parent()->GetEventDispatcher() : NULL;
 	}
+
+
+	void View::DispatchPropagation(Event* event)
+	{
+		EventDispatcher* dispatcher = GetEventDispatcher();
+		if (dispatcher)
+		{
+			dispatcher->DispatchPropagation(event, this);
+		}
+	}
+
 
 	void View::SetFocus()
 	{
@@ -748,6 +772,8 @@ namespace ui
 	{
 		return parent_ ? parent_->GetFocusManager() : NULL;
 	}
+
+	
 
 
 

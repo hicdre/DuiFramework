@@ -73,10 +73,10 @@ void TestMouseEventWidget::OnInit()
 				red_view->Append(red_labe_);
 			}
 			{
-				ui::Button* btn = new ui::Button(L"Button Test");
+				ui::Button* btn = ui::Button::Create(L"Button Test");
 				btn->SetBounds(50, 50, 60, 20);
-				btn->SetFont(L"Consolas", 12);
-				btn->SetHorizontalAlignment(ui::ALIGN_CENTER);
+				btn->SetTextFont(L"Consolas", 12);
+				btn->SetTextHorizontalAlignment(ui::ALIGN_CENTER);
 				btn->SetTextColor(ui::ColorSetRGB(0, 0, 0));
 				btn->SetStateColor(ui::Button::NORMAL, 0xffffff);
 				btn->SetStateColor(ui::Button::HOVERED, 0x449d44);

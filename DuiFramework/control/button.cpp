@@ -3,21 +3,27 @@
 
 #include "event/mouse_event.h"
 #include "utils/image_store.h"
+#include "layout/fill_layout.h"
 
 namespace ui
 {
 
-	Button::Button(const std::wstring& text)
-		: Label(text)
+	Button* Button::Create()
 	{
-		SetEventDelegate(new DefaultButtonEventDelegate);
-		SetButtonDelegate(new DefaultButtonDelegate);
+		Button* btn = new Button;
+		btn->Init(L"");
+		return btn;
+	}
+
+	Button* Button::Create(const std::wstring& text)
+	{
+		Button* btn = new Button;
+		btn->Init(text);
+		return btn;
 	}
 
 	Button::Button()
-		: Button(L"")
 	{
-
 	}
 
 	Button::~Button()
@@ -25,20 +31,38 @@ namespace ui
 
 	}
 
+	void Button::Init(const std::wstring& text)
+	{
+		SetLayout(new FillLayout);
+		for (int i = 0; i < STATE_MAX; i++)
+		{
+			ButtonStateView* state_view = new ButtonStateView((State)i, text);
+			state_views[i] = state_view;
+
+			Append(state_view);
+		}
+
+		SetState(NORMAL);
+		UpdateButtonStateView();
+
+		listener_.Listen(this, EVENT_MOUSE_ENTER,
+			std::bind(&Button::OnMouseEnter, this, std::placeholders::_1, std::placeholders::_2));
+		listener_.Listen(this, EVENT_MOUSE_LEAVE,
+			std::bind(&Button::OnMouseLeave, this, std::placeholders::_1, std::placeholders::_2));
+		listener_.Listen(this, EVENT_MOUSE_DOWN,
+			std::bind(&Button::OnMouseDown, this, std::placeholders::_1, std::placeholders::_2));
+		listener_.Listen(this, EVENT_MOUSE_UP,
+			std::bind(&Button::OnMouseUp, this, std::placeholders::_1, std::placeholders::_2));
+	}
+
 	void Button::SetStateImage(State state, const std::string& id)
 	{
-		if (delegate_.get())
-		{
-			delegate_->SetStateImage(state, id);
-		}
+		state_views[state]->set_background_image_id(id);
 	}
 
 	void Button::SetStateColor(State state, Color color)
 	{
-		if (delegate_.get())
-		{
-			delegate_->SetStateColor(state, color);
-		}
+		state_views[state]->set_background_color(color);
 	}
 
 	void Button::SetState(State state)
@@ -46,6 +70,7 @@ namespace ui
 		if (state_ == state)
 			return;
 		state_ = state;
+		UpdateButtonStateView();
 		SchedulePaint();
 	}
 
@@ -54,92 +79,121 @@ namespace ui
 		return state_;
 	}
 
-	void Button::OnPaint(Painter* painter)
+	View* Button::GetStateView(State state)
 	{
-		if (delegate_.get())
+		return state_views[state];
+	}
+
+
+	void Button::UpdateButtonStateView()
+	{
+		for (int i = 0; i < STATE_MAX; i++)
 		{
-			delegate_->OnPaint(this, painter);
+			state_views[i]->SetVisible(i == state_);
 		}
-		Label::OnPaint(painter);
-	}
-
-	void Button::SetButtonDelegate(Delegate* delegate)
-	{
-		delegate_.reset(delegate);
-	}
-
-	void Button::TriggerClicked()
-	{
-		Event evt(EVENT_BUTTON_CLICKED, this);
-		GetEventDispatcher()->DispatchPropagation(&evt, this);
 	}
 
 
-
-	DefaultButtonEventDelegate::~DefaultButtonEventDelegate()
+	void Button::OnMouseEnter(View* v, Event* evt)
 	{
-
-	}
-
-	void DefaultButtonEventDelegate::OnMouseEnter(View* v, Event* evt)
-	{
-		Button* btn = static_cast<Button*>(v);
 		MouseEvent* mevt = static_cast<MouseEvent*>(evt);
 
 		if (mevt->HasMouseDown())
 		{
-			btn->SetState(Button::PRESSED);
+			SetState(Button::PRESSED);
 		}
 		else
 		{
-			btn->SetState(Button::HOVERED);
+			SetState(Button::HOVERED);
 		}
 	}
 
-	void DefaultButtonEventDelegate::OnMouseLeave(View* v, Event* evt)
+	void Button::OnMouseLeave(View* v, Event* evt)
 	{
-		Button* btn = static_cast<Button*>(v);
-		btn->SetState(Button::NORMAL);
+		SetState(Button::NORMAL);
 	}
 
-	void DefaultButtonEventDelegate::OnMouseDown(View* v, Event* evt)
+	void Button::OnMouseDown(View* v, Event* evt)
 	{
-		Button* btn = static_cast<Button*>(v);
-		btn->SetState(Button::PRESSED);
+		SetState(Button::PRESSED);
 	}
 
-	void DefaultButtonEventDelegate::OnMouseUp(View* v, Event* evt)
+	void Button::OnMouseUp(View* v, Event* evt)
 	{
-		Button* btn = static_cast<Button*>(v);
-		btn->SetState(Button::HOVERED);
-		btn->TriggerClicked();
+		SetState(Button::HOVERED);
+		DispatchClickEvent();
 	}
 
-
-	void DefaultButtonDelegate::SetStateImage(Button::State state, const std::string& id)
+	void Button::DispatchClickEvent()
 	{
-		button_frames_[state].image_id = id;
+		Event evt(EVENT_BUTTON_CLICKED, this);
+		DispatchPropagation(&evt);
 	}
 
-	void DefaultButtonDelegate::SetStateColor(Button::State state, Color color)
+	void Button::SetTextFont(const Font& font)
 	{
-		button_frames_[state].color = color;
-	}
-
-	void DefaultButtonDelegate::OnPaint(Button* btn, Painter* painter)
-	{
-		Button::State state = btn->state();
-		StateData& d = button_frames_[state];
-		if (!d.image_id.empty())
+		for (int i = 0; i < STATE_MAX; i++)
 		{
-			ImageClip* clip = ImageStore::Default()->GetImageById(d.image_id);
-			if (clip) {
-				painter->DrawImage(clip, btn->GetContentBounds());
-				return;
-			}
+			state_views[i]->SetFont(font);
 		}
+	}
 
-		painter->FillRect(btn->GetContentBounds(), d.color);
+	void Button::SetTextFont(const std::wstring& name, int size)
+	{
+		for (int i = 0; i < STATE_MAX; i++)
+		{
+			state_views[i]->SetFont(name, size);
+		}
+	}
+
+	void Button::SetTextHorizontalAlignment(HorizontalAlignment v)
+	{
+		for (int i = 0; i < STATE_MAX; i++)
+		{
+			state_views[i]->SetHorizontalAlignment(v);
+		}
+	}
+
+	void Button::SetTextVerticalAlignment(VerticalAlignment v)
+	{
+		for (int i = 0; i < STATE_MAX; i++)
+		{
+			state_views[i]->SetVerticalAlignment(v);
+		}
+	}
+
+	void Button::SetTextColor(Color color)
+	{
+		for (int i = 0; i < STATE_MAX; i++)
+		{
+			state_views[i]->SetTextColor(color);
+		}
+	}
+
+	void Button::SetText(const std::wstring& text)
+	{
+		for (int i = 0; i < STATE_MAX; i++)
+		{
+			state_views[i]->SetText(text);
+		}
+	}
+
+
+	ButtonStateView::ButtonStateView(Button::State state)
+		: Label(), state_(state)
+	{
+
+	}
+
+	ButtonStateView::ButtonStateView(Button::State state, const std::wstring& text)
+		: Label(text), state_(state)
+	{
+
+	}
+
+	Button::State ButtonStateView::GetButtonState() const
+	{
+		return state_;
 	}
 
 }

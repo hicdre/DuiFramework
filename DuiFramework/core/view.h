@@ -23,16 +23,16 @@ namespace ui
 	class View
 	{
 	public:
-		class EventDelegate {
-		public:
-			virtual ~EventDelegate() {}
-
-			virtual void OnMouseEnter(View* v, Event* evt) {}
-			virtual void OnMouseLeave(View* v, Event* evt) {}
-			virtual void OnMouseDown(View* v, Event* evt) {}
-			virtual void OnMouseUp(View* v, Event* evt) {}
-			virtual void OnMouseMove(View* v, Event* evt) {}
-		};
+// 		class EventDelegate {
+// 		public:
+// 			virtual ~EventDelegate() {}
+// 
+// 			virtual void OnMouseEnter(View* v, Event* evt) {}
+// 			virtual void OnMouseLeave(View* v, Event* evt) {}
+// 			virtual void OnMouseDown(View* v, Event* evt) {}
+// 			virtual void OnMouseUp(View* v, Event* evt) {}
+// 			virtual void OnMouseMove(View* v, Event* evt) {}
+// 		};
 		View();
 		virtual ~View();
 
@@ -86,7 +86,7 @@ namespace ui
 
 		Rect GetLocalBounds() const;
 		//È¥³ýborderÖ®ºó
-		Rect GetContentBounds() const;
+		Rect GetContentsBounds() const;
 
 		void SetVisible(bool visible);
 		bool visible() const { return visible_; }
@@ -98,6 +98,7 @@ namespace ui
 		virtual void Layout();
 
 		void SetLayout(LayoutManager* layout);
+		Size View::GetPreferredSize() const;
 
 		// Painting ------------------------------------------------------------------
 		void set_background_color(Color color);
@@ -109,6 +110,7 @@ namespace ui
 
 		void DoPaint(Painter* painter);
 		virtual void OnPaint(Painter* painter);
+		virtual void OnPaintChildren(Painter* painter);
 
 		// Coordinate conversion -----------------------------------------------------
 		Transform GetTransform() const;
@@ -137,7 +139,8 @@ namespace ui
 		// Event---------------------------------------------
 
 		void HandleEvent(Event* event);
-		void SetEventDelegate(EventDelegate* delegate);
+		void DispatchPropagation(Event* event);
+		//void SetEventDelegate(EventDelegate* delegate);
 
 		virtual EventDispatcher* GetEventDispatcher() const;
 
@@ -183,6 +186,6 @@ namespace ui
 
 		HCURSOR cursor_{ NULL };
 
-		scoped_ptr<EventDelegate> event_delegate_;
+		//scoped_ptr<EventDelegate> event_delegate_;
 	};
 }

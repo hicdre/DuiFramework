@@ -1,29 +1,24 @@
 #pragma once
 #include "core/label.h"
-#include "event/event_listener.h"
+#include "core/complex_view.h"
 
 namespace ui
 {
-	class Button : public Label
+	class ButtonStateView;
+	class Button : public ComplexView
 	{
 	public:
 		enum State {
 			NORMAL,
 			HOVERED,
 			PRESSED,
-		};
-		class Delegate {
-		public:
-			virtual ~Delegate() {}
-			virtual void SetStateImage(State state, const std::string& id) {}
-			virtual void SetStateColor(State state, Color color) {}
-			virtual void OnPaint(Button* btn, Painter* painter) {}
-		};
-		Button();
-		Button(const std::wstring& text);
-		virtual ~Button();
 
-		void SetButtonDelegate(Delegate* delegate);
+			STATE_MAX,
+		};
+		static Button* Create();
+		static Button* Create(const std::wstring& text);
+		
+		virtual ~Button();
 
 		void SetStateImage(State state, const std::string& id);
 		void SetStateColor(State state, Color color);
@@ -31,38 +26,41 @@ namespace ui
 		void SetState(State state);
 		State state() const;
 
-		void TriggerClicked();
+		View* GetStateView(State state);
 
-		virtual void OnPaint(Painter* painter) override;
+		void SetText(const std::wstring& text);
+		void SetTextFont(const Font& font);
+		void SetTextFont(const std::wstring& name, int size);
+		void SetTextHorizontalAlignment(HorizontalAlignment i);
+		void SetTextVerticalAlignment(VerticalAlignment i);
+		void SetTextColor(Color color);
+		
+	protected:
+		Button();
+		void Init(const std::wstring& text);
+
+		void UpdateButtonStateView();
 	private:
+		void OnMouseEnter(View* v, Event* evt);
+		void OnMouseLeave(View* v, Event* evt);
+		void OnMouseDown(View* v, Event* evt);
+		void OnMouseUp(View* v, Event* evt);
+
+		void DispatchClickEvent();
+
 		State state_;
-		scoped_ptr<Delegate> delegate_;
+		ButtonStateView* state_views[STATE_MAX];
 	};
 
-	class DefaultButtonEventDelegate : public View::EventDelegate
+	class ButtonStateView : public Label
 	{
 	public:
-		virtual ~DefaultButtonEventDelegate() override;
-		virtual void OnMouseEnter(View* v, Event* evt) override;
-		virtual void OnMouseLeave(View* v, Event* evt) override;
-		virtual void OnMouseDown(View* v, Event* evt) override;
-		virtual void OnMouseUp(View* v, Event* evt) override;
+		ButtonStateView(Button::State state);
+		ButtonStateView(Button::State state, const std::wstring& text);
 
-
-	};
-
-	class DefaultButtonDelegate : public Button::Delegate
-	{
-	public:
-		virtual void SetStateImage(Button::State state, const std::string& id) override;
-		virtual void SetStateColor(Button::State state, Color color) override;
-		virtual void OnPaint(Button* btn, Painter* painter) override;
-
+		Button::State GetButtonState() const;
 	private:
-		struct StateData {
-			std::string image_id;
-			Color color{0xFFFFFFFF};
-		} button_frames_[3];
+		Button::State state_;
 	};
 
 }
