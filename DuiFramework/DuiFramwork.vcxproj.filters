@@ -75,9 +75,6 @@
     <ClCompile Include="render\image.cpp">
       <Filter>render</Filter>
     </ClCompile>
-    <ClCompile Include="render\background.cpp">
-      <Filter>render</Filter>
-    </ClCompile>
     <ClCompile Include="utils\image_store.cpp">
       <Filter>utils</Filter>
     </ClCompile>
@@ -127,6 +124,15 @@
       <Filter>core</Filter>
     </ClCompile>
     <ClCompile Include="layout\fill_layout.cpp">
+      <Filter>layout</Filter>
+    </ClCompile>
+    <ClCompile Include="core\rectangle.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="core\image_view.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="layout\box_layout.cpp">
       <Filter>layout</Filter>
     </ClCompile>
   </ItemGroup>
@@ -188,9 +194,6 @@
     <ClInclude Include="base\ref_counted.h">
       <Filter>base</Filter>
     </ClInclude>
-    <ClInclude Include="render\background.h">
-      <Filter>render</Filter>
-    </ClInclude>
     <ClInclude Include="utils\image_store.h">
       <Filter>utils</Filter>
     </ClInclude>
@@ -247,6 +250,15 @@
       <Filter>core</Filter>
     </ClInclude>
     <ClInclude Include="layout\fill_layout.h">
+      <Filter>layout</Filter>
+    </ClInclude>
+    <ClInclude Include="core\rectangle.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="core\image_view.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="layout\box_layout.h">
       <Filter>layout</Filter>
     </ClInclude>
   </ItemGroup>

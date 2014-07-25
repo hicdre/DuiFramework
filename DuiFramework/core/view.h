@@ -7,7 +7,6 @@
 #include "render/transform.h"
 #include "render/painter.h"
 #include "render/border.h"
-#include "render/background.h"
 #include "event/event.h"
 #include "event/event_dispatcher.h"
 #include "core/focus_manager.h"
@@ -23,16 +22,6 @@ namespace ui
 	class View
 	{
 	public:
-// 		class EventDelegate {
-// 		public:
-// 			virtual ~EventDelegate() {}
-// 
-// 			virtual void OnMouseEnter(View* v, Event* evt) {}
-// 			virtual void OnMouseLeave(View* v, Event* evt) {}
-// 			virtual void OnMouseDown(View* v, Event* evt) {}
-// 			virtual void OnMouseUp(View* v, Event* evt) {}
-// 			virtual void OnMouseMove(View* v, Event* evt) {}
-// 		};
 		View();
 		virtual ~View();
 
@@ -56,7 +45,9 @@ namespace ui
 		View* InsertAfter(View* ref, View* child);
 		View* InsertBefore(View* ref, View* child);
 
-		bool HasChild(View* child, int* step = NULL);
+		void set_leaf_view(bool v);
+
+		bool HasDescender(View* descender, int* step = NULL);
 		View* GetAncestorTo(View* other);
 
 		View* Hittest(const Point& pt);//pt在本坐标系
@@ -96,15 +87,18 @@ namespace ui
 
 		// Layout --------------------------------------------------------------------
 		virtual void Layout();
+		void LayoutBackground();
 
 		void SetLayout(LayoutManager* layout);
-		Size View::GetPreferredSize() const;
+		virtual Size GetPreferredSize() const;
 
-		// Painting ------------------------------------------------------------------
+		// Background ------------------------------------------------------------------
 		void set_background_color(Color color);
 		void set_background_image_id(const std::string& id);
-		void SetBackground(Background* background);
+		void set_background_inside(bool v);//true-在包含border的区域绘制;
+		void SetBackground(View* background);
 		
+		// Painting ------------------------------------------------------------------
 		virtual void SchedulePaint();
 		virtual void SchedulePaintInRect(const Rect& r);
 
@@ -166,6 +160,8 @@ namespace ui
 		View* next_sibling_{ NULL };
 		View* prev_sibling_{ NULL };
 		int32 child_count_{ 0 };
+		bool is_leaf_view_{ false };
+
 
 		// This View's bounds in the parent coordinate system.
 		Rect bounds_;
@@ -180,7 +176,8 @@ namespace ui
 		//Color background_color_{0xFFFFFFFF};
 
 		scoped_ptr<Border> border_;
-		scoped_ptr<Background> background_;
+		scoped_ptr<View> background_;
+		bool background_inside_{ false };
 
 		scoped_ptr<LayoutManager> layout_manager_;
 

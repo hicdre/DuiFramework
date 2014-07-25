@@ -6,7 +6,8 @@
 namespace ui
 {
 	//×Óview³ß´çµÈÓë¸¸view³ß´ç
-	class FillLayout : public LayoutManager {
+	class FillLayout : public LayoutManager 
+	{
 	public:
 		FillLayout();
 		virtual ~FillLayout();

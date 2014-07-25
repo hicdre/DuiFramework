@@ -5,6 +5,8 @@
 #include "core/widget.h"
 #include "core/widget_delegate.h"
 #include "core/widget_view.h"
+#include "core/rectangle.h"
+#include "core/image_view.h"
 
 #include "event/event.h"
 #include "event/event_dispatcher.h"
@@ -12,7 +14,6 @@
 #include "event/event_listener.h"
 #include "event/mouse_event.h"
 
-#include "render/background.h"
 #include "render/border.h"
 #include "render/color.h"
 #include "render/font.h"

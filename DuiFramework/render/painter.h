@@ -33,6 +33,8 @@ namespace ui
 
 		static void CalcStringRectWithFlags(const std::wstring& text, const Font& font, const Rect& rect, int flags,
 			Rect& out, size_t* len = NULL, int* lines = NULL);
+		static void CalcStringSizeWithFlags(const std::wstring& text, const Font& font, const Size& sz, int flags,
+			Size& out, size_t* len = NULL, int* lines = NULL);
 	private:
 		Widget* widget_;
 

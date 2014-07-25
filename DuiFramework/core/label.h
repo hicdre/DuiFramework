@@ -28,6 +28,11 @@ namespace ui
 
 		void SetVerticalAlignment(VerticalAlignment i) { vertical_alignment_ = i; }
 		VerticalAlignment GetVerticalAlignment() const { return vertical_alignment_; }
+
+		virtual Size GetPreferredSize() const override;
+
+		//单行文本为不省略的大小
+		Size GetTextSize() const;
 	protected:
 		virtual void OnPaint(Painter* painter) override;
 

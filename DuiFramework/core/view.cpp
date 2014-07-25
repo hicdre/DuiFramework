@@ -4,6 +4,8 @@
 #include <algorithm>
 #include <cassert>
 
+#include "core/rectangle.h"
+#include "core/image_view.h"
 #include "event/event_listen_manager.h"
 
 namespace ui
@@ -121,7 +123,7 @@ namespace ui
 
 	View* View::InsertAfter(View* ref, View* child)
 	{
-		if (ref == child || child == NULL || (ref && ref->parent_ != this))
+		if (is_leaf_view_ || ref == child || child == NULL || (ref && ref->parent_ != this))
 		{
 			assert(0);
 			return NULL;
@@ -173,7 +175,7 @@ namespace ui
 
 	View* View::InsertBefore(View* ref, View* child)
 	{
-		if (ref == child || child == NULL || (ref && ref->parent_ != this))
+		if (is_leaf_view_ || ref == child || child == NULL || (ref && ref->parent_ != this))
 		{
 			assert(0);// << "insert before invalid";
 			return NULL;
@@ -190,7 +192,13 @@ namespace ui
 	}
 
 
-	bool View::HasChild(View* child, int* step)
+	void View::set_leaf_view(bool v)
+	{
+		is_leaf_view_ = v;
+	}
+
+
+	bool View::HasDescender(View* child, int* step)
 	{
 		*step = 0;
 		for (View* v = child; v; v = v->parent(), (*step)++)
@@ -206,7 +214,7 @@ namespace ui
 		View* root_view = root();
 		int step_this = 0;
 		int step_that = 0;
-		if (!root_view->HasChild(other, &step_that))
+		if (!root_view->HasDescender(other, &step_that))
 			return NULL;
 
 		if (step_that == 0)
@@ -215,7 +223,7 @@ namespace ui
 		if (root_view == this)
 			return this;
 
-		root_view->HasChild(this, &step_this);
+		root_view->HasDescender(this, &step_this);
 
 		View* view_this = this;
 		View* view_that = other;
@@ -420,6 +428,8 @@ namespace ui
 	{
 		needs_layout_ = false;
 
+		LayoutBackground();
+
 		// If we have a layout manager, let it handle the layout for us.
 		if (layout_manager_.get())
 			layout_manager_->Layout(this);
@@ -437,6 +447,15 @@ namespace ui
 			}
 		}
 	}
+
+
+	void View::LayoutBackground()
+	{
+		if (background_.get())
+			background_->SetBoundsRect(background_inside_ ? GetContentsBounds()
+				: GetLocalBounds());
+	}
+
 
 	Size View::GetPreferredSize() const
 	{
@@ -616,7 +635,7 @@ namespace ui
 		if (!background_.get())
 			return;
 
-		background_->DoPaint(this, painter);
+		background_->DoPaint(painter);
 	}
 
 	void View::SetBorder(Border* border)
@@ -637,19 +656,22 @@ namespace ui
 		border_->DoPaint(this, painter);
 	}
 
-	void View::SetBackground(Background* background)
+	void View::SetBackground(View* background)
 	{
 		background_.reset(background);
+		background_->parent_ = this;
+		LayoutBackground();
 	}
 
 	void View::set_background_color(Color color)
 	{
 		if (!background_.get()) {
-			background_.reset(new NormalBackground);
+			background_.reset(new SolidRectangle(color));
+			LayoutBackground();
 		}
 
-		NormalBackground* normal_background 
-			= dynamic_cast<NormalBackground*>(background_.get());
+		SolidRectangle* normal_background
+			= dynamic_cast<SolidRectangle*>(background_.get());
 		if (!normal_background)
 			return;
 
@@ -662,16 +684,25 @@ namespace ui
 			return;
 
 		if (!background_.get()) {
-			background_.reset(new NormalBackground);
+			background_.reset(new ResourceImage(id));
+			LayoutBackground();
 		}
 
-		NormalBackground* normal_background
-			= dynamic_cast<NormalBackground*>(background_.get());
+		ResourceImage* normal_background
+			= dynamic_cast<ResourceImage*>(background_.get());
 		if (!normal_background)
 			return;
 
 		normal_background->SetImageId(id);
 	}
+
+
+	void View::set_background_inside(bool v)
+	{
+		background_inside_ = v;
+		LayoutBackground();
+	}
+
 
 
 	void View::SetCursor(HCURSOR cursor)

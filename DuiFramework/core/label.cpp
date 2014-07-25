@@ -76,4 +76,24 @@ namespace ui
 		return flags;
 	}
 
+	Size Label::GetPreferredSize() const
+	{
+		return GetTextSize();
+	}
+
+	Size Label::GetTextSize() const
+	{
+		int w = is_multi_line_ ?
+			bounds().width() : (std::numeric_limits<int>::max)();
+		int h = font_.GetHeight();
+
+		int flags = GetTextStyle();
+		if (!is_multi_line_)
+			flags &= ~TEXT_END_ELLIPSIS;
+
+		Size sz(w, h);
+		Painter::CalcStringSizeWithFlags(text_, font_, sz, flags, sz);
+		return sz;
+	}
+
 }

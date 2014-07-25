@@ -5,6 +5,14 @@
 namespace ui
 {
 	class ButtonStateView;
+
+	/*
+		<Button>
+		  <Button::State state="normal" inhert="Label" />
+		  <Button::State state="hovered" inhert="Label" />
+		  <Button::State state="pressed" inhert="Label" />
+		</Button>
+	*/
 	class Button : public ComplexView
 	{
 	public:
@@ -50,17 +58,6 @@ namespace ui
 
 		State state_;
 		ButtonStateView* state_views[STATE_MAX];
-	};
-
-	class ButtonStateView : public Label
-	{
-	public:
-		ButtonStateView(Button::State state);
-		ButtonStateView(Button::State state, const std::wstring& text);
-
-		Button::State GetButtonState() const;
-	private:
-		Button::State state_;
 	};
 
 }

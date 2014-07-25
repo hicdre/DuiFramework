@@ -102,6 +102,15 @@ namespace ui
 		return new ImageClip(Image::LoadFromFile(path), rect);
 	}
 
+	ImageClip* ImageStore::LoadImageByPath(const std::wstring& path)
+	{
+		Image* image = Default()->FindImageInCache(path);
+		if (image) {
+			return new ImageClip(image);
+		}
+		return new ImageClip(Image::LoadFromFile(path));
+	}
+
 	ImageStore* ImageStore::Default()
 	{
 		return App::Get()->DefaultImageStore();

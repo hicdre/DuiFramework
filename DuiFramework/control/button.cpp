@@ -7,6 +7,16 @@
 
 namespace ui
 {
+	class ButtonStateView : public Label
+	{
+	public:
+		ButtonStateView(Button::State state);
+		ButtonStateView(Button::State state, const std::wstring& text);
+
+		Button::State GetButtonState() const;
+	private:
+		Button::State state_;
+	};
 
 	Button* Button::Create()
 	{
@@ -45,13 +55,13 @@ namespace ui
 		SetState(NORMAL);
 		UpdateButtonStateView();
 
-		listener_.Listen(this, EVENT_MOUSE_ENTER,
+		Listen(EVENT_MOUSE_ENTER,
 			std::bind(&Button::OnMouseEnter, this, std::placeholders::_1, std::placeholders::_2));
-		listener_.Listen(this, EVENT_MOUSE_LEAVE,
+		Listen(EVENT_MOUSE_LEAVE,
 			std::bind(&Button::OnMouseLeave, this, std::placeholders::_1, std::placeholders::_2));
-		listener_.Listen(this, EVENT_MOUSE_DOWN,
+		Listen(EVENT_MOUSE_DOWN,
 			std::bind(&Button::OnMouseDown, this, std::placeholders::_1, std::placeholders::_2));
-		listener_.Listen(this, EVENT_MOUSE_UP,
+		Listen(EVENT_MOUSE_UP,
 			std::bind(&Button::OnMouseUp, this, std::placeholders::_1, std::placeholders::_2));
 	}
 

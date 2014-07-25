@@ -24,6 +24,7 @@ namespace ui
 		static ImageStore* Default();
 		//返回的ImageClip*需要delete
 		static ImageClip* LoadImageByPath(const std::wstring& path, const Rect& rect);
+		static ImageClip* LoadImageByPath(const std::wstring& path);
 	private:
 		Image* FindImageInCache(const std::wstring& path);
 		Image* LoadImageToCache(const std::wstring& path);

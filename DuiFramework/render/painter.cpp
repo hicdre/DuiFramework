@@ -169,6 +169,24 @@ namespace ui
 		::ReleaseDC(NULL, hdc);
 	}
 
+	void Painter::CalcStringSizeWithFlags(const std::wstring& text, const Font& font, const Size& sz, int flags, Size& out, size_t* len /*= NULL*/, int* lines /*= NULL*/)
+	{
+		HDC hdc = GetDC(NULL);
+		Gdiplus::Graphics graphics(hdc);
+		Gdiplus::Font        gdi_font(hdc, font.ToHFONT());
+		Gdiplus::StringFormat format;
+		Gdiplus::RectF       rectF(0, 0, sz.width(), sz.height());
+
+		Gdiplus::RectF outF;
+
+		GetStringFormat(format, flags);
+		graphics.SetTextRenderingHint(Gdiplus::TextRenderingHintAntiAlias);
+		graphics.MeasureString(text.c_str(), text.size(), &gdi_font, rectF, &format, &outF, (int*)len, lines);
+
+		out.SetSize(outF.Width, outF.Height);
+		::ReleaseDC(NULL, hdc);
+	}
+
 
 
 	ScopedPainter::ScopedPainter(Painter* painter, const Transform& m)
