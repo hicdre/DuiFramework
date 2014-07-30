@@ -10,6 +10,7 @@
 #include "event/event.h"
 #include "event/event_dispatcher.h"
 #include "core/focus_manager.h"
+#include "core/value.h"
 #include "layout/layout_manager.h"
 #include <vector>
 
@@ -130,6 +131,12 @@ namespace ui
 		void SetCursor(HCURSOR cursor);
 		virtual HCURSOR GetCursor();
 
+		//void set_layout_width_policy(LayoutSizePolicy p);
+		//void set_layout_height_policy(LayoutSizePolicy p);
+
+		//LayoutSizePolicy get_layout_width_policy() const;
+		//LayoutSizePolicy get_layout_height_policy() const;
+
 		// Event---------------------------------------------
 
 		void HandleEvent(Event* event);
@@ -143,6 +150,19 @@ namespace ui
 		bool IsFocusable() const;
 
 		virtual FocusManager* GetFocusManager() const;
+
+		// Property-------------------------------------------
+		void SetPropertyBoolean(const std::string& path, bool in_value);
+		void SetPropertyInteger(const std::string& path, int in_value);
+		void SetPropertyDouble(const std::string& path, double in_value);
+		void SetPropertyString(const std::string& path, const std::string& in_value);
+		void SetPropertyString(const std::string& path, const std::wstring& in_value);
+
+		bool GetPropertyBoolean(const std::string& path, bool* out_value) const;
+		bool GetPropertyInteger(const std::string& path, int* out_value) const;
+		bool GetPropertyDouble(const std::string& path, double* out_value) const;
+		bool GetPropertyString(const std::string& path, std::string* out_value) const;
+		bool GetPropertyString(const std::string& path, std::wstring* out_value) const;
 	public:
 		virtual void OnVisibleChanged();
 		virtual void OnEnabledChanged();
@@ -182,6 +202,12 @@ namespace ui
 		scoped_ptr<LayoutManager> layout_manager_;
 
 		HCURSOR cursor_{ NULL };
+
+		scoped_ptr<DictionaryValue> property_;
+
+		//LayoutSizePolicy width_policy_{ LAYOUT_SIZE_FIXED };
+		//LayoutSizePolicy height_policy_{ LAYOUT_SIZE_FIXED };
+
 
 		//scoped_ptr<EventDelegate> event_delegate_;
 	};

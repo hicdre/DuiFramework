@@ -36,7 +36,7 @@ namespace ui
 			int h = is_vertical_ ? child_area.height() : sz.height();
 
 			Rect child_bounds(x, y, w, h);
-			child_area = child_area.Intersect(child_bounds);
+			child_area = child_area.Subtract(child_bounds);
 			v->SetBoundsRect(child_bounds);
 		}
 	}

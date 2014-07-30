@@ -804,6 +804,107 @@ namespace ui
 		return parent_ ? parent_->GetFocusManager() : NULL;
 	}
 
+	void View::SetPropertyBoolean(const std::string& path, bool in_value)
+	{
+		if (!property_.get())
+			property_.reset(new DictionaryValue);
+
+		property_->SetBoolean(path, in_value);
+	}
+
+	void View::SetPropertyInteger(const std::string& path, int in_value)
+	{
+		if (!property_.get())
+			property_.reset(new DictionaryValue);
+
+		property_->SetInteger(path, in_value);
+	}
+
+	void View::SetPropertyDouble(const std::string& path, double in_value)
+	{
+		if (!property_.get())
+			property_.reset(new DictionaryValue);
+
+		property_->SetDouble(path, in_value);
+	}
+
+	void View::SetPropertyString(const std::string& path, const std::string& in_value)
+	{
+		if (!property_.get())
+			property_.reset(new DictionaryValue);
+
+		property_->SetString(path, in_value);
+	}
+
+	void View::SetPropertyString(const std::string& path, const std::wstring& in_value)
+	{
+		if (!property_.get())
+			property_.reset(new DictionaryValue);
+
+		property_->SetString(path, in_value);
+	}
+
+	bool View::GetPropertyBoolean(const std::string& path, bool* out_value) const
+	{
+		if (!property_.get())
+			return false;
+
+		return property_->GetBoolean(path, out_value);
+	}
+
+	bool View::GetPropertyInteger(const std::string& path, int* out_value) const
+	{
+		if (!property_.get())
+			return false;
+
+		return property_->GetInteger(path, out_value);
+	}
+
+	bool View::GetPropertyDouble(const std::string& path, double* out_value) const
+	{
+		if (!property_.get())
+			return false;
+
+		return property_->GetDouble(path, out_value);
+	}
+
+	bool View::GetPropertyString(const std::string& path, std::string* out_value) const
+	{
+		if (!property_.get())
+			return false;
+
+		return property_->GetString(path, out_value);
+	}
+
+	bool View::GetPropertyString(const std::string& path, std::wstring* out_value) const
+	{
+		if (!property_.get())
+			return false;
+
+		return property_->GetString(path, out_value);
+	}
+#if 0
+	void View::set_layout_width_policy(LayoutSizePolicy p)
+	{
+		width_policy_ = p;
+	}
+
+	void View::set_layout_height_policy(LayoutSizePolicy p)
+	{
+		height_policy_ = p;
+	}
+
+	ui::LayoutSizePolicy View::get_layout_width_policy() const
+	{
+		return width_policy_;
+	}
+
+	ui::LayoutSizePolicy View::get_layout_height_policy() const
+	{
+		return height_policy_;
+	}
+#endif
+
 	
 
 

@@ -135,6 +135,12 @@
     <ClCompile Include="layout\box_layout.cpp">
       <Filter>layout</Filter>
     </ClCompile>
+    <ClCompile Include="core\value.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="layout\fluid_layout.cpp">
+      <Filter>layout</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -259,6 +265,12 @@
       <Filter>core</Filter>
     </ClInclude>
     <ClInclude Include="layout\box_layout.h">
+      <Filter>layout</Filter>
+    </ClInclude>
+    <ClInclude Include="core\value.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="layout\fluid_layout.h">
       <Filter>layout</Filter>
     </ClInclude>
   </ItemGroup>
