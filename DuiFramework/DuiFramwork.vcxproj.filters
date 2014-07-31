@@ -141,6 +141,9 @@
     <ClCompile Include="layout\fluid_layout.cpp">
       <Filter>layout</Filter>
     </ClCompile>
+    <ClCompile Include="render\uniscribe.cpp">
+      <Filter>render</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -272,6 +275,9 @@
     </ClInclude>
     <ClInclude Include="layout\fluid_layout.h">
       <Filter>layout</Filter>
+    </ClInclude>
+    <ClInclude Include="render\uniscribe.h">
+      <Filter>render</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
