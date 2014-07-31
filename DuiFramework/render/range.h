@@ -46,6 +46,10 @@ namespace ui
 
 		bool operator==(const Range& other) const;
 		bool operator!=(const Range& other) const;
+		bool operator< (const Range& other) const;
+		bool operator<=(const Range& other) const;
+		bool operator> (const Range& other) const;
+		bool operator>=(const Range& other) const;
 		bool EqualsIgnoringDirection(const Range& other) const;
 
 		// Returns true if this range intersects the specified |range|.

@@ -44,6 +44,24 @@ namespace ui
 		return !(*this == other);
 	}
 
+	bool Range::operator<(const Range& other) const	{
+		return start() < other.start();
+	}
+
+	bool Range::operator<=(const Range& other) const	{
+		return start() <= other.start();
+	}
+
+	bool Range::operator>=(const Range& other) const	{
+		return start() >= other.start();
+	}
+
+	bool Range::operator>(const Range& other) const	{
+		return start() > other.start();
+	}
+
+
+
 	bool Range::EqualsIgnoringDirection(const Range& other) const {
 		return GetMin() == other.GetMin() && GetMax() == other.GetMax();
 	}
