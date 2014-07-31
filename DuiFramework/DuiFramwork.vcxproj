@@ -115,7 +115,9 @@
     <ClCompile Include="render\rect.cpp" />
     <ClCompile Include="render\size.cpp" />
     <ClCompile Include="render\transform.cpp" />
-    <ClCompile Include="render\uniscribe.cpp" />
+    <ClCompile Include="render\uniscribe.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
     </ClCompile>
@@ -163,7 +165,9 @@
     <ClInclude Include="render\rect.h" />
     <ClInclude Include="render\size.h" />
     <ClInclude Include="render\transform.h" />
-    <ClInclude Include="render\uniscribe.h" />
+    <ClInclude Include="render\uniscribe.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="third_party\stb_image.h" />
