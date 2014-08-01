@@ -1,57 +1,58 @@
 #include "stdafx.h"
-#include "event_dispatcher.h"
+#include "event_handler.h"
 
+#include "control/window.h"
 #include "core/widget.h"
-#include "core/widget_view.h"
 #include "core/view.h"
 
 namespace ui
 {
-	EventDispatcher::EventDispatcher(WidgetView* view)
-		: view_(view)
+
+	MouseEventHandler::MouseEventHandler(Window* window)
+		: window_(window)
 	{
 
 	}
 
-	Widget* EventDispatcher::widget() const
+	Widget* MouseEventHandler::widget() const
 	{
-		return const_cast<Widget*>(view()->GetWidget());
+		return window_->widget();
 	}
 
-	BOOL EventDispatcher::ProcessWindowMessage(HWND window, UINT message, WPARAM w_param, LPARAM l_param, LRESULT& result)
-	{
-		if (message == WM_PAINT)
-		{
-			Painter painter(widget());
-			view()->DoPaint(&painter);
-			return TRUE;
-		}
-		else if ((message >= WM_MOUSEFIRST && message <= WM_MOUSELAST)
-			|| (message >= WM_NCMOUSEMOVE && message <= WM_NCXBUTTONDBLCLK)
-			|| message == WM_MOUSELEAVE
-			|| message == WM_NCMOUSELEAVE)
-		{
-			result = HandleMouseEvent(message, w_param, l_param);
-			return TRUE;
-		}
-		else if ( message == WM_KEYDOWN
-			|| message == WM_KEYUP
-			|| message == WM_SYSKEYDOWN
-			|| message == WM_SYSKEYUP
-			|| message == WM_CHAR)
-		{
-			result = HandleKeyEvent(message, w_param, l_param);
-			return TRUE;
-		}
-		else if (message == WM_SETFOCUS
-			|| message == WM_KILLFOCUS)
-		{//只处理killfocus
-			result = HandleFocus(message, w_param, l_param);
-		}
-		return FALSE;
-	}
+// 	BOOL EventDispatcher::ProcessWindowMessage(HWND window, UINT message, WPARAM w_param, LPARAM l_param, LRESULT& result)
+// 	{
+// 		if (message == WM_PAINT)
+// 		{
+// 			Painter painter(widget());
+// 			view()->DoPaint(&painter);
+// 			return TRUE;
+// 		}
+// 		else if ((message >= WM_MOUSEFIRST && message <= WM_MOUSELAST)
+// 			|| (message >= WM_NCMOUSEMOVE && message <= WM_NCXBUTTONDBLCLK)
+// 			|| message == WM_MOUSELEAVE
+// 			|| message == WM_NCMOUSELEAVE)
+// 		{
+// 			result = HandleMouseEvent(message, w_param, l_param);
+// 			return TRUE;
+// 		}
+// 		else if ( message == WM_KEYDOWN
+// 			|| message == WM_KEYUP
+// 			|| message == WM_SYSKEYDOWN
+// 			|| message == WM_SYSKEYUP
+// 			|| message == WM_CHAR)
+// 		{
+// 			result = HandleKeyEvent(message, w_param, l_param);
+// 			return TRUE;
+// 		}
+// 		else if (message == WM_SETFOCUS
+// 			|| message == WM_KILLFOCUS)
+// 		{//只处理killfocus
+// 			result = HandleFocus(message, w_param, l_param);
+// 		}
+// 		return FALSE;
+// 	}
 
-	LRESULT EventDispatcher::HandleMouseEvent(UINT message, WPARAM w_param, LPARAM l_param)
+	void MouseEventHandler::HandleMouseEvent(UINT message, WPARAM w_param, LPARAM l_param)
 	{
 		Point pt = GetMousePosition(widget());
 
@@ -110,10 +111,9 @@ namespace ui
 		default:
 			break;
 		}
-		return 0;
 	}
 
-	void EventDispatcher::HandleMouseMove(const Point& pt)
+	void MouseEventHandler::HandleMouseMove(const Point& pt)
 	{
 		if (mouse_position_ == pt)
 			return;
@@ -158,13 +158,13 @@ namespace ui
 		DispatchMouseEnterEvent(public_ancestor, hitttest_view_);
 	}
 
-	void EventDispatcher::DispatchMouseMoveEvent(View* from)
+	void MouseEventHandler::DispatchMouseMoveEvent(View* from)
 	{
 		MouseEvent evt(EVENT_MOUSE_MOVE, mouse_position_, from);
 		DispatchPropagation(&evt, from);
 	}
 
-	void EventDispatcher::DispatchMouseLeaveEvent(View* from, View* to)
+	void MouseEventHandler::DispatchMouseLeaveEvent(View* from, View* to)
 	{
 		if (to == NULL)
 			to = view();
@@ -172,13 +172,14 @@ namespace ui
 		for (View* v = from; v != to; v = v->parent())
 		{
 			MouseEvent evt(EVENT_MOUSE_LEAVE, mouse_position_, v);
-			v->HandleEvent(&evt);
+			//Instance().GetRegister(v)[EVENT_MOUSE_LEAVE].Invoke(evt);
+			//v->HandleEvent(&evt);
 		}
 		MouseEvent evt(EVENT_MOUSE_LEAVE, mouse_position_, to);
-		to->HandleEvent(&evt);
+		//to->HandleEvent(&evt);
 	}
 
-	void EventDispatcher::DispatchMouseEnterEvent(View* from, View* to)
+	void MouseEventHandler::DispatchMouseEnterEvent(View* from, View* to)
 	{
 		Views views;
 		if (from == NULL)
@@ -190,39 +191,40 @@ namespace ui
 		for (auto iter = views.rbegin(); iter != views.rend(); iter++)
 		{
 			MouseEvent evt(EVENT_MOUSE_ENTER, mouse_position_, *iter);
-			(*iter)->HandleEvent(&evt);
+			//(*iter)->HandleEvent(&evt);
 		}
 	}
 
-	void EventDispatcher::DispatchMouseDownEvent(View* from, int buttons)
+	void MouseEventHandler::DispatchMouseDownEvent(View* from, int buttons)
 	{
 		MouseDownEvent evt(EVENT_MOUSE_DOWN, mouse_position_, from, buttons);
 		DispatchPropagation(&evt, from);
 	}
 
-	void EventDispatcher::DispatchMouseUpEvent(View* from, int buttons)
+	void MouseEventHandler::DispatchMouseUpEvent(View* from, int buttons)
 	{
 		MouseUpEvent evt(EVENT_MOUSE_UP, mouse_position_, from, buttons);
 		DispatchPropagation(&evt, from);
 	}
 
-	void EventDispatcher::DispatchMouseDbClickEvent(View* from, int buttons)
+	void MouseEventHandler::DispatchMouseDbClickEvent(View* from, int buttons)
 	{
 		MouseUpEvent evt(EVENT_MOUSE_DBCLICK, mouse_position_, from, buttons);
 		DispatchPropagation(&evt, from);
 	}
 
-	void EventDispatcher::DispatchPropagation(Event* evt, View* from)
+	void MouseEventHandler::DispatchPropagation(Event* evt, View* from)
 	{
 		for (View* v = from; v != NULL; v = v->parent())
 		{
 			if (!evt->stopped_propagation()) {
-				v->HandleEvent(evt);
+				//v->HandleEvent(evt);
 			}
 		}
 	}
 
-	LRESULT EventDispatcher::HandleKeyEvent(UINT message, WPARAM w_param, LPARAM l_param)
+#if 0
+	LRESULT MouseEventHandler::HandleKeyEvent(UINT message, WPARAM w_param, LPARAM l_param)
 	{
 		View* focused_view = view()->GetFocusedView();
 		if (!focused_view)
@@ -272,6 +274,11 @@ namespace ui
 		view()->GetFocusManager()->LoseFocus((HWND)w_param);
 		return 0;
 	}
+#endif
 
+	View* MouseEventHandler::view() const
+	{
+		return window_->GetHostView();
+	}
 
 }

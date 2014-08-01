@@ -5,31 +5,32 @@
 
 namespace ui
 {
-	class WidgetView;
+
 	class View;
-	class EventDispatcher
+	class Window;
+	class MouseEventHandler
 	{
 	public:
-		EventDispatcher(WidgetView* view);
+		MouseEventHandler(Window* window);
 
-		BOOL ProcessWindowMessage(HWND window, UINT message, WPARAM w_param, LPARAM l_param, LRESULT& result);
+		void HandleMouseEvent(UINT message,
+			WPARAM w_param,
+			LPARAM l_param);
 
 		void DispatchPropagation(Event* evt, View* from);
 
 		void SetFocus(View* v);
 		View* GetFocusedView() const;
 	private:
-		LRESULT HandleMouseEvent(UINT message,
-			WPARAM w_param,
-			LPARAM l_param);
+		
 
-		LRESULT HandleKeyEvent(UINT message,
-			WPARAM w_param,
-			LPARAM l_param);
-
-		LRESULT HandleFocus(UINT message,
-			WPARAM w_param,
-			LPARAM l_param);
+// 		LRESULT HandleKeyEvent(UINT message,
+// 			WPARAM w_param,
+// 			LPARAM l_param);
+// 
+// 		LRESULT HandleFocus(UINT message,
+// 			WPARAM w_param,
+// 			LPARAM l_param);
 
 		void HandleMouseMove(const Point& pt);
 
@@ -40,14 +41,16 @@ namespace ui
 		void DispatchMouseUpEvent(View* from, int buttons);
 		void DispatchMouseDbClickEvent(View* from, int buttons);//click和dbclick事件先暂时放一边
 
-		void DispatchMousePressEvent(View* from, WPARAM w_param, LPARAM l_param);
-		void DispatchMouseReleaseEvent(View* from, WPARAM w_param, LPARAM l_param);
+		//void DispatchMousePressEvent(View* from, WPARAM w_param, LPARAM l_param);
+		//void DispatchMouseReleaseEvent(View* from, WPARAM w_param, LPARAM l_param);
 
-		WidgetView* view() const { return view_; }
+		View* view() const;
 		Widget* widget() const;
-		WidgetView* view_;
+
+		Window* window_;
 
 		Point mouse_position_;
 		View* hitttest_view_{ NULL };
 	};
+
 }

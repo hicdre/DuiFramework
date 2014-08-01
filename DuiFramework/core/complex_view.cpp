@@ -15,16 +15,16 @@ namespace ui
 
 	}
 
-	void ComplexView::Listen(View* subview, EventType type, EventAction action)
-	{
-		assert(HasDescender(subview));
-
-		listener_.Listen(subview, type, action);
-	}
-
-	void ComplexView::Listen(EventType type, EventAction action)
-	{
-		listener_.Listen(this, type, action);
-	}
+// 	void ComplexView::Listen(View* subview, EventType type, EventAction action)
+// 	{
+// 		assert(HasDescender(subview));
+// 
+// 		listener_.Listen(subview, type, action);
+// 	}
+// 
+// 	void ComplexView::Listen(EventType type, EventAction action)
+// 	{
+// 		listener_.Listen(this, type, action);
+// 	}
 
 }

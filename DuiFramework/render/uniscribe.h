@@ -211,7 +211,7 @@ namespace ui
 						nextCharIndex++;
 					}
 
-					size_t glyphCount = 0;
+					int glyphCount = 0;
 					if (nextCharIndex == length)
 					{
 						glyphCount = glyphs.size() - glyphIndex;

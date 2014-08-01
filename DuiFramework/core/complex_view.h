@@ -11,9 +11,9 @@ namespace ui
 		ComplexView();
 		virtual ~ComplexView();
 
-		void Listen(View* subview, EventType type, EventAction action);
-		void Listen(EventType type, EventAction action);
+		//void Listen(View* subview, EventType type, EventAction action);
+		//void Listen(EventType type, EventAction action);
 	protected:
-		EventListener listener_;
+		//EventListener listener_;
 	};
 }

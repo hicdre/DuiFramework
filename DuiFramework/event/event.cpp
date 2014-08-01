@@ -2,11 +2,11 @@
 #include "event.h"
 
 #include "core/view.h"
-#include "core/app.h"
 #include "core/widget.h"
 
 namespace ui
 {
+
 	bool IsButtonDown(const MSG& msg) {
 		return ((MK_LBUTTON | MK_MBUTTON | MK_RBUTTON | MK_XBUTTON1 | MK_XBUTTON2) &
 			msg.wParam) != 0;
@@ -161,5 +161,6 @@ namespace ui
 	{
 		return sender_;
 	}
+
 
 }

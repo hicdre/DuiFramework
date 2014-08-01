@@ -90,12 +90,6 @@
     <ClCompile Include="render\padding.cpp">
       <Filter>render</Filter>
     </ClCompile>
-    <ClCompile Include="core\widget_view.cpp">
-      <Filter>core</Filter>
-    </ClCompile>
-    <ClCompile Include="core\widget_delegate.cpp">
-      <Filter>core</Filter>
-    </ClCompile>
     <ClCompile Include="event\event.cpp">
       <Filter>event</Filter>
     </ClCompile>
@@ -106,9 +100,6 @@
       <Filter>event</Filter>
     </ClCompile>
     <ClCompile Include="event\event_listen_manager.cpp">
-      <Filter>event</Filter>
-    </ClCompile>
-    <ClCompile Include="event\event_dispatcher.cpp">
       <Filter>event</Filter>
     </ClCompile>
     <ClCompile Include="control\button.cpp">
@@ -143,6 +134,18 @@
     </ClCompile>
     <ClCompile Include="render\uniscribe.cpp">
       <Filter>render</Filter>
+    </ClCompile>
+    <ClCompile Include="control\control.cpp">
+      <Filter>control</Filter>
+    </ClCompile>
+    <ClCompile Include="control\window.cpp">
+      <Filter>control</Filter>
+    </ClCompile>
+    <ClCompile Include="core\window_host_view.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="event\event_handler.cpp">
+      <Filter>event</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -221,12 +224,6 @@
     <ClInclude Include="render\padding.h">
       <Filter>render</Filter>
     </ClInclude>
-    <ClInclude Include="core\widget_view.h">
-      <Filter>core</Filter>
-    </ClInclude>
-    <ClInclude Include="core\widget_delegate.h">
-      <Filter>core</Filter>
-    </ClInclude>
     <ClInclude Include="event\event.h">
       <Filter>event</Filter>
     </ClInclude>
@@ -237,9 +234,6 @@
       <Filter>event</Filter>
     </ClInclude>
     <ClInclude Include="event\event_listen_manager.h">
-      <Filter>event</Filter>
-    </ClInclude>
-    <ClInclude Include="event\event_dispatcher.h">
       <Filter>event</Filter>
     </ClInclude>
     <ClInclude Include="control\button.h">
@@ -278,6 +272,18 @@
     </ClInclude>
     <ClInclude Include="render\uniscribe.h">
       <Filter>render</Filter>
+    </ClInclude>
+    <ClInclude Include="control\control.h">
+      <Filter>control</Filter>
+    </ClInclude>
+    <ClInclude Include="control\window.h">
+      <Filter>control</Filter>
+    </ClInclude>
+    <ClInclude Include="core\window_host_view.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="event\event_handler.h">
+      <Filter>event</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

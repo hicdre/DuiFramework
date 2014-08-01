@@ -8,7 +8,7 @@
 #include "render/painter.h"
 #include "render/border.h"
 #include "event/event.h"
-#include "event/event_dispatcher.h"
+#include "event/event_handler.h"
 #include "core/focus_manager.h"
 #include "core/value.h"
 #include "layout/layout_manager.h"
@@ -55,8 +55,8 @@ namespace ui
 		bool Hittest(const Point& pt, Views& views);
 
 		// Get the Widget that hosts this View, if any.
-		virtual const Widget* GetWidget() const;
-		virtual Widget* GetWidget();
+		//virtual const Widget* GetWidget() const;
+		//virtual Widget* GetWidget();
 
 
 		// Size and disposition ------------------------------------------------------
@@ -85,6 +85,7 @@ namespace ui
 		bool IsDrawn() const;
 		void SetEnabled(bool enabled);
 		bool enabled() const { return enabled_; }
+		void SetDragable(bool v);
 
 		// Layout --------------------------------------------------------------------
 		virtual void Layout();
@@ -131,6 +132,8 @@ namespace ui
 		void SetCursor(HCURSOR cursor);
 		virtual HCURSOR GetCursor();
 
+		
+
 		//void set_layout_width_policy(LayoutSizePolicy p);
 		//void set_layout_height_policy(LayoutSizePolicy p);
 
@@ -139,11 +142,11 @@ namespace ui
 
 		// Event---------------------------------------------
 
-		void HandleEvent(Event* event);
-		void DispatchPropagation(Event* event);
+		//void HandleEvent(Event* event);
+		//void DispatchPropagation(Event* event);
 		//void SetEventDelegate(EventDelegate* delegate);
 
-		virtual EventDispatcher* GetEventDispatcher() const;
+		//virtual EventDispatcher* GetEventDispatcher() const;
 
 		void SetFocus();
 		void SetFocusable(bool focusable);
