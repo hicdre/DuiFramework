@@ -85,6 +85,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="control\button.cpp" />
+    <ClCompile Include="control\control.cpp" />
+    <ClCompile Include="control\window.cpp" />
     <ClCompile Include="core\app.cpp" />
     <ClCompile Include="core\image_view.cpp" />
     <ClCompile Include="core\rectangle.cpp" />
@@ -94,12 +96,11 @@
     <ClCompile Include="core\value.cpp" />
     <ClCompile Include="core\view.cpp" />
     <ClCompile Include="core\widget.cpp" />
-    <ClCompile Include="core\widget_delegate.cpp" />
-    <ClCompile Include="core\widget_view.cpp" />
+    <ClCompile Include="core\window_host_view.cpp" />
     <ClCompile Include="event\event.cpp" />
     <ClCompile Include="event\event_listen_manager.cpp" />
     <ClCompile Include="event\event_listener.cpp" />
-    <ClCompile Include="event\event_dispatcher.cpp" />
+    <ClCompile Include="event\event_handler.cpp" />
     <ClCompile Include="event\key_event.cpp" />
     <ClCompile Include="event\mouse_event.cpp" />
     <ClCompile Include="layout\box_layout.cpp" />
@@ -131,6 +132,8 @@
     <ClInclude Include="base\ref_counted.h" />
     <ClInclude Include="base\scoped_ptr.h" />
     <ClInclude Include="control\button.h" />
+    <ClInclude Include="control\control.h" />
+    <ClInclude Include="control\window.h" />
     <ClInclude Include="core\app.h" />
     <ClInclude Include="core\image_view.h" />
     <ClInclude Include="core\rectangle.h" />
@@ -141,13 +144,12 @@
     <ClInclude Include="core\value.h" />
     <ClInclude Include="core\view.h" />
     <ClInclude Include="core\widget.h" />
-    <ClInclude Include="core\widget_delegate.h" />
-    <ClInclude Include="core\widget_view.h" />
+    <ClInclude Include="core\window_host_view.h" />
     <ClInclude Include="duiframework.h" />
     <ClInclude Include="event\event.h" />
     <ClInclude Include="event\event_listen_manager.h" />
     <ClInclude Include="event\event_listener.h" />
-    <ClInclude Include="event\event_dispatcher.h" />
+    <ClInclude Include="event\event_handler.h" />
     <ClInclude Include="event\key_event.h" />
     <ClInclude Include="event\mouse_event.h" />
     <ClInclude Include="layout\box_layout.h" />

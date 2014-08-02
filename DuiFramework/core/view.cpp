@@ -18,7 +18,7 @@ namespace ui
 
 	View::~View()
 	{
-		EventListenManager::Default()->RemoveView(this);
+		//EventListenManager::Default()->RemoveView(this);
 	}
 
 	View* View::parent() const
@@ -296,15 +296,15 @@ namespace ui
 	}
 
 
-	const Widget* View::GetWidget() const
-	{
-		return parent_ ? parent_->GetWidget() : NULL;
-	}
+	//const Widget* View::GetWidget() const
+	//{
+	//	return parent_ ? parent_->GetWidget() : NULL;
+	//}
 
-	Widget* View::GetWidget()
-	{
-		return const_cast<Widget*>(const_cast<const View*>(this)->GetWidget());
-	}
+	//Widget* View::GetWidget()
+	//{
+	//	return const_cast<Widget*>(const_cast<const View*>(this)->GetWidget());
+	//}
 
 	void View::SetBounds(int x, int y, int width, int height)
 	{
@@ -411,7 +411,6 @@ namespace ui
 			OnEnabledChanged();
 		}
 	}
-
 
 	void View::SetLayout(LayoutManager* layout)
 	{
@@ -753,30 +752,30 @@ namespace ui
 		return result;
 	}
 
-	void View::HandleEvent(Event* event)
-	{
-		EventListenManager::Default()->DispatchEvent(this, event);
-	}
+// 	void View::HandleEvent(Event* event)
+// 	{
+// 		EventListenManager::Default()->DispatchEvent(this, event);
+// 	}
 
 // 	void View::SetEventDelegate(EventDelegate* delegate)
 // 	{
 // 		event_delegate_.reset(delegate);
 // 	}
 
-	EventDispatcher* View::GetEventDispatcher() const
-	{
-		return parent() ? parent()->GetEventDispatcher() : NULL;
-	}
-
-
-	void View::DispatchPropagation(Event* event)
-	{
-		EventDispatcher* dispatcher = GetEventDispatcher();
-		if (dispatcher)
-		{
-			dispatcher->DispatchPropagation(event, this);
-		}
-	}
+// 	EventDispatcher* View::GetEventDispatcher() const
+// 	{
+// 		return parent() ? parent()->GetEventDispatcher() : NULL;
+// 	}
+// 
+// 
+// 	void View::DispatchPropagation(Event* event)
+// 	{
+// 		EventDispatcher* dispatcher = GetEventDispatcher();
+// 		if (dispatcher)
+// 		{
+// 			dispatcher->DispatchPropagation(event, this);
+// 		}
+// 	}
 
 
 	void View::SetFocus()

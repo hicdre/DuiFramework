@@ -7,6 +7,7 @@
 
 namespace ui
 {
+#if 0
 	class ButtonStateView : public Label
 	{
 	public:
@@ -205,5 +206,5 @@ namespace ui
 	{
 		return state_;
 	}
-
+#endif
 }

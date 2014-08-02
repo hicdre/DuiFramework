@@ -2,13 +2,13 @@
 
 namespace ui
 {
-	class WidgetView;
+	class Window;
 	class View;
 	class Widget;
 	class FocusManager
 	{
 	public:
-		FocusManager(WidgetView* view);
+		FocusManager(Window* window);
 
 		View* GetFocusedView() const;
 
@@ -17,9 +17,7 @@ namespace ui
 		void LoseFocus(HWND hwnd);
 		void GainFocus(HWND hwnd);
 	private:
-		WidgetView* view() const { return view_; }
-		Widget* widget() const;
-		WidgetView* view_;
+		Window* window_;
 
 		View* focused_view_{ NULL };
 

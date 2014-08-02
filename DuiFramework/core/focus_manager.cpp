@@ -1,13 +1,12 @@
 #include "stdafx.h"
 #include "focus_manager.h"
 
-#include "core/widget_view.h"
 
 namespace ui
 {
 
-	FocusManager::FocusManager(WidgetView* view)
-		: view_(view)
+	FocusManager::FocusManager(Window* window)
+		: window_(window)
 	{
 
 	}
@@ -15,11 +14,6 @@ namespace ui
 	View* FocusManager::GetFocusedView() const
 	{
 		return focused_view_;
-	}
-
-	Widget* FocusManager::widget() const
-	{
-		return const_cast<Widget*>(view()->GetWidget());
 	}
 
 	void FocusManager::SetFocus(View* v)
@@ -30,6 +24,7 @@ namespace ui
 		View* old_view = focused_view_;
 		focused_view_ = v;
 
+#if 0
 		if (old_view == NULL)
 		{
 			Widget* new_widget = focused_view_->GetWidget();
@@ -52,24 +47,25 @@ namespace ui
 			Event evt(EVENT_FOCUS_IN, old_view);
 			view()->GetEventDispatcher()->DispatchPropagation(&evt, focused_view_);
 		}
+#endif
 	}
 
 	void FocusManager::LoseFocus(HWND hwnd)
 	{
-		if (hwnd == NULL) {
-			SetFocus(NULL);
-			return;
-		}
-
-		if (::GetTopWindow(hwnd) == widget()->hwnd())
-			return;
-
-		SetFocus(NULL);
+// 		if (hwnd == NULL) {
+// 			SetFocus(NULL);
+// 			return;
+// 		}
+// 
+// 		if (::GetTopWindow(hwnd) == widget()->hwnd())
+// 			return;
+// 
+// 		SetFocus(NULL);
 	}
 
 	void FocusManager::GainFocus(HWND hwnd)
 	{
-		SetFocus(view());
+		//SetFocus(view());
 	}
 
 }

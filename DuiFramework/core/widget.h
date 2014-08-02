@@ -5,7 +5,6 @@
 
 namespace ui
 {
-	class View;
 	class Widget
 	{
 	public:

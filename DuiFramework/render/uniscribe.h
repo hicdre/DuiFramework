@@ -113,19 +113,184 @@ namespace ui
 
 			bool BuildData()
 			{
-				// generate break information
-				charLogattrs.resize(length);
+				bool is_error = false;
+				bool realloac_space = false;
+				//分配空间
+				size_t glyphCount = glyphs.size();
+				if (glyphCount == 0)
+				{
+					size_t glyphCount = length*1.5 + 16;
+					glyphs.resize(glyphCount);
+					glyphVisattrs.resize(glyphCount);
+					charCluster.resize(length);
+					realloac_space = true;
+				}
 
-				HRESULT hr = ScriptBreak(
-					itemText,
-					(int)length,
-					&scriptItem.a,
-					&charLogattrs[0]
-					);
-				if (hr == 0)
-					return true;
-				ClearData();
-				return false;
+				//获取字形信息
+				HDC run_dc = NULL;
+				while (!is_error)
+				{
+					int availableGlyphCount = 0;
+					HRESULT hr = ScriptShape(
+						run_dc,
+						&scriptCache,
+						runText,
+						(int)length,
+						(int)glyphCount,
+						&sa,
+						&glyphs[0],
+						&charCluster[0],
+						&glyphVisattrs[0],
+						&availableGlyphCount
+						);
+
+					if (hr == 0) 
+					{
+						glyphCount = availableGlyphCount;
+						if (realloac_space)
+						{
+							glyphs.resize(glyphCount);
+							glyphVisattrs.resize(glyphCount);
+							glyphAdvances.resize(glyphCount);
+							glyphOffsets.resize(glyphCount);
+						}
+						break;
+					}
+					else if (hr == E_PENDING) 
+					{
+						run_dc = dc;
+					}
+					else if (hr == E_OUTOFMEMORY) 
+					{
+						if (realloac_space)
+						{
+							glyphCount += length;
+							glyphs.resize(glyphCount);
+							glyphVisattrs.resize(glyphCount);
+						}
+						else
+						{
+							is_error = true;
+						}
+					}
+					else if (hr == USP_E_SCRIPT_NOT_IN_FONT)
+					{
+						if (sa.eScript != SCRIPT_UNDEFINED)
+						{
+							sa.eScript = SCRIPT_UNDEFINED;
+						}
+						else
+						{
+							is_error = true;
+						}
+					}
+					else
+					{
+						is_error = true;
+					}
+				}
+
+				if (is_error)
+					return false;
+
+				//
+				SCRIPT_FONTPROPERTIES fp;
+				memset(&fp, 0, sizeof(fp));
+				fp.cBytes = sizeof(fp);
+				HRESULT hr = ScriptGetFontProperties(
+					run_dc,
+					&scriptCache,
+					&fp);
+				WORD invalidGlyph = fp.wgDefault;
+				if (hr != S_OK)
+				{
+					invalidGlyph = 0;
+				}
+
+				//生成breaking information
+				breakings.push_back(0);
+				size_t charIndex = 0;
+				bool lastGlyphAvailable = false;
+				while (charIndex < length)
+				{
+					size_t glyphIndex = charCluster[charIndex];
+					size_t nextCharIndex = charIndex;
+					while (nextCharIndex < length && charCluster[nextCharIndex] == glyphIndex)
+					{
+						nextCharIndex++;
+					}
+
+					int glyphCount = 0;
+					if (nextCharIndex == length)
+					{
+						glyphCount = glyphs.size() - glyphIndex;
+					}
+					else
+					{
+						glyphCount = charCluster[nextCharIndex] - glyphIndex;
+					}
+
+					if (scriptItem->a.fRTL)
+					{
+						glyphCount = -glyphCount;
+						glyphIndex -= glyphCount - 1;
+					}
+
+					bool available = true;
+					for (size_t i = 0; i < glyphCount; i++)
+					{
+						if (glyphs[i + glyphIndex] == invalidGlyph)
+						{
+							available = false;
+						}
+					}
+
+					if (charIndex == 0)
+					{
+						lastGlyphAvailable = available;
+						breakingAvailabilities.push_back(available);
+					}
+					else if (lastGlyphAvailable != available)
+					{
+						breakings.push_back(charIndex);
+						lastGlyphAvailable = available;
+						breakingAvailabilities.push_back(available);
+					}
+
+					charIndex = nextCharIndex;
+				}
+
+				if (breakings.size() == 1)
+				{//之前直接加入了一个
+					run_dc = NULL;
+					while (!is_error)
+					{
+						HRESULT hr = ScriptPlace(
+							run_dc,
+							&scriptCache,
+							&glyphs[0],
+							(int)glyphCount,
+							&glyphVisattrs[0],
+							&sa,
+							&glyphAdvances[0],
+							&glyphOffsets[0],
+							&runAbc
+							);
+						if (hr == 0)
+						{
+							break;
+						}
+						else if (hr == E_PENDING)
+						{
+							run_dc = dc;
+						}
+						else
+						{
+							is_error = true;
+						}
+					}
+				}
+				return !is_error;
 			}
 
 			bool IsRightToLeft()

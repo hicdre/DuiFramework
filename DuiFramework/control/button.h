@@ -4,6 +4,7 @@
 
 namespace ui
 {
+#if 0
 	class ButtonStateView;
 
 	/*
@@ -59,5 +60,5 @@ namespace ui
 		State state_;
 		ButtonStateView* state_views[STATE_MAX];
 	};
-
+#endif
 }

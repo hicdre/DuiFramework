@@ -4,9 +4,12 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <functional>
+#include <list>
+#include <set>
 
 namespace ui
 {
+
 	class View;
 	class Widget;
 	class Event
@@ -41,4 +44,5 @@ namespace ui
 
 	Point GetMousePosition(Widget* v);
 	int GetMouseKeyFlags();
+
 }

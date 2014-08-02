@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "widget.h"
 
-#include "core/view.h"
 #include "utils/utils.h"
 
 #include <cassert>
