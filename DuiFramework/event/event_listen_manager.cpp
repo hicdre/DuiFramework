@@ -38,7 +38,7 @@ namespace ui
 		return App::Get()->DefaultEventListenManager();
 	}
 
-	void EventListenManager::DispatchEvent(View* v, Event* e)
+	void EventListenManager::InvokeEvent(View* v, Event* e)
 	{
 		for (EventListener* l : listener_list_)
 		{

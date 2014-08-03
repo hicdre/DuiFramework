@@ -3,18 +3,21 @@
 
 namespace ui
 {
+	
+
+
 	class EventListener
 	{
 	public:
 		EventListener();
 		virtual ~EventListener();
 
-		EventListener& Listen(View* from, EventType type, EventAction action);
+		EventListener& Listen(View* from, EventType type, EventMethod action);
 		void UnListen(View* from, EventType type);
 		void UnListen(View* from);
 
 		void DispatchEvent(View* v, Event* e);
 	private:
-		EventListenMap event_map_;
+		EventHandlerList event_handler_list_;
 	};
 }

@@ -4,9 +4,20 @@
 #include "control/window.h"
 #include "core/widget.h"
 #include "core/view.h"
+#include "event/event_listen_manager.h"
 
 namespace ui
 {
+
+	void DispatchPropagation(Event* evt, View* from)
+	{
+		for (View* v = from; v != NULL; v = v->parent())
+		{
+			if (!evt->stopped_propagation()) {
+				EventListenManager::Default()->InvokeEvent(v, evt);
+			}
+		}
+	}
 
 	MouseEventHandler::MouseEventHandler(Window* window)
 		: window_(window)
@@ -213,42 +224,9 @@ namespace ui
 		DispatchPropagation(&evt, from);
 	}
 
-	void MouseEventHandler::DispatchPropagation(Event* evt, View* from)
-	{
-		for (View* v = from; v != NULL; v = v->parent())
-		{
-			if (!evt->stopped_propagation()) {
-				//v->HandleEvent(evt);
-			}
-		}
-	}
+	
 
 #if 0
-	LRESULT MouseEventHandler::HandleKeyEvent(UINT message, WPARAM w_param, LPARAM l_param)
-	{
-		View* focused_view = view()->GetFocusedView();
-		if (!focused_view)
-			return 0;
-
-		switch (message)
-		{
-		case WM_KEYDOWN :
-		case WM_SYSKEYDOWN:
-			DispatchMousePressEvent(focused_view, w_param, l_param);
-			break;
-		case WM_KEYUP:
-		case WM_SYSKEYUP:
-			DispatchMouseReleaseEvent(focused_view, w_param, l_param);
-			break;
-		case WM_CHAR:
-			DispatchMousePressEvent(focused_view, w_param, l_param);
-			DispatchMouseReleaseEvent(focused_view, w_param, l_param);
-			break;
-		default:
-			break;
-		}
-		return 0;
-	}
 
 	void EventDispatcher::DispatchMousePressEvent(View* from, WPARAM w_param, LPARAM l_param)
 	{
@@ -279,6 +257,56 @@ namespace ui
 	View* MouseEventHandler::view() const
 	{
 		return window_->GetHostView();
+	}
+
+
+	KeyEventHandler::KeyEventHandler(Window* window)
+		: window_(window)
+	{
+
+	}
+
+	void KeyEventHandler::HandleKeyEvent(UINT message, WPARAM w_param, LPARAM l_param)
+	{
+		View* focused_view = GetFocusedView();
+		if (!focused_view)
+			return;
+
+		switch (message)
+		{
+		case WM_KEYDOWN:
+		case WM_SYSKEYDOWN:
+			DispatchKeyPressEvent(focused_view, w_param, l_param);
+			break;
+		case WM_KEYUP:
+		case WM_SYSKEYUP:
+			DispatchKeyReleaseEvent(focused_view, w_param, l_param);
+			break;
+		case WM_CHAR:
+			DispatchKeyPressEvent(focused_view, w_param, l_param);
+			DispatchKeyReleaseEvent(focused_view, w_param, l_param);
+			break;
+		default:
+			break;
+		}
+		return;
+	}
+
+	View* KeyEventHandler::GetFocusedView() const
+	{
+		return window_->GetFocusedView();
+	}
+
+	void KeyEventHandler::DispatchKeyPressEvent(View* from, WPARAM w_param, LPARAM l_param)
+	{
+		KeyEvent evt(EVENT_KEY_PRESSED, w_param, from, l_param);
+		DispatchPropagation(&evt, from);
+	}
+
+	void KeyEventHandler::DispatchKeyReleaseEvent(View* from, WPARAM w_param, LPARAM l_param)
+	{
+		KeyEvent evt(EVENT_KEY_RELEASED, w_param, from, l_param);
+		DispatchPropagation(&evt, from);
 	}
 
 }

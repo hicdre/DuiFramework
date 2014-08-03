@@ -16,11 +16,7 @@ namespace ui
 		void HandleMouseEvent(UINT message,
 			WPARAM w_param,
 			LPARAM l_param);
-
-		void DispatchPropagation(Event* evt, View* from);
-
-		void SetFocus(View* v);
-		View* GetFocusedView() const;
+		
 	private:
 		
 
@@ -41,9 +37,7 @@ namespace ui
 		void DispatchMouseUpEvent(View* from, int buttons);
 		void DispatchMouseDbClickEvent(View* from, int buttons);//click和dbclick事件先暂时放一边
 
-		//void DispatchMousePressEvent(View* from, WPARAM w_param, LPARAM l_param);
-		//void DispatchMouseReleaseEvent(View* from, WPARAM w_param, LPARAM l_param);
-
+		
 		View* view() const;
 		Widget* widget() const;
 
@@ -51,6 +45,24 @@ namespace ui
 
 		Point mouse_position_;
 		View* hitttest_view_{ NULL };
+	};
+
+	class KeyEventHandler
+	{
+	public:
+		KeyEventHandler(Window* window);
+
+		void HandleKeyEvent(UINT message,
+			WPARAM w_param,
+			LPARAM l_param);
+
+	private:
+		void DispatchKeyPressEvent(View* from, WPARAM w_param, LPARAM l_param);
+		void DispatchKeyReleaseEvent(View* from, WPARAM w_param, LPARAM l_param);
+
+		View* GetFocusedView() const;
+
+		Window* window_;
 	};
 
 }

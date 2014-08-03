@@ -15,7 +15,7 @@ namespace ui
 
 		void RemoveView(View* v);
 
-		void DispatchEvent(View* v, Event* e);
+		void InvokeEvent(View* v, Event* e);
 
 		static EventListenManager* Default();
 	private:

@@ -38,9 +38,18 @@ namespace ui
 		View* sender_;//消息来源
 	};
 
-	typedef std::function<void(View* target, Event* evt)> EventAction;
-	typedef std::unordered_set<EventAction> EventActionList;
-	typedef std::unordered_map<View*, std::unordered_map<EventType, EventAction>>  EventListenMap;
+	typedef std::function<void(View* target, Event* evt)> EventMethod;
+
+	class EventListener;
+	struct EventHandler
+	{
+		EventListener* listener{ NULL };
+		EventMethod method;
+	};
+
+	typedef std::list<EventHandler*> EventHandlerList;
+	//typedef std::unordered_set<EventAction> EventActionList;
+	//typedef std::unordered_map<View*, std::unordered_map<EventType, EventAction>>  EventListenMap;
 
 	Point GetMousePosition(Widget* v);
 	int GetMouseKeyFlags();

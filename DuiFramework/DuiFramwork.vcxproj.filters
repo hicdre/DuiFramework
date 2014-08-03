@@ -147,6 +147,9 @@
     <ClCompile Include="event\event_handler.cpp">
       <Filter>event</Filter>
     </ClCompile>
+    <ClCompile Include="event\event_dispatcher.cpp">
+      <Filter>event</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -283,6 +286,9 @@
       <Filter>core</Filter>
     </ClInclude>
     <ClInclude Include="event\event_handler.h">
+      <Filter>event</Filter>
+    </ClInclude>
+    <ClInclude Include="event\event_dispatcher.h">
       <Filter>event</Filter>
     </ClInclude>
   </ItemGroup>

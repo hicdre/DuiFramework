@@ -98,6 +98,7 @@
     <ClCompile Include="core\widget.cpp" />
     <ClCompile Include="core\window_host_view.cpp" />
     <ClCompile Include="event\event.cpp" />
+    <ClCompile Include="event\event_dispatcher.cpp" />
     <ClCompile Include="event\event_listen_manager.cpp" />
     <ClCompile Include="event\event_listener.cpp" />
     <ClCompile Include="event\event_handler.cpp" />
@@ -147,6 +148,7 @@
     <ClInclude Include="core\window_host_view.h" />
     <ClInclude Include="duiframework.h" />
     <ClInclude Include="event\event.h" />
+    <ClInclude Include="event\event_dispatcher.h" />
     <ClInclude Include="event\event_listen_manager.h" />
     <ClInclude Include="event\event_listener.h" />
     <ClInclude Include="event\event_handler.h" />

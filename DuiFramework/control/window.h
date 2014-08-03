@@ -45,7 +45,5 @@ namespace ui
 		scoped_ptr<MouseEventHandler> mouse_event_handler_;
 		//scoped_ptr<FocusManager> focus_manager_;
 		View* focused_view_;
-		View* hittest_view_;
-		Point mouse_position_;
 	};
 }
