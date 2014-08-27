@@ -6,10 +6,11 @@ namespace ui
 
 
 	KeyEvent::KeyEvent(EventType type, int key, View* v, uint8 count, uint8 flags)
-		: Event(type, v)
+		: Event(type)
 		, key_(key)
 		, count_(count)
 		, flags_(flags)
+		, sender_(v)
 	{
 
 	}
@@ -38,6 +39,16 @@ namespace ui
 	uint8 KeyEvent::GetFlags() const
 	{
 		return flags_;
+	}
+
+	void KeyEvent::SetSender(View* v)
+	{
+		sender_ = v;
+	}
+
+	View* KeyEvent::sender() const
+	{
+		return sender_;
 	}
 
 }

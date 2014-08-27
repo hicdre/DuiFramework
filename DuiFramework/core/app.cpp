@@ -194,14 +194,6 @@ namespace ui
 		return image_store_.get();
 	}
 
-	EventListenManager* App::DefaultEventListenManager()
-	{
-		if (!listen_manager_.get()) {
-			listen_manager_.reset(new EventListenManager);
-		}
-		return listen_manager_.get();
-	}
-
 	void App::Quit()
 	{
 		::PostQuitMessage(0);

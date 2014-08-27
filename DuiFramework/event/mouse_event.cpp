@@ -8,9 +8,10 @@ namespace ui
 
 
 	MouseEvent::MouseEvent(EventType type, const Point& pt_in_widget, View* sender)
-		: Event(type, sender)
+		: Event(type)
 		, pt_in_widget_(pt_in_widget)
 		, flags_(GetMouseKeyFlags())
+		, sender_(sender)
 	{
 
 	}
@@ -30,17 +31,15 @@ namespace ui
 		return (flags_ & (MOUSE_LEFT | MOUSE_RIGHT | MOUSE_MIDDLE)) != 0;
 	}
 
-
-	MouseDownEvent::MouseDownEvent(EventType type, const Point& pt_in_widget, View* sender, int buttons)
-		: MouseEvent(type, pt_in_widget, sender)
-		, buttons_(buttons)
+	void MouseEvent::SetSender(View* v)
 	{
-
+		sender_ = v;
 	}
 
-	int MouseDownEvent::GetMouseButtons() const
+	View* MouseEvent::sender() const
 	{
-		return buttons_;
+		return sender_;
 	}
+
 
 }

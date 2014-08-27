@@ -1,4 +1,5 @@
 #pragma once
+#include "base/basictypes.h"
 #include "core/constants.h"
 #include "render/point.h"
 #include <unordered_map>
@@ -15,43 +16,64 @@ namespace ui
 	class Event
 	{
 	public:
+		Event();
 		Event(EventType type);
-		Event(EventType type, View* sender);
 		virtual ~Event();
 
 		EventType type() const { return type_; }
+		void SetEventType(EventType type) { type_ = type; }
 
-		void StopPropagation();
-		bool stopped_propagation() const { return !is_propagation_; }
+		bool IsMouseEvent() const;
+		bool IsKeyEvent() const;
 
-		void SetSender(View* v);
-		View* sender() const;
-
-		template<class T>
-		T* To(){
-			return dynamic_cast<T*>(this);
-		}
+		void StopDispatch();
+		bool stopped_dispatch() const { return !is_continue_dispatch_; }
 
 	protected:
 		EventType type_;
-		bool is_propagation_{ true }; //是否继续冒泡
-		View* sender_;//消息来源
+		bool is_continue_dispatch_{ true }; //是否继续冒泡
+		
 	};
-
-	typedef std::function<void(View* target, Event* evt)> EventMethod;
-
-	class EventListener;
-	struct EventHandler
-	{
-		EventListener* listener{ NULL };
-		EventMethod method;
-	};
-
-	typedef std::list<EventHandler*> EventHandlerList;
-	//typedef std::unordered_set<EventAction> EventActionList;
-	//typedef std::unordered_map<View*, std::unordered_map<EventType, EventAction>>  EventListenMap;
 
 	Point GetMousePosition(Widget* v);
-	int GetMouseKeyFlags();
+	//int GetMouseKeyFlags();
 
+	typedef std::function<void(Event*)> EventCallback;
+
+	class EventHandler
+	{
+	public:
+		virtual ~EventHandler() {}
+		virtual void HandleEvent(Event*) = 0;
+	};
+
+	class EventCallbackSet
+	{
+	public:
+		void Insert(EventCallback c, uint32 group = 0);
+		void Remove(uint32 group);
+		void Invoke(Event* evt);
+	private:
+		struct Data{
+			EventCallback c;
+			uint32 group{ 0 };
+		};
+		std::vector<Data> container_;
+	};
+
+	class EventListener : public EventHandler
+	{
+	public:
+		EventListener();
+		virtual ~EventListener();
+
+		virtual void HandleEvent(Event* evt) override;
+
+		EventListener& Listen(EventType type, const EventCallback& c, uint32 group = 0);
+		EventListener& UnListen(EventType type);
+		EventListener& UnListen(EventType type, uint32 group);
+		EventListener& UnListen(uint32 group);
+	private:
+		std::unordered_map<EventType, EventCallbackSet> listen_map_;
+	};
 }

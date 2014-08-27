@@ -28,6 +28,9 @@
     <Filter Include="layout">
       <UniqueIdentifier>{976275d3-241b-4dc1-a6f5-ae39f65d41b6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="view">
+      <UniqueIdentifier>{aa15fc41-6e24-49e8-967e-876d1fb7037b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -55,9 +58,6 @@
       <Filter>utils</Filter>
     </ClCompile>
     <ClCompile Include="core\widget.cpp">
-      <Filter>core</Filter>
-    </ClCompile>
-    <ClCompile Include="core\view.cpp">
       <Filter>core</Filter>
     </ClCompile>
     <ClCompile Include="render\painter.cpp">
@@ -93,13 +93,7 @@
     <ClCompile Include="event\event.cpp">
       <Filter>event</Filter>
     </ClCompile>
-    <ClCompile Include="event\event_listener.cpp">
-      <Filter>event</Filter>
-    </ClCompile>
     <ClCompile Include="event\mouse_event.cpp">
-      <Filter>event</Filter>
-    </ClCompile>
-    <ClCompile Include="event\event_listen_manager.cpp">
       <Filter>event</Filter>
     </ClCompile>
     <ClCompile Include="control\button.cpp">
@@ -107,9 +101,6 @@
     </ClCompile>
     <ClCompile Include="event\key_event.cpp">
       <Filter>event</Filter>
-    </ClCompile>
-    <ClCompile Include="core\focus_manager.cpp">
-      <Filter>core</Filter>
     </ClCompile>
     <ClCompile Include="core\complex_view.cpp">
       <Filter>core</Filter>
@@ -141,13 +132,13 @@
     <ClCompile Include="control\window.cpp">
       <Filter>control</Filter>
     </ClCompile>
-    <ClCompile Include="core\window_host_view.cpp">
+    <ClCompile Include="core\property_object.cpp">
       <Filter>core</Filter>
     </ClCompile>
-    <ClCompile Include="event\event_handler.cpp">
-      <Filter>event</Filter>
+    <ClCompile Include="core\view.cpp">
+      <Filter>view</Filter>
     </ClCompile>
-    <ClCompile Include="event\event_dispatcher.cpp">
+    <ClCompile Include="event\focus_evnet.cpp">
       <Filter>event</Filter>
     </ClCompile>
   </ItemGroup>
@@ -183,9 +174,6 @@
       <Filter>utils</Filter>
     </ClInclude>
     <ClInclude Include="core\widget.h">
-      <Filter>core</Filter>
-    </ClInclude>
-    <ClInclude Include="core\view.h">
       <Filter>core</Filter>
     </ClInclude>
     <ClInclude Include="render\painter.h">
@@ -230,13 +218,7 @@
     <ClInclude Include="event\event.h">
       <Filter>event</Filter>
     </ClInclude>
-    <ClInclude Include="event\event_listener.h">
-      <Filter>event</Filter>
-    </ClInclude>
     <ClInclude Include="event\mouse_event.h">
-      <Filter>event</Filter>
-    </ClInclude>
-    <ClInclude Include="event\event_listen_manager.h">
       <Filter>event</Filter>
     </ClInclude>
     <ClInclude Include="control\button.h">
@@ -282,13 +264,13 @@
     <ClInclude Include="control\window.h">
       <Filter>control</Filter>
     </ClInclude>
-    <ClInclude Include="core\window_host_view.h">
+    <ClInclude Include="core\property_object.h">
       <Filter>core</Filter>
     </ClInclude>
-    <ClInclude Include="event\event_handler.h">
-      <Filter>event</Filter>
+    <ClInclude Include="core\view.h">
+      <Filter>view</Filter>
     </ClInclude>
-    <ClInclude Include="event\event_dispatcher.h">
+    <ClInclude Include="event\focus_evnet.h">
       <Filter>event</Filter>
     </ClInclude>
   </ItemGroup>

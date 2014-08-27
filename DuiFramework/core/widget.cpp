@@ -335,6 +335,11 @@ namespace ui
 		::SetFocus(hwnd_);
 	}
 
+	bool Widget::IsFocused()
+	{
+		return ::GetFocus() == hwnd_;
+	}
+
 
 	
 

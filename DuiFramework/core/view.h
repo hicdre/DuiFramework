@@ -8,9 +8,11 @@
 #include "render/painter.h"
 #include "render/border.h"
 #include "event/event.h"
-#include "event/event_handler.h"
+#include "event/mouse_event.h"
+#include "event/key_event.h"
+#include "event/focus_evnet.h"
 #include "core/focus_manager.h"
-#include "core/value.h"
+#include "core/property_object.h"
 #include "layout/layout_manager.h"
 #include <vector>
 
@@ -20,7 +22,7 @@ namespace ui
 	class View;
 	typedef std::vector<View*> Views;
 
-	class View
+	class View : public PropertyObject, public EventHandler
 	{
 	public:
 		View();
@@ -142,33 +144,31 @@ namespace ui
 
 		// Event---------------------------------------------
 
-		//void HandleEvent(Event* event);
-		//void DispatchPropagation(Event* event);
-		//void SetEventDelegate(EventDelegate* delegate);
+		virtual void HandleEvent(Event* event) override;
+		static void RouteEventTo(Event* event, View* v);
 
-		//virtual EventDispatcher* GetEventDispatcher() const;
-
-		void SetFocus();
+		void RequestSetFocus();
 		void SetFocusable(bool focusable);
 		bool IsFocusable() const;
 
 		virtual FocusManager* GetFocusManager() const;
-
-		// Property-------------------------------------------
-		void SetPropertyBoolean(const std::string& path, bool in_value);
-		void SetPropertyInteger(const std::string& path, int in_value);
-		void SetPropertyDouble(const std::string& path, double in_value);
-		void SetPropertyString(const std::string& path, const std::string& in_value);
-		void SetPropertyString(const std::string& path, const std::wstring& in_value);
-
-		bool GetPropertyBoolean(const std::string& path, bool* out_value) const;
-		bool GetPropertyInteger(const std::string& path, int* out_value) const;
-		bool GetPropertyDouble(const std::string& path, double* out_value) const;
-		bool GetPropertyString(const std::string& path, std::string* out_value) const;
-		bool GetPropertyString(const std::string& path, std::wstring* out_value) const;
+		
 	public:
 		virtual void OnVisibleChanged();
 		virtual void OnEnabledChanged();
+
+		virtual void OnMouseMove(MouseEvent* evt);
+		virtual void OnMouseDown(MouseEvent* evt);
+		virtual void OnMouseUp(MouseEvent* evt);
+		virtual void OnMouseDoubleClick(MouseEvent* evt);
+		virtual void OnMouseEnter(MouseEvent* evt);
+		virtual void OnMouseLeave(MouseEvent* evt);
+
+		virtual void OnKeyPressed(KeyEvent* evt);
+		virtual void OnKeyReleased(KeyEvent* evt);
+
+		virtual void OnLoseFocus(FocusEvent* evt);
+		virtual void OnGainFocus(FocusEvent* evt);
 
 	protected:
 		// Coordinate conversion -----------------------------------------------------
@@ -206,7 +206,9 @@ namespace ui
 
 		HCURSOR cursor_{ NULL };
 
-		scoped_ptr<DictionaryValue> property_;
+		EventListener event_listener_;
+
+		bool enable_mouse_event_{ true };
 
 		//LayoutSizePolicy width_policy_{ LAYOUT_SIZE_FIXED };
 		//LayoutSizePolicy height_policy_{ LAYOUT_SIZE_FIXED };

@@ -15,23 +15,13 @@ namespace ui
 
 		bool HasMouseDown() const;
 
+		void SetSender(View* v);
+		View* sender() const;
+
 	protected:
 		Point pt_in_widget_; 
 		int flags_{ 0 };//mouse key flags;
-		
+		View* sender_;//消息来源
 	};
-
-	class MouseDownEvent : public MouseEvent
-	{
-	public:
-		MouseDownEvent(EventType type, const Point& pt_in_widget, View* sender, int buttons);
-
-		int GetMouseButtons() const;
-	protected:
-		int buttons_;//mouse buttons;
-	};
-
-	typedef MouseDownEvent MouseUpEvent;
-	typedef MouseDownEvent MouseDbClickEvent;
 
 }

@@ -84,6 +84,7 @@ namespace ui
 		void SetCursor(HCURSOR cursor);
 
 		void SetFocus();
+		bool IsFocused();
 
 		void InvalidateRect(const Rect& r);
 

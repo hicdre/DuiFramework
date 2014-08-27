@@ -3,14 +3,16 @@
 #include "control/control.h"
 #include "core/widget.h"
 #include "core/focus_manager.h"
+#include "core/view.h"
 
 namespace ui
 {
 	class EventDispatcher;
-	class Window : public Control, public Widget::MessageHandler
+	class Window 
+		: public View
+		, public Widget::MessageHandler
+		, public FocusManager
 	{
-		friend class WindowHostView;
-		friend class MouseEventHandler;
 	public:
 		Window();
 		virtual ~Window();
@@ -27,9 +29,13 @@ namespace ui
 		virtual void OnSetFocus();
 		
 
-		//virtual void SchedulePaintInRect(const Rect& r) override;
+		virtual void SchedulePaintInRect(const Rect& r) override;
+
+		virtual FocusManager* GetFocusManager() const override;
 
 		View* GetFocusedView() const;
+
+		virtual void SetFocus(View* v) override;
 	private:
 		void SchedulePaint(const Rect& r);
 		virtual BOOL ProcessWindowMessage(HWND window,
@@ -38,12 +44,18 @@ namespace ui
 			LPARAM l_param,
 			LRESULT& result) override;
 
+		void ProcessMouseMessage(UINT message, WPARAM w_param, LPARAM l_param);
+		void DispatchMouseLeaveEvent(View* from, View* to, const Point& pt);
+		void DispatchMouseEnterEvent(View* from, View* to, const Point& pt);
+
+		void ProcessKeyMessage(UINT message, WPARAM w_param, LPARAM l_param);
+
 		void Init();
 		Widget* widget() const { return owned_widget_; }
 		Widget* owned_widget_{ NULL };
 
-		scoped_ptr<MouseEventHandler> mouse_event_handler_;
 		//scoped_ptr<FocusManager> focus_manager_;
-		View* focused_view_;
+		View* focused_view_{ NULL };
+		View* hitttest_view_{ NULL };
 	};
 }

@@ -115,6 +115,22 @@ namespace ui
 		return (::GetKeyState(VK_MBUTTON) & 0x8000) == 0x8000;
 	}
 
+	int GetMouseFlags() {
+		int flags = 0;
+		flags |= IsLeftMousePressed() ? MOUSE_LEFT : FLAG_NONE;
+		flags |= IsRightMousePressed() ? MOUSE_RIGHT : FLAG_NONE;
+		flags |= IsMiddleMousePressed() ? MOUSE_MIDDLE : FLAG_NONE;
+		return flags;
+	}
+
+	int GetKeyFlags() {
+		int flags = 0;
+		flags |= IsAltPressed() ? KEY_ALT : FLAG_NONE;
+		flags |= IsShiftPressed() ? KEY_SHIFT : FLAG_NONE;
+		flags |= IsCtrlPressed() ? KEY_CONTROL : FLAG_NONE;
+		return flags;
+	}
+
 	int GetMouseKeyFlags() {
 		int flags = 0;
 		flags |= IsAltPressed() ? KEY_ALT : FLAG_NONE;
@@ -127,17 +143,14 @@ namespace ui
 		return flags;
 	}
 
-
-	Event::Event(EventType type, View* sender)
+	Event::Event(EventType type)
 		: type_(type)
-		, sender_(sender)
 	{
 
 	}
 
-	Event::Event(EventType type)
-		: type_(type)
-		, sender_(NULL)
+	Event::Event()
+		: type_(EVENT_UNKNOWN)
 	{
 
 	}
@@ -147,19 +160,100 @@ namespace ui
 
 	}
 
-	void Event::StopPropagation()
+	void Event::StopDispatch()
 	{
-		is_propagation_ = false;
+		is_continue_dispatch_ = false;
 	}
 
-	void Event::SetSender(View* v)
+
+	bool Event::IsMouseEvent() const
 	{
-		sender_ = v;
+		return (type_ == EVENT_MOUSE_MOVE
+			|| type_ == EVENT_MOUSE_DOWN
+			|| type_ == EVENT_MOUSE_UP
+			|| type_ == EVENT_MOUSE_ENTER
+			|| type_ == EVENT_MOUSE_LEAVE
+			|| type_ == EVENT_MOUSE_DBCLICK);
 	}
 
-	View* Event::sender() const
+	bool Event::IsKeyEvent() const
 	{
-		return sender_;
+		return (type_ == EVENT_KEY_PRESSED
+			|| type_ == EVENT_KEY_RELEASED);
+	}
+
+	EventListener::EventListener()
+	{
+	}
+
+	EventListener::~EventListener()
+	{
+	}
+
+	EventListener& EventListener::Listen(EventType type, const EventCallback& c, uint32 group /*= 0*/)
+	{
+		listen_map_[type].Insert(c, group);
+		return *this;
+	}
+
+	EventListener& EventListener::UnListen(EventType type)
+	{
+		listen_map_.erase(type);
+		return *this;
+	}
+
+	EventListener& EventListener::UnListen(EventType type, uint32 group)
+	{
+		listen_map_[type].Remove(group);
+		return *this;
+	}
+
+	EventListener& EventListener::UnListen(uint32 group)
+	{
+		for (auto iter = listen_map_.begin(); iter != listen_map_.end(); iter++)
+		{
+			iter->second.Remove(group);
+		}
+		return *this;
+	}
+
+	void EventListener::HandleEvent(Event* e)
+	{
+		if (!listen_map_.count(e->type()))
+			return;
+
+		listen_map_[e->type()].Invoke(e);
+	}
+
+	void EventCallbackSet::Insert(EventCallback c, uint32 group /*= 0*/)
+	{
+		Data d;
+		d.c = c;
+		d.group = group;
+		container_.push_back(d);
+	}
+
+	void EventCallbackSet::Remove(uint32 group)
+	{
+		for (auto iter = container_.begin(); iter != container_.end();)
+		{
+			if (iter->group == group)
+			{
+				iter = container_.erase(iter);
+			}
+			else
+			{
+				iter++;
+			}
+		}
+	}
+
+	void EventCallbackSet::Invoke(Event* evt)
+	{
+		for (auto iter = container_.begin(); iter != container_.end();)
+		{
+			iter->c(evt);
+		}
 	}
 
 

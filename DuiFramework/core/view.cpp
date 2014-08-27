@@ -6,7 +6,6 @@
 
 #include "core/rectangle.h"
 #include "core/image_view.h"
-#include "event/event_listen_manager.h"
 
 namespace ui
 {
@@ -257,6 +256,9 @@ namespace ui
 
 	View* View::Hittest(const Point& pt)
 	{
+		if (!enable_mouse_event_)
+			return NULL;
+
 		//hittest self
 		if (!GetLocalBounds().Contains(pt))
 			return NULL;
@@ -277,6 +279,9 @@ namespace ui
 
 	bool View::Hittest(const Point& pt, Views& views)
 	{
+		if (!enable_mouse_event_)
+			return NULL;
+
 		if (!GetLocalBounds().Contains(pt))
 			return false;
 
@@ -495,7 +500,6 @@ namespace ui
 	{
 		if (!visible_)
 			return;
-
 		PaintBackground(painter);
 		PaintBorder(painter);
 		OnPaint(painter);
@@ -512,7 +516,7 @@ namespace ui
 	{
 		for (View* p = first_child_; p != NULL; p = p->next_sibling())
 		{
-			if (p)
+			if (p && p->visible())
 			{
 				ScopedPainter helper(painter,
 					p->GetTransform());
@@ -702,8 +706,6 @@ namespace ui
 		LayoutBackground();
 	}
 
-
-
 	void View::SetCursor(HCURSOR cursor)
 	{
 		cursor_ = cursor;
@@ -752,33 +754,77 @@ namespace ui
 		return result;
 	}
 
-// 	void View::HandleEvent(Event* event)
-// 	{
-// 		EventListenManager::Default()->DispatchEvent(this, event);
-// 	}
+	void View::HandleEvent(Event* event)
+	{
+		if (!enable_mouse_event_ && event->IsMouseEvent())
+		{
+			RouteEventTo(event, parent_);
+			return;
+		}
 
-// 	void View::SetEventDelegate(EventDelegate* delegate)
-// 	{
-// 		event_delegate_.reset(delegate);
-// 	}
+		if (!focusable_ && event->IsKeyEvent())
+			return;
 
-// 	EventDispatcher* View::GetEventDispatcher() const
-// 	{
-// 		return parent() ? parent()->GetEventDispatcher() : NULL;
-// 	}
-// 
-// 
-// 	void View::DispatchPropagation(Event* event)
-// 	{
-// 		EventDispatcher* dispatcher = GetEventDispatcher();
-// 		if (dispatcher)
-// 		{
-// 			dispatcher->DispatchPropagation(event, this);
-// 		}
-// 	}
+		event_listener_.HandleEvent(event);
+		if (event->stopped_dispatch())
+			return;
+
+		bool route_to_parent = false;
+		switch (event->type())
+		{
+		case EVENT_MOUSE_MOVE:
+			OnMouseMove(static_cast<MouseEvent*>(event));
+			route_to_parent = true;
+			break;
+		case EVENT_MOUSE_DOWN:
+			OnMouseDown(static_cast<MouseEvent*>(event));
+			route_to_parent = true;
+			break;
+		case EVENT_MOUSE_UP:
+			OnMouseUp(static_cast<MouseEvent*>(event));
+			route_to_parent = true;
+			break;
+		case EVENT_MOUSE_DBCLICK:
+			OnMouseDoubleClick(static_cast<MouseEvent*>(event));
+			route_to_parent = true;
+			break;
+		case EVENT_MOUSE_ENTER:
+			OnMouseEnter(static_cast<MouseEvent*>(event));
+			break;
+		case EVENT_MOUSE_LEAVE:
+			OnMouseLeave(static_cast<MouseEvent*>(event));
+			break;
+		case EVENT_KEY_PRESSED:
+			OnKeyPressed(static_cast<KeyEvent*>(event));
+			break;
+		case EVENT_KEY_RELEASED:
+			OnKeyReleased(static_cast<KeyEvent*>(event));
+			break;
+		case EVENT_LOSE_FOCUS:
+			OnLoseFocus(static_cast<FocusEvent*>(event));
+			break;
+		case EVENT_GAIN_FOCUS:
+			OnGainFocus(static_cast<FocusEvent*>(event));
+			break;
+		default:
+			break;
+		}
+
+		if (event->stopped_dispatch())
+			return;
+
+		if (route_to_parent)
+			RouteEventTo(event, parent_);
+	}
 
 
-	void View::SetFocus()
+	void View::RouteEventTo(Event* event, View* v)
+	{
+		v->HandleEvent(event);
+	}
+
+
+	void View::RequestSetFocus()
 	{
 		if (!focusable_)
 			return;
@@ -803,85 +849,52 @@ namespace ui
 		return parent_ ? parent_->GetFocusManager() : NULL;
 	}
 
-	void View::SetPropertyBoolean(const std::string& path, bool in_value)
+	void View::OnMouseMove(MouseEvent* evt)
 	{
-		if (!property_.get())
-			property_.reset(new DictionaryValue);
 
-		property_->SetBoolean(path, in_value);
 	}
 
-	void View::SetPropertyInteger(const std::string& path, int in_value)
+	void View::OnMouseDown( MouseEvent* evt )
 	{
-		if (!property_.get())
-			property_.reset(new DictionaryValue);
 
-		property_->SetInteger(path, in_value);
 	}
 
-	void View::SetPropertyDouble(const std::string& path, double in_value)
+	void View::OnMouseUp( MouseEvent* evt )
 	{
-		if (!property_.get())
-			property_.reset(new DictionaryValue);
 
-		property_->SetDouble(path, in_value);
 	}
 
-	void View::SetPropertyString(const std::string& path, const std::string& in_value)
+	void View::OnMouseEnter( MouseEvent* evt )
 	{
-		if (!property_.get())
-			property_.reset(new DictionaryValue);
 
-		property_->SetString(path, in_value);
 	}
 
-	void View::SetPropertyString(const std::string& path, const std::wstring& in_value)
+	void View::OnMouseLeave( MouseEvent* evt )
 	{
-		if (!property_.get())
-			property_.reset(new DictionaryValue);
 
-		property_->SetString(path, in_value);
 	}
 
-	bool View::GetPropertyBoolean(const std::string& path, bool* out_value) const
+	void View::OnKeyPressed( KeyEvent* evt )
 	{
-		if (!property_.get())
-			return false;
 
-		return property_->GetBoolean(path, out_value);
 	}
 
-	bool View::GetPropertyInteger(const std::string& path, int* out_value) const
+	void View::OnKeyReleased( KeyEvent* evt )
 	{
-		if (!property_.get())
-			return false;
 
-		return property_->GetInteger(path, out_value);
 	}
 
-	bool View::GetPropertyDouble(const std::string& path, double* out_value) const
+	void View::OnLoseFocus(FocusEvent* evt)
 	{
-		if (!property_.get())
-			return false;
 
-		return property_->GetDouble(path, out_value);
 	}
 
-	bool View::GetPropertyString(const std::string& path, std::string* out_value) const
+	void View::OnGainFocus( FocusEvent* evt )
 	{
-		if (!property_.get())
-			return false;
 
-		return property_->GetString(path, out_value);
 	}
 
-	bool View::GetPropertyString(const std::string& path, std::wstring* out_value) const
-	{
-		if (!property_.get())
-			return false;
-
-		return property_->GetString(path, out_value);
-	}
+	
 #if 0
 	void View::set_layout_width_policy(LayoutSizePolicy p)
 	{

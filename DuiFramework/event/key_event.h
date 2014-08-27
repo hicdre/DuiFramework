@@ -20,10 +20,14 @@ namespace ui
 		uint8 GetRepeatCounts() const;
 
 		uint8 GetFlags() const;
+
+		void SetSender(View* v);
+		View* sender() const;
 	private:
 		int key_;
 		int key_states_;
 		uint8 count_;
 		uint8 flags_;
+		View* sender_;//消息来源
 	};
 }
