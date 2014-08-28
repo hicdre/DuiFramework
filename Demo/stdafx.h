@@ -17,5 +17,5 @@
 #include <memory.h>
 #include <tchar.h>
 
-
+#pragma comment(linker, "/entry:wWinMainCRTStartup /subsystem:console")
 // TODO: reference additional headers your program requires here

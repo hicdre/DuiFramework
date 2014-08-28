@@ -1,20 +1,10 @@
 #pragma once
 #include "core/label.h"
-#include "core/complex_view.h"
+#include "control/text_view.h"
 
 namespace ui
 {
-#if 0
-	class ButtonStateView;
-
-	/*
-		<Button>
-		  <Button::State state="normal" inhert="Label" />
-		  <Button::State state="hovered" inhert="Label" />
-		  <Button::State state="pressed" inhert="Label" />
-		</Button>
-	*/
-	class Button : public ComplexView
+	class Button : public TextView
 	{
 	public:
 		enum State {
@@ -24,8 +14,18 @@ namespace ui
 
 			STATE_MAX,
 		};
-		static Button* Create();
-		static Button* Create(const std::wstring& text);
+
+		class Clicked : public Event
+		{
+		public:
+			Clicked(Button* btn);
+
+			Button* trigger() const { return trigger_; }
+		protected:
+			Button* trigger_;
+		};
+		Button();
+		Button(const std::wstring& text);
 		
 		virtual ~Button();
 
@@ -34,31 +34,18 @@ namespace ui
 
 		void SetState(State state);
 		State state() const;
-
-		View* GetStateView(State state);
-
-		void SetText(const std::wstring& text);
-		void SetTextFont(const Font& font);
-		void SetTextFont(const std::wstring& name, int size);
-		void SetTextHorizontalAlignment(HorizontalAlignment i);
-		void SetTextVerticalAlignment(VerticalAlignment i);
-		void SetTextColor(Color color);
 		
+		void TriggerClicked();
 	protected:
-		Button();
-		void Init(const std::wstring& text);
+		virtual void OnPaint(Painter* painter) override;
 
-		void UpdateButtonStateView();
+		virtual void OnMouseEnter(MouseEvent* evt) override;
+		virtual void OnMouseLeave(MouseEvent* evt) override;
+		virtual void OnMouseDown(MouseEvent* evt) override;
+		virtual void OnMouseUp(MouseEvent* evt) override;
 	private:
-		void OnMouseEnter(View* v, Event* evt);
-		void OnMouseLeave(View* v, Event* evt);
-		void OnMouseDown(View* v, Event* evt);
-		void OnMouseUp(View* v, Event* evt);
-
-		void DispatchClickEvent();
-
+		class StateData;
 		State state_;
-		ButtonStateView* state_views[STATE_MAX];
+		StateData* state_datas_[STATE_MAX];
 	};
-#endif
 }

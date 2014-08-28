@@ -1,14 +1,17 @@
 #pragma once
 #include "duiframework.h"
 
-class TestWidget
-	: public ui::WidgetDelegate
+class TestWindowConstructor
 {
 public:
-	virtual void OnInit() override;
-	virtual ui::Rect GetInitialRect() override;
+	ui::Window* Create();
+
+
 
 private:
-	ui::EventListener listener_;
-	ui::Label* label_;
+	void OnCreate();
+	void OnInit();
+	ui::Window* view() const;
+	ui::Window* window_;
+	ui::TextView* label_;
 };

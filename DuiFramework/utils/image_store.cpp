@@ -28,16 +28,16 @@ namespace ui
 	}
 
 
-	ImageClip* ImageStore::GetImageById(const std::string& id)
+	ImageRect* ImageStore::GetImageById(const std::string& id)
 	{
-		ImageClip* clip = FindImageClipInCache(id);
+		ImageRect* clip = FindImageClipInCache(id);
 		if (clip)
 			return clip;
 
 		return LoadImageClipToCache(id);
 	}
 
-	ImageClip* ImageStore::FindImageClipInCache(const std::string& id) const
+	ImageRect* ImageStore::FindImageClipInCache(const std::string& id) const
 	{
 		if (ids_clip_map_.count(id))
 			return ids_clip_map_.at(id);
@@ -45,14 +45,14 @@ namespace ui
 	}
 
 
-	ImageClip* ImageStore::LoadImageClipToCache(const std::string& id)
+	ImageRect* ImageStore::LoadImageClipToCache(const std::string& id)
 	{
 		if (!image_records_.count(id))
 			return NULL;
 
 		ImageRecord& record = image_records_.at(id);
 
-		Image* image = FindImageInCache(record.path);
+		ImageFile* image = FindImageInCache(record.path);
 		if (!image) {
 			image = LoadImageToCache(record.path);
 		}
@@ -60,12 +60,12 @@ namespace ui
 		if (!image)
 			return NULL;
 
-		ImageClip* clip = NULL;
+		ImageRect* clip = NULL;
 		if (record.rect.IsEmpty()) {
-			clip = new ImageClip(image);
+			clip = new ImageRect(image);
 		}
 		else {
-			clip = new ImageClip(image, record.rect);
+			clip = new ImageRect(image, record.rect);
 		}
 		ids_clip_map_[id] = clip;
 		return clip;
@@ -73,7 +73,7 @@ namespace ui
 	
 
 
-	Image* ImageStore::FindImageInCache(const std::wstring& path)
+	ImageFile* ImageStore::FindImageInCache(const std::wstring& path)
 	{
 		if (image_map_.count(path))
 			return image_map_.at(path);
@@ -81,9 +81,9 @@ namespace ui
 	}
 
 
-	Image* ImageStore::LoadImageToCache(const std::wstring& path)
+	ImageFile* ImageStore::LoadImageToCache(const std::wstring& path)
 	{
-		Image* image = Image::LoadFromFile(path);
+		ImageFile* image = ImageFile::LoadFromFile(path);
 		if (!image) {
 			return NULL;
 		}
@@ -93,22 +93,22 @@ namespace ui
 	}
 
 
-	ImageClip* ImageStore::LoadImageByPath(const std::wstring& path, const Rect& rect)
+	ImageRect* ImageStore::LoadImageByPath(const std::wstring& path, const Rect& rect)
 	{
-		Image* image = Default()->FindImageInCache(path);
+		ImageFile* image = Default()->FindImageInCache(path);
 		if (image) {
-			return new ImageClip(image, rect);
+			return new ImageRect(image, rect);
 		}
-		return new ImageClip(Image::LoadFromFile(path), rect);
+		return new ImageRect(ImageFile::LoadFromFile(path), rect);
 	}
 
-	ImageClip* ImageStore::LoadImageByPath(const std::wstring& path)
+	ImageRect* ImageStore::LoadImageByPath(const std::wstring& path)
 	{
-		Image* image = Default()->FindImageInCache(path);
+		ImageFile* image = Default()->FindImageInCache(path);
 		if (image) {
-			return new ImageClip(image);
+			return new ImageRect(image);
 		}
-		return new ImageClip(Image::LoadFromFile(path));
+		return new ImageRect(ImageFile::LoadFromFile(path));
 	}
 
 	ImageStore* ImageStore::Default()

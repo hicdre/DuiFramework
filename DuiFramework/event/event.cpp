@@ -179,7 +179,8 @@ namespace ui
 	bool Event::IsKeyEvent() const
 	{
 		return (type_ == EVENT_KEY_PRESSED
-			|| type_ == EVENT_KEY_RELEASED);
+			|| type_ == EVENT_KEY_RELEASED
+			|| type_ == EVENT_CHAR);
 	}
 
 	EventListener::EventListener()
@@ -250,7 +251,7 @@ namespace ui
 
 	void EventCallbackSet::Invoke(Event* evt)
 	{
-		for (auto iter = container_.begin(); iter != container_.end();)
+		for (auto iter = container_.begin(); iter != container_.end(); iter++)
 		{
 			iter->c(evt);
 		}

@@ -5,6 +5,7 @@
 
 namespace ui
 {
+	class Window;
 	class Widget
 	{
 	public:
@@ -24,6 +25,8 @@ namespace ui
 
 		static Widget* Create(Widget* parent, const Rect& bounds);
 		static Widget* Create();
+
+		static Widget* Create(Window* window);
 
 		static Widget* GetWidgetForHWND(HWND hwnd);
 

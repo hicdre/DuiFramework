@@ -85,14 +85,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="control\button.cpp" />
-    <ClCompile Include="control\control.cpp" />
+    <ClCompile Include="control\text_view.cpp" />
     <ClCompile Include="control\window.cpp" />
     <ClCompile Include="core\app.cpp" />
-    <ClCompile Include="core\image_view.cpp" />
+    <ClCompile Include="core\image.cpp" />
     <ClCompile Include="core\property_object.cpp" />
     <ClCompile Include="core\rectangle.cpp" />
     <ClCompile Include="core\complex_view.cpp" />
     <ClCompile Include="core\label.cpp" />
+    <ClCompile Include="core\text.cpp" />
     <ClCompile Include="core\value.cpp" />
     <ClCompile Include="core\view.cpp" />
     <ClCompile Include="core\widget.cpp" />
@@ -105,7 +106,7 @@
     <ClCompile Include="layout\fluid_layout.cpp" />
     <ClCompile Include="render\border.cpp" />
     <ClCompile Include="render\font.cpp" />
-    <ClCompile Include="render\image.cpp" />
+    <ClCompile Include="render\image_file.cpp" />
     <ClCompile Include="render\padding.cpp" />
     <ClCompile Include="render\painter.cpp" />
     <ClCompile Include="render\point.cpp" />
@@ -129,16 +130,18 @@
     <ClInclude Include="base\ref_counted.h" />
     <ClInclude Include="base\scoped_ptr.h" />
     <ClInclude Include="control\button.h" />
-    <ClInclude Include="control\control.h" />
+    <ClInclude Include="control\text_view.h" />
     <ClInclude Include="control\window.h" />
     <ClInclude Include="core\app.h" />
-    <ClInclude Include="core\image_view.h" />
+    <ClInclude Include="core\drawable.h" />
+    <ClInclude Include="core\image.h" />
     <ClInclude Include="core\property_object.h" />
     <ClInclude Include="core\rectangle.h" />
     <ClInclude Include="core\complex_view.h" />
     <ClInclude Include="core\constants.h" />
     <ClInclude Include="core\focus_manager.h" />
     <ClInclude Include="core\label.h" />
+    <ClInclude Include="core\text.h" />
     <ClInclude Include="core\value.h" />
     <ClInclude Include="core\view.h" />
     <ClInclude Include="core\widget.h" />
@@ -154,7 +157,7 @@
     <ClInclude Include="render\border.h" />
     <ClInclude Include="render\color.h" />
     <ClInclude Include="render\font.h" />
-    <ClInclude Include="render\image.h" />
+    <ClInclude Include="render\image_file.h" />
     <ClInclude Include="render\padding.h" />
     <ClInclude Include="render\painter.h" />
     <ClInclude Include="render\point.h" />

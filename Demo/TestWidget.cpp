@@ -1,7 +1,18 @@
 #include "stdafx.h"
 #include "TestWidget.h"
 
-void TestWidget::OnInit()
+
+ui::Window* TestWindowConstructor::Create()
+{
+	ui::Widget* widget = ui::Widget::Create();
+	window_ = new ui::Window;
+	OnCreate();
+	window_->AttachWidget(widget);
+	OnInit();
+	return window_;
+}
+
+void TestWindowConstructor::OnCreate()
 {
 	{
 		std::wstring title_bg_path = LR"(E:\work\self\DuiFramwork\Demo\res\title_bg.png)";
@@ -20,13 +31,13 @@ void TestWidget::OnInit()
 		header->SetBounds(0, 0, 400, 50);
 		header->set_background_image_id("title");
 		{
-			ui::Button* btn = ui::Button::Create();
+			ui::Button* btn = new ui::Button();
 			header->Append(btn);
 			btn->SetBounds(360, 20, 10, 10);
 			btn->SetStateImage(ui::Button::NORMAL, "close.normal");
 			btn->SetStateImage(ui::Button::HOVERED, "close.hover");
 			btn->SetStateImage(ui::Button::PRESSED, "close.pressed");
-			listener_.Listen(btn, ui::EVENT_BUTTON_CLICKED, [this](ui::View* target, ui::Event* evt)
+			btn->listener().Listen(ui::EVENT_BUTTON_CLICKED, [this](ui::Event* evt)
 			{
 				view()->Close();
 				ui::App::Get()->Quit();
@@ -34,7 +45,7 @@ void TestWidget::OnInit()
 		}
 	}
 	{
-		label_ = new ui::Label;
+		label_ = new ui::TextView;
 		label_->SetBounds(0, 50, 100, 20);
 		label_->SetFont(L"Consolas", 12);
 		label_->SetHorizontalAlignment(ui::ALIGN_CENTER);
@@ -43,16 +54,26 @@ void TestWidget::OnInit()
 	}
 
 	view()->set_background_color(ui::ColorSetRGB(255, 255, 255));
-	view()->CenterWidget();
-	view()->SetFocus();
-	listener_.Listen(view(), ui::EVENT_KEY_PRESSED, [this](ui::View* target, ui::Event* evt)
+	view()->SetFocusable(true);
+	view()->listener().Listen(ui::EVENT_CHAR, [this](ui::Event* evt)
 	{
-		ui::KeyEvent* key_event = evt->To<ui::KeyEvent>();
-		label_->SetText(std::wstring(1, (wchar_t)key_event->GetKey()));
+		ui::KeyEvent* key_event = static_cast<ui::KeyEvent*>(evt);
+		label_->SetText(label_->text() + std::wstring(1, (wchar_t)key_event->GetKey()));
 	});
+
+	
 }
 
-ui::Rect TestWidget::GetInitialRect()
+void TestWindowConstructor::OnInit()
 {
-	return ui::Rect(0, 0, 400, 300);
+	view()->SetWindowSize(400, 300);
+	view()->CenterWindow();
+	view()->RequestSetFocus();
 }
+
+
+ui::Window* TestWindowConstructor::view() const
+{
+	return window_;
+}
+

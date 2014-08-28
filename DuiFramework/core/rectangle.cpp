@@ -9,7 +9,6 @@ namespace ui
 
 	SolidRectangle::SolidRectangle()
 	{
-		set_leaf_view(true);
 	}
 
 	SolidRectangle::SolidRectangle(Color color)
@@ -23,13 +22,12 @@ namespace ui
 		if (color_ != color)
 		{
 			color_ = color;
-			SchedulePaint();
 		}
 	}
 
-	void SolidRectangle::OnPaint(Painter* painter)
+	void SolidRectangle::DoPaint(Painter* painter, const Rect& dest)
 	{
-		painter->FillRect(GetContentsBounds(), color_);
+		painter->FillRect(dest, color_);
 	}
 
 }

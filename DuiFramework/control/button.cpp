@@ -2,78 +2,72 @@
 #include "button.h"
 
 #include "event/mouse_event.h"
-#include "utils/image_store.h"
-#include "layout/fill_layout.h"
+#include "core/image.h"
+#include "core/rectangle.h"
 
 namespace ui
 {
-#if 0
-	class ButtonStateView : public Label
+	class Button::StateData
 	{
 	public:
-		ButtonStateView(Button::State state);
-		ButtonStateView(Button::State state, const std::wstring& text);
+		StateData(Button::State state)
+			: state_(state)
+		{
+		}
 
-		Button::State GetButtonState() const;
+		void SetImage(const std::string& id) {
+			state_graphics_.reset(new ResourceImage(id));
+		}
+
+		void SetSolidColor(Color color) {
+			state_graphics_.reset(new SolidRectangle(color));
+		}
+
+		Button::State GetButtonState() const {
+			return state_;
+		}
+
+		Drawable* GetData() const {
+			return state_graphics_.get();
+		}
 	private:
 		Button::State state_;
+		scoped_ptr<Drawable> state_graphics_;
 	};
-
-	Button* Button::Create()
-	{
-		Button* btn = new Button;
-		btn->Init(L"");
-		return btn;
-	}
-
-	Button* Button::Create(const std::wstring& text)
-	{
-		Button* btn = new Button;
-		btn->Init(text);
-		return btn;
-	}
 
 	Button::Button()
 	{
+		for (int i = 0; i < STATE_MAX; i++)
+		{
+			state_datas_[i] = new StateData((State)i);
+		}
+	}
+
+	Button::Button(const std::wstring& text)
+		: TextView(text)
+	{
+		for (int i = 0; i < STATE_MAX; i++)
+		{
+			state_datas_[i] = new StateData((State)i);
+		}
 	}
 
 	Button::~Button()
 	{
-
-	}
-
-	void Button::Init(const std::wstring& text)
-	{
-		SetLayout(new FillLayout);
 		for (int i = 0; i < STATE_MAX; i++)
 		{
-			ButtonStateView* state_view = new ButtonStateView((State)i, text);
-			state_views[i] = state_view;
-
-			Append(state_view);
+			delete state_datas_[i];
 		}
-
-		SetState(NORMAL);
-		UpdateButtonStateView();
-
-		Listen(EVENT_MOUSE_ENTER,
-			std::bind(&Button::OnMouseEnter, this, std::placeholders::_1, std::placeholders::_2));
-		Listen(EVENT_MOUSE_LEAVE,
-			std::bind(&Button::OnMouseLeave, this, std::placeholders::_1, std::placeholders::_2));
-		Listen(EVENT_MOUSE_DOWN,
-			std::bind(&Button::OnMouseDown, this, std::placeholders::_1, std::placeholders::_2));
-		Listen(EVENT_MOUSE_UP,
-			std::bind(&Button::OnMouseUp, this, std::placeholders::_1, std::placeholders::_2));
 	}
 
 	void Button::SetStateImage(State state, const std::string& id)
 	{
-		state_views[state]->set_background_image_id(id);
+		state_datas_[state]->SetImage(id);
 	}
 
 	void Button::SetStateColor(State state, Color color)
 	{
-		state_views[state]->set_background_color(color);
+		state_datas_[state]->SetSolidColor(color);
 	}
 
 	void Button::SetState(State state)
@@ -81,7 +75,6 @@ namespace ui
 		if (state_ == state)
 			return;
 		state_ = state;
-		UpdateButtonStateView();
 		SchedulePaint();
 	}
 
@@ -90,26 +83,18 @@ namespace ui
 		return state_;
 	}
 
-	View* Button::GetStateView(State state)
+
+	void Button::OnPaint(Painter* painter)
 	{
-		return state_views[state];
+		Drawable* graphics = state_datas_[state_]->GetData();
+		if (graphics)
+			graphics->DoPaint(painter, GetContentsBounds());
 	}
 
 
-	void Button::UpdateButtonStateView()
+	void Button::OnMouseEnter(MouseEvent* evt)
 	{
-		for (int i = 0; i < STATE_MAX; i++)
-		{
-			state_views[i]->SetVisible(i == state_);
-		}
-	}
-
-
-	void Button::OnMouseEnter(View* v, Event* evt)
-	{
-		MouseEvent* mevt = static_cast<MouseEvent*>(evt);
-
-		if (mevt->HasMouseDown())
+		if (evt->HasMouseDown())
 		{
 			SetState(Button::PRESSED);
 		}
@@ -119,92 +104,35 @@ namespace ui
 		}
 	}
 
-	void Button::OnMouseLeave(View* v, Event* evt)
+	void Button::OnMouseLeave(MouseEvent* evt)
 	{
 		SetState(Button::NORMAL);
 	}
 
-	void Button::OnMouseDown(View* v, Event* evt)
+	void Button::OnMouseDown(MouseEvent* evt)
 	{
 		SetState(Button::PRESSED);
 	}
 
-	void Button::OnMouseUp(View* v, Event* evt)
+	void Button::OnMouseUp(MouseEvent* evt)
 	{
 		SetState(Button::HOVERED);
-		DispatchClickEvent();
+		TriggerClicked();
 	}
 
-	void Button::DispatchClickEvent()
+
+	void Button::TriggerClicked()
 	{
-		Event evt(EVENT_BUTTON_CLICKED, this);
-		DispatchPropagation(&evt);
-	}
-
-	void Button::SetTextFont(const Font& font)
-	{
-		for (int i = 0; i < STATE_MAX; i++)
-		{
-			state_views[i]->SetFont(font);
-		}
-	}
-
-	void Button::SetTextFont(const std::wstring& name, int size)
-	{
-		for (int i = 0; i < STATE_MAX; i++)
-		{
-			state_views[i]->SetFont(name, size);
-		}
-	}
-
-	void Button::SetTextHorizontalAlignment(HorizontalAlignment v)
-	{
-		for (int i = 0; i < STATE_MAX; i++)
-		{
-			state_views[i]->SetHorizontalAlignment(v);
-		}
-	}
-
-	void Button::SetTextVerticalAlignment(VerticalAlignment v)
-	{
-		for (int i = 0; i < STATE_MAX; i++)
-		{
-			state_views[i]->SetVerticalAlignment(v);
-		}
-	}
-
-	void Button::SetTextColor(Color color)
-	{
-		for (int i = 0; i < STATE_MAX; i++)
-		{
-			state_views[i]->SetTextColor(color);
-		}
-	}
-
-	void Button::SetText(const std::wstring& text)
-	{
-		for (int i = 0; i < STATE_MAX; i++)
-		{
-			state_views[i]->SetText(text);
-		}
+		Clicked evt(this);
+		HandleEvent(&evt);
 	}
 
 
-	ButtonStateView::ButtonStateView(Button::State state)
-		: Label(), state_(state)
+	Button::Clicked::Clicked(Button* btn)
+		: Event(EVENT_BUTTON_CLICKED)
+		, trigger_(btn)
 	{
 
 	}
 
-	ButtonStateView::ButtonStateView(Button::State state, const std::wstring& text)
-		: Label(text), state_(state)
-	{
-
-	}
-
-	Button::State ButtonStateView::GetButtonState() const
-	{
-		return state_;
-	}
-#endif
 }

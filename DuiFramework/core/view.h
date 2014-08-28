@@ -5,7 +5,7 @@
 #include "render/size.h"
 #include "render/point.h"
 #include "render/transform.h"
-#include "render/painter.h"
+#include "core/drawable.h"
 #include "render/border.h"
 #include "event/event.h"
 #include "event/mouse_event.h"
@@ -22,7 +22,10 @@ namespace ui
 	class View;
 	typedef std::vector<View*> Views;
 
-	class View : public PropertyObject, public EventHandler
+	class View 
+		: public PropertyObject
+		, public EventHandler
+		, public Drawable
 	{
 	public:
 		View();
@@ -91,7 +94,6 @@ namespace ui
 
 		// Layout --------------------------------------------------------------------
 		virtual void Layout();
-		void LayoutBackground();
 
 		void SetLayout(LayoutManager* layout);
 		virtual Size GetPreferredSize() const;
@@ -106,7 +108,8 @@ namespace ui
 		virtual void SchedulePaint();
 		virtual void SchedulePaintInRect(const Rect& r);
 
-		void DoPaint(Painter* painter);
+		virtual void DoPaint(Painter* painter, const Rect& dest) override;
+		void DoPaintSelf(Painter* painter);
 		virtual void OnPaint(Painter* painter);
 		virtual void OnPaintChildren(Painter* painter);
 
@@ -146,6 +149,8 @@ namespace ui
 
 		virtual void HandleEvent(Event* event) override;
 		static void RouteEventTo(Event* event, View* v);
+
+		EventListener& listener() { return event_listener_; }
 
 		void RequestSetFocus();
 		void SetFocusable(bool focusable);
@@ -199,7 +204,7 @@ namespace ui
 		//Color background_color_{0xFFFFFFFF};
 
 		scoped_ptr<Border> border_;
-		scoped_ptr<View> background_;
+		scoped_ptr<Drawable> background_;
 		bool background_inside_{ false };
 
 		scoped_ptr<LayoutManager> layout_manager_;

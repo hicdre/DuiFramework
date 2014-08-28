@@ -10,47 +10,60 @@ namespace ui
 
 	Window::Window()
 	{
-		Init();
 	}
 
 	Window::~Window()
 	{
-
+		if (owned_widget_)
+		{
+			delete owned_widget_;
+			owned_widget_ = NULL;
+		}
 	}
 
-	void Window::Init()
+	void Window::AttachWidget(Widget* widget)
 	{
-		owned_widget_ = ui::Widget::Create();
+		owned_widget_ = widget;
 		owned_widget_->SetMessageHanler(this);
 
-		//mouse_event_handler_.reset(new MouseEventHandler(this));
-		//focus_manager_.reset(new FocusManager);
 		SetCursor(::LoadCursor(NULL, IDC_ARROW));
+
+		RECT rc = {0};
+		owned_widget_->GetWindowRect(&rc);
+
+		SetBounds(0, 0, rc.right - rc.left, rc.bottom - rc.top);
 	}
 
-	void Window::SetBounds(int x, int y, int width, int height)
+	Widget* Window::DetachWidget()
+	{
+		Widget* w = owned_widget_;
+		owned_widget_ = NULL;
+		return w;
+	}
+
+	void Window::SetWindowBounds(int x, int y, int width, int height)
 	{
 		if (owned_widget_)
 			owned_widget_->SetBounds(Rect(x, y, width, height));
 	}
 
-	Rect Window::GetBounds()
+	Rect Window::GetWindowBounds()
 	{
 		if (owned_widget_)
 			return owned_widget_->GetWindowScreenBounds();
 		return Rect();
 	}
 
-	void Window::SetSize(int w, int h)
+	void Window::SetWindowSize(int w, int h)
 	{
 		if (owned_widget_)
 			owned_widget_->SetSize(Size(w, h));
 	}
 
-	Size Window::GetSize()
+	Size Window::GetWindowSize()
 	{
 		if (owned_widget_)
-			return owned_widget_->GetWindowScreenBounds().size(); \
+			return owned_widget_->GetWindowScreenBounds().size();
 		return Size();
 	}
 
@@ -59,7 +72,7 @@ namespace ui
 		if (!owned_widget_)
 			return;
 
-		owned_widget_->CenterWindow(GetSize());
+		owned_widget_->CenterWindow(GetWindowSize());
 	}
 
 	void Window::Close()
@@ -116,7 +129,7 @@ namespace ui
 		if (message == WM_PAINT)
 		{
 			Painter painter(widget());
-			DoPaint(&painter);
+			DoPaint(&painter, GetLocalBounds());
 			return TRUE;
 		}
 		else if ((message >= WM_MOUSEFIRST && message <= WM_MOUSELAST)
@@ -143,6 +156,11 @@ namespace ui
 		else if (message == WM_KILLFOCUS)
 		{
 			SetFocus(NULL);
+		}
+		else if (message == WM_SIZE)
+		{
+			Size sz = { LOWORD(l_param), HIWORD(l_param) };
+			SetSize(sz);
 		}
 		return FALSE;
 	}
@@ -279,13 +297,16 @@ namespace ui
 		case WM_KEYDOWN:
 		case WM_SYSKEYDOWN:
 			evt.SetEventType(EVENT_KEY_PRESSED);
+			std::cout << "WM_KEYDOWN: " << w_param << std::endl;
 			break;
 		case WM_KEYUP:
 		case WM_SYSKEYUP:
 			evt.SetEventType(EVENT_KEY_RELEASED);
+			std::cout << "WM_KEYUP: " << w_param << std::endl;
 			break;
 		case WM_CHAR:
-			assert(0);
+			evt.SetEventType(EVENT_CHAR);
+			std::cout << "WM_CHAR: " << w_param << std::endl;
 			break;
 		default:
 			break;
@@ -313,7 +334,7 @@ namespace ui
 		if (old_view)
 		{
 			FocusEvent evt(EVENT_LOSE_FOCUS, old_view, focused_view_);
-			focused_view_->HandleEvent(&evt);
+			old_view->HandleEvent(&evt);
 		}
 		if (focused_view_)
 		{

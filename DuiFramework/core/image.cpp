@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "image_view.h"
+#include "image.h"
 
 #include "render/painter.h"
 #include "utils/image_store.h"
@@ -7,18 +7,17 @@
 namespace ui
 {
 
-	ImageView::ImageView()
+	Image::Image()
 	{
-		set_leaf_view(true);
 	}
 
-	ImageView::~ImageView()
+	Image::~Image()
 	{
 		CleanOwnedImage();
 	}
 
 
-	void ImageView::SetImage(ImageClip* image, bool owned /*= false*/)
+	void Image::SetImage(ImageRect* image, bool owned /*= false*/)
 	{
 		if (image_ == image) {
 			assert(!owned);
@@ -29,18 +28,16 @@ namespace ui
 		
 		image_ = image;
 		own_image_ = owned;
-
-		SchedulePaint();
 	}
 
-	void ImageView::OnPaint(Painter* painter)
+	void Image::DoPaint(Painter* painter, const Rect& dest)
 	{
 		if (!image_)
 			return;
-		painter->DrawImage(image_, GetContentsBounds());
+		painter->DrawImage(image_, dest);
 	}
 
-	void ImageView::CleanOwnedImage()
+	void Image::CleanOwnedImage()
 	{
 		if (own_image_ && image_)
 		{
@@ -50,7 +47,7 @@ namespace ui
 		own_image_ = false;
 	}
 
-	Size ImageView::GetPreferredSize() const
+	Size Image::GetImageSize() const
 	{
 		if (!image_)
 			return Size();
@@ -83,7 +80,7 @@ namespace ui
 
 	void ResourceImage::LoadImage()
 	{
-		ImageClip* clip = ImageStore::Default()->GetImageById(image_id_);
+		ImageRect* clip = ImageStore::Default()->GetImageById(image_id_);
 		SetImage(clip);
 	}
 
@@ -115,7 +112,7 @@ namespace ui
 
 	void LoadedImage::LoadImage()
 	{
-		ImageClip* clip = ImageStore::LoadImageByPath(image_path_);
+		ImageRect* clip = ImageStore::LoadImageByPath(image_path_);
 		SetImage(clip, true);
 	}
 

@@ -1,28 +1,30 @@
 #pragma once
-#include "core/view.h"
+#include "render/image_file.h"
+#include "core/drawable.h"
 
 namespace ui
 {
+	class Painter;
 	//目前只有拉伸，
 	//需要增加平铺等
-	class ImageView : public View
+	class Image : public Drawable
 	{
 	public:
-		ImageView();
-		virtual ~ImageView() override;
+		Image();
+		virtual ~Image();
 
-		void SetImage(ImageClip* image, bool owned = false);
+		void SetImage(ImageRect* image, bool owned = false);
 
-		virtual void OnPaint(Painter* painter) override;
-		virtual Size GetPreferredSize() const override;
+		virtual void DoPaint(Painter* painter, const Rect& dest) override;
+		Size GetImageSize() const;
 	private:
 		void CleanOwnedImage();
-		ImageClip* image_{ NULL };
+		ImageRect* image_{ NULL };
 		bool own_image_{ false };
 		std::wstring own_image_path_;
 	};
 
-	class ResourceImage : public ImageView
+	class ResourceImage : public Image
 	{
 	public:
 		ResourceImage();
@@ -36,7 +38,7 @@ namespace ui
 		std::string image_id_;
 	};
 
-	class LoadedImage : public ImageView
+	class LoadedImage : public Image
 	{
 	public:
 		LoadedImage();

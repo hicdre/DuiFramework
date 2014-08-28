@@ -112,15 +112,15 @@ namespace ui
 		::DeleteObject(hPen);
 	}
 
-	void Painter::DrawImage(ImageClip* clip, const Rect& dest_rect)
+	void Painter::DrawImage(ImageRect* clip, const Rect& dest_rect)
 	{
-		Image* image = clip->image();
+		ImageFile* image = clip->image();
 		if (!image)
 			return;
 		DrawImage(image, clip->rect(), dest_rect);
 	}
 
-	void Painter::DrawImage(Image* image, const Rect& src_rect, const Rect& dest_rect)
+	void Painter::DrawImage(ImageFile* image, const Rect& src_rect, const Rect& dest_rect)
 	{
 		HDC src_dc = ::CreateCompatibleDC(dc_);
 		HBITMAP hOldBitmap = (HBITMAP) ::SelectObject(src_dc, image->ToHBITMAP());
@@ -139,6 +139,11 @@ namespace ui
 
 	void Painter::DrawStringRectWithFlags(const std::wstring& text, const Font& font, Color color, const Rect& rect, int flags)
 	{
+		DrawStringRectWithFlags(text.c_str(), text.size(), font, color, rect, flags);
+	}
+
+	void Painter::DrawStringRectWithFlags(const wchar_t* text, size_t len, const Font& font, Color color, const Rect& rect, int flags)
+	{
 		Gdiplus::Graphics graphics(dc_);
 		Gdiplus::SolidBrush  brush(Gdiplus::Color((unsigned int)color));
 		Gdiplus::Font        gdi_font(dc_, font.ToHFONT());
@@ -147,8 +152,7 @@ namespace ui
 
 		GetStringFormat(format, flags);
 		graphics.SetTextRenderingHint(Gdiplus::TextRenderingHintAntiAlias);
-		graphics.DrawString(text.c_str(), text.size(), &gdi_font, rectF, &format, &brush);
-
+		graphics.DrawString(text, len, &gdi_font, rectF, &format, &brush);
 	}
 
 	void Painter::CalcStringRectWithFlags(const std::wstring& text, const Font& font, const Rect& rect, int flags, Rect& out, size_t* len, int* lines)
@@ -171,6 +175,11 @@ namespace ui
 
 	void Painter::CalcStringSizeWithFlags(const std::wstring& text, const Font& font, const Size& sz, int flags, Size& out, size_t* len /*= NULL*/, int* lines /*= NULL*/)
 	{
+		CalcStringSizeWithFlags(text.c_str(), text.size(), font, sz, flags, out, len, lines);
+	}
+
+	void Painter::CalcStringSizeWithFlags(const wchar_t* text, size_t text_len, const Font& font, const Size& sz, int flags, Size& out, size_t* len /*= NULL*/, int* lines /*= NULL*/)
+	{
 		HDC hdc = GetDC(NULL);
 		Gdiplus::Graphics graphics(hdc);
 		Gdiplus::Font        gdi_font(hdc, font.ToHFONT());
@@ -181,7 +190,7 @@ namespace ui
 
 		GetStringFormat(format, flags);
 		graphics.SetTextRenderingHint(Gdiplus::TextRenderingHintAntiAlias);
-		graphics.MeasureString(text.c_str(), text.size(), &gdi_font, rectF, &format, &outF, (int*)len, lines);
+		graphics.MeasureString(text, text_len, &gdi_font, rectF, &format, &outF, (int*)len, lines);
 
 		out.SetSize(outF.Width, outF.Height);
 		::ReleaseDC(NULL, hdc);

@@ -1,6 +1,5 @@
 #pragma once
 #include "base/scoped_ptr.h"
-#include "control/control.h"
 #include "core/widget.h"
 #include "core/focus_manager.h"
 #include "core/view.h"
@@ -17,17 +16,20 @@ namespace ui
 		Window();
 		virtual ~Window();
 
-		void SetBounds(int x, int y, int width, int height);
-		Rect GetBounds();
-		void SetSize(int w, int h);
-		Size GetSize();
+		void AttachWidget(Widget* widget);
+		Widget* DetachWidget();
+		Widget* widget() const { return owned_widget_; }
+
+		void SetWindowBounds(int x, int y, int width, int height);
+		Rect GetWindowBounds();
+		void SetWindowSize(int w, int h);
+		Size GetWindowSize();
 
 		void CenterWindow();
 
 		void Close();
 
 		virtual void OnSetFocus();
-		
 
 		virtual void SchedulePaintInRect(const Rect& r) override;
 
@@ -50,8 +52,7 @@ namespace ui
 
 		void ProcessKeyMessage(UINT message, WPARAM w_param, LPARAM l_param);
 
-		void Init();
-		Widget* widget() const { return owned_widget_; }
+		bool constructed_{ false };
 		Widget* owned_widget_{ NULL };
 
 		//scoped_ptr<FocusManager> focus_manager_;

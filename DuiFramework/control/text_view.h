@@ -1,26 +1,25 @@
 #pragma once
 #include "core/view.h"
-#include "core/constants.h"
-#include <string>
+#include "core/text.h"
 
 namespace ui
 {
-	class Label : public View
+	class TextView : public View
 	{
 	public:
-		Label();
-		Label(const std::wstring& text);
-		virtual ~Label();
+		TextView();
+		TextView(const std::wstring& text);
+		virtual ~TextView();
 
 		void SetText(const std::wstring& text);
 		std::wstring text() const { return text_; };
 
-		bool is_multi_line() const { return is_multi_line_; }
-		void SetMultiLine(bool multi_line);
+		void SetEndEllipsis(bool v);
+		bool GetEndEllipsis();
 
 		void SetFont(const Font& font);
 		void SetFont(const std::wstring& name, int size);
-		
+
 		void SetTextColor(Color color);
 
 		void SetHorizontalAlignment(HorizontalAlignment i) { horizontal_alignment_ = i; }
@@ -28,18 +27,19 @@ namespace ui
 
 		void SetVerticalAlignment(VerticalAlignment i) { vertical_alignment_ = i; }
 		VerticalAlignment GetVerticalAlignment() const { return vertical_alignment_; }
-
-		virtual Size GetPreferredSize() const override;
-
-		//单行文本为不省略的大小
-		Size GetTextSize() const;
 	protected:
 		virtual void OnPaint(Painter* painter) override;
+		virtual void Layout() override;
 
 	private:
-		int GetTextStyle() const;
+		void BuildData();
+
 		std::wstring text_;
-		bool is_multi_line_{ false };
+		bool is_end_ellipsis_{ false };
+
+		bool needs_build_{ true };
+		TextFragment text_fragment_;
+		Rect text_rect_;
 
 		Font font_;
 		Color text_color_{ 0 };

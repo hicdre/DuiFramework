@@ -41,15 +41,15 @@ namespace ui
 		return border_color_[direction];
 	}
 
-	void NormalBorder::DoPaint(View* view, Painter* painter)
+	void NormalBorder::DoPaint(Painter* painter, const Rect& dest)
 	{
 		//ио->вС->об->ср
-		painter->FillRect(Rect(0, 0, view->width(), top()), top_color());
-		painter->FillRect(Rect(0, 0, left(), view->height()), left_color());
-		painter->FillRect(Rect(0, view->height() - bottom(), view->width(),
+		painter->FillRect(Rect(0, 0, dest.width(), top()), top_color());
+		painter->FillRect(Rect(0, 0, left(), dest.height()), left_color());
+		painter->FillRect(Rect(0, dest.height() - bottom(), dest.width(),
 			bottom()), bottom_color());
-		painter->FillRect(Rect(view->width() - right(), 0, right(),
-			view->height()), right_color());
+		painter->FillRect(Rect(dest.width() - right(), 0, right(),
+			dest.height()), right_color());
 	}
 
 	int NormalBorder::left() const

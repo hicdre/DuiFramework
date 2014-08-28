@@ -16,7 +16,7 @@ namespace ui
 	}
 
 	KeyEvent::KeyEvent(EventType type, int key, View* v, LPARAM lparam)
-		: KeyEvent(type, key, v, HIWORD(lparam), LOWORD(lparam))
+		: KeyEvent(type, key, v, LOWORD(lparam), HIWORD(lparam))
 	{
 
 	}

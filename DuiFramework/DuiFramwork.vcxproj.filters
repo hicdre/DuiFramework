@@ -31,6 +31,9 @@
     <Filter Include="view">
       <UniqueIdentifier>{aa15fc41-6e24-49e8-967e-876d1fb7037b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="graphics">
+      <UniqueIdentifier>{3f4eb8fd-4673-4267-bc25-00d5b46631c3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -66,14 +69,8 @@
     <ClCompile Include="render\transform.cpp">
       <Filter>render</Filter>
     </ClCompile>
-    <ClCompile Include="render\border.cpp">
-      <Filter>render</Filter>
-    </ClCompile>
     <ClCompile Include="third_party\stb_image.cpp">
       <Filter>third_party</Filter>
-    </ClCompile>
-    <ClCompile Include="render\image.cpp">
-      <Filter>render</Filter>
     </ClCompile>
     <ClCompile Include="utils\image_store.cpp">
       <Filter>utils</Filter>
@@ -108,12 +105,6 @@
     <ClCompile Include="layout\fill_layout.cpp">
       <Filter>layout</Filter>
     </ClCompile>
-    <ClCompile Include="core\rectangle.cpp">
-      <Filter>core</Filter>
-    </ClCompile>
-    <ClCompile Include="core\image_view.cpp">
-      <Filter>core</Filter>
-    </ClCompile>
     <ClCompile Include="layout\box_layout.cpp">
       <Filter>layout</Filter>
     </ClCompile>
@@ -126,9 +117,6 @@
     <ClCompile Include="render\uniscribe.cpp">
       <Filter>render</Filter>
     </ClCompile>
-    <ClCompile Include="control\control.cpp">
-      <Filter>control</Filter>
-    </ClCompile>
     <ClCompile Include="control\window.cpp">
       <Filter>control</Filter>
     </ClCompile>
@@ -140,6 +128,24 @@
     </ClCompile>
     <ClCompile Include="event\focus_evnet.cpp">
       <Filter>event</Filter>
+    </ClCompile>
+    <ClCompile Include="render\border.cpp">
+      <Filter>graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="render\image_file.cpp">
+      <Filter>utils</Filter>
+    </ClCompile>
+    <ClCompile Include="core\image.cpp">
+      <Filter>graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="core\rectangle.cpp">
+      <Filter>graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="core\text.cpp">
+      <Filter>graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="control\text_view.cpp">
+      <Filter>control</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -185,14 +191,8 @@
     <ClInclude Include="render\color.h">
       <Filter>render</Filter>
     </ClInclude>
-    <ClInclude Include="render\border.h">
-      <Filter>render</Filter>
-    </ClInclude>
     <ClInclude Include="third_party\stb_image.h">
       <Filter>third_party</Filter>
-    </ClInclude>
-    <ClInclude Include="render\image.h">
-      <Filter>render</Filter>
     </ClInclude>
     <ClInclude Include="base\ref_counted.h">
       <Filter>base</Filter>
@@ -240,12 +240,6 @@
     <ClInclude Include="layout\fill_layout.h">
       <Filter>layout</Filter>
     </ClInclude>
-    <ClInclude Include="core\rectangle.h">
-      <Filter>core</Filter>
-    </ClInclude>
-    <ClInclude Include="core\image_view.h">
-      <Filter>core</Filter>
-    </ClInclude>
     <ClInclude Include="layout\box_layout.h">
       <Filter>layout</Filter>
     </ClInclude>
@@ -258,9 +252,6 @@
     <ClInclude Include="render\uniscribe.h">
       <Filter>render</Filter>
     </ClInclude>
-    <ClInclude Include="control\control.h">
-      <Filter>control</Filter>
-    </ClInclude>
     <ClInclude Include="control\window.h">
       <Filter>control</Filter>
     </ClInclude>
@@ -272,6 +263,27 @@
     </ClInclude>
     <ClInclude Include="event\focus_evnet.h">
       <Filter>event</Filter>
+    </ClInclude>
+    <ClInclude Include="render\border.h">
+      <Filter>graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="render\image_file.h">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="core\image.h">
+      <Filter>graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="core\drawable.h">
+      <Filter>graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="core\rectangle.h">
+      <Filter>graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="core\text.h">
+      <Filter>graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="control\text_view.h">
+      <Filter>control</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

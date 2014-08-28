@@ -5,7 +5,7 @@
 #include <cassert>
 
 #include "core/rectangle.h"
-#include "core/image_view.h"
+#include "core/image.h"
 
 namespace ui
 {
@@ -432,8 +432,6 @@ namespace ui
 	{
 		needs_layout_ = false;
 
-		LayoutBackground();
-
 		// If we have a layout manager, let it handle the layout for us.
 		if (layout_manager_.get())
 			layout_manager_->Layout(this);
@@ -451,15 +449,6 @@ namespace ui
 			}
 		}
 	}
-
-
-	void View::LayoutBackground()
-	{
-		if (background_.get())
-			background_->SetBoundsRect(background_inside_ ? GetContentsBounds()
-				: GetLocalBounds());
-	}
-
 
 	Size View::GetPreferredSize() const
 	{
@@ -496,10 +485,18 @@ namespace ui
 		}
 	}
 
-	void View::DoPaint(Painter* painter)
+	void View::DoPaint(Painter* painter, const Rect& dest)
 	{
 		if (!visible_)
 			return;
+
+		//ScopedPainter helper(painter, GetTransform());
+		ScopedPainter helper(painter, Transform(1.0, 0, 0, 1.0, dest.x(), dest.y()));
+		DoPaintSelf(painter);
+	}
+
+	void View::DoPaintSelf(Painter* painter)
+	{
 		PaintBackground(painter);
 		PaintBorder(painter);
 		OnPaint(painter);
@@ -518,9 +515,7 @@ namespace ui
 		{
 			if (p && p->visible())
 			{
-				ScopedPainter helper(painter,
-					p->GetTransform());
-				p->DoPaint(painter);
+				p->DoPaint(painter, p->bounds());
 			}
 		}
 	}
@@ -638,7 +633,8 @@ namespace ui
 		if (!background_.get())
 			return;
 
-		background_->DoPaint(painter);
+		background_->DoPaint(painter, background_inside_ ? 
+			GetContentsBounds() : GetLocalBounds());
 	}
 
 	void View::SetBorder(Border* border)
@@ -656,21 +652,18 @@ namespace ui
 		if (!border_.get())
 			return;
 
-		border_->DoPaint(this, painter);
+		border_->DoPaint(painter, GetLocalBounds());
 	}
 
 	void View::SetBackground(View* background)
 	{
 		background_.reset(background);
-		background_->parent_ = this;
-		LayoutBackground();
 	}
 
 	void View::set_background_color(Color color)
 	{
 		if (!background_.get()) {
 			background_.reset(new SolidRectangle(color));
-			LayoutBackground();
 		}
 
 		SolidRectangle* normal_background
@@ -688,7 +681,6 @@ namespace ui
 
 		if (!background_.get()) {
 			background_.reset(new ResourceImage(id));
-			LayoutBackground();
 		}
 
 		ResourceImage* normal_background
@@ -703,7 +695,6 @@ namespace ui
 	void View::set_background_inside(bool v)
 	{
 		background_inside_ = v;
-		LayoutBackground();
 	}
 
 	void View::SetCursor(HCURSOR cursor)
@@ -800,6 +791,9 @@ namespace ui
 		case EVENT_KEY_RELEASED:
 			OnKeyReleased(static_cast<KeyEvent*>(event));
 			break;
+		case EVENT_CHAR:
+			route_to_parent = false;
+			break;
 		case EVENT_LOSE_FOCUS:
 			OnLoseFocus(static_cast<FocusEvent*>(event));
 			break;
@@ -807,20 +801,22 @@ namespace ui
 			OnGainFocus(static_cast<FocusEvent*>(event));
 			break;
 		default:
+			route_to_parent = true;
 			break;
 		}
 
 		if (event->stopped_dispatch())
 			return;
 
-		if (route_to_parent)
+		if (route_to_parent && parent_)
 			RouteEventTo(event, parent_);
 	}
 
 
 	void View::RouteEventTo(Event* event, View* v)
 	{
-		v->HandleEvent(event);
+		if (v)
+			v->HandleEvent(event);
 	}
 
 
@@ -863,6 +859,13 @@ namespace ui
 	{
 
 	}
+
+
+	void View::OnMouseDoubleClick(MouseEvent* evt)
+	{
+
+	}
+
 
 	void View::OnMouseEnter( MouseEvent* evt )
 	{

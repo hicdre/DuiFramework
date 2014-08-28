@@ -82,7 +82,7 @@ void TestMouseEventWidget::OnInit()
 				btn->SetStateColor(ui::Button::HOVERED, 0x449d44);
 				btn->SetStateColor(ui::Button::PRESSED, ui::ColorSetRGB(60, 139, 60));
 				red_view->Append(btn);
-				listener_.Listen(btn, ui::EVENT_BUTTON_CLICKED, [this](ui::View* target, ui::Event* evt)
+				listener_.Listen(btn, ui::EVENT_BUTTON_CLICKED, [this](ui::Event* evt)
 				{
 					clicked_times_++;
 					static_cast<ui::Button*>(target)->SetText(std::to_wstring(clicked_times_));

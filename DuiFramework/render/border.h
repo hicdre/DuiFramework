@@ -1,16 +1,15 @@
 #pragma once
 #include "render/color.h"
 #include "render/rect.h"
+#include "core/drawable.h"
 
 namespace ui
 {
-	class View;
 	class Painter;
-	class Border
+	class Border : public Drawable
 	{
 	public:
 		virtual ~Border() {}
-		virtual void DoPaint(View* view, Painter* painter) = 0;
 		virtual Padding GetPadding() = 0;
 	};
 
@@ -43,7 +42,7 @@ namespace ui
 		Color right_color() const;
 		Color bottom_color() const;
 
-		virtual void DoPaint(View* view, Painter* painter) override;
+		virtual void DoPaint(Painter* painter, const Rect& dest) override;
 		virtual Padding GetPadding() override;
 	private:
 		int border_size_[4];

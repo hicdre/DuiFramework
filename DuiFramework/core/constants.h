@@ -44,6 +44,7 @@ namespace ui
 
 		EVENT_KEY_PRESSED,
 		EVENT_KEY_RELEASED,
+		EVENT_CHAR,
 
 		EVENT_GAIN_FOCUS,
 		EVENT_LOSE_FOCUS,
@@ -69,6 +70,8 @@ namespace ui
 		MOUSE_MIDDLE = 1 << 5,
 		MOUSE_RIGHT = 1 << 6,
 	};
+
+	//enum 
 #if 0
 	enum LayoutSizePolicy{
 		LAYOUT_SIZE_FIXED,
