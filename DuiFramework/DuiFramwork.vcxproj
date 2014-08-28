@@ -92,7 +92,6 @@
     <ClCompile Include="core\property_object.cpp" />
     <ClCompile Include="core\rectangle.cpp" />
     <ClCompile Include="core\complex_view.cpp" />
-    <ClCompile Include="core\label.cpp" />
     <ClCompile Include="core\text.cpp" />
     <ClCompile Include="core\value.cpp" />
     <ClCompile Include="core\view.cpp" />
@@ -140,7 +139,6 @@
     <ClInclude Include="core\complex_view.h" />
     <ClInclude Include="core\constants.h" />
     <ClInclude Include="core\focus_manager.h" />
-    <ClInclude Include="core\label.h" />
     <ClInclude Include="core\text.h" />
     <ClInclude Include="core\value.h" />
     <ClInclude Include="core\view.h" />

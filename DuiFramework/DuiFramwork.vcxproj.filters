@@ -81,9 +81,6 @@
     <ClCompile Include="render\range.cpp">
       <Filter>render</Filter>
     </ClCompile>
-    <ClCompile Include="core\label.cpp">
-      <Filter>core</Filter>
-    </ClCompile>
     <ClCompile Include="render\padding.cpp">
       <Filter>render</Filter>
     </ClCompile>
@@ -207,9 +204,6 @@
       <Filter>render</Filter>
     </ClInclude>
     <ClInclude Include="core\constants.h">
-      <Filter>core</Filter>
-    </ClInclude>
-    <ClInclude Include="core\label.h">
       <Filter>core</Filter>
     </ClInclude>
     <ClInclude Include="render\padding.h">
