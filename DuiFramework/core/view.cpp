@@ -6,6 +6,7 @@
 
 #include "core/rectangle.h"
 #include "core/image.h"
+#include "core/container.h"
 
 namespace ui
 {
@@ -20,19 +21,9 @@ namespace ui
 		//EventListenManager::Default()->RemoveView(this);
 	}
 
-	View* View::parent() const
+	Container* View::parent() const
 	{
 		return parent_;
-	}
-
-	View* View::first_child() const
-	{
-		return first_child_;
-	}
-
-	View* View::last_child() const
-	{
-		return last_child_;
 	}
 
 	View* View::prev_sibling() const
@@ -45,28 +36,17 @@ namespace ui
 		return next_sibling_;
 	}
 
-	View* View::root() const
+	Container* View::root() const
 	{
 		const View* p = this;
 		while (p->parent_)
 			p = p->parent_;
-		return const_cast<View*>(p);
+		if (!p)
+			return NULL;
+		return const_cast<Container*>(static_cast<const Container*>(p));
 	}
 
-	void View::GetViews(Views &child_array) const
-	{
-		for (View* p = first_child_; p != NULL; p = p->next_sibling_)
-		{
-			child_array.push_back(p);
-		}
-	}
-
-	int32 View::GetViewCount() const
-	{
-		return child_count_;
-	}
-
-	View* View::AppendTo(View* parent)
+	View* View::AppendTo(Container* parent)
 	{
 		return parent->Append(this);
 	}
@@ -76,141 +56,9 @@ namespace ui
 		return parent_->Remove(this);
 	}
 
-	View* View::Append(View* child)
-	{
-		return InsertAfter(last_child_, child);
-	}
-
-	View* View::Remove(View* child)
-	{
-		//只允许移除子节点
-		if (!child || child->parent_ != this)
-		{
-			assert(0); //<< "can only remove child node";
-			return NULL;
-		}
-
-		//更新父子关系
-		child->parent_ = NULL;
-		if (first_child_ == child)
-		{
-			first_child_ = child->next_sibling_;
-		}
-		if (last_child_ == child)
-		{
-			last_child_ = child->prev_sibling_;
-		}
-
-		//更新兄弟关系
-		if (child->prev_sibling_)
-		{
-			child->prev_sibling_->next_sibling_ = child->next_sibling_;
-		}
-
-		if (child->next_sibling_)
-		{
-			child->next_sibling_->prev_sibling_ = child->prev_sibling_;
-		}
-
-		child->next_sibling_ = NULL;
-		child->prev_sibling_ = NULL;
-
-		child_count_--;
-
-		return child;
-	}
-
-	View* View::InsertAfter(View* ref, View* child)
-	{
-		if (is_leaf_view_ || ref == child || child == NULL || (ref && ref->parent_ != this))
-		{
-			assert(0);
-			return NULL;
-		}
-
-		//先从原节点移除
-		if (child->parent_)
-		{
-			child->parent_->Remove(child);
-		}
-		child->parent_ = this;
-
-		child->prev_sibling_ = ref;
-		if (ref)
-		{//插到中间或最后
-			child->next_sibling_ = ref->next_sibling_;
-			if (ref->next_sibling_)
-			{
-				ref->next_sibling_->prev_sibling_ = child;
-			}
-			ref->next_sibling_ = child;
-
-			assert(last_child_);
-			//插到最后了
-			if (last_child_->next_sibling_)
-			{
-				last_child_ = last_child_->next_sibling_;
-			}
-		}
-		else
-		{//插到最前
-			child->next_sibling_ = first_child_;
-			if (first_child_)
-			{
-				first_child_->prev_sibling_ = child;
-			}
-			first_child_ = child;
-
-			//原来没有子元素
-			if (last_child_ == NULL)
-			{
-				last_child_ = child;
-			}
-		}
-		child_count_++;
-
-		return child;
-	}
-
-	View* View::InsertBefore(View* ref, View* child)
-	{
-		if (is_leaf_view_ || ref == child || child == NULL || (ref && ref->parent_ != this))
-		{
-			assert(0);// << "insert before invalid";
-			return NULL;
-		}
-
-		if (ref)
-		{
-			return InsertAfter(ref->prev_sibling_, child);
-		}
-		else
-		{
-			return InsertAfter(last_child_, child);
-		}
-	}
-
-
-	void View::set_leaf_view(bool v)
-	{
-		is_leaf_view_ = v;
-	}
-
-
-	bool View::HasDescender(View* child, int* step)
-	{
-		*step = 0;
-		for (View* v = child; v; v = v->parent(), (*step)++)
-		{
-			if (v == this)
-				return true;
-		}
-		return false;
-	}
-
 	View* View::GetAncestorTo(View* other)
 	{
-		View* root_view = root();
+		Container* root_view = root();
 		int step_this = 0;
 		int step_that = 0;
 		if (!root_view->HasDescender(other, &step_that))
@@ -256,48 +104,10 @@ namespace ui
 
 	View* View::Hittest(const Point& pt)
 	{
-		if (!enable_mouse_event_)
-			return NULL;
-
 		//hittest self
 		if (!GetLocalBounds().Contains(pt))
 			return NULL;
-
-		for (View* p = last_child_; p != NULL; p = p->prev_sibling())
-		{
-			if (p)
-			{
-				Point pt_in_child = p->GetTransform().Invert().Apply(pt);
-				View* v = p->Hittest(pt_in_child);
-				if (v)
-					return v;
-			}
-		}
-
 		return this;
-	}
-
-	bool View::Hittest(const Point& pt, Views& views)
-	{
-		if (!enable_mouse_event_)
-			return NULL;
-
-		if (!GetLocalBounds().Contains(pt))
-			return false;
-
-		bool child_hittested = false;
-		for (View* p = last_child_; p != NULL; p = p->prev_sibling())
-		{
-			if (p)
-			{
-				child_hittested = Hittest(pt, views) || child_hittested;
-			}
-		}
-
-		if (!child_hittested)
-			views.push_back(this);
-
-		return true;
 	}
 
 
@@ -417,43 +227,13 @@ namespace ui
 		}
 	}
 
-	void View::SetLayout(LayoutManager* layout)
-	{
-		if (layout_manager_.get())
-			layout_manager_->Uninstalled(this);
-
-		layout_manager_.reset(layout);
-		if (layout_manager_.get())
-			layout_manager_->Installed(this);
-	}
-
-
 	void View::Layout()
 	{
 		needs_layout_ = false;
-
-		// If we have a layout manager, let it handle the layout for us.
-		if (layout_manager_.get())
-			layout_manager_->Layout(this);
-
-		// Make sure to propagate the Layout() call to any children that haven't
-		// received it yet through the layout manager and need to be laid out. This
-		// is needed for the case when the child requires a layout but its bounds
-		// weren't changed by the layout manager. If there is no layout manager, we
-		// just propagate the Layout() call down the hierarchy, so whoever receives
-		// the call can take appropriate action.
-		for (View* child = first_child(); child != NULL; child = child->next_sibling()) {
-			if (child->needs_layout_ /*|| !layout_manager_.get()*/) {
-				child->needs_layout_ = false;
-				child->Layout();
-			}
-		}
 	}
 
 	Size View::GetPreferredSize() const
 	{
-		if (layout_manager_.get())
-			return layout_manager_->GetPreferredSize(this);
 		return Size();
 	}
 
@@ -500,26 +280,12 @@ namespace ui
 		PaintBackground(painter);
 		PaintBorder(painter);
 		OnPaint(painter);
-		OnPaintChildren(painter);
 	}
 
 	void View::OnPaint(Painter* painter)
 	{
 		//painter->DrawStringRect(L"测试", Font(L"微软雅黑", 18), ColorSetRGB(255,0,0,0), GetLocalBounds());
 	}
-
-
-	void View::OnPaintChildren(Painter* painter)
-	{
-		for (View* p = first_child_; p != NULL; p = p->next_sibling())
-		{
-			if (p && p->visible())
-			{
-				p->DoPaint(painter, p->bounds());
-			}
-		}
-	}
-
 
 	Transform View::GetTransform() const
 	{

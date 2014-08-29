@@ -85,9 +85,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="control\button.cpp" />
+    <ClCompile Include="control\control_factory.cpp" />
     <ClCompile Include="control\text_view.cpp" />
     <ClCompile Include="control\window.cpp" />
     <ClCompile Include="core\app.cpp" />
+    <ClCompile Include="core\container.cpp" />
     <ClCompile Include="core\image.cpp" />
     <ClCompile Include="core\property_object.cpp" />
     <ClCompile Include="core\rectangle.cpp" />
@@ -101,8 +103,7 @@
     <ClCompile Include="event\key_event.cpp" />
     <ClCompile Include="event\mouse_event.cpp" />
     <ClCompile Include="layout\box_layout.cpp" />
-    <ClCompile Include="layout\fill_layout.cpp" />
-    <ClCompile Include="layout\fluid_layout.cpp" />
+    <ClCompile Include="layout\frame_layout.cpp" />
     <ClCompile Include="render\border.cpp" />
     <ClCompile Include="render\font.cpp" />
     <ClCompile Include="render\image_file.cpp" />
@@ -129,9 +130,11 @@
     <ClInclude Include="base\ref_counted.h" />
     <ClInclude Include="base\scoped_ptr.h" />
     <ClInclude Include="control\button.h" />
+    <ClInclude Include="control\control_factory.h" />
     <ClInclude Include="control\text_view.h" />
     <ClInclude Include="control\window.h" />
     <ClInclude Include="core\app.h" />
+    <ClInclude Include="core\container.h" />
     <ClInclude Include="core\drawable.h" />
     <ClInclude Include="core\image.h" />
     <ClInclude Include="core\property_object.h" />
@@ -149,9 +152,7 @@
     <ClInclude Include="event\key_event.h" />
     <ClInclude Include="event\mouse_event.h" />
     <ClInclude Include="layout\box_layout.h" />
-    <ClInclude Include="layout\fill_layout.h" />
-    <ClInclude Include="layout\fluid_layout.h" />
-    <ClInclude Include="layout\layout_manager.h" />
+    <ClInclude Include="layout\frame_layout.h" />
     <ClInclude Include="render\border.h" />
     <ClInclude Include="render\color.h" />
     <ClInclude Include="render\font.h" />

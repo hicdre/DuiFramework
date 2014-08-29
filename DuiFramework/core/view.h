@@ -13,13 +13,13 @@
 #include "event/focus_evnet.h"
 #include "core/focus_manager.h"
 #include "core/property_object.h"
-#include "layout/layout_manager.h"
 #include <vector>
 
 namespace ui
 {
 	class Widget;
 	class View;
+	class Container;
 	typedef std::vector<View*> Views;
 
 	class View 
@@ -27,37 +27,24 @@ namespace ui
 		, public EventHandler
 		, public Drawable
 	{
+		friend class Container;
 	public:
 		View();
 		virtual ~View();
 
 		// Tree operations -----------------------------------------------------------
-		View* parent() const;
-		View* first_child() const;
-		View* last_child() const;
+		Container* parent() const;
+		
 		View* prev_sibling() const;
 		View* next_sibling() const;
+		Container* root() const;
 
-		View* root() const;
-
-		void GetViews(Views &child_array) const;
-		int32 GetViewCount() const;
-
-		View* AppendTo(View* parent);
+		View* AppendTo(Container* parent);
 		View* Detach();
-
-		View* Append(View* child);
-		View* Remove(View* child);
-		View* InsertAfter(View* ref, View* child);
-		View* InsertBefore(View* ref, View* child);
-
-		void set_leaf_view(bool v);
-
-		bool HasDescender(View* descender, int* step = NULL);
+		
 		View* GetAncestorTo(View* other);
 
-		View* Hittest(const Point& pt);//pt在本坐标系
-		bool Hittest(const Point& pt, Views& views);
+		virtual View* Hittest(const Point& pt);//pt在本坐标系
 
 		// Get the Widget that hosts this View, if any.
 		//virtual const Widget* GetWidget() const;
@@ -95,7 +82,6 @@ namespace ui
 		// Layout --------------------------------------------------------------------
 		virtual void Layout();
 
-		void SetLayout(LayoutManager* layout);
 		virtual Size GetPreferredSize() const;
 
 		// Background ------------------------------------------------------------------
@@ -111,7 +97,6 @@ namespace ui
 		virtual void DoPaint(Painter* painter, const Rect& dest) override;
 		void DoPaintSelf(Painter* painter);
 		virtual void OnPaint(Painter* painter);
-		virtual void OnPaintChildren(Painter* painter);
 
 		// Coordinate conversion -----------------------------------------------------
 		Transform GetTransform() const;
@@ -182,13 +167,10 @@ namespace ui
 		void PaintBackground(Painter* painter);
 		void PaintBorder(Painter* painter);
 
-		View* parent_{ NULL };
-		View* first_child_{ NULL };
-		View* last_child_{ NULL };
+		Container* parent_{ NULL };
 		View* next_sibling_{ NULL };
 		View* prev_sibling_{ NULL };
-		int32 child_count_{ 0 };
-		bool is_leaf_view_{ false };
+		
 
 
 		// This View's bounds in the parent coordinate system.
@@ -206,8 +188,6 @@ namespace ui
 		scoped_ptr<Border> border_;
 		scoped_ptr<Drawable> background_;
 		bool background_inside_{ false };
-
-		scoped_ptr<LayoutManager> layout_manager_;
 
 		HCURSOR cursor_{ NULL };
 

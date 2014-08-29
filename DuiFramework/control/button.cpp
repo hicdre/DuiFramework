@@ -7,10 +7,44 @@
 
 namespace ui
 {
-	class Button::StateData
+	Button::Clicked::Clicked(Button* btn)
+		: Event(EVENT_BUTTON_CLICKED)
+		, trigger_(btn)
+	{
+
+	}
+
+
+	Button::Button()
+	{
+
+	}
+
+
+	Button::~Button()
+	{
+
+	}
+
+
+	void Button::SetState(State state)
+	{
+		if (state_ == state)
+			return;
+		state_ = state;
+		OnButtonStateChanged();
+	}
+
+	Button::State Button::state() const
+	{
+		return state_;
+	}
+
+
+	class TextButton::StateData
 	{
 	public:
-		StateData(Button::State state)
+		StateData(TextButton::State state)
 			: state_(state)
 		{
 		}
@@ -23,7 +57,7 @@ namespace ui
 			state_graphics_.reset(new SolidRectangle(color));
 		}
 
-		Button::State GetButtonState() const {
+		TextButton::State GetButtonState() const {
 			return state_;
 		}
 
@@ -31,11 +65,11 @@ namespace ui
 			return state_graphics_.get();
 		}
 	private:
-		Button::State state_;
+		TextButton::State state_;
 		scoped_ptr<Drawable> state_graphics_;
 	};
 
-	Button::Button()
+	TextButton::TextButton()
 	{
 		for (int i = 0; i < STATE_MAX; i++)
 		{
@@ -43,7 +77,7 @@ namespace ui
 		}
 	}
 
-	Button::Button(const std::wstring& text)
+	TextButton::TextButton(const std::wstring& text)
 		: TextView(text)
 	{
 		for (int i = 0; i < STATE_MAX; i++)
@@ -52,7 +86,7 @@ namespace ui
 		}
 	}
 
-	Button::~Button()
+	TextButton::~TextButton()
 	{
 		for (int i = 0; i < STATE_MAX; i++)
 		{
@@ -60,31 +94,19 @@ namespace ui
 		}
 	}
 
-	void Button::SetStateImage(State state, const std::string& id)
+	void TextButton::SetStateImage(State state, const std::string& id)
 	{
 		state_datas_[state]->SetImage(id);
 	}
 
-	void Button::SetStateColor(State state, Color color)
+	void TextButton::SetStateColor(State state, Color color)
 	{
 		state_datas_[state]->SetSolidColor(color);
 	}
 
-	void Button::SetState(State state)
-	{
-		if (state_ == state)
-			return;
-		state_ = state;
-		SchedulePaint();
-	}
-
-	Button::State Button::state() const
-	{
-		return state_;
-	}
 
 
-	void Button::OnPaint(Painter* painter)
+	void TextButton::OnPaint(Painter* painter)
 	{
 		Drawable* graphics = state_datas_[state_]->GetData();
 		if (graphics)
@@ -92,47 +114,44 @@ namespace ui
 	}
 
 
-	void Button::OnMouseEnter(MouseEvent* evt)
+	void TextButton::OnMouseEnter(MouseEvent* evt)
 	{
 		if (evt->HasMouseDown())
 		{
-			SetState(Button::PRESSED);
+			SetState(TextButton::PRESSED);
 		}
 		else
 		{
-			SetState(Button::HOVERED);
+			SetState(TextButton::HOVERED);
 		}
 	}
 
-	void Button::OnMouseLeave(MouseEvent* evt)
+	void TextButton::OnMouseLeave(MouseEvent* evt)
 	{
-		SetState(Button::NORMAL);
+		SetState(TextButton::NORMAL);
 	}
 
-	void Button::OnMouseDown(MouseEvent* evt)
+	void TextButton::OnMouseDown(MouseEvent* evt)
 	{
-		SetState(Button::PRESSED);
+		SetState(TextButton::PRESSED);
 	}
 
-	void Button::OnMouseUp(MouseEvent* evt)
+	void TextButton::OnMouseUp(MouseEvent* evt)
 	{
-		SetState(Button::HOVERED);
+		SetState(TextButton::HOVERED);
 		TriggerClicked();
 	}
 
 
-	void Button::TriggerClicked()
+	void TextButton::TriggerClicked()
 	{
 		Clicked evt(this);
 		HandleEvent(&evt);
 	}
 
-
-	Button::Clicked::Clicked(Button* btn)
-		: Event(EVENT_BUTTON_CLICKED)
-		, trigger_(btn)
+	void TextButton::OnButtonStateChanged()
 	{
-
+		SchedulePaint();
 	}
 
 }

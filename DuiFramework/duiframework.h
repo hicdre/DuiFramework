@@ -1,7 +1,6 @@
 #pragma once
 
 #include "core/app.h"
-#include "core/label.h"
 #include "core/widget.h"
 #include "core/rectangle.h"
 #include "core/image.h"

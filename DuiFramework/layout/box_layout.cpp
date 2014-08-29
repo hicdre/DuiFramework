@@ -19,12 +19,12 @@ namespace ui
 
 	}
 
-	void BoxLayout::Layout(View* host)
+	void BoxLayout::Layout()
 	{
-		Rect child_area(host->GetContentsBounds());
+		Rect child_area(GetContentsBounds());
 		child_area.Inset(padding_);
 		child_area.Inset(-child_spaceing_, 0, 0, 0);
-		for (View* v = host->first_child(); v != NULL; v = v->next_sibling())
+		for (View* v = first_child(); v != NULL; v = v->next_sibling())
 		{
 			if (!v->visible())
 				continue;
@@ -41,11 +41,11 @@ namespace ui
 		}
 	}
 
-	Size BoxLayout::GetPreferredSize(const View* host) const
+	Size BoxLayout::GetPreferredSize() const
 	{
 		int width = is_vertical_ ? 0 : -child_spaceing_;
 		int height = is_vertical_ ? -child_spaceing_ : 0;
-		for (View* v = host->first_child(); v != NULL; v = v->next_sibling())
+		for (View* v = first_child(); v != NULL; v = v->next_sibling())
 		{
 			if (!v->visible())
 				continue;

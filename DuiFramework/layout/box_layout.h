@@ -2,11 +2,13 @@
 #include "base/basictypes.h"
 #include "render/size.h"
 #include "render/padding.h"
-#include "layout/layout_manager.h"
+#include "core/container.h"
 
 namespace ui
 {
-	class BoxLayout : public LayoutManager
+	//hbox or vbox
+	//子元素完全扩充空间
+	class BoxLayout : public Container
 	{
 	public:
 		BoxLayout(bool vertical = false);
@@ -18,9 +20,8 @@ namespace ui
 		void SetChildSpaceing(int i);
 		void SetPadding(int left, int top, int right, int bottom);
 
-		// Overridden from LayoutManager:
-		virtual void Layout(View* host) override;
-		virtual Size GetPreferredSize(const View* host) const override;
+		virtual void Layout() override;
+		virtual Size GetPreferredSize() const override;
 
 	private:
 		bool is_vertical_{ false };

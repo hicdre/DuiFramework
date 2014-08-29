@@ -2,13 +2,13 @@
 #include "base/scoped_ptr.h"
 #include "core/widget.h"
 #include "core/focus_manager.h"
-#include "core/view.h"
+#include "core/container.h"
 
 namespace ui
 {
 	class EventDispatcher;
 	class Window 
-		: public View
+		: public Container
 		, public Widget::MessageHandler
 		, public FocusManager
 	{

@@ -1,10 +1,9 @@
 #pragma once
-#include "core/label.h"
 #include "control/text_view.h"
 
 namespace ui
 {
-	class Button : public TextView
+	class Button
 	{
 	public:
 		enum State {
@@ -24,18 +23,36 @@ namespace ui
 		protected:
 			Button* trigger_;
 		};
+
 		Button();
-		Button(const std::wstring& text);
-		
 		virtual ~Button();
 
-		void SetStateImage(State state, const std::string& id);
-		void SetStateColor(State state, Color color);
+		virtual void TriggerClicked() = 0;
+
+		virtual void OnButtonStateChanged() = 0;
 
 		void SetState(State state);
 		State state() const;
+	protected:
+		State state_;
+	};
+
+	class TextButton 
+		: public TextView
+		, public Button
+	{
+	public:
+		TextButton();
+		TextButton(const std::wstring& text);
 		
-		void TriggerClicked();
+		virtual ~TextButton();
+
+		//@attr
+		void SetStateImage(State state, const std::string& id);
+		void SetStateColor(State state, Color color);
+		
+		virtual void TriggerClicked() override;
+		virtual void OnButtonStateChanged() override;
 	protected:
 		virtual void OnPaint(Painter* painter) override;
 
@@ -45,7 +62,6 @@ namespace ui
 		virtual void OnMouseUp(MouseEvent* evt) override;
 	private:
 		class StateData;
-		State state_;
 		StateData* state_datas_[STATE_MAX];
 	};
 }

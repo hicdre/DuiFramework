@@ -71,15 +71,5 @@ namespace ui
 		MOUSE_RIGHT = 1 << 6,
 	};
 
-	//enum 
-#if 0
-	enum LayoutSizePolicy{
-		LAYOUT_SIZE_FIXED,
-		LAYOUT_SIZE_PREFERED,
-		LAYOUT_SIZE_SHRINK,
-	};
 
-	const char* k_fluid_orientation = "fluid-orientation";
-	const char* k_height_policy = "height-policy";
-#endif
 }

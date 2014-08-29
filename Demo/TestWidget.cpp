@@ -26,12 +26,12 @@ void TestWindowConstructor::OnCreate()
 		store->AddImageRecord("close.pressed", button_close_path, ui::Rect(0, 20, 10, 10));
 	}
 	{
-		ui::View* header = new ui::View;
+		ui::Container* header = new ui::Container;
 		view()->Append(header);
 		header->SetBounds(0, 0, 400, 50);
 		header->set_background_image_id("title");
 		{
-			ui::Button* btn = new ui::Button();
+			ui::TextButton* btn = new ui::TextButton();
 			header->Append(btn);
 			btn->SetBounds(360, 20, 10, 10);
 			btn->SetStateImage(ui::Button::NORMAL, "close.normal");
