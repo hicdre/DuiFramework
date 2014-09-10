@@ -7,7 +7,7 @@ namespace ui
 
 	Container::Container()
 	{
-
+		is_container_ = true;
 	}
 
 	Container::~Container()
@@ -165,7 +165,7 @@ namespace ui
 
 	View* Container::Hittest(const Point& pt)
 	{
-		if (!enable_mouse_event_)
+		if (!enabled_)
 			return NULL;
 
 		//hittest self
@@ -188,7 +188,7 @@ namespace ui
 
 	bool Container::Hittest(const Point& pt, Views& views)
 	{
-		if (!enable_mouse_event_)
+		if (!enabled_)
 			return NULL;
 
 		if (!GetLocalBounds().Contains(pt))
@@ -213,7 +213,7 @@ namespace ui
 	void Container::Layout()
 	{
 		for (View* child = first_child(); child != NULL; child = child->next_sibling()) {
-			if (child->needs_layout_) {
+			if (child->visible()) {
 				child->needs_layout_ = false;
 				child->Layout();
 			}

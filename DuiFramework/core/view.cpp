@@ -513,13 +513,13 @@ namespace ui
 
 	void View::HandleEvent(Event* event)
 	{
-		if (!enable_mouse_event_ && event->IsMouseEvent())
+		if (!enabled_ && event->IsMouseEvent())
 		{
 			RouteEventTo(event, parent_);
 			return;
 		}
 
-		if (!focusable_ && event->IsKeyEvent())
+		if ((!enabled_ || !focusable_) && event->IsKeyEvent())
 			return;
 
 		event_listener_.HandleEvent(event);
@@ -661,6 +661,43 @@ namespace ui
 	void View::OnGainFocus( FocusEvent* evt )
 	{
 
+	}
+
+	void View::SetDragable(bool dragable)
+	{
+		dragable_ = dragable;
+	}
+
+	bool View::IsDragable() const
+	{
+		return dragable_;
+	}
+
+	void View::SetHittestOverride(const HittestOverride& f)
+	{
+		hittest_override_ = f;
+	}
+
+	const View::HittestOverride& View::GetHittestOverride() const
+	{
+		return hittest_override_;
+	}
+
+	bool View::HasHittestOverride() const
+	{
+		return !!hittest_override_;
+	}
+
+	bool View::is_container() const
+	{
+		return is_container_;
+	}
+
+	View* View::GetDragableView() const
+	{
+		if (dragable_)
+			return const_cast<View*>(this);
+		return parent_ ? parent_->GetDragableView() : NULL;
 	}
 
 	

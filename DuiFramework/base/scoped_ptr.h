@@ -130,3 +130,40 @@ private:
 	T* ptr_;
 	DISALLOW_COPY_AND_ASSIGN(scoped_ptr_release);
 };
+
+template <class T>
+class scoped_refptr
+{
+public:
+	scoped_refptr(T* t)
+	{
+		p_ = t;
+		if (p_)
+			p_->AddRef();
+	}
+	~scoped_refptr()
+	{
+		Clear();
+	}
+	scoped_refptr(const scoped_refptr<T>& r) : p_(r.p_) {
+		if (p_)
+			p_->AddRef();
+	}
+	void Clear()
+	{
+		if (p_)
+			p_->Release();
+	}
+	T* operator->() const
+	{
+		return p_;
+	}
+	T* get() const
+	{
+		return p_;
+	}
+
+
+private:
+	T* p_;
+};

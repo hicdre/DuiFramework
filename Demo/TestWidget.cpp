@@ -52,13 +52,45 @@ void TestWindowConstructor::OnCreate()
 		label_->SetTextColor(ui::ColorSetRGB(0, 0, 0));
 		view()->Append(label_);
 	}
-
+	{
+		ui::BoxLayout* box = new ui::BoxLayout(true);
+		box->SetBounds(0, 70, 100, 200);
+		box->set_background_color(ui::ColorSetRGB(255, 0, 0));
+		view()->Append(box);
+		{
+			ui::Container* c = new ui::Container();
+			c->SetSize(ui::Size(100, 20));
+			c->set_background_color(ui::ColorSetRGB(0, 125, 0));
+			box->Append(c);
+		}
+		{
+			ui::Container* c = new ui::Container();
+			c->SetSize(ui::Size(80, 20));
+			c->set_background_color(ui::ColorSetRGB(0, 0, 125));
+			box->Append(c);
+		}
+	}
 	view()->set_background_color(ui::ColorSetRGB(255, 255, 255));
 	view()->SetFocusable(true);
 	view()->listener().Listen(ui::EVENT_CHAR, [this](ui::Event* evt)
 	{
 		ui::KeyEvent* key_event = static_cast<ui::KeyEvent*>(evt);
 		label_->SetText(label_->text() + std::wstring(1, (wchar_t)key_event->GetKey()));
+	}).Listen(ui::EVENT_DRAG_BEGIN, [this](ui::Event* evt)
+	{
+		ui::MouseEvent* drag_event = static_cast<ui::MouseEvent*>(evt);
+		anchor_ = drag_event->GetPosition(view());
+		view()->widget()->SetCaptured();
+	}).Listen(ui::EVENT_DRAG_MOVE, [this](ui::Event* evt)
+	{
+		POINT pt;
+		::GetCursorPos(&pt);
+		ui::Point position(pt);
+		position.Offset(-anchor_.x(), -anchor_.y());
+		view()->widget()->SetWindowPos(position.x(), position.y());
+	}).Listen(ui::EVENT_DRAG_END, [this](ui::Event* evt)
+	{
+		::SetCapture(NULL);
 	});
 
 	

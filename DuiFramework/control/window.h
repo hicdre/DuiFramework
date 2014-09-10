@@ -52,11 +52,14 @@ namespace ui
 
 		void ProcessKeyMessage(UINT message, WPARAM w_param, LPARAM l_param);
 
+		void UpdateHittest(const Point& pt);
+
 		bool constructed_{ false };
 		Widget* owned_widget_{ NULL };
 
 		//scoped_ptr<FocusManager> focus_manager_;
 		View* focused_view_{ NULL };
-		View* hitttest_view_{ NULL };
+		View* hittest_view_{ NULL };
+		View* captured_view_{ NULL };
 	};
 }

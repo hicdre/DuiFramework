@@ -29,11 +29,13 @@ namespace ui
 	{
 		friend class Container;
 	public:
+		typedef std::function<bool(const Point&)> HittestOverride;
 		View();
 		virtual ~View();
 
 		// Tree operations -----------------------------------------------------------
 		Container* parent() const;
+		bool is_container() const;
 		
 		View* prev_sibling() const;
 		View* next_sibling() const;
@@ -44,6 +46,9 @@ namespace ui
 		
 		View* GetAncestorTo(View* other);
 
+		void SetHittestOverride(const HittestOverride& f);
+		const HittestOverride& GetHittestOverride() const;
+		bool HasHittestOverride() const;
 		virtual View* Hittest(const Point& pt);//pt在本坐标系
 
 		// Get the Widget that hosts this View, if any.
@@ -77,7 +82,6 @@ namespace ui
 		bool IsDrawn() const;
 		void SetEnabled(bool enabled);
 		bool enabled() const { return enabled_; }
-		void SetDragable(bool v);
 
 		// Layout --------------------------------------------------------------------
 		virtual void Layout();
@@ -142,7 +146,10 @@ namespace ui
 		bool IsFocusable() const;
 
 		virtual FocusManager* GetFocusManager() const;
-		
+
+		void SetDragable(bool dragalbe);
+		bool IsDragable() const;
+		View* GetDragableView() const;
 	public:
 		virtual void OnVisibleChanged();
 		virtual void OnEnabledChanged();
@@ -172,11 +179,12 @@ namespace ui
 		View* prev_sibling_{ NULL };
 		
 
-
+		bool is_container_{ false };
 		// This View's bounds in the parent coordinate system.
 		Rect bounds_;
 		bool visible_{ true };// Whether this view is visible.
 		bool enabled_{ true };// Whether this view is enabled.
+		bool dragable_{ false };
 		bool painting_enabled_{ true };// Whether this view is painting.
 
 		bool needs_layout_{ true };
@@ -193,7 +201,8 @@ namespace ui
 
 		EventListener event_listener_;
 
-		bool enable_mouse_event_{ true };
+		HittestOverride hittest_override_;
+
 
 		//LayoutSizePolicy width_policy_{ LAYOUT_SIZE_FIXED };
 		//LayoutSizePolicy height_policy_{ LAYOUT_SIZE_FIXED };

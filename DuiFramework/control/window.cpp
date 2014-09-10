@@ -10,6 +10,7 @@ namespace ui
 
 	Window::Window()
 	{
+		SetDragable(true);
 	}
 
 	Window::~Window()
@@ -152,15 +153,18 @@ namespace ui
 		else if (message == WM_SETFOCUS)
 		{
 			SetFocus(this);
+			return TRUE;
 		}
 		else if (message == WM_KILLFOCUS)
 		{
 			SetFocus(NULL);
+			return TRUE;
 		}
 		else if (message == WM_SIZE)
 		{
 			Size sz = { LOWORD(l_param), HIWORD(l_param) };
 			SetSize(sz);
+			return TRUE;
 		}
 		return FALSE;
 	}
@@ -169,22 +173,32 @@ namespace ui
 	{
 		Point pt = GetMousePosition(widget());
 
-		View* old_view = hitttest_view_;
-		hitttest_view_ = Hittest(pt);
-
-		if (hitttest_view_) {
-			//设置鼠标指针
-			HCURSOR cursor = hitttest_view_->GetCursor();
-			widget()->SetCursor(cursor);
-
-			MouseEvent evt(EVENT_MOUSE_MOVE, pt, hitttest_view_);
-			hitttest_view_->HandleEvent(&evt);
+		View* old_view = hittest_view_;
+		if (captured_view_)
+		{
+			hittest_view_ = captured_view_->Hittest(ConvertPointFromWidget(pt));
+			if (hittest_view_ == NULL)
+				hittest_view_ = captured_view_;
+		}
+		else
+		{
+			hittest_view_ = Hittest(pt);
 		}
 
-		if (old_view != hitttest_view_)
+		if (hittest_view_) {
+			//设置鼠标指针
+			HCURSOR cursor = hittest_view_->GetCursor();
+			widget()->SetCursor(cursor);
+
+			MouseEvent evt(captured_view_ ? EVENT_DRAG_MOVE : EVENT_MOUSE_MOVE, 
+				pt, hittest_view_);
+			hittest_view_->HandleEvent(&evt);
+		}
+
+		if (old_view != hittest_view_)
 		{
-			if (old_view == NULL && hitttest_view_ != NULL) {
-				DispatchMouseEnterEvent(old_view, hitttest_view_, pt);
+			if (old_view == NULL && hittest_view_ != NULL) {
+				DispatchMouseEnterEvent(old_view, hittest_view_, pt);
 
 				TRACKMOUSEEVENT tme = { 0 };
 				tme.cbSize = sizeof(TRACKMOUSEEVENT);
@@ -194,26 +208,31 @@ namespace ui
 				::TrackMouseEvent(&tme);
 				return;
 			}
-			else if (old_view != NULL && hitttest_view_ == NULL) 
+			else if (old_view != NULL && hittest_view_ == NULL) 
 			{
-				DispatchMouseLeaveEvent(old_view, hitttest_view_, pt);
+				DispatchMouseLeaveEvent(old_view, hittest_view_, pt);
 			}
 			else
 			{
-				View* public_ancestor = hitttest_view_->GetAncestorTo(old_view);
+				View* public_ancestor = hittest_view_->GetAncestorTo(old_view);
 				if (public_ancestor)
 				{
 					DispatchMouseLeaveEvent(old_view, public_ancestor, pt);
-					DispatchMouseEnterEvent(public_ancestor, hitttest_view_, pt);
+					DispatchMouseEnterEvent(public_ancestor, hittest_view_, pt);
 				}
 			}
 		}
-
-		MouseEvent evt(EVENT_UNKNOWN, pt, hitttest_view_);
+		MouseEvent evt(EVENT_UNKNOWN, pt, hittest_view_);
 		switch (message)
 		{
 		case WM_LBUTTONDOWN:
 		case WM_NCLBUTTONDOWN:
+			captured_view_ = hittest_view_->GetDragableView();
+			if (captured_view_)
+			{
+				MouseEvent evt1(EVENT_DRAG_BEGIN, pt, captured_view_);
+				captured_view_->HandleEvent(&evt1);
+			}
 		case WM_MBUTTONDOWN:
 		case WM_NCMBUTTONDOWN:
 		case WM_RBUTTONDOWN:
@@ -226,6 +245,13 @@ namespace ui
 			break;
 		case WM_LBUTTONUP:
 		case WM_NCLBUTTONUP:
+			if (captured_view_)
+			{
+				View* last_captured_view = captured_view_;
+				captured_view_ = NULL;
+				MouseEvent evt1(EVENT_DRAG_END, pt, last_captured_view);
+				last_captured_view->HandleEvent(&evt1);
+			}
 		case WM_MBUTTONUP:
 		case WM_NCMBUTTONUP:
 		case WM_RBUTTONUP:
@@ -253,7 +279,7 @@ namespace ui
 		}
 
 		if (evt.IsMouseEvent())
-			hitttest_view_->HandleEvent(&evt);
+			hittest_view_->HandleEvent(&evt);
 	}
 
 	void Window::DispatchMouseLeaveEvent(View* from, View* to, const Point& pt)
@@ -346,6 +372,5 @@ namespace ui
 			focused_view_->HandleEvent(&evt);
 		}
 	}
-
 
 }

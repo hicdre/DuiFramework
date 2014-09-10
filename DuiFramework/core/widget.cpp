@@ -341,6 +341,11 @@ namespace ui
 		return ::GetFocus() == hwnd_;
 	}
 
+	void Widget::SetCaptured()
+	{
+		::SetCapture(hwnd_);
+	}
+
 
 	
 

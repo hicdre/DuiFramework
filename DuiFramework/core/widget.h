@@ -89,6 +89,8 @@ namespace ui
 		void SetFocus();
 		bool IsFocused();
 
+		void SetCaptured();
+
 		void InvalidateRect(const Rect& r);
 
 

@@ -14,4 +14,5 @@ private:
 	ui::Window* view() const;
 	ui::Window* window_;
 	ui::TextView* label_;
+	ui::Point anchor_;
 };
