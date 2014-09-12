@@ -195,4 +195,23 @@ namespace ui
 		return mb;
 	}
 
+	void spilt_string(const std::string& input, char tag, std::vector<std::string>& output, size_t maxcount /*= -1*/)
+	{
+		std::string temp = input;
+
+		while (output.size() < maxcount)
+		{
+			int ipos = temp.find(tag);
+			if (ipos == std::string::npos)
+			{
+				output.push_back(temp);
+				break;
+			}
+
+			output.push_back(temp.substr(0, ipos));
+			temp = temp.substr(ipos + 1);
+		}
+	}
+
+
 }

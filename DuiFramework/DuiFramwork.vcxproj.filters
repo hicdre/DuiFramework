@@ -144,10 +144,10 @@
     <ClCompile Include="control\control_factory.cpp">
       <Filter>control</Filter>
     </ClCompile>
-    <ClCompile Include="core\container.cpp">
-      <Filter>view</Filter>
-    </ClCompile>
     <ClCompile Include="layout\frame_layout.cpp">
+      <Filter>layout</Filter>
+    </ClCompile>
+    <ClCompile Include="layout\relative_layout.cpp">
       <Filter>layout</Filter>
     </ClCompile>
   </ItemGroup>
@@ -279,10 +279,13 @@
     <ClInclude Include="control\control_factory.h">
       <Filter>control</Filter>
     </ClInclude>
-    <ClInclude Include="core\container.h">
-      <Filter>view</Filter>
-    </ClInclude>
     <ClInclude Include="layout\frame_layout.h">
+      <Filter>layout</Filter>
+    </ClInclude>
+    <ClInclude Include="layout\layout_manager.h">
+      <Filter>layout</Filter>
+    </ClInclude>
+    <ClInclude Include="layout\relative_layout.h">
       <Filter>layout</Filter>
     </ClInclude>
   </ItemGroup>

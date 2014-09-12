@@ -13,6 +13,7 @@
 #include "event/focus_evnet.h"
 #include "core/focus_manager.h"
 #include "core/property_object.h"
+#include "layout/layout_manager.h"
 #include <vector>
 
 namespace ui
@@ -29,22 +30,36 @@ namespace ui
 	{
 		friend class Container;
 	public:
+		class Data {
+		public:
+			virtual ~Data() {}
+		};
 		typedef std::function<bool(const Point&)> HittestOverride;
 		View();
 		virtual ~View();
 
 		// Tree operations -----------------------------------------------------------
-		Container* parent() const;
-		bool is_container() const;
+		View* parent() const;
 		
+		View* first_child() const;
+		View* last_child() const;
 		View* prev_sibling() const;
 		View* next_sibling() const;
-		Container* root() const;
+		View* root() const;
 
-		View* AppendTo(Container* parent);
+		void GetViews(Views &child_array) const;
+		int32 GetViewCount() const;
+
+		View* AppendTo(View* parent);
 		View* Detach();
+
+		View* Append(View* child);
+		View* Remove(View* child);
+		View* InsertAfter(View* ref, View* child);
+		View* InsertBefore(View* ref, View* child);
 		
 		View* GetAncestorTo(View* other);
+		bool HasDescender(View* descender, int* step = NULL);
 
 		void SetHittestOverride(const HittestOverride& f);
 		const HittestOverride& GetHittestOverride() const;
@@ -85,6 +100,7 @@ namespace ui
 
 		// Layout --------------------------------------------------------------------
 		virtual void Layout();
+		void SetLayoutManager(LayoutManager* manager);
 
 		virtual Size GetPreferredSize() const;
 
@@ -101,6 +117,7 @@ namespace ui
 		virtual void DoPaint(Painter* painter, const Rect& dest) override;
 		void DoPaintSelf(Painter* painter);
 		virtual void OnPaint(Painter* painter);
+		void DoPaintChildren(Painter* painter);
 
 		// Coordinate conversion -----------------------------------------------------
 		Transform GetTransform() const;
@@ -126,13 +143,16 @@ namespace ui
 		void SetCursor(HCURSOR cursor);
 		virtual HCURSOR GetCursor();
 
-		
 
 		//void set_layout_width_policy(LayoutSizePolicy p);
 		//void set_layout_height_policy(LayoutSizePolicy p);
 
 		//LayoutSizePolicy get_layout_width_policy() const;
 		//LayoutSizePolicy get_layout_height_policy() const;
+		// Data ----------------------------
+		void SetData(const std::string& key, Data* data);
+		void RemoveData(const std::string& key);
+		Data* GetData(const std::string& key);
 
 		// Event---------------------------------------------
 
@@ -174,10 +194,12 @@ namespace ui
 		void PaintBackground(Painter* painter);
 		void PaintBorder(Painter* painter);
 
-		Container* parent_{ NULL };
+		View* parent_{ NULL };
 		View* next_sibling_{ NULL };
 		View* prev_sibling_{ NULL };
-		
+		View* first_child_{ NULL };
+		View* last_child_{ NULL };
+		int32 child_count_{ 0 };
 
 		bool is_container_{ false };
 		// This View's bounds in the parent coordinate system.
@@ -203,7 +225,9 @@ namespace ui
 
 		HittestOverride hittest_override_;
 
+		std::unordered_map<std::string, Data*> view_datas_;
 
+		scoped_ptr<LayoutManager> layout_manager_;
 		//LayoutSizePolicy width_policy_{ LAYOUT_SIZE_FIXED };
 		//LayoutSizePolicy height_policy_{ LAYOUT_SIZE_FIXED };
 

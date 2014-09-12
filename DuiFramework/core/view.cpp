@@ -6,7 +6,6 @@
 
 #include "core/rectangle.h"
 #include "core/image.h"
-#include "core/container.h"
 
 namespace ui
 {
@@ -19,11 +18,25 @@ namespace ui
 	View::~View()
 	{
 		//EventListenManager::Default()->RemoveView(this);
+		for (auto d : view_datas_)
+		{
+			delete d.second;
+		}
 	}
 
-	Container* View::parent() const
+	View* View::parent() const
 	{
 		return parent_;
+	}
+
+	View* View::first_child() const
+	{
+		return first_child_;
+	}
+
+	View* View::last_child() const
+	{
+		return last_child_;
 	}
 
 	View* View::prev_sibling() const
@@ -36,17 +49,144 @@ namespace ui
 		return next_sibling_;
 	}
 
-	Container* View::root() const
+	View* View::root() const
 	{
 		const View* p = this;
 		while (p->parent_)
 			p = p->parent_;
 		if (!p)
 			return NULL;
-		return const_cast<Container*>(static_cast<const Container*>(p));
+		return const_cast<View*>(p);
 	}
 
-	View* View::AppendTo(Container* parent)
+	void View::GetViews(Views &child_array) const
+	{
+		for (View* p = first_child_; p != NULL; p = p->next_sibling())
+		{
+			child_array.push_back(p);
+		}
+	}
+
+	int32 View::GetViewCount() const
+	{
+		return child_count_;
+	}
+
+	View* View::Append(View* child)
+	{
+		return InsertAfter(last_child_, child);
+	}
+
+	View* View::Remove(View* child)
+	{
+		//只允许移除子节点
+		if (!child || child->parent_ != this)
+		{
+			assert(0); //<< "can only remove child node";
+			return NULL;
+		}
+
+		//更新父子关系
+		child->parent_ = NULL;
+		if (first_child_ == child)
+		{
+			first_child_ = child->next_sibling_;
+		}
+		if (last_child_ == child)
+		{
+			last_child_ = child->prev_sibling_;
+		}
+
+		//更新兄弟关系
+		if (child->prev_sibling_)
+		{
+			child->prev_sibling_->next_sibling_ = child->next_sibling_;
+		}
+
+		if (child->next_sibling_)
+		{
+			child->next_sibling_->prev_sibling_ = child->prev_sibling_;
+		}
+
+		child->next_sibling_ = NULL;
+		child->prev_sibling_ = NULL;
+
+		child_count_--;
+
+		return child;
+	}
+
+	View* View::InsertAfter(View* ref, View* child)
+	{
+		if (ref == child || child == NULL || (ref && ref->parent_ != this))
+		{
+			assert(0);
+			return NULL;
+		}
+
+		//先从原节点移除
+		if (child->parent_)
+		{
+			child->parent_->Remove(child);
+		}
+		child->parent_ = this;
+
+		child->prev_sibling_ = ref;
+		if (ref)
+		{//插到中间或最后
+			child->next_sibling_ = ref->next_sibling_;
+			if (ref->next_sibling_)
+			{
+				ref->next_sibling_->prev_sibling_ = child;
+			}
+			ref->next_sibling_ = child;
+
+			assert(last_child_);
+			//插到最后了
+			if (last_child_->next_sibling_)
+			{
+				last_child_ = last_child_->next_sibling_;
+			}
+		}
+		else
+		{//插到最前
+			child->next_sibling_ = first_child_;
+			if (first_child_)
+			{
+				first_child_->prev_sibling_ = child;
+			}
+			first_child_ = child;
+
+			//原来没有子元素
+			if (last_child_ == NULL)
+			{
+				last_child_ = child;
+			}
+		}
+		child_count_++;
+
+		return child;
+	}
+
+	View* View::InsertBefore(View* ref, View* child)
+	{
+		if (ref == child || child == NULL || (ref && ref->parent_ != this))
+		{
+			assert(0);// << "insert before invalid";
+			return NULL;
+		}
+
+		if (ref)
+		{
+			return InsertAfter(ref->prev_sibling_, child);
+		}
+		else
+		{
+			return InsertAfter(last_child_, child);
+		}
+	}
+
+	View* View::AppendTo(View* parent)
 	{
 		return parent->Append(this);
 	}
@@ -58,7 +198,7 @@ namespace ui
 
 	View* View::GetAncestorTo(View* other)
 	{
-		Container* root_view = root();
+		View* root_view = root();
 		int step_this = 0;
 		int step_that = 0;
 		if (!root_view->HasDescender(other, &step_that))
@@ -101,12 +241,38 @@ namespace ui
 		return NULL;
 	}
 
+	bool View::HasDescender(View* descender, int* step /*= NULL*/)
+	{
+		*step = 0;
+		for (View* v = descender; v; v = v->parent(), (*step)++)
+		{
+			if (v == this)
+				return true;
+		}
+		return false;
+	}
+
 
 	View* View::Hittest(const Point& pt)
 	{
+		if (!enabled_)
+			return NULL;
+
 		//hittest self
 		if (!GetLocalBounds().Contains(pt))
 			return NULL;
+
+		for (View* p = last_child_; p != NULL; p = p->prev_sibling())
+		{
+			if (p)
+			{
+				Point pt_in_child = p->GetTransform().Invert().Apply(pt);
+				View* v = p->Hittest(pt_in_child);
+				if (v)
+					return v;
+			}
+		}
+
 		return this;
 	}
 
@@ -229,7 +395,20 @@ namespace ui
 
 	void View::Layout()
 	{
+		if (layout_manager_.get())
+		{
+			layout_manager_->Layout(this);
+			return;
+		}
+
 		needs_layout_ = false;
+
+		for (View* child = first_child(); child != NULL; child = child->next_sibling()) {
+			if (child->visible()) {
+				child->needs_layout_ = false;
+				child->Layout();
+			}
+		}
 	}
 
 	Size View::GetPreferredSize() const
@@ -280,12 +459,26 @@ namespace ui
 		PaintBackground(painter);
 		PaintBorder(painter);
 		OnPaint(painter);
+		DoPaintChildren(painter);
 	}
 
 	void View::OnPaint(Painter* painter)
 	{
 		//painter->DrawStringRect(L"测试", Font(L"微软雅黑", 18), ColorSetRGB(255,0,0,0), GetLocalBounds());
 	}
+
+
+	void View::DoPaintChildren(Painter* painter)
+	{
+		for (View* p = first_child_; p != NULL; p = p->next_sibling())
+		{
+			if (p && p->visible())
+			{
+				p->DoPaint(painter, p->bounds());
+			}
+		}
+	}
+
 
 	Transform View::GetTransform() const
 	{
@@ -688,16 +881,33 @@ namespace ui
 		return !!hittest_override_;
 	}
 
-	bool View::is_container() const
-	{
-		return is_container_;
-	}
-
 	View* View::GetDragableView() const
 	{
 		if (dragable_)
 			return const_cast<View*>(this);
 		return parent_ ? parent_->GetDragableView() : NULL;
+	}
+
+	void View::SetLayoutManager(LayoutManager* manager)
+	{
+		layout_manager_.reset(manager);
+	}
+
+	void View::SetData( const std::string& key, Data* data )
+	{
+		view_datas_[key] = data;
+	}
+
+	void View::RemoveData( const std::string& key )
+	{
+		view_datas_.erase(key);
+	}
+
+	View::Data* View::GetData( const std::string& key )
+	{
+		if (!view_datas_.count(key))
+			return NULL;
+		return view_datas_.at(key);
 	}
 
 	

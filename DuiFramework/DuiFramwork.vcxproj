@@ -89,7 +89,6 @@
     <ClCompile Include="control\text_view.cpp" />
     <ClCompile Include="control\window.cpp" />
     <ClCompile Include="core\app.cpp" />
-    <ClCompile Include="core\container.cpp" />
     <ClCompile Include="core\image.cpp" />
     <ClCompile Include="core\property_object.cpp" />
     <ClCompile Include="core\rectangle.cpp" />
@@ -102,8 +101,13 @@
     <ClCompile Include="event\focus_evnet.cpp" />
     <ClCompile Include="event\key_event.cpp" />
     <ClCompile Include="event\mouse_event.cpp" />
-    <ClCompile Include="layout\box_layout.cpp" />
-    <ClCompile Include="layout\frame_layout.cpp" />
+    <ClCompile Include="layout\box_layout.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="layout\frame_layout.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="layout\relative_layout.cpp" />
     <ClCompile Include="render\border.cpp" />
     <ClCompile Include="render\font.cpp" />
     <ClCompile Include="render\image_file.cpp" />
@@ -134,7 +138,6 @@
     <ClInclude Include="control\text_view.h" />
     <ClInclude Include="control\window.h" />
     <ClInclude Include="core\app.h" />
-    <ClInclude Include="core\container.h" />
     <ClInclude Include="core\drawable.h" />
     <ClInclude Include="core\image.h" />
     <ClInclude Include="core\property_object.h" />
@@ -151,8 +154,14 @@
     <ClInclude Include="event\focus_evnet.h" />
     <ClInclude Include="event\key_event.h" />
     <ClInclude Include="event\mouse_event.h" />
-    <ClInclude Include="layout\box_layout.h" />
-    <ClInclude Include="layout\frame_layout.h" />
+    <ClInclude Include="layout\box_layout.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="layout\frame_layout.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="layout\layout_manager.h" />
+    <ClInclude Include="layout\relative_layout.h" />
     <ClInclude Include="render\border.h" />
     <ClInclude Include="render\color.h" />
     <ClInclude Include="render\font.h" />

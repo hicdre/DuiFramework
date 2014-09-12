@@ -26,7 +26,7 @@ void TestWindowConstructor::OnCreate()
 		store->AddImageRecord("close.pressed", button_close_path, ui::Rect(0, 20, 10, 10));
 	}
 	{
-		ui::Container* header = new ui::Container;
+		ui::View* header = new ui::View;
 		view()->Append(header);
 		header->SetBounds(0, 0, 400, 50);
 		header->set_background_image_id("title");
@@ -52,7 +52,9 @@ void TestWindowConstructor::OnCreate()
 		label_->SetTextColor(ui::ColorSetRGB(0, 0, 0));
 		view()->Append(label_);
 	}
+
 	{
+#if 0
 		ui::BoxLayout* box = new ui::BoxLayout(true);
 		box->SetBounds(0, 70, 100, 200);
 		box->set_background_color(ui::ColorSetRGB(255, 0, 0));
@@ -69,6 +71,7 @@ void TestWindowConstructor::OnCreate()
 			c->set_background_color(ui::ColorSetRGB(0, 0, 125));
 			box->Append(c);
 		}
+#endif
 	}
 	view()->set_background_color(ui::ColorSetRGB(255, 255, 255));
 	view()->SetFocusable(true);
