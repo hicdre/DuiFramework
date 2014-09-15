@@ -14,49 +14,61 @@ namespace ui
 
 	enum RelativePosition
 	{
-		RELATIVE_LEFT_TOP = 0,
-		RELATIVE_MIDDLE_TOP,
-		RELATIVE_RIGHT_TOP,
-		RELATIVE_LEFT_MIDDLE,
-		RELATIVE_MIDDLE_MIDDLE,
-		RELATIVE_RIGHT_MIDDLE,
-		RELATIVE_LEFT_BOTTOM,
-		RELATIVE_MIDDLE_BOTTOM,
-		RELATIVE_RIGHT_BOTTOM,
+		RELATIVE_NULL = 0,
+		RELATIVE_LEFT,
+		RELATIVE_TOP = RELATIVE_LEFT,
+		RELATIVE_RIGHT,
+		RELATIVE_BOTTOM = RELATIVE_RIGHT,
+		RELATIVE_CENTER,
 	};
 
 
-	enum RelativeSizeType
+	enum RelativeSize
 	{
-		RELATIVE_SIZE_PIXEL,
-		RELATIVE_SIZE_PERCENT,
+		RLAYOUT_SIZE_NOTSET = 0,
+		RLAYOUT_SIZE_FIXED,
+		RLAYOUT_SIZE_RELATIVE_PERCENT,
+		RLAYOUT_SIZE_RELATIVE_OFFSET,
 	};
 
-
-
-	struct RelativePositionData 
+	struct RLayoutData : public View::Data
 	{
-		RelativeToType relative_to;
-		RelativePosition relative_position;
-		int x, y;
-	};
-
-	struct RelativeSizeData
-	{
-		RelativeSizeType w_type;
-		RelativeSizeType h_type;
-		int w, h;
-	};
-
-	struct RelativeLayoutData : public View::Data
-	{
-		RelativePositionData xy;
-		union 
+		struct PositionType
 		{
-			RelativePositionData rb;
-			RelativeSizeData wh;
+			PositionType() : position(RELATIVE_NULL), to(RELATIVE_TO_PARENT), offset(0) {}
+			bool IsSet() { return position != RELATIVE_NULL; }
+			void Set(RelativePosition p, RelativeToType t, int o) {
+				position = p;
+				to = t;
+				offset = o;
+			}
+			RelativePosition position : 4;
+			RelativeToType to : 4;
+			int offset : 24;
 		};
+
+		struct SizeType
+		{
+			SizeType() : type(RLAYOUT_SIZE_NOTSET), data(0) {}
+			bool IsSet() { return type != RLAYOUT_SIZE_NOTSET; }
+			void Set(RelativeSize p, RelativeToType t, int o) {
+				type = p;
+				to = t;
+				data = o;
+			}
+			RelativeSize type : 4;
+			RelativeToType to : 4;
+			int data : 24;
+		};
+
+		
+		PositionType left, top, right, bottom;
+		SizeType width, height;
+
+		static bool ParsePositionType(const char* p, size_t len, PositionType& t);
 	};
+
+
 	class RelativeLayoutManager : public LayoutManager
 	{
 	public:
@@ -66,7 +78,10 @@ namespace ui
 		virtual void Layout(View* host) override;
 	protected:
 		static bool IsRelativeLayout(View* v);
-		static RelativeLayoutData* GetLayoutData(View* v);
+		static RLayoutData* GetLayoutData(View* v);
 		static bool ParseRelativeData(View* v);
+		
 	};
+
+	void RelativeLayoutTest();
 }

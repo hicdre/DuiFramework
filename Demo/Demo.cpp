@@ -5,6 +5,7 @@
 #include "Demo.h"
 
 #include "core/app.h"
+#include "layout/relative_layout.h"
 
 //#include "DemoWidget.h"
 //#include "TestMouseEventWidget.h"
@@ -19,6 +20,7 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 	UNREFERENCED_PARAMETER(hPrevInstance);
 	UNREFERENCED_PARAMETER(lpCmdLine);
 
+	ui::RelativeLayoutTest();
 	ui::App* app = ui::App::Get();
 
 	//ui::ImageStore::Default()->AddImageRecord("test", LR"(E:\work\xinyi\RomasterPC\bin\skin\avatar.png)");
