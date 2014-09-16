@@ -31,6 +31,7 @@ namespace ui
 		RLAYOUT_SIZE_RELATIVE_OFFSET,
 	};
 
+
 	struct RLayoutData : public View::Data
 	{
 		struct PositionType
@@ -60,12 +61,10 @@ namespace ui
 			RelativeToType to : 4;
 			int data : 24;
 		};
-
 		
 		PositionType left, top, right, bottom;
 		SizeType width, height;
 
-		static bool ParsePositionType(const char* p, size_t len, PositionType& t);
 	};
 
 

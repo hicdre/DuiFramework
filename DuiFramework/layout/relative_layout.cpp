@@ -294,6 +294,9 @@ namespace ui
 		{
 			if (!v->visible() || !IsRelativeLayout(v))
 				continue;
+
+			RLayoutData* data = GetLayoutData(v);
+			//if (data->)
 			layot_views.push_back(v);
 		}
 	}
@@ -369,7 +372,6 @@ namespace ui
 				p.MatchSizeType(data->height);
 			}
 		}
-
 		v->SetData(kRelativeLayout, data.release());
 		return true;
 	}
