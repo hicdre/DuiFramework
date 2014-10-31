@@ -1,28 +1,28 @@
 #include "stdafx.h"
-#include "transform.h"
+#include "matrix.h"
 #include <cmath>
 
 namespace ui
 {
-	Transform::Transform()
+	Matrix::Matrix()
 		: a(1.0), b(0.0), c(0.0), d(1.0), tx(0.0), ty(0.0)
 	{
 	}
 
-	Transform::Transform(float a, float b, float c, float d, float tx, float ty)
+	Matrix::Matrix(float a, float b, float c, float d, float tx, float ty)
 		: a(a), b(b), c(c), d(d), tx(tx), ty(ty)
 	{
 
 	}
 
-	Transform::Transform(const XFORM& xform)
+	Matrix::Matrix(const XFORM& xform)
 		: a(xform.eM11), b(xform.eM12), c(xform.eM21), d(xform.eM22), tx(xform.eDx), ty(xform.eDy)
 	{
 
 	}
 
 
-	void Transform::SetTransform(float xa, float xb, float xc, float xd, float xtx, float xty)
+	void Matrix::SetTransform(float xa, float xb, float xc, float xd, float xtx, float xty)
 	{
 		a = xa;
 		b = xb;
@@ -33,7 +33,7 @@ namespace ui
 	}
 
 
-	Transform& Transform::operator=(const XFORM& xform)
+	Matrix& Matrix::operator=(const XFORM& xform)
 	{
 		a = xform.eM11;
 		b = xform.eM12;
@@ -45,47 +45,47 @@ namespace ui
 	}
 
 
-	bool Transform::IsEqual(const Transform& t) const
+	bool Matrix::IsEqual(const Matrix& t) const
 	{
 		return (a == t.a && b == t.b && c == t.c && d == t.d && tx == t.tx && ty == t.ty);
 	}
 
-	Point Transform::Apply(const Point& point) const
+	Point Matrix::Apply(const Point& point) const
 	{
 		Point p = point;
 		TransformPoint(p);
 		return p;
 	}
 
-	Size Transform::Apply(const Size& size) const
+	Size Matrix::Apply(const Size& size) const
 	{
 		Size z = size;
 		TransformSize(z);
 		return z;
 	}
 
-	Rect Transform::Apply(const Rect& rect) const
+	Rect Matrix::Apply(const Rect& rect) const
 	{
 		Rect r = rect;
 		TransformRect(r);
 		return r;
 	}
 
-	void Transform::TransformPoint(Point& point) const
+	void Matrix::TransformPoint(Point& point) const
 	{
 		float x = (float)std::floor((double)a * point.x() + (double)c * point.y() + tx);
 		float y = (float)std::floor((double)b * point.x() + (double)d * point.y() + ty);
 		point.SetPoint(x, y);
 	}
 
-	void Transform::TransformSize(Size& size) const
+	void Matrix::TransformSize(Size& size) const
 	{
 		float w = (float)std::floor((double)a * size.width() + (double)c * size.height());
 		float h = (float)std::floor((double)b * size.width() + (double)d * size.height());
 		size.SetSize(w, h);
 	}
 
-	void Transform::TransformRect(Rect& rect) const
+	void Matrix::TransformRect(Rect& rect) const
 	{
 		float top = rect.y();
 		float left = rect.x();
@@ -104,17 +104,17 @@ namespace ui
 
 		rect.SetRect(minX, minY, (maxX - minX), (maxY - minY));
 	}															  
-	Transform Transform::Translate(float x, float y) const
+	Matrix Matrix::Translate(float x, float y) const
 	{
-		return Transform(a, b, c, d, tx + a * x + c * y, y + b * tx + d * ty);
+		return Matrix(a, b, c, d, tx + a * x + c * y, y + b * tx + d * ty);
 	}
 
-	Transform Transform::Rotate(float anAngle) const
+	Matrix Matrix::Rotate(float anAngle) const
 	{
 		float fSin = std::sin(anAngle);
 		float fCos = std::cos(anAngle);
 
-		return Transform(a * fCos + c * fSin,
+		return Matrix(a * fCos + c * fSin,
 			b * fCos + d * fSin,
 			c * fCos - a * fSin,
 			d * fCos - b * fSin,
@@ -122,21 +122,21 @@ namespace ui
 			ty);
 	}
 
-	Transform Transform::Scale(float sx, float sy) const
+	Matrix Matrix::Scale(float sx, float sy) const
 	{
-		return Transform(a * sx, b * sx, c * sy, d * sy, tx, ty);
+		return Matrix(a * sx, b * sx, c * sy, d * sy, tx, ty);
 	}
 
-	Transform Transform::Concat(const Transform& t) const
+	Matrix Matrix::Concat(const Matrix& t) const
 	{
-		return Transform(a * t.a + b * t.c, a * t.b + b * t.d, //a,b
+		return Matrix(a * t.a + b * t.c, a * t.b + b * t.d, //a,b
 			c * t.a + d * t.c, c * t.b + d * t.d, //c,d
 			tx * t.a + ty * t.c + t.tx,                  //tx
 			tx * t.b + ty * t.d + t.ty);                  //ty
 	}
 
 
-	void Transform::ConcatTransform(const Transform& t)
+	void Matrix::ConcatTransform(const Matrix& t)
 	{
 		SetTransform(a * t.a + b * t.c, a * t.b + b * t.d, //a,b
 			c * t.a + d * t.c, c * t.b + d * t.d, //c,d
@@ -145,15 +145,15 @@ namespace ui
 	}
 
 
-	Transform Transform::Invert() const
+	Matrix Matrix::Invert() const
 	{
 		float determinant = 1 / (a * d - b * c);
 
-		return Transform(determinant * d, -determinant * b, -determinant * c, determinant * a,
+		return Matrix(determinant * d, -determinant * b, -determinant * c, determinant * a,
 			determinant * (c * ty - d * tx), determinant * (b * tx - a * ty));
 	}
 
-	XFORM Transform::ToXFORM() const
+	XFORM Matrix::ToXFORM() const
 	{
 		XFORM x = { a, b, c, d, tx, ty };
 		return x;

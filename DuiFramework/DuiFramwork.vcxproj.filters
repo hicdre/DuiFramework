@@ -25,17 +25,11 @@
     <Filter Include="control">
       <UniqueIdentifier>{ae402361-0d1b-48b8-8b0e-98caf1de9803}</UniqueIdentifier>
     </Filter>
-    <Filter Include="layout">
-      <UniqueIdentifier>{976275d3-241b-4dc1-a6f5-ae39f65d41b6}</UniqueIdentifier>
-    </Filter>
     <Filter Include="view">
       <UniqueIdentifier>{aa15fc41-6e24-49e8-967e-876d1fb7037b}</UniqueIdentifier>
     </Filter>
     <Filter Include="graphics">
       <UniqueIdentifier>{3f4eb8fd-4673-4267-bc25-00d5b46631c3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="node">
-      <UniqueIdentifier>{9a33f8ca-6f77-4965-b8df-18bad51e2d1c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -44,15 +38,6 @@
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
       <Filter>build</Filter>
-    </ClCompile>
-    <ClCompile Include="render\rect.cpp">
-      <Filter>render</Filter>
-    </ClCompile>
-    <ClCompile Include="render\point.cpp">
-      <Filter>render</Filter>
-    </ClCompile>
-    <ClCompile Include="render\size.cpp">
-      <Filter>render</Filter>
     </ClCompile>
     <ClCompile Include="core\app.cpp">
       <Filter>core</Filter>
@@ -66,12 +51,6 @@
     <ClCompile Include="core\widget.cpp">
       <Filter>core</Filter>
     </ClCompile>
-    <ClCompile Include="render\painter.cpp">
-      <Filter>render</Filter>
-    </ClCompile>
-    <ClCompile Include="render\transform.cpp">
-      <Filter>render</Filter>
-    </ClCompile>
     <ClCompile Include="third_party\stb_image.cpp">
       <Filter>third_party</Filter>
     </ClCompile>
@@ -79,12 +58,6 @@
       <Filter>utils</Filter>
     </ClCompile>
     <ClCompile Include="render\font.cpp">
-      <Filter>render</Filter>
-    </ClCompile>
-    <ClCompile Include="render\range.cpp">
-      <Filter>render</Filter>
-    </ClCompile>
-    <ClCompile Include="render\padding.cpp">
       <Filter>render</Filter>
     </ClCompile>
     <ClCompile Include="event\event.cpp">
@@ -99,41 +72,14 @@
     <ClCompile Include="event\key_event.cpp">
       <Filter>event</Filter>
     </ClCompile>
-    <ClCompile Include="core\complex_view.cpp">
-      <Filter>core</Filter>
-    </ClCompile>
-    <ClCompile Include="layout\box_layout.cpp">
-      <Filter>layout</Filter>
-    </ClCompile>
-    <ClCompile Include="core\value.cpp">
-      <Filter>core</Filter>
-    </ClCompile>
     <ClCompile Include="render\uniscribe.cpp">
       <Filter>render</Filter>
     </ClCompile>
     <ClCompile Include="control\window.cpp">
       <Filter>control</Filter>
     </ClCompile>
-    <ClCompile Include="core\property_object.cpp">
-      <Filter>core</Filter>
-    </ClCompile>
-    <ClCompile Include="core\view.cpp">
-      <Filter>view</Filter>
-    </ClCompile>
     <ClCompile Include="event\focus_evnet.cpp">
       <Filter>event</Filter>
-    </ClCompile>
-    <ClCompile Include="render\border.cpp">
-      <Filter>graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="render\image_file.cpp">
-      <Filter>utils</Filter>
-    </ClCompile>
-    <ClCompile Include="core\image.cpp">
-      <Filter>graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="core\rectangle.cpp">
-      <Filter>graphics</Filter>
     </ClCompile>
     <ClCompile Include="core\text.cpp">
       <Filter>graphics</Filter>
@@ -144,11 +90,53 @@
     <ClCompile Include="control\control_factory.cpp">
       <Filter>control</Filter>
     </ClCompile>
-    <ClCompile Include="layout\frame_layout.cpp">
-      <Filter>layout</Filter>
+    <ClCompile Include="third_party\tinyxml2.cpp">
+      <Filter>third_party</Filter>
     </ClCompile>
-    <ClCompile Include="layout\relative_layout.cpp">
-      <Filter>layout</Filter>
+    <ClCompile Include="core\view_factory.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="base\padding.cpp">
+      <Filter>base</Filter>
+    </ClCompile>
+    <ClCompile Include="base\point.cpp">
+      <Filter>base</Filter>
+    </ClCompile>
+    <ClCompile Include="base\range.cpp">
+      <Filter>base</Filter>
+    </ClCompile>
+    <ClCompile Include="base\rect.cpp">
+      <Filter>base</Filter>
+    </ClCompile>
+    <ClCompile Include="base\size.cpp">
+      <Filter>base</Filter>
+    </ClCompile>
+    <ClCompile Include="base\matrix.cpp">
+      <Filter>base</Filter>
+    </ClCompile>
+    <ClCompile Include="view\view.cpp">
+      <Filter>view</Filter>
+    </ClCompile>
+    <ClCompile Include="view\view_background.cpp">
+      <Filter>view</Filter>
+    </ClCompile>
+    <ClCompile Include="view\view_border.cpp">
+      <Filter>view</Filter>
+    </ClCompile>
+    <ClCompile Include="view\view_container.cpp">
+      <Filter>view</Filter>
+    </ClCompile>
+    <ClCompile Include="render\render_context.cpp">
+      <Filter>render</Filter>
+    </ClCompile>
+    <ClCompile Include="base\value.cpp">
+      <Filter>base</Filter>
+    </ClCompile>
+    <ClCompile Include="render\image.cpp">
+      <Filter>render</Filter>
+    </ClCompile>
+    <ClCompile Include="utils\image_file.cpp">
+      <Filter>utils</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -164,15 +152,6 @@
     <ClInclude Include="base\scoped_ptr.h">
       <Filter>base</Filter>
     </ClInclude>
-    <ClInclude Include="render\rect.h">
-      <Filter>render</Filter>
-    </ClInclude>
-    <ClInclude Include="render\point.h">
-      <Filter>render</Filter>
-    </ClInclude>
-    <ClInclude Include="render\size.h">
-      <Filter>render</Filter>
-    </ClInclude>
     <ClInclude Include="core\app.h">
       <Filter>core</Filter>
     </ClInclude>
@@ -184,15 +163,6 @@
     </ClInclude>
     <ClInclude Include="core\widget.h">
       <Filter>core</Filter>
-    </ClInclude>
-    <ClInclude Include="render\painter.h">
-      <Filter>render</Filter>
-    </ClInclude>
-    <ClInclude Include="render\transform.h">
-      <Filter>render</Filter>
-    </ClInclude>
-    <ClInclude Include="render\color.h">
-      <Filter>render</Filter>
     </ClInclude>
     <ClInclude Include="third_party\stb_image.h">
       <Filter>third_party</Filter>
@@ -206,14 +176,8 @@
     <ClInclude Include="render\font.h">
       <Filter>render</Filter>
     </ClInclude>
-    <ClInclude Include="render\range.h">
-      <Filter>render</Filter>
-    </ClInclude>
     <ClInclude Include="core\constants.h">
       <Filter>core</Filter>
-    </ClInclude>
-    <ClInclude Include="render\padding.h">
-      <Filter>render</Filter>
     </ClInclude>
     <ClInclude Include="event\event.h">
       <Filter>event</Filter>
@@ -228,47 +192,14 @@
     <ClInclude Include="event\key_event.h">
       <Filter>event</Filter>
     </ClInclude>
-    <ClInclude Include="core\focus_manager.h">
-      <Filter>core</Filter>
-    </ClInclude>
-    <ClInclude Include="core\complex_view.h">
-      <Filter>core</Filter>
-    </ClInclude>
-    <ClInclude Include="layout\box_layout.h">
-      <Filter>layout</Filter>
-    </ClInclude>
-    <ClInclude Include="core\value.h">
-      <Filter>core</Filter>
-    </ClInclude>
     <ClInclude Include="render\uniscribe.h">
       <Filter>render</Filter>
     </ClInclude>
     <ClInclude Include="control\window.h">
       <Filter>control</Filter>
     </ClInclude>
-    <ClInclude Include="core\property_object.h">
-      <Filter>core</Filter>
-    </ClInclude>
-    <ClInclude Include="core\view.h">
-      <Filter>view</Filter>
-    </ClInclude>
     <ClInclude Include="event\focus_evnet.h">
       <Filter>event</Filter>
-    </ClInclude>
-    <ClInclude Include="render\border.h">
-      <Filter>graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="render\image_file.h">
-      <Filter>utils</Filter>
-    </ClInclude>
-    <ClInclude Include="core\image.h">
-      <Filter>graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="core\drawable.h">
-      <Filter>graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="core\rectangle.h">
-      <Filter>graphics</Filter>
     </ClInclude>
     <ClInclude Include="core\text.h">
       <Filter>graphics</Filter>
@@ -279,14 +210,59 @@
     <ClInclude Include="control\control_factory.h">
       <Filter>control</Filter>
     </ClInclude>
-    <ClInclude Include="layout\frame_layout.h">
-      <Filter>layout</Filter>
+    <ClInclude Include="third_party\tinyxml2.h">
+      <Filter>third_party</Filter>
     </ClInclude>
-    <ClInclude Include="layout\layout_manager.h">
-      <Filter>layout</Filter>
+    <ClInclude Include="core\view_factory.h">
+      <Filter>core</Filter>
     </ClInclude>
-    <ClInclude Include="layout\relative_layout.h">
-      <Filter>layout</Filter>
+    <ClInclude Include="base\color.h">
+      <Filter>base</Filter>
+    </ClInclude>
+    <ClInclude Include="base\padding.h">
+      <Filter>base</Filter>
+    </ClInclude>
+    <ClInclude Include="base\point.h">
+      <Filter>base</Filter>
+    </ClInclude>
+    <ClInclude Include="base\range.h">
+      <Filter>base</Filter>
+    </ClInclude>
+    <ClInclude Include="base\rect.h">
+      <Filter>base</Filter>
+    </ClInclude>
+    <ClInclude Include="base\size.h">
+      <Filter>base</Filter>
+    </ClInclude>
+    <ClInclude Include="base\base_defines.h">
+      <Filter>base</Filter>
+    </ClInclude>
+    <ClInclude Include="base\matrix.h">
+      <Filter>base</Filter>
+    </ClInclude>
+    <ClInclude Include="view\view.h">
+      <Filter>view</Filter>
+    </ClInclude>
+    <ClInclude Include="view\view_background.h">
+      <Filter>view</Filter>
+    </ClInclude>
+    <ClInclude Include="view\view_border.h">
+      <Filter>view</Filter>
+    </ClInclude>
+    <ClInclude Include="view\view_container.h">
+      <Filter>view</Filter>
+    </ClInclude>
+    <ClInclude Include="render\render_context.h">
+      <Filter>render</Filter>
+    </ClInclude>
+    <ClInclude Include="base\value.h">
+      <Filter>base</Filter>
+    </ClInclude>
+    <ClInclude Include="render\image.h">
+      <Filter>render</Filter>
+    </ClInclude>
+    <ClInclude Include="utils\image_file.h">
+      <Filter>utils</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

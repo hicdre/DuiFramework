@@ -4,7 +4,7 @@
 #include "utils/utils.h"
 #include <cassert>
 
-namespace ui
+namespace base
 {
 	namespace
 	{
@@ -232,7 +232,7 @@ namespace ui
 
 	StringValue::StringValue(const std::wstring& in_value)
 		: Value(TYPE_STRING),
-		value_(WideToMultiByte(in_value)) {
+		value_(ui::WideToMultiByte(in_value)) {
 	}
 
 	StringValue::~StringValue() {
@@ -246,7 +246,7 @@ namespace ui
 
 	bool StringValue::GetAsString(std::wstring* out_value) const {
 		if (out_value)
-			*out_value = MultiByteToWide(value_);
+			*out_value = ui::MultiByteToWide(value_);
 		return true;
 	}
 

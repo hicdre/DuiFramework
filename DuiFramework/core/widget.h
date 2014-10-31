@@ -1,7 +1,7 @@
 #pragma once
 
 #include "base/basictypes.h"
-#include "render/rect.h"
+#include "base/rect.h"
 
 namespace ui
 {

@@ -22,7 +22,7 @@ namespace ui
 
 		size_t length() const { return len_; }
 
-		virtual void DoPaint(Painter* painter, const Rect& dest) override;
+		virtual void DoPaint(RenderContext* painter, const Rect& dest) override;
 	private:
 		const wchar_t* text_;
 		size_t len_;

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "render/size.h"
+#include "base\basictypes.h"
 
 #include <string>
 #include <vector>

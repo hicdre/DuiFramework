@@ -1,19 +1,16 @@
 #pragma once
-#include "base/scoped_ptr.h"
+#include "base/basictypes.h"
 #include "core/widget.h"
-#include "core/focus_manager.h"
-#include "core/view.h"
+#include "view/view.h"
 
 namespace ui
 {
-	class EventDispatcher;
 	class Window 
 		: public View
 		, public Widget::MessageHandler
-		, public FocusManager
 	{
 	public:
-		Window();
+		Window(int width, int height);
 		virtual ~Window();
 
 		void AttachWidget(Widget* widget);
@@ -26,18 +23,9 @@ namespace ui
 		Size GetWindowSize();
 
 		void CenterWindow();
-
 		void Close();
 
-		virtual void OnSetFocus();
-
-		virtual void SchedulePaintInRect(const Rect& r) override;
-
-		virtual FocusManager* GetFocusManager() const override;
-
-		View* GetFocusedView() const;
-
-		virtual void SetFocus(View* v) override;
+		virtual void OnChildSchedulePaintInRect(View* child, const Rect& r) override;
 	private:
 		void SchedulePaint(const Rect& r);
 		virtual BOOL ProcessWindowMessage(HWND window,
@@ -45,7 +33,7 @@ namespace ui
 			WPARAM w_param,
 			LPARAM l_param,
 			LRESULT& result) override;
-
+#if 0
 		void ProcessMouseMessage(UINT message, WPARAM w_param, LPARAM l_param);
 		void DispatchMouseLeaveEvent(View* from, View* to, const Point& pt);
 		void DispatchMouseEnterEvent(View* from, View* to, const Point& pt);
@@ -53,7 +41,7 @@ namespace ui
 		void ProcessKeyMessage(UINT message, WPARAM w_param, LPARAM l_param);
 
 		void UpdateHittest(const Point& pt);
-
+#endif
 		bool constructed_{ false };
 		Widget* owned_widget_{ NULL };
 
@@ -61,5 +49,8 @@ namespace ui
 		View* focused_view_{ NULL };
 		View* hittest_view_{ NULL };
 		View* captured_view_{ NULL };
+
+		int window_width_;
+		int window_height_;
 	};
 }

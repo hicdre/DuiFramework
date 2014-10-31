@@ -1,7 +1,7 @@
 #pragma once
-#include "render/point.h"
-#include "render/size.h"
-#include "render/padding.h"
+#include "base/point.h"
+#include "base/size.h"
+#include "base/padding.h"
 
 typedef struct tagRECT RECT;
 

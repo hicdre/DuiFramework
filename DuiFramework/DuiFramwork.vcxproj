@@ -84,40 +84,46 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="control\button.cpp" />
-    <ClCompile Include="control\control_factory.cpp" />
-    <ClCompile Include="control\text_view.cpp" />
+    <ClCompile Include="base\padding.cpp" />
+    <ClCompile Include="base\point.cpp" />
+    <ClCompile Include="base\range.cpp" />
+    <ClCompile Include="base\rect.cpp" />
+    <ClCompile Include="base\size.cpp" />
+    <ClCompile Include="base\matrix.cpp" />
+    <ClCompile Include="base\value.cpp" />
+    <ClCompile Include="control\button.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="control\control_factory.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="control\text_view.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="control\window.cpp" />
     <ClCompile Include="core\app.cpp" />
-    <ClCompile Include="core\image.cpp" />
-    <ClCompile Include="core\property_object.cpp" />
-    <ClCompile Include="core\rectangle.cpp" />
-    <ClCompile Include="core\complex_view.cpp" />
-    <ClCompile Include="core\text.cpp" />
-    <ClCompile Include="core\value.cpp" />
-    <ClCompile Include="core\view.cpp" />
+    <ClCompile Include="core\text.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="core\view_factory.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="core\widget.cpp" />
-    <ClCompile Include="event\event.cpp" />
-    <ClCompile Include="event\focus_evnet.cpp" />
-    <ClCompile Include="event\key_event.cpp" />
-    <ClCompile Include="event\mouse_event.cpp" />
-    <ClCompile Include="layout\box_layout.cpp">
+    <ClCompile Include="event\event.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="layout\frame_layout.cpp">
+    <ClCompile Include="event\focus_evnet.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="layout\relative_layout.cpp" />
-    <ClCompile Include="render\border.cpp" />
+    <ClCompile Include="event\key_event.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="event\mouse_event.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="render\font.cpp" />
-    <ClCompile Include="render\image_file.cpp" />
-    <ClCompile Include="render\padding.cpp" />
-    <ClCompile Include="render\painter.cpp" />
-    <ClCompile Include="render\point.cpp" />
-    <ClCompile Include="render\range.cpp" />
-    <ClCompile Include="render\rect.cpp" />
-    <ClCompile Include="render\size.cpp" />
-    <ClCompile Include="render\transform.cpp" />
+    <ClCompile Include="render\image.cpp" />
+    <ClCompile Include="render\render_context.cpp" />
     <ClCompile Include="render\uniscribe.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
@@ -125,63 +131,79 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="third_party\stb_image.cpp" />
+    <ClCompile Include="third_party\tinyxml2.cpp" />
     <ClCompile Include="utils\app_init_helper.cpp" />
+    <ClCompile Include="utils\image_file.cpp" />
     <ClCompile Include="utils\image_store.cpp" />
     <ClCompile Include="utils\utils.cpp" />
+    <ClCompile Include="view\view_background.cpp" />
+    <ClCompile Include="view\view_border.cpp" />
+    <ClCompile Include="view\view.cpp" />
+    <ClCompile Include="view\view_container.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="base\base_defines.h" />
     <ClInclude Include="base\basictypes.h" />
+    <ClInclude Include="base\color.h" />
+    <ClInclude Include="base\padding.h" />
+    <ClInclude Include="base\point.h" />
+    <ClInclude Include="base\range.h" />
+    <ClInclude Include="base\rect.h" />
     <ClInclude Include="base\ref_counted.h" />
     <ClInclude Include="base\scoped_ptr.h" />
-    <ClInclude Include="control\button.h" />
-    <ClInclude Include="control\control_factory.h" />
-    <ClInclude Include="control\text_view.h" />
+    <ClInclude Include="base\size.h" />
+    <ClInclude Include="base\matrix.h" />
+    <ClInclude Include="base\value.h" />
+    <ClInclude Include="control\button.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="control\control_factory.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="control\text_view.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="control\window.h" />
     <ClInclude Include="core\app.h" />
-    <ClInclude Include="core\drawable.h" />
-    <ClInclude Include="core\image.h" />
-    <ClInclude Include="core\property_object.h" />
-    <ClInclude Include="core\rectangle.h" />
-    <ClInclude Include="core\complex_view.h" />
     <ClInclude Include="core\constants.h" />
-    <ClInclude Include="core\focus_manager.h" />
-    <ClInclude Include="core\text.h" />
-    <ClInclude Include="core\value.h" />
-    <ClInclude Include="core\view.h" />
+    <ClInclude Include="core\text.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="core\view_factory.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="core\widget.h" />
     <ClInclude Include="duiframework.h" />
-    <ClInclude Include="event\event.h" />
-    <ClInclude Include="event\focus_evnet.h" />
-    <ClInclude Include="event\key_event.h" />
-    <ClInclude Include="event\mouse_event.h" />
-    <ClInclude Include="layout\box_layout.h">
+    <ClInclude Include="event\event.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClInclude>
-    <ClInclude Include="layout\frame_layout.h">
+    <ClInclude Include="event\focus_evnet.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClInclude>
-    <ClInclude Include="layout\layout_manager.h" />
-    <ClInclude Include="layout\relative_layout.h" />
-    <ClInclude Include="render\border.h" />
-    <ClInclude Include="render\color.h" />
+    <ClInclude Include="event\key_event.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="event\mouse_event.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="render\font.h" />
-    <ClInclude Include="render\image_file.h" />
-    <ClInclude Include="render\padding.h" />
-    <ClInclude Include="render\painter.h" />
-    <ClInclude Include="render\point.h" />
-    <ClInclude Include="render\range.h" />
-    <ClInclude Include="render\rect.h" />
-    <ClInclude Include="render\size.h" />
-    <ClInclude Include="render\transform.h" />
+    <ClInclude Include="render\image.h" />
+    <ClInclude Include="render\render_context.h" />
     <ClInclude Include="render\uniscribe.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="third_party\stb_image.h" />
+    <ClInclude Include="third_party\tinyxml2.h" />
     <ClInclude Include="utils\app_init_helper.h" />
+    <ClInclude Include="utils\image_file.h" />
     <ClInclude Include="utils\image_store.h" />
     <ClInclude Include="utils\utils.h" />
+    <ClInclude Include="view\view_background.h" />
+    <ClInclude Include="view\view_border.h" />
+    <ClInclude Include="view\view.h" />
+    <ClInclude Include="view\view_container.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

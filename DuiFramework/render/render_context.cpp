@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "painter.h"
+#include "render_context.h"
 
 #include "base/scoped_ptr.h"
 #include "core/widget.h"
@@ -46,9 +46,12 @@ namespace ui
 				format_flags |= Gdiplus::StringFormatFlagsNoWrap;
 			format.SetFormatFlags(format_flags);
 		}
+
+		
+
 	}
 
-	Painter::Painter(Widget* widget)
+	RenderContext::RenderContext(Widget* widget)
 		: widget_(widget)
 	{
 		HDC wnd_dc = BeginPaint(widget->hwnd(), &ps_);
@@ -69,7 +72,7 @@ namespace ui
 		bitmap_prev_ = (HBITMAP)::SelectObject(dc_, bitmap_);
 	}
 
-	Painter::~Painter()
+	RenderContext::~RenderContext()
 	{
 // 		BLENDFUNCTION bf = { AC_SRC_OVER, 0, 255, AC_SRC_ALPHA };
 // 		::AlphaBlend(ps_.hdc, 0, 0, rect_.width(), rect_.height(),
@@ -86,18 +89,18 @@ namespace ui
 		EndPaint(widget_->hwnd(), &ps_);
 	}
 
-	void Painter::FillRect(const Rect& rect, Color color)
+	void RenderContext::FillRect(const Rect& rect, Color color)
 	{
 		::SetBkColor(dc_, RGB(GetBValue(color), GetGValue(color), GetRValue(color)));
 		::ExtTextOut(dc_, 0, 0, ETO_OPAQUE, &rect.ToRECT(), NULL, 0, NULL);
 	}
 
-	void Painter::Trans(const Transform& m)
+	void RenderContext::Trans(const Matrix& m)
 	{
 		::ModifyWorldTransform(dc_, &m.ToXFORM(), MWT_LEFTMULTIPLY);
 	}
 
-	void Painter::DrawLine(const Rect& rect, int line_size, DWORD color, int nStyle /*= PS_SOLID*/)
+	void RenderContext::DrawLine(const Rect& rect, int line_size, DWORD color, int nStyle /*= PS_SOLID*/)
 	{
 		LOGPEN lg;
 		lg.lopnColor = color;
@@ -112,7 +115,7 @@ namespace ui
 		::DeleteObject(hPen);
 	}
 
-	void Painter::DrawImage(ImageRect* clip, const Rect& dest_rect)
+	void RenderContext::DrawImage(ImagePart* clip, const Rect& dest_rect)
 	{
 		ImageFile* image = clip->image();
 		if (!image)
@@ -120,7 +123,7 @@ namespace ui
 		DrawImage(image, clip->rect(), dest_rect);
 	}
 
-	void Painter::DrawImage(ImageFile* image, const Rect& src_rect, const Rect& dest_rect)
+	void RenderContext::DrawImage(ImageFile* image, const Rect& src_rect, const Rect& dest_rect)
 	{
 		HDC src_dc = ::CreateCompatibleDC(dc_);
 		HBITMAP hOldBitmap = (HBITMAP) ::SelectObject(src_dc, image->ToHBITMAP());
@@ -132,17 +135,17 @@ namespace ui
 		::DeleteDC(src_dc);
 	}
 
-	void Painter::DrawStringRect(const std::wstring& text, const Font& font, Color color, const Rect& rect)
+	void RenderContext::DrawStringRect(const std::wstring& text, const Font& font, Color color, const Rect& rect)
 	{
 		DrawStringRectWithFlags(text, font, color, rect, TEXT_LEFT | TEXT_VCENTER | TEXT_END_ELLIPSIS);
 	}
 
-	void Painter::DrawStringRectWithFlags(const std::wstring& text, const Font& font, Color color, const Rect& rect, int flags)
+	void RenderContext::DrawStringRectWithFlags(const std::wstring& text, const Font& font, Color color, const Rect& rect, int flags)
 	{
 		DrawStringRectWithFlags(text.c_str(), text.size(), font, color, rect, flags);
 	}
 
-	void Painter::DrawStringRectWithFlags(const wchar_t* text, size_t len, const Font& font, Color color, const Rect& rect, int flags)
+	void RenderContext::DrawStringRectWithFlags(const wchar_t* text, size_t len, const Font& font, Color color, const Rect& rect, int flags)
 	{
 		Gdiplus::Graphics graphics(dc_);
 		Gdiplus::SolidBrush  brush(Gdiplus::Color((unsigned int)color));
@@ -155,7 +158,7 @@ namespace ui
 		graphics.DrawString(text, len, &gdi_font, rectF, &format, &brush);
 	}
 
-	void Painter::CalcStringRectWithFlags(const std::wstring& text, const Font& font, const Rect& rect, int flags, Rect& out, size_t* len, int* lines)
+	void RenderContext::CalcStringRectWithFlags(const std::wstring& text, const Font& font, const Rect& rect, int flags, Rect& out, size_t* len, int* lines)
 	{
 		HDC hdc = GetDC(NULL);
 		Gdiplus::Graphics graphics(hdc);
@@ -173,12 +176,12 @@ namespace ui
 		::ReleaseDC(NULL, hdc);
 	}
 
-	void Painter::CalcStringSizeWithFlags(const std::wstring& text, const Font& font, const Size& sz, int flags, Size& out, size_t* len /*= NULL*/, int* lines /*= NULL*/)
+	void RenderContext::CalcStringSizeWithFlags(const std::wstring& text, const Font& font, const Size& sz, int flags, Size& out, size_t* len /*= NULL*/, int* lines /*= NULL*/)
 	{
 		CalcStringSizeWithFlags(text.c_str(), text.size(), font, sz, flags, out, len, lines);
 	}
 
-	void Painter::CalcStringSizeWithFlags(const wchar_t* text, size_t text_len, const Font& font, const Size& sz, int flags, Size& out, size_t* len /*= NULL*/, int* lines /*= NULL*/)
+	void RenderContext::CalcStringSizeWithFlags(const wchar_t* text, size_t text_len, const Font& font, const Size& sz, int flags, Size& out, size_t* len /*= NULL*/, int* lines /*= NULL*/)
 	{
 		HDC hdc = GetDC(NULL);
 		Gdiplus::Graphics graphics(hdc);
@@ -196,9 +199,22 @@ namespace ui
 		::ReleaseDC(NULL, hdc);
 	}
 
+	void RenderContext::PushClip(const Rect& rect)
+	{
+		::SaveDC(dc_);
+		HRGN hRgn = ::CreateRectRgnIndirect(&rect.ToRECT());
+		::ExtSelectClipRgn(dc_, hRgn, RGN_AND);
+		::DeleteObject(hRgn);
+	}
+
+	void RenderContext::PopClip()
+	{
+		::RestoreDC(dc_, -1);
+	}
 
 
-	ScopedPainter::ScopedPainter(Painter* painter, const Transform& m)
+
+	ScopedPainter::ScopedPainter(RenderContext* painter, const Matrix& m)
 		: p_(painter), m_(m.Invert())
 	{
 		p_->Trans(m);
@@ -209,4 +225,15 @@ namespace ui
 		p_->Trans(m_);
 	}
 
+
+	ScopedClipper::ScopedClipper(RenderContext* painter, const Rect& r)
+		: p_(painter)
+	{
+		p_->PushClip(r);
+	}
+
+	ScopedClipper::~ScopedClipper()
+	{
+		p_->PopClip();
+	}
 }

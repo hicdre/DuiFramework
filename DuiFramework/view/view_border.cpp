@@ -1,29 +1,28 @@
 #include "stdafx.h"
-#include "border.h"
+#include "view_border.h"
 
-#include "core/view.h"
-#include "render/painter.h"
+#include "render/render_context.h"
 
 namespace ui
 {
 
-	NormalBorder::NormalBorder()
+	Border::Border()
 	{
 		SetBorder(0, ColorSetRGB(0, 0, 0));
 	}
 
-	NormalBorder::~NormalBorder()
+	Border::~Border()
 	{
 
 	}
 
-	void NormalBorder::SetBorder(Direction direction, int size, Color color)
+	void Border::SetBorder(Direction direction, int size, Color color)
 	{
 		border_size_[direction] = size;
 		border_color_[direction] = color;
 	}
 
-	void NormalBorder::SetBorder(int size, Color color)
+	void Border::SetBorder(int size, Color color)
 	{
 		SetBorder(LEFT, size, color);
 		SetBorder(TOP, size, color);
@@ -31,17 +30,17 @@ namespace ui
 		SetBorder(BOTTOM, size, color);
 	}
 
-	int NormalBorder::size(Direction direction) const
+	int Border::size(Direction direction) const
 	{
 		return border_size_[direction];
 	}
 
-	Color NormalBorder::color(Direction direction) const
+	Color Border::color(Direction direction) const
 	{
 		return border_color_[direction];
 	}
 
-	void NormalBorder::DoPaint(Painter* painter, const Rect& dest)
+	void Border::DoPaint(RenderContext* painter, const Rect& dest)
 	{
 		//ио->вС->об->ср
 		painter->FillRect(Rect(0, 0, dest.width(), top()), top_color());
@@ -52,47 +51,47 @@ namespace ui
 			dest.height()), right_color());
 	}
 
-	int NormalBorder::left() const
+	int Border::left() const
 	{
 		return size(LEFT);
 	}
 
-	int NormalBorder::top() const
+	int Border::top() const
 	{
 		return size(TOP);
 	}
 
-	int NormalBorder::right() const
+	int Border::right() const
 	{
 		return size(RIGHT);
 	}
 
-	int NormalBorder::bottom() const
+	int Border::bottom() const
 	{
 		return size(BOTTOM);
 	}
 
-	Color NormalBorder::left_color() const
+	Color Border::left_color() const
 	{
 		return color(LEFT);
 	}
 
-	Color NormalBorder::top_color() const
+	Color Border::top_color() const
 	{
 		return color(TOP);
 	}
 
-	Color NormalBorder::right_color() const
+	Color Border::right_color() const
 	{
 		return color(RIGHT);
 	}
 
-	Color NormalBorder::bottom_color() const
+	Color Border::bottom_color() const
 	{
 		return color(BOTTOM);
 	}
 
-	ui::Padding NormalBorder::GetPadding()
+	ui::Padding Border::GetPadding()
 	{
 		return Padding(left(), top(), right(), bottom());
 	}

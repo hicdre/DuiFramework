@@ -4,12 +4,11 @@
 #include "stdafx.h"
 #include "Demo.h"
 
-#include "core/app.h"
-#include "layout/relative_layout.h"
+#include "duiframework.h"
 
 //#include "DemoWidget.h"
 //#include "TestMouseEventWidget.h"
-#include "TestWidget.h"
+//#include "TestWidget.h"
 
 
 int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
@@ -20,15 +19,24 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 	UNREFERENCED_PARAMETER(hPrevInstance);
 	UNREFERENCED_PARAMETER(lpCmdLine);
 
-	ui::RelativeLayoutTest();
 	ui::App* app = ui::App::Get();
 
 	//ui::ImageStore::Default()->AddImageRecord("test", LR"(E:\work\xinyi\RomasterPC\bin\skin\avatar.png)");
 
 	//ui::Widget* widget = ui::WidgetView::CreateWidget(new DemoWidget);
 
-	TestWindowConstructor constructor;
-	ui::Window* window = constructor.Create();
+	ui::Window* window = new ui::Window(600, 450);
+	{
+		ui::Background* b = new ui::Background;
+		{
+			ui::Image* i = ui::Image::CreateLinearGradient(
+				ui::Point(30,30), ui::Point(60,60), ui::Color_Green, ui::Color_Red);
+			b->SetImage(i);
+		}
+		window->SetBackground(b);
+	}
+
+	window->AttachWidget(ui::Widget::Create());
 	window->widget()->Show(SW_SHOWNORMAL);
 
 	app->Run();

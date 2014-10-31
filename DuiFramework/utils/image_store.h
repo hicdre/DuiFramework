@@ -1,6 +1,6 @@
 #pragma once
-#include "render/rect.h"
-#include "render/image_file.h"
+#include "base/basictypes.h"
+#include "utils/image_file.h"
 
 #include <string>
 #include <unordered_map>
@@ -17,18 +17,18 @@ namespace ui
 		void AddImageRecord(const std::string& id, const std::wstring& path);
 		
 		//返回的ImageRect*无需delete
-		ImageRect* GetImageById(const std::string& id);
-		ImageRect* FindImageClipInCache(const std::string& id) const;
-		ImageRect* LoadImageClipToCache(const std::string& id);
+		ImagePart* GetImageById(const std::string& id);
+		ImagePart* FindImageClipInCache(const std::string& id) const;
+		ImagePart* LoadImageClipToCache(const std::string& id);
 
 		static ImageStore* Default();
 		//返回的ImageClip*需要delete
-		static ImageRect* LoadImageByPath(const std::wstring& path, const Rect& rect);
-		static ImageRect* LoadImageByPath(const std::wstring& path);
+		static ImagePart* LoadImageByPath(const std::wstring& path, const Rect& rect);
+		static ImagePart* LoadImageByPath(const std::wstring& path);
 	private:
 		ImageFile* FindImageInCache(const std::wstring& path);
 		ImageFile* LoadImageToCache(const std::wstring& path);
-		std::unordered_map<std::string, ImageRect*> ids_clip_map_;
+		std::unordered_map<std::string, ImagePart*> ids_clip_map_;
 		std::unordered_map<std::wstring, ImageFile*> image_map_;
 
 		struct ImageRecord

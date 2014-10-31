@@ -59,7 +59,7 @@ namespace ui
 		text_fragment_.SetTextColor(color);
 	}
 
-	void TextView::OnPaint(Painter* painter)
+	void TextView::OnPaint(RenderContext* painter)
 	{
 		BuildData();
 		text_fragment_.DoPaint(painter, text_rect_);

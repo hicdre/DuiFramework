@@ -3,7 +3,7 @@
 #include <vector>
 #include <map>
 
-namespace ui
+namespace base
 {
 	//class BinaryValue;
 	class DictionaryValue;

@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "utils.h"
 
-#include "render/rect.h"
+#include "base/basictypes.h"
 #include <cassert>
 
 namespace ui

@@ -1,12 +1,7 @@
 #pragma once
 
 #include "base/basictypes.h"
-#include "render/point.h"
-#include "render/size.h"
-#include "render/transform.h"
-#include "render/rect.h"
-#include "render/color.h"
-#include "render/image_file.h"
+#include "utils/image_file.h"
 #include "render/font.h"
 
 #include <string>
@@ -14,18 +9,23 @@
 namespace ui
 {
 	class Widget;
-	class Painter
+	class RenderContext
 	{
 	public:
-		Painter(Widget* widget);
-		~Painter();
+		RenderContext(Widget* widget);
+		~RenderContext();
 
-		void Trans(const Transform& m);
+		void Trans(const Matrix& m);
+
+		void PushClip(const Rect& rect);
+		void PopClip();
+
+		HDC GetHDC() { return dc_; }
 
 		void FillRect(const Rect& rect, Color color);
 		void DrawLine(const Rect& rect, int line_size, DWORD color, int nStyle = PS_SOLID);
 
-		void DrawImage(ImageRect* clip, const Rect& dest_rect);
+		void DrawImage(ImagePart* clip, const Rect& dest_rect);
 		void DrawImage(ImageFile* image, const Rect& src_rect, const Rect& dest_rect);
 
 		void DrawStringRect(const std::wstring& text, const Font& font, Color color, const Rect& rect);
@@ -52,10 +52,19 @@ namespace ui
 	class ScopedPainter
 	{
 	public:
-		ScopedPainter(Painter* painter, const Transform& m);
+		ScopedPainter(RenderContext* painter, const Matrix& m);
 		~ScopedPainter();
 	private:
-		Transform m_;
-		Painter* p_;
+		Matrix m_;
+		RenderContext* p_;
+	};
+
+	class ScopedClipper
+	{
+	public:
+		ScopedClipper(RenderContext* painter, const Rect& r);
+		~ScopedClipper();
+	private:
+		RenderContext* p_;
 	};
 }

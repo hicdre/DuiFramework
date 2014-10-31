@@ -106,7 +106,7 @@ namespace ui
 
 
 
-	void TextButton::OnPaint(Painter* painter)
+	void TextButton::OnPaint(RenderContext* painter)
 	{
 		Drawable* graphics = state_datas_[state_]->GetData();
 		if (graphics)

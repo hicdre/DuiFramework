@@ -28,16 +28,16 @@ namespace ui
 	}
 
 
-	ImageRect* ImageStore::GetImageById(const std::string& id)
+	ImagePart* ImageStore::GetImageById(const std::string& id)
 	{
-		ImageRect* clip = FindImageClipInCache(id);
+		ImagePart* clip = FindImageClipInCache(id);
 		if (clip)
 			return clip;
 
 		return LoadImageClipToCache(id);
 	}
 
-	ImageRect* ImageStore::FindImageClipInCache(const std::string& id) const
+	ImagePart* ImageStore::FindImageClipInCache(const std::string& id) const
 	{
 		if (ids_clip_map_.count(id))
 			return ids_clip_map_.at(id);
@@ -45,7 +45,7 @@ namespace ui
 	}
 
 
-	ImageRect* ImageStore::LoadImageClipToCache(const std::string& id)
+	ImagePart* ImageStore::LoadImageClipToCache(const std::string& id)
 	{
 		if (!image_records_.count(id))
 			return NULL;
@@ -60,12 +60,12 @@ namespace ui
 		if (!image)
 			return NULL;
 
-		ImageRect* clip = NULL;
+		ImagePart* clip = NULL;
 		if (record.rect.IsEmpty()) {
-			clip = new ImageRect(image);
+			clip = new ImagePart(image);
 		}
 		else {
-			clip = new ImageRect(image, record.rect);
+			clip = new ImagePart(image, record.rect);
 		}
 		ids_clip_map_[id] = clip;
 		return clip;
@@ -93,22 +93,22 @@ namespace ui
 	}
 
 
-	ImageRect* ImageStore::LoadImageByPath(const std::wstring& path, const Rect& rect)
+	ImagePart* ImageStore::LoadImageByPath(const std::wstring& path, const Rect& rect)
 	{
 		ImageFile* image = Default()->FindImageInCache(path);
 		if (image) {
-			return new ImageRect(image, rect);
+			return new ImagePart(image, rect);
 		}
-		return new ImageRect(ImageFile::LoadFromFile(path), rect);
+		return new ImagePart(ImageFile::LoadFromFile(path), rect);
 	}
 
-	ImageRect* ImageStore::LoadImageByPath(const std::wstring& path)
+	ImagePart* ImageStore::LoadImageByPath(const std::wstring& path)
 	{
 		ImageFile* image = Default()->FindImageInCache(path);
 		if (image) {
-			return new ImageRect(image);
+			return new ImagePart(image);
 		}
-		return new ImageRect(ImageFile::LoadFromFile(path));
+		return new ImagePart(ImageFile::LoadFromFile(path));
 	}
 
 	ImageStore* ImageStore::Default()

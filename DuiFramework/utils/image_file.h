@@ -1,6 +1,6 @@
 #pragma once
 #include "base/ref_counted.h"
-#include "render/rect.h"
+#include "base/rect.h"
 #include <string>
 
 namespace ui
@@ -25,12 +25,12 @@ namespace ui
 		bool has_aplha_{ false };
 	};
 
-	class ImageRect
+	class ImagePart
 	{
 	public:
-		ImageRect(ImageFile* image, const Rect& rect);
-		ImageRect(ImageFile* image);
-		~ImageRect();
+		ImagePart(ImageFile* image, const Rect& rect);
+		ImagePart(ImageFile* image);
+		~ImagePart();
 
 		Rect rect() const { return rect_; }
 		ImageFile* image() const { return image_; }

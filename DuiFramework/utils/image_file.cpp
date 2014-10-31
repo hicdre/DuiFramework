@@ -79,19 +79,19 @@ namespace ui
 	
 
 
-	ImageRect::ImageRect(ImageFile* image, const Rect& rect)
+	ImagePart::ImagePart(ImageFile* image, const Rect& rect)
 		: image_(image), rect_(rect)
 	{
 		image_->AddRef();
 	}
 
-	ImageRect::ImageRect(ImageFile* image)
+	ImagePart::ImagePart(ImageFile* image)
 		: image_(image), rect_(image->width(), image->height())
 	{
 		image_->AddRef();
 	}
 
-	ImageRect::~ImageRect()
+	ImagePart::~ImagePart()
 	{
 		image_->Release();
 	}

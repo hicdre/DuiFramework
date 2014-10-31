@@ -1,16 +1,14 @@
 #include "stdafx.h"
 #include "window.h"
 
-#include "render/painter.h"
-#include "core/view.h"
+#include "render/render_context.h"
 
 namespace ui
 {
-
-
-	Window::Window()
+	Window::Window(int width, int height)
+		: window_width_(width)
+		, window_height_(height)
 	{
-		SetDragable(true);
 	}
 
 	Window::~Window()
@@ -29,10 +27,8 @@ namespace ui
 
 		SetCursor(::LoadCursor(NULL, IDC_ARROW));
 
-		RECT rc = {0};
-		owned_widget_->GetWindowRect(&rc);
-
-		SetBounds(0, 0, rc.right - rc.left, rc.bottom - rc.top);
+		//先同步为widget大小
+		SetWindowSize(window_width_, window_height_);
 	}
 
 	Widget* Window::DetachWidget()
@@ -80,29 +76,18 @@ namespace ui
 	{
 		widget()->Close();
 	}
-	
-	View* Window::GetFocusedView() const
-	{
-		return focused_view_;
-	}
-
-	void Window::OnSetFocus()
-	{
-
-	}
 
 	void Window::SchedulePaint(const Rect& r)
 	{
 		widget()->InvalidateRect(r);
 	}
 
-	void Window::SchedulePaintInRect(const Rect& r)
+	void Window::OnChildSchedulePaintInRect(View* child, const Rect& r)
 	{
-		if (!visible_ || !painting_enabled_)
+		if (!visible_)
 			return;
 
-		Rect invalid_rect(GetLocalBounds());
-		invalid_rect.Intersect(r);
+		Rect invalid_rect = ConvertRectFromChild(child, r).Intersect(GetLocalBounds());
 		if (!invalid_rect.IsEmpty())
 			widget()->InvalidateRect(invalid_rect);
 	}
@@ -129,7 +114,7 @@ namespace ui
 	{
 		if (message == WM_PAINT)
 		{
-			Painter painter(widget());
+			RenderContext painter(widget());
 			DoPaint(&painter, GetLocalBounds());
 			return TRUE;
 		}
@@ -138,7 +123,7 @@ namespace ui
 			|| message == WM_MOUSELEAVE
 			|| message == WM_NCMOUSELEAVE)
 		{
-			ProcessMouseMessage(message, w_param, l_param);
+			//ProcessMouseMessage(message, w_param, l_param);
 			return TRUE;
 		}
 		else if (message == WM_KEYDOWN
@@ -147,12 +132,12 @@ namespace ui
 			|| message == WM_SYSKEYUP
 			|| message == WM_CHAR)
 		{
-			ProcessKeyMessage(message, w_param, l_param);
+			//ProcessKeyMessage(message, w_param, l_param);
 			return TRUE;
 		}
 		else if (message == WM_SETFOCUS)
 		{
-			SetFocus(this);
+			//SetFocus(this);
 			return TRUE;
 		}
 		else if (message == WM_KILLFOCUS)
@@ -168,9 +153,10 @@ namespace ui
 		}
 		return FALSE;
 	}
-
+#if 0
 	void Window::ProcessMouseMessage(UINT message, WPARAM w_param, LPARAM l_param)
 	{
+
 		Point pt = GetMousePosition(widget());
 
 		View* old_view = hittest_view_;
@@ -280,6 +266,7 @@ namespace ui
 
 		if (evt.IsMouseEvent())
 			hittest_view_->HandleEvent(&evt);
+
 	}
 
 	void Window::DispatchMouseLeaveEvent(View* from, View* to, const Point& pt)
@@ -372,5 +359,6 @@ namespace ui
 			focused_view_->HandleEvent(&evt);
 		}
 	}
+#endif
 
 }

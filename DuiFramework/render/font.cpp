@@ -7,8 +7,6 @@ namespace ui
 	{
 		const int kTextMetricWeightBold = 700;
 
-		
-
 		void GetTextMetricsForFont(HDC hdc, HFONT font, TEXTMETRIC* text_metrics) {
 			HGDIOBJ hprev = ::SelectObject(hdc, font);
 			::GetTextMetrics(hdc, text_metrics);

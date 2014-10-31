@@ -1,5 +1,5 @@
 #pragma once
-#include "base/basictypes.h"
+#include "base/base_defines.h"
 
 
 namespace ui
@@ -37,4 +37,34 @@ namespace ui
 	#define ColorGetG(color)      (((color) >>  8) & 0xFF)
 	/** return the blue byte from a Color value */
 	#define ColorGetB(color)      (((color) >>  0) & 0xFF)
+
+	enum
+	{
+		Color_Black        = 0xFF000000,  //!< black SkColor value
+		Color_Darkgray     = 0xFF444444,  //!< dark gray SkColor value
+		Color_Gray         = 0xFF888888,  //!< gray SkColor value
+		Color_Lightgray    = 0xFFCCCCCC,  //!< light gray SkColor value
+		Color_White        = 0xFFFFFFFF,  //!< white SkColor value
+
+		Color_Green		= 0xFF00FF00,  //!< green SkColor value
+		Color_Red       = 0xFFFF0000,  //!< red SkColor value
+		Color_Blue      = 0xFF0000FF,  //!< blue SkColor value
+		Color_Yellow    = 0xFFFFFF00,  //!< yellow SkColor value
+		Color_Cyan      = 0xFF00FFFF,  //!< cyan SkColor value
+		Color_Magenta   = 0xFFFF00FF,  //!< magenta SkColor value
+
+		
+	};
+
+
+
+
+
+
+
+
+
+
+
+
 }

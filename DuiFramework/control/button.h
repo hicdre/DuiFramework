@@ -54,7 +54,7 @@ namespace ui
 		virtual void TriggerClicked() override;
 		virtual void OnButtonStateChanged() override;
 	protected:
-		virtual void OnPaint(Painter* painter) override;
+		virtual void OnPaint(RenderContext* painter) override;
 
 		virtual void OnMouseEnter(MouseEvent* evt) override;
 		virtual void OnMouseLeave(MouseEvent* evt) override;

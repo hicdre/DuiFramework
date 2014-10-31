@@ -4,8 +4,7 @@
 #include <algorithm>
 #include <cassert>
 
-#include "core/rectangle.h"
-#include "core/image.h"
+#include "render/render_context.h"
 
 namespace ui
 {
@@ -17,11 +16,6 @@ namespace ui
 
 	View::~View()
 	{
-		//EventListenManager::Default()->RemoveView(this);
-		for (auto d : view_datas_)
-		{
-			delete d.second;
-		}
 	}
 
 	View* View::parent() const
@@ -29,49 +23,20 @@ namespace ui
 		return parent_;
 	}
 
-	View* View::first_child() const
+
+	Container* View::GetContainer()
 	{
-		return first_child_;
+		return container_.get();
 	}
 
-	View* View::last_child() const
+
+	void View::SetContainer(Container* container)
 	{
-		return last_child_;
+		container_.reset(container);
 	}
 
-	View* View::prev_sibling() const
-	{
-		return prev_sibling_;
-	}
 
-	View* View::next_sibling() const
-	{
-		return next_sibling_;
-	}
-
-	View* View::root() const
-	{
-		const View* p = this;
-		while (p->parent_)
-			p = p->parent_;
-		if (!p)
-			return NULL;
-		return const_cast<View*>(p);
-	}
-
-	void View::GetViews(Views &child_array) const
-	{
-		for (View* p = first_child_; p != NULL; p = p->next_sibling())
-		{
-			child_array.push_back(p);
-		}
-	}
-
-	int32 View::GetViewCount() const
-	{
-		return child_count_;
-	}
-
+#if 0
 	View* View::Append(View* child)
 	{
 		return InsertAfter(last_child_, child);
@@ -251,41 +216,8 @@ namespace ui
 		}
 		return false;
 	}
+#endif
 
-
-	View* View::Hittest(const Point& pt)
-	{
-		if (!enabled_)
-			return NULL;
-
-		//hittest self
-		if (!GetLocalBounds().Contains(pt))
-			return NULL;
-
-		for (View* p = last_child_; p != NULL; p = p->prev_sibling())
-		{
-			if (p)
-			{
-				Point pt_in_child = p->GetTransform().Invert().Apply(pt);
-				View* v = p->Hittest(pt_in_child);
-				if (v)
-					return v;
-			}
-		}
-
-		return this;
-	}
-
-
-	//const Widget* View::GetWidget() const
-	//{
-	//	return parent_ ? parent_->GetWidget() : NULL;
-	//}
-
-	//Widget* View::GetWidget()
-	//{
-	//	return const_cast<Widget*>(const_cast<const View*>(this)->GetWidget());
-	//}
 
 	void View::SetBounds(int x, int y, int width, int height)
 	{
@@ -367,8 +299,8 @@ namespace ui
 			OnVisibleChanged();
 
 			// Notify the parent.
-			//if (parent_)
-			//	parent_->ChildVisibilityChanged(this);
+			if (parent_)
+				parent_->OnChildVisibilityChanged(this);
 
 			// This notifies all sub-views recursively.
 			//PropagateVisibilityNotifications(this, visible_);
@@ -395,25 +327,13 @@ namespace ui
 
 	void View::Layout()
 	{
-		if (layout_manager_.get())
-		{
-			layout_manager_->Layout(this);
-			return;
-		}
-
 		needs_layout_ = false;
 
-		for (View* child = first_child(); child != NULL; child = child->next_sibling()) {
-			if (child->visible()) {
-				child->needs_layout_ = false;
-				child->Layout();
-			}
-		}
-	}
+		OnLayout();
+		
+		if (container_.get())
+			container_->Layout();
 
-	Size View::GetPreferredSize() const
-	{
-		return Size();
 	}
 
 	void View::OnVisibleChanged()
@@ -426,6 +346,11 @@ namespace ui
 
 	}
 
+	void View::OnLayout()
+	{
+
+	}
+
 
 	void View::SchedulePaint()
 	{
@@ -434,70 +359,48 @@ namespace ui
 
 	void View::SchedulePaintInRect(const Rect& r)
 	{
-		if (!visible_ || !painting_enabled_)
+		if (!visible_)
 			return;
 
 		if (parent_) {
 			// Translate the requested paint rect to the parent's coordinate system
 			// then pass this notification up to the parent.
-			parent_->SchedulePaintInRect(ConvertRectToParent(r));
+			//´Ë´¦ÐèÒª½øÐÐ±ä»»
+			parent_->OnChildSchedulePaintInRect(this, r);
 		}
 	}
 
-	void View::DoPaint(Painter* painter, const Rect& dest)
+	void View::DoPaint(RenderContext* painter, const Rect& r)
 	{
 		if (!visible_)
 			return;
 
-		//ScopedPainter helper(painter, GetTransform());
-		ScopedPainter helper(painter, Transform(1.0, 0, 0, 1.0, dest.x(), dest.y()));
-		DoPaintSelf(painter);
+		ScopedPainter helper(painter, Matrix(1.0, 0, 0, 1.0, r.x(), r.y()));
+
+		if (background_.get())
+			background_->DoPaint(painter, GetLocalBounds());
+
+		if (border_.get())
+			border_->DoPaint(painter, GetLocalBounds());
+
+		OnBeforeChildPaint(painter);
+
+		if (container_.get())
+			container_->DoPaint(painter, GetContentsBounds());
+
+		OnAfterChildPaint(painter);
 	}
 
-	void View::DoPaintSelf(Painter* painter)
-	{
-		PaintBackground(painter);
-		PaintBorder(painter);
-		OnPaint(painter);
-		DoPaintChildren(painter);
-	}
 
-	void View::OnPaint(Painter* painter)
+	void View::OnBeforeChildPaint(RenderContext* painter)
 	{
 		//painter->DrawStringRect(L"²âÊÔ", Font(L"Î¢ÈíÑÅºÚ", 18), ColorSetRGB(255,0,0,0), GetLocalBounds());
 	}
 
-
-	void View::DoPaintChildren(Painter* painter)
+	void View::OnAfterChildPaint(RenderContext* painter)
 	{
-		for (View* p = first_child_; p != NULL; p = p->next_sibling())
-		{
-			if (p && p->visible())
-			{
-				p->DoPaint(painter, p->bounds());
-			}
-		}
+		//painter->DrawStringRect(L"²âÊÔ", Font(L"Î¢ÈíÑÅºÚ", 18), ColorSetRGB(255,0,0,0), GetLocalBounds());
 	}
-
-
-	Transform View::GetTransform() const
-	{
-		return Transform(1.0, 0, 0, 1.0, x(), y());
-	}
-
-
-	bool View::GetTransformRelativeTo(const View* ancestor, Transform* transform) const
-	{
-		const View* p = this;
-
-		while (p && p != ancestor) {
-			transform->ConcatTransform(p->GetTransform());
-			p = p->parent_;
-		}
-
-		return p == ancestor;
-	}
-
 
 	/*void View::ConvertPointToView(const View* source, const View* target, Point* point)
 	{
@@ -541,7 +444,7 @@ namespace ui
 	void View::ConvertPointFromScreen(const View* dst, Point* point)
 	{
 
-	}*/
+	}
 
 	Point View::ConvertPointFromWidget(const Point& pt) const
 	{
@@ -586,14 +489,16 @@ namespace ui
 			x_rect = v->ConvertRectToParent(x_rect);
 		return x_rect;
 	}
+	*/
 
-	void View::PaintBackground(Painter* painter)
+	void View::SetBackground(Background* background)
 	{
-		if (!background_.get())
-			return;
+		background_.reset(background);
+	}
 
-		background_->DoPaint(painter, background_inside_ ? 
-			GetContentsBounds() : GetLocalBounds());
+	Background* View::background()
+	{
+		return background_.get();
 	}
 
 	void View::SetBorder(Border* border)
@@ -606,56 +511,6 @@ namespace ui
 		return border_.get();
 	}
 
-	void View::PaintBorder(Painter* painter)
-	{
-		if (!border_.get())
-			return;
-
-		border_->DoPaint(painter, GetLocalBounds());
-	}
-
-	void View::SetBackground(View* background)
-	{
-		background_.reset(background);
-	}
-
-	void View::set_background_color(Color color)
-	{
-		if (!background_.get()) {
-			background_.reset(new SolidRectangle(color));
-		}
-
-		SolidRectangle* normal_background
-			= dynamic_cast<SolidRectangle*>(background_.get());
-		if (!normal_background)
-			return;
-
-		normal_background->SetColor(color);
-	}
-
-	void View::set_background_image_id(const std::string& id)
-	{
-		if (id.empty())
-			return;
-
-		if (!background_.get()) {
-			background_.reset(new ResourceImage(id));
-		}
-
-		ResourceImage* normal_background
-			= dynamic_cast<ResourceImage*>(background_.get());
-		if (!normal_background)
-			return;
-
-		normal_background->SetImageId(id);
-	}
-
-
-	void View::set_background_inside(bool v)
-	{
-		background_inside_ = v;
-	}
-
 	void View::SetCursor(HCURSOR cursor)
 	{
 		cursor_ = cursor;
@@ -664,251 +519,24 @@ namespace ui
 
 	HCURSOR View::GetCursor()
 	{
-		return cursor_ ? cursor_ : parent_->GetCursor();
+		return cursor_;
 	}
 
-	
-
-	void View::ConvertPointToTarget(View* source, View* target, Point* pt)
-	{
-		if (source == target)
-			return;
-
-		View* ancestor = source->GetAncestorTo(target);
-
-		source->ConvertPointForAncestor(ancestor, pt);
-		target->ConvertPointFromAncestor(ancestor, pt);
-	}
-
-	
-
-	
-
-	
-
-	
-
-	bool View::ConvertPointForAncestor(const View* ancestor, Point* point) const
-	{
-		Transform trans;
-		bool result = GetTransformRelativeTo(ancestor, &trans);
-		trans.TransformPoint(*point);
-		return result;
-	}
-
-	bool View::ConvertPointFromAncestor(const View* ancestor, Point* point) const
-	{
-		Transform trans;
-		bool result = GetTransformRelativeTo(ancestor, &trans);
-		trans.Invert().TransformPoint(*point);
-		return result;
-	}
-
-	void View::HandleEvent(Event* event)
-	{
-		if (!enabled_ && event->IsMouseEvent())
-		{
-			RouteEventTo(event, parent_);
-			return;
-		}
-
-		if ((!enabled_ || !focusable_) && event->IsKeyEvent())
-			return;
-
-		event_listener_.HandleEvent(event);
-		if (event->stopped_dispatch())
-			return;
-
-		bool route_to_parent = false;
-		switch (event->type())
-		{
-		case EVENT_MOUSE_MOVE:
-			OnMouseMove(static_cast<MouseEvent*>(event));
-			route_to_parent = true;
-			break;
-		case EVENT_MOUSE_DOWN:
-			OnMouseDown(static_cast<MouseEvent*>(event));
-			route_to_parent = true;
-			break;
-		case EVENT_MOUSE_UP:
-			OnMouseUp(static_cast<MouseEvent*>(event));
-			route_to_parent = true;
-			break;
-		case EVENT_MOUSE_DBCLICK:
-			OnMouseDoubleClick(static_cast<MouseEvent*>(event));
-			route_to_parent = true;
-			break;
-		case EVENT_MOUSE_ENTER:
-			OnMouseEnter(static_cast<MouseEvent*>(event));
-			break;
-		case EVENT_MOUSE_LEAVE:
-			OnMouseLeave(static_cast<MouseEvent*>(event));
-			break;
-		case EVENT_KEY_PRESSED:
-			OnKeyPressed(static_cast<KeyEvent*>(event));
-			break;
-		case EVENT_KEY_RELEASED:
-			OnKeyReleased(static_cast<KeyEvent*>(event));
-			break;
-		case EVENT_CHAR:
-			route_to_parent = false;
-			break;
-		case EVENT_LOSE_FOCUS:
-			OnLoseFocus(static_cast<FocusEvent*>(event));
-			break;
-		case EVENT_GAIN_FOCUS:
-			OnGainFocus(static_cast<FocusEvent*>(event));
-			break;
-		default:
-			route_to_parent = true;
-			break;
-		}
-
-		if (event->stopped_dispatch())
-			return;
-
-		if (route_to_parent && parent_)
-			RouteEventTo(event, parent_);
-	}
-
-
-	void View::RouteEventTo(Event* event, View* v)
-	{
-		if (v)
-			v->HandleEvent(event);
-	}
-
-
-	void View::RequestSetFocus()
-	{
-		if (!focusable_)
-			return;
-		FocusManager* manager = GetFocusManager();
-		if (manager) {
-			manager->SetFocus(this);
-		}
-	}
-
-	void View::SetFocusable(bool focusable)
-	{
-		focusable_ = focusable;
-	}
-
-	bool View::IsFocusable() const
-	{
-		return focusable_;
-	}
-
-	FocusManager* View::GetFocusManager() const
-	{
-		return parent_ ? parent_->GetFocusManager() : NULL;
-	}
-
-	void View::OnMouseMove(MouseEvent* evt)
+	void View::OnChildVisibilityChanged(View* child)
 	{
 
 	}
 
-	void View::OnMouseDown( MouseEvent* evt )
+	void View::OnChildSchedulePaintInRect(View* child, const Rect& r)
 	{
-
+		SchedulePaintInRect(ConvertRectFromChild(child, r));
 	}
 
-	void View::OnMouseUp( MouseEvent* evt )
+	Rect View::ConvertRectFromChild(View* child, const Rect& r)
 	{
-
+		return Rect(r.x() + child->x(), r.y() + child->y(), r.width(), r.height());
 	}
 
-
-	void View::OnMouseDoubleClick(MouseEvent* evt)
-	{
-
-	}
-
-
-	void View::OnMouseEnter( MouseEvent* evt )
-	{
-
-	}
-
-	void View::OnMouseLeave( MouseEvent* evt )
-	{
-
-	}
-
-	void View::OnKeyPressed( KeyEvent* evt )
-	{
-
-	}
-
-	void View::OnKeyReleased( KeyEvent* evt )
-	{
-
-	}
-
-	void View::OnLoseFocus(FocusEvent* evt)
-	{
-
-	}
-
-	void View::OnGainFocus( FocusEvent* evt )
-	{
-
-	}
-
-	void View::SetDragable(bool dragable)
-	{
-		dragable_ = dragable;
-	}
-
-	bool View::IsDragable() const
-	{
-		return dragable_;
-	}
-
-	void View::SetHittestOverride(const HittestOverride& f)
-	{
-		hittest_override_ = f;
-	}
-
-	const View::HittestOverride& View::GetHittestOverride() const
-	{
-		return hittest_override_;
-	}
-
-	bool View::HasHittestOverride() const
-	{
-		return !!hittest_override_;
-	}
-
-	View* View::GetDragableView() const
-	{
-		if (dragable_)
-			return const_cast<View*>(this);
-		return parent_ ? parent_->GetDragableView() : NULL;
-	}
-
-	void View::SetLayoutManager(LayoutManager* manager)
-	{
-		layout_manager_.reset(manager);
-	}
-
-	void View::SetData( const std::string& key, Data* data )
-	{
-		view_datas_[key] = data;
-	}
-
-	void View::RemoveData( const std::string& key )
-	{
-		view_datas_.erase(key);
-	}
-
-	View::Data* View::GetData( const std::string& key )
-	{
-		if (!view_datas_.count(key))
-			return NULL;
-		return view_datas_.at(key);
-	}
 
 	
 #if 0

@@ -28,7 +28,7 @@ namespace ui
 		void SetVerticalAlignment(VerticalAlignment i) { vertical_alignment_ = i; }
 		VerticalAlignment GetVerticalAlignment() const { return vertical_alignment_; }
 	protected:
-		virtual void OnPaint(Painter* painter) override;
+		virtual void OnPaint(RenderContext* painter) override;
 		virtual void Layout() override;
 
 	private:

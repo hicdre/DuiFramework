@@ -54,11 +54,11 @@ namespace ui
 		int w = (std::numeric_limits<int>::max)();
 		int h = font_.GetHeight();
 		Size sz(w, h);
-		Painter::CalcStringSizeWithFlags(text, len, font_, sz, TEXT_LEFT | TEXT_TOP, sz);
+		RenderContext::CalcStringSizeWithFlags(text, len, font_, sz, TEXT_LEFT | TEXT_TOP, sz);
 		return sz;
 	}
 
-	void TextFragment::DoPaint(Painter* painter, const Rect& dest)
+	void TextFragment::DoPaint(RenderContext* painter, const Rect& dest)
 	{
 		painter->DrawStringRectWithFlags(text_, len_, font_, text_color_, dest, TEXT_LEFT | TEXT_TOP);
 	}

@@ -1,19 +1,21 @@
 #pragma once
-#include "render/color.h"
-#include "render/rect.h"
-#include "core/drawable.h"
+#include "base/basictypes.h"
 
 namespace ui
 {
-	class Painter;
-	class Border : public Drawable
-	{
-	public:
-		virtual ~Border() {}
-		virtual Padding GetPadding() = 0;
-	};
-
-	class NormalBorder : public Border
+	class RenderContext;
+	/*	
+		scope in view
+		border-left-color
+		border-left-width
+		border-top-color
+		border-top-width
+		border-right-color
+		border-right-width
+		border-bottom-color
+		border-bottom-width
+	*/
+	class Border
 	{
 	public:
 		enum Direction{
@@ -23,8 +25,8 @@ namespace ui
 			BOTTOM,
 		};
 
-		NormalBorder();
-		~NormalBorder();
+		Border();
+		~Border();
 
 		void SetBorder(Direction direction, int size, Color color);
 		void SetBorder(int size, Color color);
@@ -42,8 +44,9 @@ namespace ui
 		Color right_color() const;
 		Color bottom_color() const;
 
-		virtual void DoPaint(Painter* painter, const Rect& dest) override;
-		virtual Padding GetPadding() override;
+		Padding GetPadding();
+
+		void DoPaint(RenderContext* painter, const Rect& dest);
 	private:
 		int border_size_[4];
 		Color border_color_[4];

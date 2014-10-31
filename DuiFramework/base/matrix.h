@@ -1,7 +1,7 @@
 ﻿#pragma once
-#include "render/rect.h"
-#include "render/size.h"
-#include "render/point.h"
+#include "base/rect.h"
+#include "base/size.h"
+#include "base/point.h"
 
 namespace ui
 {
@@ -11,16 +11,16 @@ namespace ui
 	*  [ 0, 0, 1  ] [1]   [1             ]
 	*
 	*/
-	class Transform
+	class Matrix
 	{
 	public:
-		Transform();
-		Transform(float a, float b, float c, float d, float tx, float ty);
-		explicit Transform(const XFORM& xform);
-		Transform& operator=(const XFORM& xform);
+		Matrix();
+		Matrix(float a, float b, float c, float d, float tx, float ty);
+		explicit Matrix(const XFORM& xform);
+		Matrix& operator=(const XFORM& xform);
 
 		void SetTransform(float a, float b, float c, float d, float tx, float ty);
-		bool IsEqual(const Transform& t) const;
+		bool IsEqual(const Matrix& t) const;
 
 		Point Apply(const Point& point) const;
 		Size Apply(const Size& size) const;
@@ -30,7 +30,7 @@ namespace ui
 		void TransformSize(Size& size) const;
 		void TransformRect(Rect& rect) const;
 
-		void ConcatTransform(const Transform& t);
+		void ConcatTransform(const Matrix& t);
 		/**
 		*
 		*	    [ 1, 0, tx ]
@@ -38,7 +38,7 @@ namespace ui
 		*	    [ 0, 0, 1  ]
 		*
 		*/
-		Transform Translate(float x, float y) const;
+		Matrix Translate(float x, float y) const;
 
 		/**
 		*	    [ cos(anAngle), -sin(anAngle), 0 ]
@@ -46,7 +46,7 @@ namespace ui
 		*	    [            0,             0, 1 ]
 		*
 		*/
-		Transform Rotate(float anAngle) const;
+		Matrix Rotate(float anAngle) const;
 
 		/**
 		*		[ sx,  0, 0 ]
@@ -54,11 +54,11 @@ namespace ui
 		*		[  0,  0, 1 ]
 		*
 		*/
-		Transform Scale(float sx, float sy) const;
+		Matrix Scale(float sx, float sy) const;
 
-		Transform Concat(const Transform& t) const;
+		Matrix Concat(const Matrix& t) const;
 
-		Transform Invert() const;
+		Matrix Invert() const;
 
 		XFORM ToXFORM() const;
 	private:

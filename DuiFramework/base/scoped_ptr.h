@@ -162,6 +162,13 @@ public:
 	{
 		return p_;
 	}
+	void reset(T* p)
+	{
+		Clear();
+		p_ = p;
+		if (p_)
+			p_->AddRef();
+	}
 
 
 private:
