@@ -88,7 +88,7 @@ namespace ui
 			window_style_, x, y, width, height,
 			parent, NULL, NULL, this);
 
-		assert(hwnd_ && GetLastError() == 0);
+		//assert(hwnd_ && GetLastError() == 0);
 
 		DWORD dwStyle = GetWindowLong(GWL_STYLE);
 		SetWindowLong(GWL_STYLE, (dwStyle & ~WS_CAPTION));

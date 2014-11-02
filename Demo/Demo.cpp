@@ -25,13 +25,14 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 
 	//ui::Widget* widget = ui::WidgetView::CreateWidget(new DemoWidget);
 
-	ui::Window* window = new ui::Window(600, 450);
+	ui::Window* window = new ui::Window(500, 300);
 	{
 		ui::Background* b = new ui::Background;
 		{
-			ui::Image* i = ui::Image::CreateLinearGradient(
-				ui::Point(30,30), ui::Point(60,60), ui::Color_Green, ui::Color_Red);
-			b->SetImage(i);
+// 			ui::Image* i = ui::Image::CreateLinearGradient(
+// 				ui::Point(20, 60), ui::Point(20, 20), ui::Color_Green, ui::Color_Red);
+// 			b->SetImage(i);
+			b->SetColor(ui::Color_White);
 		}
 		window->SetBackground(b);
 	}

@@ -45,5 +45,6 @@ namespace ui
 		AbsoulteContainer();
 		AbsoulteContainer(View* parent);
 		virtual void DoPaint(RenderContext* painter, const Rect& dest) override;
+		virtual void Layout() override;
 	};
 }

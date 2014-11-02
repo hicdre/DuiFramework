@@ -10,6 +10,7 @@ namespace ui
 {
 
 	View::View()
+		: layout_data_(new LayoutData())
 	{
 
 	}
@@ -375,7 +376,7 @@ namespace ui
 		if (!visible_)
 			return;
 
-		ScopedPainter helper(painter, Matrix(1.0, 0, 0, 1.0, r.x(), r.y()));
+		//ScopedPainter helper(painter, Matrix(1.0, 0, 0, 1.0, r.x(), r.y()));
 
 		if (background_.get())
 			background_->DoPaint(painter, GetLocalBounds());
@@ -535,6 +536,11 @@ namespace ui
 	Rect View::ConvertRectFromChild(View* child, const Rect& r)
 	{
 		return Rect(r.x() + child->x(), r.y() + child->y(), r.width(), r.height());
+	}
+
+	LayoutData* View::layout()
+	{
+		return layout_data_.get();
 	}
 
 

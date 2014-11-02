@@ -4,6 +4,7 @@
 #include "view/view_border.h"
 #include "view/view_background.h"
 #include "view/view_container.h"
+#include "view/view_layout.h"
 #include <vector>
 
 namespace ui
@@ -72,6 +73,8 @@ namespace ui
 		void SetCursor(HCURSOR cursor);
 		HCURSOR GetCursor();
 
+		LayoutData* layout();
+
 		// Event---------------------------------------------
 
 		//自身事件
@@ -93,6 +96,7 @@ namespace ui
 		//公共属性
 		scoped_ptr<Border> border_; // border-
 		scoped_ptr<Background> background_; // background-
+		scoped_ptr<LayoutData> layout_data_;
 		HCURSOR cursor_{ NULL }; //	cursor
 
 		//私有属性

@@ -138,6 +138,12 @@
     <ClCompile Include="utils\image_file.cpp">
       <Filter>utils</Filter>
     </ClCompile>
+    <ClCompile Include="view\view_layout.cpp">
+      <Filter>view</Filter>
+    </ClCompile>
+    <ClCompile Include="render\render_object.cpp">
+      <Filter>render</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -263,6 +269,12 @@
     </ClInclude>
     <ClInclude Include="utils\image_file.h">
       <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="view\view_layout.h">
+      <Filter>view</Filter>
+    </ClInclude>
+    <ClInclude Include="render\render_object.h">
+      <Filter>render</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -124,6 +124,7 @@
     <ClCompile Include="render\font.cpp" />
     <ClCompile Include="render\image.cpp" />
     <ClCompile Include="render\render_context.cpp" />
+    <ClCompile Include="render\render_object.cpp" />
     <ClCompile Include="render\uniscribe.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
@@ -140,6 +141,7 @@
     <ClCompile Include="view\view_border.cpp" />
     <ClCompile Include="view\view.cpp" />
     <ClCompile Include="view\view_container.cpp" />
+    <ClCompile Include="view\view_layout.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="base\base_defines.h" />
@@ -189,6 +191,7 @@
     <ClInclude Include="render\font.h" />
     <ClInclude Include="render\image.h" />
     <ClInclude Include="render\render_context.h" />
+    <ClInclude Include="render\render_object.h" />
     <ClInclude Include="render\uniscribe.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClInclude>
@@ -204,6 +207,7 @@
     <ClInclude Include="view\view_border.h" />
     <ClInclude Include="view\view.h" />
     <ClInclude Include="view\view_container.h" />
+    <ClInclude Include="view\view_layout.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

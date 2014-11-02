@@ -9,8 +9,8 @@ namespace ui
 	{
 	}
 
-	Matrix::Matrix(float a, float b, float c, float d, float tx, float ty)
-		: a(a), b(b), c(c), d(d), tx(tx), ty(ty)
+	Matrix::Matrix(float a0, float b0, float c0, float d0, float tx0, float ty0)
+		: a(a0), b(b0), c(c0), d(d0), tx(tx0), ty(ty0)
 	{
 
 	}

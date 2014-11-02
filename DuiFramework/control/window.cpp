@@ -2,6 +2,7 @@
 #include "window.h"
 
 #include "render/render_context.h"
+#include "utils/utils.h"
 
 namespace ui
 {
@@ -114,8 +115,34 @@ namespace ui
 	{
 		if (message == WM_PAINT)
 		{
+#if 1
 			RenderContext painter(widget());
 			DoPaint(&painter, GetLocalBounds());
+#else
+			PAINTSTRUCT ps_;
+			HDC wnd_dc = BeginPaint(window, &ps_);
+			HDC dc_ = ps_.hdc;
+			SetGraphicsMode(dc_, GM_ADVANCED);
+			SetMapMode(dc_, MM_TEXT);
+			SetBkMode(dc_, OPAQUE);
+
+			RECT rc;
+			::GetClientRect(window, &rc);
+			Rect rect_(rc);
+
+			HBITMAP bitmap_ = CreateDIB(rect_.width(), rect_.height());
+			::SelectObject(dc_, bitmap_);
+
+			HBRUSH hbrush = ::CreateSolidBrush(0x0000FF00);
+			
+			//RECT rc = { 0, 0, 200, 10 };
+			::FillRect(ps_.hdc, &rc, hbrush);
+
+			::SelectObject(dc_, NULL);
+			::DeleteObject(bitmap_);
+			::EndPaint(window, &ps_);
+#endif
+
 			return TRUE;
 		}
 		else if ((message >= WM_MOUSEFIRST && message <= WM_MOUSELAST)

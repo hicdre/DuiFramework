@@ -41,6 +41,7 @@ namespace ui
 		Matrix Translate(float x, float y) const;
 
 		/**
+		*  弧度
 		*	    [ cos(anAngle), -sin(anAngle), 0 ]
 		*	t *	[ sin(anAngle),  cos(anAngle), 0 ]
 		*	    [            0,             0, 1 ]

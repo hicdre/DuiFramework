@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "view_container.h"
+#include "view.h"
 
 namespace ui
 {
@@ -60,6 +61,23 @@ namespace ui
 	View* SequenceContainer::GetView(int index)
 	{
 		return views_.at(index);
+	}
+
+
+	void AbsoulteContainer::Layout()
+	{
+		for (View* view : views_)
+		{
+			if (view->visible())
+			{
+				LayoutData* layout = view->layout();
+				int x = layout->x();
+				int y = layout->y();
+				int w = layout->width();
+				int h = layout->height();
+				view->SetBounds(x, y, w, h);
+			}
+		}
 	}
 
 }

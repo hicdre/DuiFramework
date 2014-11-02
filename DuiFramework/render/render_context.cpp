@@ -55,14 +55,18 @@ namespace ui
 		: widget_(widget)
 	{
 		HDC wnd_dc = BeginPaint(widget->hwnd(), &ps_);
-		//SetGraphicsMode(wnd_dc, GM_ADVANCED);
-		//SetMapMode(wnd_dc, MM_TEXT);
+		SetGraphicsMode(wnd_dc, GM_ADVANCED);
+		SetMapMode(wnd_dc, MM_TEXT);
+		SetBkMode(wnd_dc, OPAQUE);
 		//SetBkMode(wnd_dc, TRANSPARENT);
 
 		dc_ = ::CreateCompatibleDC(wnd_dc);
+		//dc_ = wnd_dc;
 		SetGraphicsMode(dc_, GM_ADVANCED);
 		SetMapMode(dc_, MM_TEXT);
 		SetBkMode(dc_, OPAQUE);
+		//SetMapMode(dc_, MM_LOENGLISH);
+		//SetWorldTransform(dc_, &Matrix().ToXFORM());
 
 		RECT rc;
 		::GetClientRect(widget->hwnd(), &rc);
@@ -79,25 +83,27 @@ namespace ui
 // 			dc_, 0, 0, rect_.width(), rect_.height(),
 // 			bf);
 
-		::StretchBlt(ps_.hdc, 0, 0, rect_.width(), rect_.height(),
-			dc_, 0, 0, rect_.width(), rect_.height(),
-			SRCCOPY);
-		::SelectObject(dc_, bitmap_prev_);
-		::DeleteObject(bitmap_);
-		::DeleteDC(dc_);
+ 		::StretchBlt(ps_.hdc, 0, 0, rect_.width(), rect_.height(),
+  			dc_, 0, 0, rect_.width(), rect_.height(),
+  			SRCCOPY);
+ 		::SelectObject(dc_, bitmap_prev_);
+ 		::DeleteObject(bitmap_);
+ 		::DeleteDC(dc_);
 
 		EndPaint(widget_->hwnd(), &ps_);
 	}
 
 	void RenderContext::FillRect(const Rect& rect, Color color)
 	{
-		::SetBkColor(dc_, RGB(GetBValue(color), GetGValue(color), GetRValue(color)));
-		::ExtTextOut(dc_, 0, 0, ETO_OPAQUE, &rect.ToRECT(), NULL, 0, NULL);
+		HBRUSH hbrush = ::CreateSolidBrush(RGB(GetBValue(color), GetGValue(color), GetRValue(color)));
+		::FillRect(dc_, &rect.ToRECT(), hbrush);
+		::DeleteObject(hbrush);
 	}
 
 	void RenderContext::Trans(const Matrix& m)
 	{
-		::ModifyWorldTransform(dc_, &m.ToXFORM(), MWT_LEFTMULTIPLY);
+		XFORM xform = m.ToXFORM();
+		::ModifyWorldTransform(dc_, &xform, MWT_LEFTMULTIPLY);
 	}
 
 	void RenderContext::DrawLine(const Rect& rect, int line_size, DWORD color, int nStyle /*= PS_SOLID*/)

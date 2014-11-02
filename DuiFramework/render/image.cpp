@@ -94,32 +94,98 @@ namespace ui
 
 		virtual void DoPaint(RenderContext* painter, const Rect& dest) override
 		{
-			
-			TRIVERTEX vertex[2];
-			vertex[0].x = dest.x() + dest.width() * pfrom_.x() / 100;
-			vertex[0].y = dest.y() + dest.height() * pfrom_.y() / 100;
-			vertex[0].Red   = ColorGetR(cfrom_);
-			vertex[0].Green = ColorGetG(cfrom_);
-			vertex[0].Blue  = ColorGetB(cfrom_);
-			vertex[0].Alpha = 0;
+			float x0 = dest.width() * pfrom_.x() / 100.0;
+			float y0 = dest.height() * pfrom_.y() / 100.0;
+			float x1 = dest.width() * pto_.x() / 100.0;
+			float y1 = dest.height() * pto_.y() / 100.0;
+			float dx = x1 - x0;
+			float dy = y1 - y0;
+			float angle = atan2(dy, dx);
+			float length = dx * cos(angle) + dy * sin(angle);
+			Matrix m;
+			m = m.Translate(dest.x(), dest.y()).Translate(x0, y0).Rotate(angle);
 
-			vertex[1].x = dest.x() + dest.width() * pto_.x() / 100;
-			vertex[1].y = dest.y() + dest.height() * pto_.y() / 100;
-			vertex[1].Red = ColorGetR(cto_);
-			vertex[1].Green = ColorGetG(cto_);
-			vertex[1].Blue = ColorGetB(cto_);
-			vertex[1].Alpha = 0;
+			if (length == 0)
+			{
+				painter->FillRect(dest, cfrom_);
+				return;
+			}
+
+			//进行4点变换
+			Matrix mi = m.Invert();
+			Point lt(dest.x(), dest.y());
+			Point lb(dest.x(), dest.bottom());
+			Point rt(dest.right(), dest.y());
+			Point rb(dest.right(), dest.bottom());
+			mi.TransformPoint(lt);
+			mi.TransformPoint(lb);
+			mi.TransformPoint(rt);
+			mi.TransformPoint(rb);
+			int minx = (std::min)({ lt.x(), lb.x(), rt.x(), rb.x() });
+			int maxx = (std::max)({ lt.x(), lb.x(), rt.x(), rb.x() });
+			int miny = (std::min)({ lt.y(), lb.y(), rt.y(), rb.y() });
+			int maxy = (std::max)({ lt.y(), lb.y(), rt.y(), rb.y() });
+
+			ScopedPainter sp(painter, m);
+
+			int vx0 = 0;
+			int vx1 = length;
+			Color cf = cfrom_;
+			Color ct = cto_;
+			if (length < 0) {
+				vx0 = length;
+				vx1 = 0;
+				cf = cto_;
+				ct = cfrom_;
+			}
+
+			TRIVERTEX vertex[6];
+			SetVertexPos(&vertex[0], minx, miny);
+			SetVertexColor(&vertex[0], cf);
+
+			SetVertexPos(&vertex[1], vx0, maxy);
+			SetVertexColor(&vertex[1], cf);
+
+			SetVertexPos(&vertex[2], vx0, miny);
+			SetVertexColor(&vertex[2], cf);
+
+			SetVertexPos(&vertex[3], vx1, maxy);
+			SetVertexColor(&vertex[3], ct);
+
+			SetVertexPos(&vertex[4], vx1, miny);
+			SetVertexColor(&vertex[4], ct);
+
+			SetVertexPos(&vertex[5], maxx, maxy);
+			SetVertexColor(&vertex[5], ct);
 
 			// Create a GRADIENT_RECT structure that 
 			// references the TRIVERTEX vertices. 
-			GRADIENT_RECT gRect;
-			gRect.UpperLeft = 0;
-			gRect.LowerRight = 1;
+			GRADIENT_RECT gRect[3];
+			gRect[0].UpperLeft  = 0;
+			gRect[0].LowerRight = 1;
+			gRect[1].UpperLeft  = 2;
+			gRect[1].LowerRight = 3;
+			gRect[2].UpperLeft  = 4;
+			gRect[2].LowerRight = 5;
 
 			// Draw a shaded rectangle. 
-			BOOL suc = GradientFill(painter->GetHDC(), vertex, 2, &gRect, 1, GRADIENT_FILL_RECT_H);
-			int i;
-			i = 0;
+			GradientFill(painter->GetHDC(), vertex, 6, &gRect, 3, GRADIENT_FILL_RECT_H);
+
+			//painter->FillRect(Rect(0, 0, length, 5), Color_Black);
+		}
+
+		void SetVertexPos(TRIVERTEX* v, int x, int y)
+		{
+			v->x = x;
+			v->y = y;
+		}
+
+		void SetVertexColor(TRIVERTEX* v, Color c)
+		{
+			v->Red   = ColorGetR(c) << 8;
+			v->Green = ColorGetG(c) << 8;
+			v->Blue  = ColorGetB(c) << 8;
+			v->Alpha = 0;
 		}
 
 	private:
