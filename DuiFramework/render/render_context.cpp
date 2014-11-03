@@ -95,9 +95,21 @@ namespace ui
 
 	void RenderContext::FillRect(const Rect& rect, Color color)
 	{
-		HBRUSH hbrush = ::CreateSolidBrush(RGB(GetBValue(color), GetGValue(color), GetRValue(color)));
-		::FillRect(dc_, &rect.ToRECT(), hbrush);
-		::DeleteObject(hbrush);
+		if (color == Color_Transparent)
+			return;
+		uint8 alpha = ColorGetA(color);
+		if (alpha == 0xFF)
+		{
+			HBRUSH hbrush = ::CreateSolidBrush(RGB(GetBValue(color), GetGValue(color), GetRValue(color)));
+			::FillRect(dc_, &rect.ToRECT(), hbrush);
+			::DeleteObject(hbrush);
+		}
+		else
+		{
+			Gdiplus::Graphics graphics(dc_);
+			Gdiplus::SolidBrush  brush(Gdiplus::Color((unsigned int)color));
+			graphics.FillRectangle(&brush, rect.x(), rect.y(), rect.width(), rect.height());
+		}
 	}
 
 	void RenderContext::Trans(const Matrix& m)

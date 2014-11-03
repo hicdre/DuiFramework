@@ -101,6 +101,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="control\window.cpp" />
+    <ClCompile Include="control\window_builder.cpp" />
     <ClCompile Include="core\app.cpp" />
     <ClCompile Include="core\text.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
@@ -109,6 +110,9 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="core\widget.cpp" />
+    <ClCompile Include="dom\dom_document.cpp" />
+    <ClCompile Include="dom\dom_element.cpp" />
+    <ClCompile Include="dom\dom_node.cpp" />
     <ClCompile Include="event\event.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
@@ -166,6 +170,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="control\window.h" />
+    <ClInclude Include="control\window_builder.h" />
     <ClInclude Include="core\app.h" />
     <ClInclude Include="core\constants.h" />
     <ClInclude Include="core\text.h">
@@ -175,6 +180,9 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="core\widget.h" />
+    <ClInclude Include="dom\dom_document.h" />
+    <ClInclude Include="dom\dom_element.h" />
+    <ClInclude Include="dom\dom_node.h" />
     <ClInclude Include="duiframework.h" />
     <ClInclude Include="event\event.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>

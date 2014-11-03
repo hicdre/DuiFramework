@@ -3,12 +3,12 @@
 
 #include "render/render_context.h"
 #include "utils/utils.h"
+#include "third_party/tinyxml2.h"
+#include "window_builder.h"
 
 namespace ui
 {
-	Window::Window(int width, int height)
-		: window_width_(width)
-		, window_height_(height)
+	Window::Window()
 	{
 	}
 
@@ -29,7 +29,7 @@ namespace ui
 		SetCursor(::LoadCursor(NULL, IDC_ARROW));
 
 		//先同步为widget大小
-		SetWindowSize(window_width_, window_height_);
+		SetWindowSize(layoutWidth(), layoutHeight());
 	}
 
 	Widget* Window::DetachWidget()
@@ -180,6 +180,27 @@ namespace ui
 		}
 		return FALSE;
 	}
+
+	void Window::Load(const std::string& str)
+	{
+		tinyxml2::XMLDocument xml;
+		if (tinyxml2::XML_SUCCESS == xml.Parse(str.c_str()))
+		{
+			WindowBuilder builder(this, &xml);
+			builder.Run();
+		}
+	}
+
+	void Window::LoadFile( const std::wstring& file )
+	{
+		tinyxml2::XMLDocument xml;
+		if (tinyxml2::XML_SUCCESS == xml.LoadFile(WideToMultiByte(file).c_str()))
+		{
+			WindowBuilder builder(this, &xml);
+			builder.Run();
+		}
+	}
+
 #if 0
 	void Window::ProcessMouseMessage(UINT message, WPARAM w_param, LPARAM l_param)
 	{

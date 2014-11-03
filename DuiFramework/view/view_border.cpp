@@ -8,7 +8,7 @@ namespace ui
 
 	Border::Border()
 	{
-		SetBorder(0, ColorSetRGB(0, 0, 0));
+		SetBorder(0, Color_Transparent);
 	}
 
 	Border::~Border()

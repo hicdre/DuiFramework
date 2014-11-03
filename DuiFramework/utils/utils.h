@@ -20,4 +20,6 @@ namespace ui
 	std::string WideToMultiByte(const std::wstring& wide, UINT32 code_page = CP_UTF8);
 
 	void spilt_string(const std::string& input, char tag, std::vector<std::string>& output, size_t maxcount = static_cast<size_t>(-1));
+
+
 }

@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "view_container.h"
 #include "view.h"
+#include "render/render_context.h"
 
 namespace ui
 {
@@ -43,6 +44,14 @@ namespace ui
 
 	void SequenceContainer::AddChild(View* v)
 	{
+		if (views_.size())
+		{
+			View* vi = *views_.rbegin();
+			vi->setNextSibling(v);
+			v->setPrevSibling(vi);
+		}
+		v->setParent(parent_);
+		
 		views_.push_back(v);
 	}
 
@@ -50,8 +59,15 @@ namespace ui
 	{
 		for (auto iter = views_.begin(); iter != views_.end(); iter++)
 		{
-			if (*iter = v)
+			if (*iter == v)
 			{
+				v->setParent(NULL);
+				View* next = v->nextSibling();
+				View* prev = v->prevSibling();
+				if (prev)
+					prev->setNextSibling(next);
+				if (next)
+					next->setPrevSibling(prev);
 				views_.erase(iter);
 				break;
 			}
@@ -64,20 +80,197 @@ namespace ui
 	}
 
 
+	void SequenceContainer::DoPaint(RenderContext* painter, const Rect& dest)
+	{
+		ScopedPainter helper(painter, Matrix(1.0, 0, 0, 1.0, dest.x(), dest.y()));
+
+		for (View* view : views_)
+		{
+			if (view->visible())
+			{
+				view->DoPaint(painter, view->bounds());
+			}
+		}
+	}
+
+
+
 	void AbsoulteContainer::Layout()
+	{
+		Rect bounds(parent_->bounds());
+		for (View* view : views_)
+		{
+			if (view->visible())
+			{
+				int x = view->layoutX();
+				int y = view->layoutY();
+				int w = view->layoutWidth();
+				int h = view->layoutHeight();
+				view->SetBounds(x, y, w, h);
+			}
+		}
+	}
+
+	AbsoulteContainer::AbsoulteContainer()
+		: SequenceContainer()
+	{
+
+	}
+
+	AbsoulteContainer::AbsoulteContainer(View* parent)
+		: SequenceContainer(parent)
+	{
+
+	}
+
+	int32 AbsoulteContainer::GetAutoWidth()
+	{
+		int width = 0;
+		for (View* view : views_)
+		{
+			if (view->visible())
+			{
+				width += view->layoutWidth();
+			}
+		}
+		return width;
+	}
+
+	int32 AbsoulteContainer::GetAutoHeight()
+	{
+		int height = 0;
+		for (View* view : views_)
+		{
+			if (view->visible())
+			{
+				height += view->layoutHeight();
+			}
+		}
+		return height;
+	}
+
+	ui::LayoutType AbsoulteContainer::layoutType() const
+	{
+		return AbsoulteLayout;
+	}
+
+
+	HorizonalContainer::HorizonalContainer()
+		: SequenceContainer()
+	{
+
+	}
+
+	HorizonalContainer::HorizonalContainer(View* parent)
+		: SequenceContainer(parent)
+	{
+
+	}
+
+	void HorizonalContainer::Layout()
+	{
+		//Rect bounds(parent_->bounds());
+		for (View* view : views_)
+		{
+			if (view->visible())
+			{
+				int x = view->layoutX();
+				int y = view->layoutY();
+				int w = view->layoutWidth();
+				int h = view->layoutHeight();
+				view->SetBounds(x, y, w, h);
+			}
+		}
+	}
+
+	int32 HorizonalContainer::GetAutoWidth()
+	{
+		int width = 0;
+		for (View* view : views_)
+		{
+			if (view->visible())
+			{
+				width += view->layoutWidth();
+			}
+		}
+		return width;
+	}
+
+	int32 HorizonalContainer::GetAutoHeight()
+	{
+		int height = 0;
+		for (View* view : views_)
+		{
+			if (view->visible())
+			{
+				height += view->layoutHeight();
+			}
+		}
+		return height;
+	}
+
+	ui::LayoutType HorizonalContainer::layoutType() const
+	{
+		return HorizonalLayout;
+	}
+
+
+	VerticalContainer::VerticalContainer()
+		: SequenceContainer()
+	{
+
+	}
+
+	VerticalContainer::VerticalContainer(View* parent)
+		: SequenceContainer(parent)
+	{
+
+	}
+
+	ui::LayoutType VerticalContainer::layoutType() const
+	{
+		return VerticalLayout;
+	}
+
+	void VerticalContainer::Layout()
 	{
 		for (View* view : views_)
 		{
 			if (view->visible())
 			{
-				LayoutData* layout = view->layout();
-				int x = layout->x();
-				int y = layout->y();
-				int w = layout->width();
-				int h = layout->height();
+				int x = view->layoutX();
+				int y = view->layoutY();
+				int w = view->layoutWidth();
+				int h = view->layoutHeight();
 				view->SetBounds(x, y, w, h);
 			}
 		}
+	}
+
+	int32 VerticalContainer::GetAutoWidth()
+	{
+		int width = 0;
+		for (View* view : views_)
+		{
+			if (view->visible())
+			{
+				width += view->layoutWidth();
+			}
+		}
+		return width;
+	}
+
+	int32 VerticalContainer::GetAutoHeight()
+	{
+		int height = 0;
+		for (View* view : views_)
+		{
+			if (view->visible())
+			{
+				height += view->layoutHeight();
+			}
+		}
+		return height;
 	}
 
 }

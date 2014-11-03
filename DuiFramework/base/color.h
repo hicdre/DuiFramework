@@ -40,6 +40,7 @@ namespace ui
 
 	enum
 	{
+		Color_Transparent  = 0x00000000, 
 		Color_Black        = 0xFF000000,  //!< black SkColor value
 		Color_Darkgray     = 0xFF444444,  //!< dark gray SkColor value
 		Color_Gray         = 0xFF888888,  //!< gray SkColor value

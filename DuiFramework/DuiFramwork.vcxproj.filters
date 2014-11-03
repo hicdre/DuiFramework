@@ -31,6 +31,9 @@
     <Filter Include="graphics">
       <UniqueIdentifier>{3f4eb8fd-4673-4267-bc25-00d5b46631c3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="dom">
+      <UniqueIdentifier>{966e277f-09e0-4027-922a-b8db1577697e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -143,6 +146,18 @@
     </ClCompile>
     <ClCompile Include="render\render_object.cpp">
       <Filter>render</Filter>
+    </ClCompile>
+    <ClCompile Include="dom\dom_document.cpp">
+      <Filter>dom</Filter>
+    </ClCompile>
+    <ClCompile Include="dom\dom_element.cpp">
+      <Filter>dom</Filter>
+    </ClCompile>
+    <ClCompile Include="dom\dom_node.cpp">
+      <Filter>dom</Filter>
+    </ClCompile>
+    <ClCompile Include="control\window_builder.cpp">
+      <Filter>control</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -275,6 +290,18 @@
     </ClInclude>
     <ClInclude Include="render\render_object.h">
       <Filter>render</Filter>
+    </ClInclude>
+    <ClInclude Include="dom\dom_document.h">
+      <Filter>dom</Filter>
+    </ClInclude>
+    <ClInclude Include="dom\dom_element.h">
+      <Filter>dom</Filter>
+    </ClInclude>
+    <ClInclude Include="dom\dom_node.h">
+      <Filter>dom</Filter>
+    </ClInclude>
+    <ClInclude Include="control\window_builder.h">
+      <Filter>control</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -9,9 +9,13 @@ namespace ui
 		: public View
 		, public Widget::MessageHandler
 	{
+		friend class WindowBuilder;
 	public:
-		Window(int width, int height);
+		Window();
 		virtual ~Window();
+
+		void Load(const std::string& str);
+		void LoadFile(const std::wstring& file);
 
 		void AttachWidget(Widget* widget);
 		Widget* DetachWidget();
@@ -49,8 +53,5 @@ namespace ui
 		View* focused_view_{ NULL };
 		View* hittest_view_{ NULL };
 		View* captured_view_{ NULL };
-
-		int window_width_;
-		int window_height_;
 	};
 }

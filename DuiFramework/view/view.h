@@ -16,12 +16,19 @@ namespace ui
 
 	class View 
 	{
+		friend class Container;
 	public:
 		View();
 		virtual ~View();
 
 		// Tree operations -----------------------------------------------------------
 		View* parent() const;
+		View* prevSibling() const;
+		View* nextSibling() const;
+
+		void setParent(View* v);
+		void setPrevSibling(View* v);
+		void setNextSibling(View* v);
 
 		Container* GetContainer();
 		void SetContainer(Container* container);
@@ -73,7 +80,15 @@ namespace ui
 		void SetCursor(HCURSOR cursor);
 		HCURSOR GetCursor();
 
-		LayoutData* layout();
+		bool IsAbsouletLayout() const;
+		bool IsHorizonalLayout() const;
+		bool IsVerticalLayout() const;
+
+		LayoutBox* layoutBox();
+		int layoutWidth();
+		int layoutHeight();
+		int layoutX();
+		int layoutY();
 
 		// Event---------------------------------------------
 
@@ -92,11 +107,13 @@ namespace ui
 		//层级关系
 		scoped_ptr<Container> container_;
 		View* parent_{ NULL };
+		View* prev_{ NULL };
+		View* next_{ NULL };
 
 		//公共属性
 		scoped_ptr<Border> border_; // border-
 		scoped_ptr<Background> background_; // background-
-		scoped_ptr<LayoutData> layout_data_;
+		scoped_ptr<LayoutBox> layout_data_;
 		HCURSOR cursor_{ NULL }; //	cursor
 
 		//私有属性

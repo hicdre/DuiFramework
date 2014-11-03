@@ -9,11 +9,10 @@ namespace ui
 
 
 	Background::Background()
-		: color_(Color_White)
+		: color_(Color_Transparent)
 		, image_(NULL)
 		, is_size_set_(false)
 	{
-
 	}
 
 	Background::~Background()

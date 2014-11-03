@@ -10,7 +10,7 @@ namespace ui
 {
 
 	View::View()
-		: layout_data_(new LayoutData())
+		: layout_data_(new LayoutBox())
 	{
 
 	}
@@ -24,6 +24,30 @@ namespace ui
 		return parent_;
 	}
 
+	View* View::prevSibling() const
+	{
+		return prev_;
+	}
+
+	View* View::nextSibling() const
+	{
+		return next_;
+	}
+
+	void View::setParent(View* v)
+	{
+		parent_ = v;
+	}
+
+	void View::setPrevSibling(View* v)
+	{
+		prev_ = v;
+	}
+
+	void View::setNextSibling(View* v)
+	{
+		next_ = v;
+	}
 
 	Container* View::GetContainer()
 	{
@@ -376,7 +400,7 @@ namespace ui
 		if (!visible_)
 			return;
 
-		//ScopedPainter helper(painter, Matrix(1.0, 0, 0, 1.0, r.x(), r.y()));
+		ScopedPainter helper(painter, Matrix(1.0, 0, 0, 1.0, r.x(), r.y()));
 
 		if (background_.get())
 			background_->DoPaint(painter, GetLocalBounds());
@@ -538,10 +562,119 @@ namespace ui
 		return Rect(r.x() + child->x(), r.y() + child->y(), r.width(), r.height());
 	}
 
-	LayoutData* View::layout()
+	LayoutBox* View::layoutBox()
 	{
 		return layout_data_.get();
 	}
+
+	int View::layoutWidth()
+	{
+		int w = 0;
+		const Length& w_length = layout_data_->width();
+		if (w_length.IsPercent() && parent_)
+		{
+			w = parent_->GetContentsBounds().width() * w_length.percent();
+		}
+		else if (w_length.IsFixed())
+		{
+			w = w_length.intValue();
+		}
+		else if (w_length.IsAuto())
+		{
+			if (container_.get())
+				w = container_->GetAutoWidth();
+			else
+				w = 0;
+		}
+		return w;
+	}
+
+	int View::layoutHeight()
+	{
+		int h = 0;
+		const Length& h_length = layout_data_->height();
+		if (h_length.IsPercent() && parent_)
+		{
+			h = parent_->GetContentsBounds().height() * h_length.percent();
+		}
+		else if (h_length.IsFixed())
+		{
+			h = h_length.intValue();
+		}
+		else if (h_length.IsAuto())
+		{
+			if (container_.get())
+				h = container_->GetAutoHeight();
+			else
+				h = 0;
+		}
+		return h;
+	}
+
+	int View::layoutX()
+	{
+		if (!parent_)
+			return 0;
+		int x = 0;
+		const Length& x_length = layout_data_->x();
+		if (x_length.IsPercent())
+		{
+			x = parent_->GetContentsBounds().width() * x_length.percent();
+		}
+		else if (x_length.IsFixed())
+		{
+			x = x_length.intValue();
+		}
+		View* prev_silbing = prevSibling();
+		if (parent_->IsHorizonalLayout() && prev_silbing)
+		{//此情况是相对于前一个
+			x += prev_silbing->bounds().right();
+		}
+		return x;
+	}
+
+	int View::layoutY()
+	{
+		if (!parent_)
+			return 0;
+		int y = 0;
+		const Length& y_length = layout_data_->y();
+		if (y_length.IsPercent())
+		{
+			y = parent_->GetContentsBounds().height() * y_length.percent();
+		}
+		else if (y_length.IsFixed())
+		{
+			y = y_length.intValue();
+		}
+		View* prev_silbing = prevSibling();
+		if (parent_->IsVerticalLayout() && prev_silbing)
+		{//此情况是相对于前一个
+			y += prev_silbing->bounds().bottom();
+		}
+		return y;
+	}
+
+	bool View::IsAbsouletLayout() const
+	{
+		return container_.get() && container_->layoutType() == AbsoulteLayout;
+	}
+
+	bool View::IsHorizonalLayout() const
+	{
+		return container_.get() && container_->layoutType() == HorizonalLayout;
+	}
+
+	bool View::IsVerticalLayout() const
+	{
+		return container_.get() && container_->layoutType() == VerticalLayout;
+	}
+
+	
+
+	
+
+	
 
 
 	

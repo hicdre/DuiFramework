@@ -5,6 +5,13 @@
 
 namespace ui
 {
+	enum LayoutType
+	{
+		AbsoulteLayout,
+		HorizonalLayout,
+		VerticalLayout,
+	};
+
 	class View;
 	class RenderContext;
 	class Container
@@ -14,6 +21,8 @@ namespace ui
 		Container(View* parent);
 		virtual ~Container();
 
+		virtual LayoutType layoutType() const = 0;
+
 		virtual int32 GetChildCount() const = 0;
 		virtual void AddChild(View* v) = 0;
 		virtual void RemoveChild(View* v) = 0;
@@ -21,6 +30,9 @@ namespace ui
 
 		virtual void DoPaint(RenderContext* painter, const Rect& dest) = 0;
 		virtual void Layout() = 0;
+
+		virtual int32 GetAutoWidth() = 0;
+		virtual int32 GetAutoHeight() = 0;
 	protected:
 		View* parent_;
 	};
@@ -35,6 +47,7 @@ namespace ui
 		virtual void AddChild(View* v) override;
 		virtual void RemoveChild(View* v) override;
 		virtual View* GetView(int index) override;
+		virtual void DoPaint(RenderContext* painter, const Rect& dest) override;
 	protected:
 		std::vector<View*> views_;
 	};
@@ -44,7 +57,31 @@ namespace ui
 	public:
 		AbsoulteContainer();
 		AbsoulteContainer(View* parent);
-		virtual void DoPaint(RenderContext* painter, const Rect& dest) override;
+		virtual LayoutType layoutType() const override;
 		virtual void Layout() override;
+		virtual int32 GetAutoWidth() override;
+		virtual int32 GetAutoHeight() override;
+	};
+
+	class HorizonalContainer : public SequenceContainer
+	{
+	public:
+		HorizonalContainer();
+		HorizonalContainer(View* parent);
+		virtual LayoutType layoutType() const override;
+		virtual void Layout() override;
+		virtual int32 GetAutoWidth() override;
+		virtual int32 GetAutoHeight() override;
+	};
+
+	class VerticalContainer : public SequenceContainer
+	{
+	public:
+		VerticalContainer();
+		VerticalContainer(View* parent);
+		virtual LayoutType layoutType() const override;
+		virtual void Layout() override;
+		virtual int32 GetAutoWidth() override;
+		virtual int32 GetAutoHeight() override;
 	};
 }
