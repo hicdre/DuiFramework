@@ -6,8 +6,8 @@ namespace ui
 	namespace
 	{
 		std::regex h("^[0-9a-fA-F]$");
-		std::regex nonascii(R"(^[\u0080-\uFFFF]$)");
-		std::regex nl(R"(^[\n|\r\n|\r|\f)");
+		//std::regex nonascii(R"(^[\u0080-\uFFFF]$)");
+		//std::regex nl("^[\n|\r\n|\r|\f");
 
 		bool isHexDigit(char ch){
 			return ch &&
@@ -25,19 +25,19 @@ namespace ui
 		}
 
 		bool isNewLine(char ch){
-			return ch && std::regex_match(std::string(ch, 1), nl);
+			return ch && (ch == '\r' || ch == '\n');
 		}
 
 		bool isNameStart(char ch){
-			return ch && std::regex_match(std::string(ch, 1), std::regex(R"([a-z_\u0080-\uFFFF\\])", std::regex_constants::icase));
+			return ch && std::regex_match(std::string(1, ch), std::regex(R"([a-z_\x80-\xFF\\])", std::regex_constants::icase));
 		}
 
 		bool isNameChar(char ch){
-			return ch && (isNameStart(ch) || std::regex_match(std::string(ch, 1), std::regex(R"([0-9\-\\])")));
+			return ch && (isNameStart(ch) || std::regex_match(std::string(1,ch), std::regex(R"([0-9\-\\])")));
 		}
 
 		bool isIdentStart(char ch){
-			return ch && (isNameStart(ch) || std::regex_match(std::string(ch, 1), std::regex(R"(\-\\)")));
+			return ch && (isNameStart(ch) || std::regex_match(std::string(1,ch), std::regex(R"(\-\\)")));
 		}
 	}
 
@@ -48,7 +48,7 @@ namespace ui
 		{
 			char delim = reader_->read();
 			char prev = delim;
-			std::string str(prev, 1);
+			std::string str(1,prev);
 			char ch = reader_->peek();
 
 			while (ch)
@@ -79,7 +79,7 @@ namespace ui
 			std::string url;
 			char ch = reader_->peek();
 			std::regex reg("^[!#$%&\\*-~]$");
-			while (std::regex_match(std::string(ch, 1), reg))
+			while (std::regex_match(std::string(1,ch), reg))
 			{
 				url += reader_->read();
 				ch = reader_->peek();
@@ -128,7 +128,7 @@ namespace ui
 		std::string StyleTokenReader::readNumber(char first)
 		{
 			bool hasDot = (first == '.');
-			std::string number(first, 1);
+			std::string number(1, first);
 			char ch = reader_->peek();
 
 			while (ch)
@@ -313,7 +313,7 @@ namespace ui
 		{
 			char delim = first;
 			char prev = first;
-			std::string str(first, 1);
+			std::string str(1, first);
 			int tt = STRING;
 			char ch = reader_->read();
 			while (ch)
@@ -350,7 +350,7 @@ namespace ui
 			int tt = StyleTokens::type(ch);
 			if (tt == -1)
 				return NULL;
-			return createToken(tt, std::string(ch, 1), startLine, startCol);
+			return createToken(tt, std::string(1,ch), startLine, startCol);
 		}
 
 		StyleToken* StyleTokenReader::commentToken(char ch, int startLine, int startCol)

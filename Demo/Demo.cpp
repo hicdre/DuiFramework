@@ -24,10 +24,13 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 	//ui::ImageStore::Default()->AddImageRecord("test", LR"(E:\work\xinyi\RomasterPC\bin\skin\avatar.png)");
 
 	//ui::Widget* widget = ui::WidgetView::CreateWidget(new DemoWidget);
-
-	ui::StyleTokenReader reader("background: url(\"something.png\");");
-	int tt = reader.get(NULL);
-	ui::StyleToken* t = reader.token_;
+	std::string css_string = "div { background: url(\"something.png\"); }";
+	ui::StyleScanner reader(css_string, 0);
+	ui::StyleToken token;
+	while (reader.Next(token, true))
+	{
+		ui::StyleTokenType type = token.mType;
+	}
 
 	ui::Window* window = new ui::Window;
 	window->LoadFile(L"test.xml");
