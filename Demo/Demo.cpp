@@ -25,6 +25,10 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 
 	//ui::Widget* widget = ui::WidgetView::CreateWidget(new DemoWidget);
 
+	ui::StyleTokenReader reader("background: url(\"something.png\");");
+	int tt = reader.get(NULL);
+	ui::StyleToken* t = reader.token_;
+
 	ui::Window* window = new ui::Window;
 	window->LoadFile(L"test.xml");
 	window->AttachWidget(ui::Widget::Create());

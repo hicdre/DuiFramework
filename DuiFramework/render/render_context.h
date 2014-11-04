@@ -6,6 +6,8 @@
 
 #include <string>
 
+#include <gdiplus.h>
+
 namespace ui
 {
 	class Widget;
@@ -23,7 +25,6 @@ namespace ui
 		HDC GetHDC() { return dc_; }
 
 		void FillRect(const Rect& rect, Color color);
-		void DrawLine(const Rect& rect, int line_size, DWORD color, int nStyle = PS_SOLID);
 
 		void DrawImage(ImagePart* clip, const Rect& dest_rect);
 		void DrawImage(ImageFile* image, const Rect& src_rect, const Rect& dest_rect);
@@ -46,6 +47,8 @@ namespace ui
 
 		HBITMAP bitmap_;
 		HBITMAP bitmap_prev_;
+
+		Gdiplus::Graphics *gdi_;
 		Rect rect_;
 	};
 

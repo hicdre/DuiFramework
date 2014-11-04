@@ -112,14 +112,14 @@ namespace ui
 			const char* val = xml_element->Attribute("width");
 			if (val)
 			{
-				box->setWidth(Length::FromString(val));
+				//box->setWidth(Length::FromString(val));
 			}
 		}
 		{
 			const char* val = xml_element->Attribute("height");
 			if (val)
 			{
-				box->setHeight(Length::FromString(val));
+				//box->setHeight(Length::FromString(val));
 			}
 		}
 		{
@@ -159,28 +159,28 @@ namespace ui
 				const char* val = xml_element->Attribute("marginLeft", marginLeft);
 				if (val)
 				{
-					box->setMarginLeft(Length::FromString(val));
+					//box->setMarginLeft(Length::FromString(val));
 				}
 			}
 			{
 				const char* val = xml_element->Attribute("marginTop", marginTop);
 				if (val)
 				{
-					box->setMarginTop(Length::FromString(val));
+					//box->setMarginTop(Length::FromString(val));
 				}
 			}
 			{
 				const char* val = xml_element->Attribute("marginRight", marginRight);
 				if (val)
 				{
-					box->setMarginRight(Length::FromString(val));
+					//box->setMarginRight(Length::FromString(val));
 				}
 			}
 			{
 				const char* val = xml_element->Attribute("marginBottom", marginBottom);
 				if (val)
 				{
-					box->setMarginBottom(Length::FromString(val));
+					//box->setMarginBottom(Length::FromString(val));
 				}
 			}
 			

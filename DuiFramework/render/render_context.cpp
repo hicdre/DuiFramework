@@ -53,6 +53,7 @@ namespace ui
 
 	RenderContext::RenderContext(Widget* widget)
 		: widget_(widget)
+		, gdi_(NULL)
 	{
 		HDC wnd_dc = BeginPaint(widget->hwnd(), &ps_);
 		SetGraphicsMode(wnd_dc, GM_ADVANCED);
@@ -74,63 +75,44 @@ namespace ui
 
 		bitmap_ = CreateDIB(rect_.width(), rect_.height());
 		bitmap_prev_ = (HBITMAP)::SelectObject(dc_, bitmap_);
+		gdi_ = new Gdiplus::Graphics(dc_);
 	}
 
 	RenderContext::~RenderContext()
 	{
-// 		BLENDFUNCTION bf = { AC_SRC_OVER, 0, 255, AC_SRC_ALPHA };
-// 		::AlphaBlend(ps_.hdc, 0, 0, rect_.width(), rect_.height(),
-// 			dc_, 0, 0, rect_.width(), rect_.height(),
-// 			bf);
+ 		BLENDFUNCTION bf = { AC_SRC_OVER, 0, 255, AC_SRC_ALPHA };
+ 		::AlphaBlend(ps_.hdc, 0, 0, rect_.width(), rect_.height(),
+ 			dc_, 0, 0, rect_.width(), rect_.height(),
+ 			bf);
 
- 		::StretchBlt(ps_.hdc, 0, 0, rect_.width(), rect_.height(),
-  			dc_, 0, 0, rect_.width(), rect_.height(),
-  			SRCCOPY);
+//  		::StretchBlt(ps_.hdc, 0, 0, rect_.width(), rect_.height(),
+//   			dc_, 0, 0, rect_.width(), rect_.height(),
+//   			SRCCOPY);
  		::SelectObject(dc_, bitmap_prev_);
  		::DeleteObject(bitmap_);
  		::DeleteDC(dc_);
 
 		EndPaint(widget_->hwnd(), &ps_);
+
+		if (gdi_)
+		{
+			delete gdi_;
+			gdi_ = NULL;
+		}
 	}
 
 	void RenderContext::FillRect(const Rect& rect, Color color)
 	{
 		if (color == Color_Transparent)
 			return;
-		uint8 alpha = ColorGetA(color);
-		if (alpha == 0xFF)
-		{
-			HBRUSH hbrush = ::CreateSolidBrush(RGB(GetBValue(color), GetGValue(color), GetRValue(color)));
-			::FillRect(dc_, &rect.ToRECT(), hbrush);
-			::DeleteObject(hbrush);
-		}
-		else
-		{
-			Gdiplus::Graphics graphics(dc_);
-			Gdiplus::SolidBrush  brush(Gdiplus::Color((unsigned int)color));
-			graphics.FillRectangle(&brush, rect.x(), rect.y(), rect.width(), rect.height());
-		}
+		Gdiplus::SolidBrush  brush(Gdiplus::Color((unsigned int)color));
+		gdi_->FillRectangle(&brush, rect.x(), rect.y(), rect.width(), rect.height());
 	}
 
 	void RenderContext::Trans(const Matrix& m)
 	{
-		XFORM xform = m.ToXFORM();
-		::ModifyWorldTransform(dc_, &xform, MWT_LEFTMULTIPLY);
-	}
-
-	void RenderContext::DrawLine(const Rect& rect, int line_size, DWORD color, int nStyle /*= PS_SOLID*/)
-	{
-		LOGPEN lg;
-		lg.lopnColor = color;
-		lg.lopnStyle = nStyle;
-		lg.lopnWidth.x = line_size;
-		HPEN hPen = CreatePenIndirect(&lg);
-		HPEN hOldPen = (HPEN)::SelectObject(dc_, hPen);
-		POINT ptTemp = { 0 };
-		::MoveToEx(dc_, rect.x(), rect.y(), &ptTemp);
-		::LineTo(dc_, rect.right(), rect.bottom());
-		::SelectObject(dc_, hOldPen);
-		::DeleteObject(hPen);
+		Gdiplus::Matrix mm(m.a, m.b, m.c, m.d, m.tx, m.ty);
+		gdi_->MultiplyTransform(&mm);
 	}
 
 	void RenderContext::DrawImage(ImagePart* clip, const Rect& dest_rect)

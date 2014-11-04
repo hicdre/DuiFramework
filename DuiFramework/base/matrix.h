@@ -62,7 +62,7 @@ namespace ui
 		Matrix Invert() const;
 
 		XFORM ToXFORM() const;
-	private:
+	public:
 		float a, b, c, d;
 		float tx, ty;
 	};

@@ -34,6 +34,9 @@
     <Filter Include="dom">
       <UniqueIdentifier>{966e277f-09e0-4027-922a-b8db1577697e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="style">
+      <UniqueIdentifier>{aa7fb73c-905b-45ea-b9e1-a46578b5eaa4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -158,6 +161,18 @@
     </ClCompile>
     <ClCompile Include="control\window_builder.cpp">
       <Filter>control</Filter>
+    </ClCompile>
+    <ClCompile Include="utils\lex_parser.cpp">
+      <Filter>utils</Filter>
+    </ClCompile>
+    <ClCompile Include="base\length.cpp">
+      <Filter>base</Filter>
+    </ClCompile>
+    <ClCompile Include="style\style_reader.cpp">
+      <Filter>style</Filter>
+    </ClCompile>
+    <ClCompile Include="style\style_token_reader.cpp">
+      <Filter>style</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -302,6 +317,21 @@
     </ClInclude>
     <ClInclude Include="control\window_builder.h">
       <Filter>control</Filter>
+    </ClInclude>
+    <ClInclude Include="utils\lex_parser.h">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="base\length.h">
+      <Filter>base</Filter>
+    </ClInclude>
+    <ClInclude Include="style\style_reader.h">
+      <Filter>style</Filter>
+    </ClInclude>
+    <ClInclude Include="style\style_token_reader.h">
+      <Filter>style</Filter>
+    </ClInclude>
+    <ClInclude Include="style\style_tokens.h">
+      <Filter>style</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
