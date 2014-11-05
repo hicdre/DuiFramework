@@ -8,6 +8,7 @@ namespace ui
 	{
 	public:
 		StyleRule();
+		StyleRule(StyleSelectorList* l, StyleDeclarationList* d);
 
 		void AddSelector(StyleSelector* selector);
 
@@ -15,11 +16,13 @@ namespace ui
 
 		void AddDeclaction(StyleProperty p, StyleValue* v);
 
+		void SetLineNumber(uint32 num);
 	private:
 		friend class RefCounted < StyleRule > ;
 		~StyleRule();
-		StyleSelectorList selectors_;
-		StyleDeclarationList declarations_;
+		scoped_ptr<StyleSelectorList> selectors_;
+		scoped_ptr<StyleDeclarationList> declarations_;
+		uint32 line_;
 		DISALLOW_COPY_AND_ASSIGN(StyleRule);
 	};
 }

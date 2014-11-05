@@ -23,12 +23,24 @@ namespace ui
 
 	const char* StyleFindString(StyleProperty p)
 	{
-		return kStyleProperty[p];
+		if (Style_BEGIN <= p && p < Style_END)
+			return kStyleProperty[p];
+		return NULL;
 	}
 
 	ui::StyleProperty StyleFindProperty(const char* str)
 	{
-		return kStylePropertyMap[std::string(str)];
+		if (str == NULL)
+			return Style_UNKNOWN;
+		
+		return StyleFindProperty(std::string(str));
+	}
+
+	ui::StyleProperty StyleFindProperty(const std::string& str)
+	{
+		if (kStylePropertyMap.count(str))
+			return kStylePropertyMap.at(str);
+		return Style_UNKNOWN;
 	}
 
 	

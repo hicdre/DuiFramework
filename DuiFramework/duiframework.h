@@ -14,7 +14,7 @@
 #include "view/view.h"
 
 
-#include "style/style_scanner.h"
+#include "style/style_parser.h"
 
 //#include "layout/box_layout.h"
 //#include "layout/frame_layout.h"

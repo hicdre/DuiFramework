@@ -92,4 +92,15 @@ namespace ui
 
 	}
 
+
+	StyleSelectorList::StyleSelectorList()
+	{
+
+	}
+
+	StyleSelectorList::~StyleSelectorList()
+	{
+
+	}
+
 }

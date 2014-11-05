@@ -19,11 +19,18 @@ namespace ui
 		bool ParseSelectorList(StyleSelectorList*& aListHead,
 			char aStopChar);
 		bool ParseSelectorGroup(StyleSelector*& aList);
-		bool ParseSelector(StyleSelector* aList,
+		bool ParseSelector(StyleSelector*& aList,
 			char aPrevCombinator);
 		bool ParseIDSelector(StyleSelector* s);
 		bool ParseClassSelector(StyleSelector* s);
 		bool ParsePseudoSelector(StyleSelector* s);
+
+		bool ParseDeclarationBlock(StyleDeclarationList*& aList, bool inbraces);
+		bool ParseDeclaration(StyleDeclarationList* aList, bool inbraces,
+			bool aMustCallValueAppended,
+			bool* aChanged);
+		bool ParseProperty(StyleProperty p, StyleValue*& v);
+		bool ParseSingleValueProperty(StyleProperty p, StyleValue* v);
 
 		void AppendRule(StyleRule* rule);
 
@@ -32,6 +39,14 @@ namespace ui
 
 		bool GetToken(bool aSkipWS);
 		void UngetToken();
+
+		void SkipRuleSet(bool aInsideBraces);
+		bool SkipUntil(char aStopSymbol);
+		bool SkipDeclaration(bool aCheckForBraces);
+
+		bool ExpectSymbol(char aSymbol, bool aSkipWS);
+		bool ExpectEndProperty();
+		bool CheckEndProperty();
 	private:
 		StyleToken token_;
 		StyleScanner* scanner_;
