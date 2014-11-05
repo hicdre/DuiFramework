@@ -168,12 +168,6 @@
     <ClCompile Include="base\length.cpp">
       <Filter>base</Filter>
     </ClCompile>
-    <ClCompile Include="style\style_reader.cpp">
-      <Filter>style</Filter>
-    </ClCompile>
-    <ClCompile Include="style\style_token_reader.cpp">
-      <Filter>style</Filter>
-    </ClCompile>
     <ClCompile Include="style\style_scanner.cpp">
       <Filter>style</Filter>
     </ClCompile>
@@ -190,6 +184,9 @@
       <Filter>style</Filter>
     </ClCompile>
     <ClCompile Include="style\style_selector.cpp">
+      <Filter>style</Filter>
+    </ClCompile>
+    <ClCompile Include="style\style_parser.cpp">
       <Filter>style</Filter>
     </ClCompile>
   </ItemGroup>
@@ -342,15 +339,6 @@
     <ClInclude Include="base\length.h">
       <Filter>base</Filter>
     </ClInclude>
-    <ClInclude Include="style\style_reader.h">
-      <Filter>style</Filter>
-    </ClInclude>
-    <ClInclude Include="style\style_token_reader.h">
-      <Filter>style</Filter>
-    </ClInclude>
-    <ClInclude Include="style\style_tokens.h">
-      <Filter>style</Filter>
-    </ClInclude>
     <ClInclude Include="style\style_scanner.h">
       <Filter>style</Filter>
     </ClInclude>
@@ -367,6 +355,9 @@
       <Filter>style</Filter>
     </ClInclude>
     <ClInclude Include="style\style_selector.h">
+      <Filter>style</Filter>
+    </ClInclude>
+    <ClInclude Include="style\style_parser.h">
       <Filter>style</Filter>
     </ClInclude>
   </ItemGroup>

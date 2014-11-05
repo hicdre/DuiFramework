@@ -4,12 +4,22 @@
 
 namespace ui
 {
-	class StyleRule
+	class StyleRule : public RefCounted<StyleRule>
 	{
 	public:
+		StyleRule();
 
+		void AddSelector(StyleSelector* selector);
 
-		std::vector<StyleSelector*> selectors_;
-		std::vector<StyleDeclaration*> declarations_;
+		void AddDeclaction(StyleDeclaration* declaration);
+
+		void AddDeclaction(StyleProperty p, StyleValue* v);
+
+	private:
+		friend class RefCounted < StyleRule > ;
+		~StyleRule();
+		StyleSelectorList selectors_;
+		StyleDeclarationList declarations_;
+		DISALLOW_COPY_AND_ASSIGN(StyleRule);
 	};
 }

@@ -1,5 +1,6 @@
 #pragma once
 #include "base/basictypes.h"
+#include <vector>
 
 namespace ui
 {
@@ -17,4 +18,6 @@ namespace ui
 
 	const char* StyleFindString(StyleProperty p);
 	StyleProperty StyleFindProperty(const char* str);
+
+	typedef std::vector<StyleProperty> StylePropertyList;
 }

@@ -21,16 +21,17 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 
 	ui::App* app = ui::App::Get();
 
+
 	//ui::ImageStore::Default()->AddImageRecord("test", LR"(E:\work\xinyi\RomasterPC\bin\skin\avatar.png)");
 
 	//ui::Widget* widget = ui::WidgetView::CreateWidget(new DemoWidget);
-	std::string css_string = "div { background: url(\"something.png\"); }";
+	/*std::string css_string = "div { background: url(\"something.png\"); }";
 	ui::StyleScanner reader(css_string, 0);
 	ui::StyleToken token;
 	while (reader.Next(token, true))
 	{
 		ui::StyleTokenType type = token.mType;
-	}
+	}*/
 
 	ui::Window* window = new ui::Window;
 	window->LoadFile(L"test.xml");
