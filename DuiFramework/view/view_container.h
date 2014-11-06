@@ -31,6 +31,8 @@ namespace ui
 		virtual void DoPaint(RenderContext* painter, const Rect& dest) = 0;
 		virtual void Layout() = 0;
 
+		virtual void UpdateStyleRule(StyleSheetList* sheet) = 0;
+
 		virtual int32 GetAutoWidth() = 0;
 		virtual int32 GetAutoHeight() = 0;
 	protected:
@@ -48,6 +50,7 @@ namespace ui
 		virtual void RemoveChild(View* v) override;
 		virtual View* GetView(int index) override;
 		virtual void DoPaint(RenderContext* painter, const Rect& dest) override;
+		virtual void UpdateStyleRule(StyleSheetList* sheet) override;
 	protected:
 		std::vector<View*> views_;
 	};

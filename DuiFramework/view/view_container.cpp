@@ -24,7 +24,6 @@ namespace ui
 
 	}
 
-
 	SequenceContainer::SequenceContainer()
 		: Container()
 	{
@@ -90,6 +89,14 @@ namespace ui
 			{
 				view->DoPaint(painter, view->bounds());
 			}
+		}
+	}
+
+	void SequenceContainer::UpdateStyleRule(StyleSheetList* sheet)
+	{
+		for (View* view : views_)
+		{
+			view->UpdateStyleRules(sheet);
 		}
 	}
 

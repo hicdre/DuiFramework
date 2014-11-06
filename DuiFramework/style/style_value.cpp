@@ -42,7 +42,7 @@ namespace ui
 
 	bool StyleValue::IsIntValue() const
 	{
-		return type_ == StyleValue_Interger;
+		return type_ == StyleValue_Integer;
 	}
 
 	bool StyleValue::IsAutoValue() const
@@ -76,6 +76,13 @@ namespace ui
 		assert(type_ == StyleValue_Percent);
 		return float_value_;
 	}
+
+
+	float StyleValue::GetFloatValue() const
+	{
+		return float_value_;
+	}
+
 
 	const std::string& StyleValue::GetStringValue() const
 	{
@@ -169,6 +176,12 @@ namespace ui
 			return array_value_->IsEqual(val->array_value_);
 
 		return int_value_ == val->int_value_;
+	}
+
+	int32 StyleValue::GetPixel() const
+	{
+		assert(type_ == StyleValue_Pixel);
+		return (int32)float_value_;
 	}
 
 

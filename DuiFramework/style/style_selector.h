@@ -4,7 +4,7 @@
 
 namespace ui
 {
-
+	class View;
 	enum PseudoType {
 		PSEUDO_NULL = 0,
 
@@ -37,12 +37,13 @@ namespace ui
 		void SetPseduo(PseudoType type);
 
 		void AddClass(const std::string& v);
-
 		void RemoveClass(const std::string& v);
 
 		void AddChildSelector(StyleSelector* s);
 
+		bool MatchRule(View* v) const;
 	private:
+		bool MatchRuleInternal(View* v) const;
 		bool is_id_;
 		std::string* id_or_tag_;
 		std::set<std::string> class_list_;
@@ -77,7 +78,7 @@ namespace ui
 			container_.push_back(s);
 		}
 
-
+		bool MatchRule(View* v) const;
 	private:
 		std::vector<StyleSelector*> container_;
 	};

@@ -7,6 +7,8 @@ namespace ui
 {
 	namespace
 	{
+
+
 		static void AssignRuleToPointer(StyleRule* aRule, void* aPointer)
 		{
 			StyleRule **pointer = static_cast<StyleRule**>(aPointer);
@@ -26,6 +28,43 @@ namespace ui
 		scanner_ = NULL;
 		have_bush_back_ = false;
 	}
+
+
+	void StyleParser::SetStyleSheet(StyleSheet* sheet)
+	{
+		sheet_.reset(sheet);
+	}
+
+
+	bool StyleParser::ParseSheet(const std::string& buffer, uint32 aLineNumber)
+	{
+		StyleScanner scanner(buffer, 0);
+		InitScanner(scanner);
+
+		StyleToken* tk = &token_;
+		for (;;) {
+			// Get next non-whitespace token
+			if (!GetToken(true)) {
+				//OUTPUT_ERROR();
+				break;
+			}
+			if (Token_HTMLComment == tk->mType) {
+				continue; // legal here only
+			}
+			if (Token_AtKeyword == tk->mType) {
+				//ParseAtRule(AppendRuleToSheet, this, false);
+				continue;
+			}
+			UngetToken();
+			if (ParseRuleSet(AppendRuleToSheet, this)) {
+				//mSection = eCSSSection_General;
+			}
+		}
+		ReleaseScanner();
+
+		return true;
+	}
+
 
 	bool StyleParser::ParseRule(const std::string& buffer, StyleRule** rule)
 	{
@@ -318,7 +357,9 @@ namespace ui
 // 		}
 // 		else {
 // 			mSheet->AppendStyleRule(aRule);
-// 		}
+// 		}
+		if (sheet_)
+			sheet_->AppendStyleRule(rule);
 	}
 
 	bool StyleParser::ParseIDSelector(StyleSelector* s)
@@ -387,7 +428,7 @@ namespace ui
 		//mData.AssertInitialState();
 		if (declaration) {
 			for (;;) {
-				bool changed;
+				bool changed = false;
 				if (!ParseDeclaration(declaration, inbraces, true, &changed)) {
 					if (!SkipDeclaration(checkForBraces)) {
 						break;
@@ -452,10 +493,9 @@ namespace ui
 		if (Style_UNKNOWN == propID) {
 			return false;
 		}
-
 		//ParseProperty
-		StyleValue* value = NULL;
-		if (!ParseProperty(propID, value)) {
+		scoped_refptr<StyleValue> value(NULL);
+		if (!ParseProperty(propID, &value)) {
 			// XXX Much better to put stuff in the value parsers instead...
 			//REPORT_UNEXPECTED_P(PEValueParsingError, propertyName);
 			//REPORT_UNEXPECTED(PEDeclDropped);
@@ -465,7 +505,7 @@ namespace ui
 			return false;
 		}
 
-		scoped_refptr<StyleValue> guard(value);
+		//scoped_refptr<StyleValue> guard(value);
 
 		// Look for a semicolon or close brace.
 		if (!GetToken(true)) {
@@ -486,7 +526,7 @@ namespace ui
 			return false;
 		}
 
-		aList->Insert(new StyleDeclaration(propID, value));
+		aList->Insert(new StyleDeclaration(propID, value.get()));
 		return true;
 	}
 
@@ -494,12 +534,12 @@ namespace ui
 	bool StyleParser::ParseProperty(StyleProperty aPropID, StyleValue*& v)
 	{
 		bool result;
-		switch (aPropID) {
-// 		case CSS_PROPERTY_PARSE_FUNCTION: {
+		switch (StyleFindParseType(aPropID)) {
+// 		case PROPERTY_PARSE_FUNCTION: {
 // 				result = ParsePropertyByFunction(aPropID);
 // 				break;
 // 			}
-		case Style_Width: {
+		case PROPERTY_PARSE_VALUE:{
 				result = false;
 				scoped_refptr<StyleValue> value(new StyleValue);
 				if (ParseSingleValueProperty(aPropID, value.get())) {
@@ -513,7 +553,7 @@ namespace ui
 				// XXX Report errors?
 				break;
 			}
-// 			case CSS_PROPERTY_PARSE_VALUE_LIST: {
+// 	   case PROPERTY_PARSE_VALUE_LIST: {
 // 				result = ParseValueList(aPropID);
 // 				break;
 // 			}
@@ -565,13 +605,14 @@ namespace ui
 				return false;
 			}
 		}
-
-		uint32 variant = nsCSSProps::ParserVariant(aPropID);
+#endif
+		uint32 variant = StyleFindVariant(aPropID);
 		if (variant == 0) {
-			NS_ABORT_IF_FALSE(false, "not a single value property");
+			//NS_ABORT_IF_FALSE(false, "not a single value property");
 			return false;
 		}
 
+#if 0
 		// We only allow 'script-level' when unsafe rules are enabled, because
 		// otherwise it could interfere with rulenode optimizations if used in
 		// a non-MathML-enabled document.
@@ -579,17 +620,421 @@ namespace ui
 			return false;
 
 		const int32_t *kwtable = nsCSSProps::kKeywordTableTable[aPropID];
-		switch (nsCSSProps::ValueRestrictions(aPropID)) {
-		default:
-			NS_ABORT_IF_FALSE(false, "should not be reached");
-		case 0:
-			return ParseVariant(aValue, variant, kwtable);
-		case CSS_PROPERTY_VALUE_NONNEGATIVE:
-			return ParseNonNegativeVariant(aValue, variant, kwtable);
-		case CSS_PROPERTY_VALUE_AT_LEAST_ONE:
-			return ParseOneOrLargerVariant(aValue, variant, kwtable);
-		}
 #endif
+		switch (StyleFindValueRestrictions(aPropID)) {
+		case 0:
+			return ParseVariant(aValue, variant);
+		case PROPERTY_VALUE_NONNEGATIVE:
+			return ParseNonNegativeVariant(aValue, variant);
+		case PROPERTY_VALUE_AT_LEAST_ONE:
+			//return ParseOneOrLargerVariant(aValue, variant, kwtable);
+		default:
+			break;
+		}
+
+		return false;
+	}
+
+	bool StyleParser::ParseVariant(StyleValue* aValue, int32 aVariantMask)
+	{
+		if (!GetToken(true)) {
+			return false;
+		}
+		StyleToken* tk = &token_;
+
+		if (((aVariantMask & (VARIANT_AUTO | VARIANT_NONE)) != 0) &&
+			(Token_Ident == tk->mType)) {
+			if ((aVariantMask & VARIANT_AUTO) != 0) {
+				if ("auto" == tk->mIdent) {
+					aValue->SetAutoValue();
+					return true;
+				}
+			}
+			if ((aVariantMask & VARIANT_NONE) != 0) {
+				if ("none" == tk->mIdent) {
+					//aValue->SetNoneValue();
+					return true;
+				}
+			}
+		}
+
+		if (((aVariantMask & VARIANT_NUMBER) != 0) &&
+			(Token_Number == tk->mType)) {
+			aValue->SetFloatValue(tk->mNumber, StyleValue_Number);
+			return true;
+		}
+		if (((aVariantMask & VARIANT_INTEGER) != 0) &&
+			(Token_Number == tk->mType) && tk->mIntegerValid) {
+			aValue->SetIntValue(tk->mInteger, StyleValue_Integer);
+			return true;
+		}
+		if (((aVariantMask & (VARIANT_LENGTH | VARIANT_ANGLE)) != 0 &&
+			Token_Dimension == tk->mType) ||
+			((aVariantMask & (VARIANT_LENGTH | VARIANT_ZERO_ANGLE)) != 0 &&
+			Token_Number == tk->mType &&
+			tk->mNumber == 0.0f)) {
+			if (((aVariantMask & VARIANT_POSITIVE_DIMENSION) != 0 &&
+				tk->mNumber <= 0.0) ||
+				((aVariantMask & VARIANT_NONNEGATIVE_DIMENSION) != 0 &&
+				tk->mNumber < 0.0)) {
+				UngetToken();
+				return false;
+			}
+			if (TranslateDimension(aValue, aVariantMask, tk->mNumber, tk->mIdent)) {
+				return true;
+			}
+			// Put the token back; we didn't parse it, so we shouldn't consume it
+			UngetToken();
+			return false;
+		}
+		if (((aVariantMask & VARIANT_PERCENT) != 0) &&
+			(Token_Percentage == tk->mType)) {
+			aValue->SetPercentValue(tk->mNumber);
+			return true;
+		}
+
+		if ((aVariantMask & VARIANT_GRADIENT) != 0 &&
+			Token_Function == tk->mType) {
+			return false;
+		}
+
+		if ((aVariantMask & VARIANT_COLOR) != 0) {
+			if ((Token_ID == tk->mType) ||
+				(Token_Hash == tk->mType) ||
+				(Token_Ident == tk->mType) ||
+				((Token_Function == tk->mType) &&
+				(tk->mIdent == "rgb" ||
+				tk->mIdent == "hsl" ||
+				tk->mIdent == "rgba" ||
+				tk->mIdent == "hsla")))
+			{
+				// Put token back so that parse color can get it
+				UngetToken();
+				if (ParseColor(aValue)) {
+					return true;
+				}
+				return false;
+			}
+		}
+
+		if (((aVariantMask & VARIANT_STRING) != 0) &&
+			(Token_String == tk->mType)) {
+			aValue->SetStringValue(tk->mIdent, StyleValue_String);
+			return true;
+		}
+
+		UngetToken();
+		return false;
+	}
+
+#define VARIANT_ALL_NONNUMERIC \
+  VARIANT_COLOR | \
+  VARIANT_URL | \
+  VARIANT_STRING | \
+  VARIANT_AUTO | \
+  VARIANT_NONE | \
+  VARIANT_GRADIENT
+
+	bool StyleParser::ParseNonNegativeVariant(StyleValue* aValue, int32 aVariantMask)
+	{
+		if ((aVariantMask & ~(VARIANT_ALL_NONNUMERIC | VARIANT_NUMBER | VARIANT_LENGTH | VARIANT_PERCENT |
+			VARIANT_INTEGER))) {
+			return false;
+		}
+
+		if (ParseVariant(aValue, aVariantMask)) {
+			if (StyleValue_Number == aValue->GetType()/* ||
+				aValue.IsLengthUnit()*/){
+				if (aValue->GetFloatValue() < 0) {
+					UngetToken();
+					return false;
+				}
+			}
+			else if (aValue->GetType() == StyleValue_Percent) {
+				if (aValue->GetPercentValue() < 0) {
+					UngetToken();
+					return false;
+				}
+			}
+			else if (aValue->GetType() == StyleValue_Integer) {
+				if (aValue->GetIntValue() < 0) {
+					UngetToken();
+					return false;
+				}
+			}
+			return true;
+		}
+		return false;
+	}
+
+#define COLOR_TYPE_UNKNOWN 0
+#define COLOR_TYPE_INTEGERS 1
+#define COLOR_TYPE_PERCENTAGES 2
+
+	bool StyleParser::ParseColor(StyleValue* aValue)
+	{
+		if (!GetToken(true)) {
+			//REPORT_UNEXPECTED_EOF(PEColorEOF);
+			return false;
+		}
+
+		StyleToken* tk = &token_;
+		Color rgba;
+		switch (tk->mType) {
+		case Token_ID:
+		case Token_Hash:
+			// #xxyyzz
+			if (HexToRGB(tk->mIdent, rgba)) {
+				aValue->SetColorValue(rgba);
+				return true;
+			}
+			break;
+
+		case Token_Ident:
+#if 0
+			if (ColorNameToRGB(tk->mIdent, &rgba)) {
+				aValue->SetColorValue(rgba);
+				return true;
+			}
+			else {
+				nsCSSKeyword keyword = nsCSSKeywords::LookupKeyword(tk->mIdent);
+				if (eCSSKeyword_UNKNOWN < keyword) { // known keyword
+					int32_t value;
+					if (nsCSSProps::FindKeyword(keyword, nsCSSProps::kColorKTable, value)) {
+						aValue.SetIntValue(value, eCSSUnit_EnumColor);
+						return true;
+					}
+				}
+			}
+#endif
+			break;
+		case Token_Function:
+			if (token_.mIdent == "rgb") {
+				// rgb ( component , component , component )
+				uint8 r, g, b;
+				int32 type = COLOR_TYPE_UNKNOWN;
+				if (ParseColorComponent(r, type, ',') &&
+					ParseColorComponent(g, type, ',') &&
+					ParseColorComponent(b, type, ')')) {
+					aValue->SetColorValue(ColorSetRGB(r, g, b));
+					return true;
+				}
+				SkipUntil(')');
+				return false;
+			}
+			else if (token_.mIdent == "rgba") {
+				// rgba ( component , component , component , opacity )
+				uint8 r, g, b, a;
+				int32 type = COLOR_TYPE_UNKNOWN;
+				if (ParseColorComponent(r, type, ',') &&
+					ParseColorComponent(g, type, ',') &&
+					ParseColorComponent(b, type, ',') &&
+					ParseColorOpacity(a)) {
+					aValue->SetColorValue(ColorSetARGB(a, r, g, b));
+					return true;
+				}
+				SkipUntil(')');
+				return false;
+			}
+			else if (token_.mIdent == "hsl") {
+				// hsl ( hue , saturation , lightness )
+				// "hue" is a number, "saturation" and "lightness" are percentages.
+				if (ParseHSLColor(rgba, ')')) {
+					aValue->SetColorValue(rgba);
+					return true;
+				}
+				SkipUntil(')');
+				return false;
+			}
+			else if (token_.mIdent == "hsla") {
+				// hsla ( hue , saturation , lightness , opacity )
+				// "hue" is a number, "saturation" and "lightness" are percentages,
+				// "opacity" is a number.
+				uint8 a;
+				if (ParseHSLColor(rgba, ',') &&
+					ParseColorOpacity(a)) {
+					aValue->SetColorValue(ColorSetARGB(a, ColorGetR(rgba), ColorGetG(rgba),
+						ColorGetB(rgba)));
+					return true;
+				}
+				SkipUntil(')');
+				return false;
+			}
+			break;
+		default:
+			break;
+		}
+
+		UngetToken();
+		return false;
+	}
+
+
+	bool StyleParser::ParseColorComponent(uint8& aComponent, int32& aType, char aStop)
+	{
+		if (!GetToken(true)) {
+			//REPORT_UNEXPECTED_EOF(PEColorComponentEOF);
+			return false;
+		}
+		float value;
+		StyleToken* tk = &token_;
+		switch (tk->mType) {
+		case Token_Number:
+			switch (aType) {
+			case COLOR_TYPE_UNKNOWN:
+				aType = COLOR_TYPE_INTEGERS;
+				break;
+			case COLOR_TYPE_INTEGERS:
+				break;
+			case COLOR_TYPE_PERCENTAGES:
+				//REPORT_UNEXPECTED_TOKEN(PEExpectedPercent);
+				UngetToken();
+				return false;
+			default:
+				//NS_NOTREACHED("Someone forgot to add the new color component type in here");
+				break;
+			}
+
+			if (!token_.mIntegerValid) {
+				//REPORT_UNEXPECTED_TOKEN(PEExpectedInt);
+				UngetToken();
+				return false;
+			}
+			value = tk->mNumber;
+			break;
+		case Token_Percentage:
+			switch (aType) {
+			case COLOR_TYPE_UNKNOWN:
+				aType = COLOR_TYPE_PERCENTAGES;
+				break;
+			case COLOR_TYPE_INTEGERS:
+				//REPORT_UNEXPECTED_TOKEN(PEExpectedInt);
+				UngetToken();
+				return false;
+			case COLOR_TYPE_PERCENTAGES:
+				break;
+			default:
+				//NS_NOTREACHED("Someone forgot to add the new color component type in here");
+				break;
+			}
+			value = tk->mNumber * 255.0f;
+			break;
+		default:
+			//REPORT_UNEXPECTED_TOKEN(PEColorBadRGBContents);
+			UngetToken();
+			return false;
+		}
+		if (ExpectSymbol(aStop, true)) {
+			if (value < 0.0f) value = 0.0f;
+			if (value > 255.0f) value = 255.0f;
+			aComponent = std::round(value);
+			return true;
+		}
+		//REPORT_UNEXPECTED_TOKEN_CHAR(PEColorComponentBadTerm, aStop);
+		return false;
+	}
+
+
+	bool StyleParser::ParseColorOpacity(uint8& aOpacity)
+	{
+		if (!GetToken(true)) {
+			//REPORT_UNEXPECTED_EOF(PEColorOpacityEOF);
+			return false;
+		}
+
+		if (token_.mType != Token_Number) {
+			//REPORT_UNEXPECTED_TOKEN(PEExpectedNumber);
+			UngetToken();
+			return false;
+		}
+
+		if (token_.mNumber < 0.0f) {
+			token_.mNumber = 0.0f;
+		}
+		else if (token_.mNumber > 1.0f) {
+			token_.mNumber = 1.0f;
+		}
+
+		uint8 value = std::round(token_.mNumber*255);
+		// Need to compare to something slightly larger
+		// than 0.5 due to floating point inaccuracies.
+		//NS_ASSERTION(fabs(255.0f*mToken.mNumber - value) <= 0.51f,
+		//	"FloatToColorComponent did something weird");
+
+		if (!ExpectSymbol(')', true)) {
+			//REPORT_UNEXPECTED_TOKEN(PEExpectedCloseParen);
+			return false;
+		}
+
+		aOpacity = value;
+
+		return true;
+	}
+
+
+	bool StyleParser::ParseHSLColor(Color& aColor, char aStop)
+	{
+		float h, s, l;
+
+		// Get the hue
+		if (!GetToken(true)) {
+			//REPORT_UNEXPECTED_EOF(PEColorHueEOF);
+			return false;
+		}
+		if (token_.mType != Token_Number) {
+			//REPORT_UNEXPECTED_TOKEN(PEExpectedNumber);
+			UngetToken();
+			return false;
+		}
+		h = token_.mNumber;
+		h /= 360.0f;
+		// hue values are wraparound
+		h = h - floor(h);
+
+		if (!ExpectSymbol(',', true)) {
+			//REPORT_UNEXPECTED_TOKEN(PEExpectedComma);
+			return false;
+		}
+
+		// Get the saturation
+		if (!GetToken(true)) {
+			//REPORT_UNEXPECTED_EOF(PEColorSaturationEOF);
+			return false;
+		}
+		if (token_.mType != Token_Percentage) {
+			//REPORT_UNEXPECTED_TOKEN(PEExpectedPercent);
+			UngetToken();
+			return false;
+		}
+		s = token_.mNumber;
+		if (s < 0.0f) s = 0.0f;
+		if (s > 1.0f) s = 1.0f;
+
+		if (!ExpectSymbol(',', true)) {
+			//REPORT_UNEXPECTED_TOKEN(PEExpectedComma);
+			return false;
+		}
+
+		// Get the lightness
+		if (!GetToken(true)) {
+			//REPORT_UNEXPECTED_EOF(PEColorLightnessEOF);
+			return false;
+		}
+		if (token_.mType != Token_Percentage) {
+			//REPORT_UNEXPECTED_TOKEN(PEExpectedPercent);
+			UngetToken();
+			return false;
+		}
+		l = token_.mNumber;
+		if (l < 0.0f) l = 0.0f;
+		if (l > 1.0f) l = 1.0f;
+
+		if (ExpectSymbol(aStop, true)) {
+			aColor = HSL2RGB(h, s, l);
+			return true;
+		}
+
+		//REPORT_UNEXPECTED_TOKEN_CHAR(PEColorComponentBadTerm, aStop);
 		return false;
 	}
 
@@ -758,5 +1203,48 @@ namespace ui
 		return false;
 	}
 
+	bool StyleParser::TranslateDimension(StyleValue* aValue, int32 aVariantMask, float aNumber, const std::string& aUnit)
+	{
+		StyleValueType units;
+		int32 type = 0;
+		if (!aUnit.empty()) {
+			if (aUnit == "px") {
+				type = VARIANT_LENGTH;
+				units = StyleValue_Pixel;
+			}
+			else if (aUnit == "deg") {
+				type = VARIANT_ANGLE;
+				units = StyleValue_Degree;
+			}
+			else {
+				// Unknown unit
+				return false;
+			}
+		}
+		else {
+			// Must be a zero number...
+			assert(0 == aNumber);
+			if ((VARIANT_LENGTH & aVariantMask) != 0) {
+				units = StyleValue_Pixel;
+				type = VARIANT_LENGTH;
+			}
+			else if ((VARIANT_ANGLE & aVariantMask) != 0) {
+				assert(aVariantMask & VARIANT_ZERO_ANGLE);
+				units = StyleValue_Degree;
+				type = VARIANT_ANGLE;
+			}
+			else {
+				//NS_ERROR("Variant mask does not include dimension; why were we called?");
+				return false;
+			}
+		}
+		if ((type & aVariantMask) != 0) {
+			aValue->SetFloatValue(aNumber, units);
+			return true;
+		}
+		return false;
+	}
+
+	
 
 }

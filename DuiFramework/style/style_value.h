@@ -9,9 +9,10 @@ namespace ui
 		StyleValue_None,
 		StyleValue_Auto,
 
-		StyleValue_Interger, //int
+		StyleValue_Integer, //int
 		StyleValue_Percent, //float
 		StyleValue_Number, //float
+		StyleValue_Pixel, //int
 
 		StyleValue_Color, //unsigned
 
@@ -51,7 +52,9 @@ namespace ui
 		
 		bool IsAutoValue() const;
 		int32 GetIntValue() const;
+		int32 GetPixel() const;
 		float GetPercentValue() const;
+		float GetFloatValue() const;
 		const std::string& GetStringValue() const;
 		Color GetColorValue() const;
 

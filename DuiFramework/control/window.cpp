@@ -19,6 +19,7 @@ namespace ui
 			delete owned_widget_;
 			owned_widget_ = NULL;
 		}
+		
 	}
 
 	void Window::AttachWidget(Widget* widget)
@@ -199,6 +200,16 @@ namespace ui
 			WindowBuilder builder(this, &xml);
 			builder.Run();
 		}
+	}
+
+	void Window::AddStyleSheet( StyleSheet* sheet )
+	{
+		style_sheets_.AddStyleSheet(sheet);
+	}
+
+	const StyleSheetList* Window::GetStyleSheetList() const
+	{
+		return &style_sheets_;
 	}
 
 #if 0

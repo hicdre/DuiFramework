@@ -5,6 +5,7 @@
 #include "view/view_background.h"
 #include "view/view_container.h"
 #include "view/view_layout.h"
+#include "style/style_sheet.h"
 #include <vector>
 
 namespace ui
@@ -71,6 +72,17 @@ namespace ui
 
 
 		// Attributes---------------------------------------------
+		virtual const char* tag() const;
+
+		void SetId(const std::string& id);
+		const std::string& id() const;
+
+		void AddClass(const std::string& v);
+		void RemoveClass(const std::string& v);
+		bool HaveClass(const std::string& v) const;
+		void ClearClass();
+		void GetClass(std::vector<std::string>& v) const;
+
 		void SetBackground(Background* background);
 		Background* background();
 
@@ -89,6 +101,9 @@ namespace ui
 		int layoutHeight();
 		int layoutX();
 		int layoutY();
+
+		//style
+		void UpdateStyleRules(StyleSheetList* sheets);
 
 		// Event---------------------------------------------
 
@@ -115,6 +130,8 @@ namespace ui
 		scoped_ptr<Background> background_; // background-
 		scoped_ptr<LayoutBox> layout_data_;
 		HCURSOR cursor_{ NULL }; //	cursor
+		std::set<std::string> classes_;
+		std::string id_;
 
 		//私有属性
 		Matrix m_;//自身变换, 缩放, 旋转等
@@ -122,5 +139,7 @@ namespace ui
 		bool visible_{ true };// Whether this view is visible.
 		bool enabled_{ true };
 		bool needs_layout_{ true };//强制layout
+
+		StyleDeclarationList style_declarations_;
 	};
 }

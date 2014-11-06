@@ -1,5 +1,6 @@
 #pragma once
 #include "base/base_defines.h"
+#include <string>
 
 
 namespace ui
@@ -58,14 +59,6 @@ namespace ui
 	};
 
 
-
-
-
-
-
-
-
-
-
-
+	bool HexToRGB(const std::string& aBuf, Color& aResult);
+	Color HSL2RGB(float h, float s, float l);
 }

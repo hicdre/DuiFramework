@@ -1,6 +1,7 @@
 #pragma once
-#include "style/style_rule.h"
+#include "style/style_sheet.h"
 #include "style/style_scanner.h"
+
 
 namespace ui
 {
@@ -11,8 +12,12 @@ namespace ui
 	public:
 		StyleParser();
 
+		void SetStyleSheet(StyleSheet* sheet);
+
+		bool ParseSheet(const std::string& buffer, uint32 aLineNumber);
 		bool ParseRule(const std::string& buffer, StyleRule** rule);
 
+	public:
 		bool ParseRuleSet(RuleAppendFunc aAppendFunc, void* aData,
 			bool aInsideBraces = false);
 
@@ -31,6 +36,13 @@ namespace ui
 			bool* aChanged);
 		bool ParseProperty(StyleProperty p, StyleValue*& v);
 		bool ParseSingleValueProperty(StyleProperty p, StyleValue* v);
+		bool ParseVariant(StyleValue* v, int32 aVariantMask);
+		bool ParseNonNegativeVariant(StyleValue* v, int32 aVariantMask);
+
+		bool ParseColor(StyleValue* v);
+		bool ParseColorComponent(uint8& aComponent, int32& aType, char aStop);
+		bool ParseColorOpacity(uint8& aOpacity);
+		bool ParseHSLColor(Color& aColor, char aStop);
 
 		void AppendRule(StyleRule* rule);
 
@@ -47,9 +59,13 @@ namespace ui
 		bool ExpectSymbol(char aSymbol, bool aSkipWS);
 		bool ExpectEndProperty();
 		bool CheckEndProperty();
+
+		bool TranslateDimension(StyleValue* aValue, int32 aVariantMask, float aNumber,
+			const std::string& aUnit);
 	private:
 		StyleToken token_;
 		StyleScanner* scanner_;
+		scoped_refptr<StyleSheet> sheet_;
 		bool have_bush_back_;
 		DISALLOW_COPY_AND_ASSIGN(StyleParser);
 	};

@@ -24,6 +24,10 @@ namespace ui
 		void BuildLayoutBox(View* v, tinyxml2::XMLElement* xml_element);
 		void BuildBackground(View* v, tinyxml2::XMLElement* xml_element);
 		void BuildBorder(View* v, tinyxml2::XMLElement* xml_element);
+
+		void BuildStyleSheet(tinyxml2::XMLElement* xml_element);
+
+		void InitStyleSheet();
 	private:
 		Window* window_;
 		tinyxml2::XMLDocument* xml_;

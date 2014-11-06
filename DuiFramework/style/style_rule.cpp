@@ -45,4 +45,30 @@ namespace ui
 		line_ = num;
 	}
 
+	void StyleRule::SetStyleSheet(StyleSheet* sheet)
+	{
+		sheet_.reset(sheet);
+	}
+
+	void StyleRule::MatchRules(View* v, StyleDeclarationList& l)
+	{
+		if (selectors_->MatchRule(v))
+		{
+			StylePropertyList plist;
+			declarations_->GetOrderedPropertyList(plist);
+			for (StyleProperty p : plist)
+			{
+				StyleDeclaration* nd = declarations_->Find(p);
+				StyleDeclaration* od = l.Find(p);
+				if (!od) {
+					//结果中没有
+					l.Insert(nd);
+				}
+				else {
+					//比较weight
+				}
+			}
+		}
+	}
+
 }

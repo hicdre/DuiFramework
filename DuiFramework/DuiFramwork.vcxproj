@@ -84,6 +84,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="base\color.cpp" />
     <ClCompile Include="base\length.cpp" />
     <ClCompile Include="base\padding.cpp" />
     <ClCompile Include="base\point.cpp" />
@@ -142,6 +143,7 @@
     <ClCompile Include="style\style_rule.cpp" />
     <ClCompile Include="style\style_scanner.cpp" />
     <ClCompile Include="style\style_selector.cpp" />
+    <ClCompile Include="style\style_sheet.cpp" />
     <ClCompile Include="style\style_value.cpp" />
     <ClCompile Include="third_party\stb_image.cpp" />
     <ClCompile Include="third_party\tinyxml2.cpp" />
@@ -220,6 +222,7 @@
     <ClInclude Include="style\style_rule.h" />
     <ClInclude Include="style\style_scanner.h" />
     <ClInclude Include="style\style_selector.h" />
+    <ClInclude Include="style\style_sheet.h" />
     <ClInclude Include="style\style_value.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="third_party\stb_image.h" />

@@ -189,6 +189,12 @@
     <ClCompile Include="style\style_parser.cpp">
       <Filter>style</Filter>
     </ClCompile>
+    <ClCompile Include="base\color.cpp">
+      <Filter>base</Filter>
+    </ClCompile>
+    <ClCompile Include="style\style_sheet.cpp">
+      <Filter>style</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -358,6 +364,9 @@
       <Filter>style</Filter>
     </ClInclude>
     <ClInclude Include="style\style_parser.h">
+      <Filter>style</Filter>
+    </ClInclude>
+    <ClInclude Include="style\style_sheet.h">
       <Filter>style</Filter>
     </ClInclude>
   </ItemGroup>

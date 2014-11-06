@@ -60,7 +60,12 @@ namespace ui
 	View* WindowBuilder::BuildView(tinyxml2::XMLElement* e)
 	{
 		const char* tag_name = e->Name();
-		View* elem = new View;
+		View* elem = NULL;
+		if (tag_name == "StyleSheet") {
+			BuildStyleSheet(e);
+			return NULL;
+		}
+		elem = new View;
 		BuildContainer(elem, e);
 		BuildLayoutBox(elem, e);
 		BuildBorder(elem, e);
@@ -73,6 +78,8 @@ namespace ui
 		tinyxml2::XMLElement* xml_element = xml_->RootElement();
 		BuildWindow(xml_element);
 		BuildTree(window_->GetContainer(), xml_element);
+
+		InitStyleSheet();
 	}
 
 
@@ -80,9 +87,9 @@ namespace ui
 	{
 		//layout
 		BuildContainer(window_, xml_element);
-		BuildLayoutBox(window_, xml_element);
-		BuildBorder(window_, xml_element);
-		BuildBackground(window_, xml_element);
+		//BuildLayoutBox(window_, xml_element);
+		//BuildBorder(window_, xml_element);
+		//BuildBackground(window_, xml_element);
 	}
 
 
@@ -279,6 +286,24 @@ namespace ui
 				getBorder()->SetBorder(Border::BOTTOM, v, c);
 			}
 		}
+	}
+
+	void WindowBuilder::BuildStyleSheet(tinyxml2::XMLElement* xml_element)
+	{
+		const char* file = xml_element->Attribute("src");
+		if (file) 
+		{
+			scoped_refptr<StyleSheet>  sheet = StyleSheet::LoadFromFile(MultiByteToWide(file));
+			if (sheet.get())
+				window_->AddStyleSheet(sheet.get());
+		}
+	}
+
+	void WindowBuilder::InitStyleSheet()
+	{
+		
+		StyleSheetList* sheet = const_cast<StyleSheetList*>(window_->GetStyleSheetList());
+		window_->UpdateStyleRules(sheet);
 	}
 
 

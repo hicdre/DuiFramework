@@ -3,6 +3,8 @@
 #include "core/widget.h"
 #include "view/view.h"
 
+#include "style/style_sheet.h"
+
 namespace ui
 {
 	class Window 
@@ -20,6 +22,9 @@ namespace ui
 		void AttachWidget(Widget* widget);
 		Widget* DetachWidget();
 		Widget* widget() const { return owned_widget_; }
+
+		void AddStyleSheet(StyleSheet* sheet);
+		const StyleSheetList* GetStyleSheetList() const;
 
 		void SetWindowBounds(int x, int y, int width, int height);
 		Rect GetWindowBounds();
@@ -53,5 +58,7 @@ namespace ui
 		View* focused_view_{ NULL };
 		View* hittest_view_{ NULL };
 		View* captured_view_{ NULL };
+
+		StyleSheetList style_sheets_;
 	};
 }

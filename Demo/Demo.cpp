@@ -24,7 +24,7 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 
 	//ui::ImageStore::Default()->AddImageRecord("test", LR"(E:\work\xinyi\RomasterPC\bin\skin\avatar.png)");
 
-	std::string css_string = "div, #dd a:hover, .c1.c2 p { background: url(\"something.png\"); }";
+	std::string css_string = "div, #dd a:hover, .c1.c2 p { width: 30px; }";
 	ui::StyleParser parser;
 	ui::StyleRule* rule;
 	if (parser.ParseRule(css_string, &rule))

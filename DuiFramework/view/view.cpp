@@ -616,6 +616,7 @@ namespace ui
 		if (!parent_)
 			return 0;
 		int x = 0;
+		//StyleValue* v = style_declarations_.FindValue(Style_Width);
 		const Length& x_length = layout_data_->x();
 		if (x_length.IsPercent())
 		{
@@ -670,12 +671,63 @@ namespace ui
 		return container_.get() && container_->layoutType() == VerticalLayout;
 	}
 
-	
 
-	
+	const char* View::tag() const
+	{
+		return "View";
+	}
 
-	
+	void View::SetId(const std::string& id)
+	{
+		id_ = id;
+	}
 
+	const std::string& View::id() const
+	{
+		return id_;
+	}
+
+	void View::AddClass(const std::string& v)
+	{
+		classes_.insert(v);
+	}
+
+	void View::RemoveClass(const std::string& v)
+	{
+		classes_.erase(v);
+	}
+
+	bool View::HaveClass(const std::string& v) const
+	{
+		return classes_.count(v) > 0;
+	}
+
+	void View::ClearClass()
+	{
+		classes_.clear();
+	}
+
+	void View::GetClass(std::vector<std::string>& v) const
+	{
+		for (auto iter : classes_)
+		{
+			v.push_back(iter);
+		}
+	}
+
+	void View::UpdateStyleRules(StyleSheetList* sheets)
+	{
+		sheets->MatchRules(this, style_declarations_);
+
+		StyleValue* v = style_declarations_.FindValue(Style_Width);
+		////set into layout box
+		
+
+		if (container_.get())
+			container_->UpdateStyleRule(sheets);
+
+
+	}
 
 	
 #if 0

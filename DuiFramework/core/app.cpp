@@ -58,7 +58,7 @@ namespace ui
 		Gdiplus::GdiplusStartupInput gdiplusStartupInput;
 		GdiplusStartup(&gdiplusToken_, &gdiplusStartupInput, NULL);
 
-		//InitStyleProperty();
+		InitStyleProperty();
 
 		InitMessageWndClass();
 		Widget::InitClass();

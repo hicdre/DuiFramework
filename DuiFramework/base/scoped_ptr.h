@@ -135,6 +135,10 @@ template <class T>
 class scoped_refptr
 {
 public:
+	scoped_refptr()
+	{
+		p_ = NULL;
+	}
 	scoped_refptr(T* t)
 	{
 		p_ = t;
@@ -158,6 +162,14 @@ public:
 	{
 		return p_;
 	}
+	T*& operator&()
+	{
+		return p_;
+	}
+	const T*& operator&() const
+	{
+		return p_;
+	}
 	T* get() const
 	{
 		return p_;
@@ -169,8 +181,6 @@ public:
 		if (p_)
 			p_->AddRef();
 	}
-
-
 private:
 	T* p_;
 };

@@ -1,5 +1,7 @@
 #include "stdafx.h"
 #include "style_selector.h"
+#include <stack>
+#include "view/view.h"
 
 namespace ui
 {
@@ -92,6 +94,59 @@ namespace ui
 
 	}
 
+	bool StyleSelector::MatchRule(View* v) const
+	{
+		std::stack<const StyleSelector*> s;
+		{
+			const StyleSelector* selector = this;
+			while (selector->child_)
+			{
+				s.push(selector);
+				selector = selector->child_;
+			}
+		}
+
+		const StyleSelector* selector = s.top();
+		if (!selector->MatchRuleInternal(v))
+			return false;
+
+		s.pop();
+		v = v->parent();
+		while (!s.empty() && !v)
+		{
+			const StyleSelector* selector = s.top();
+			if (selector->MatchRuleInternal(v))
+				s.pop();
+
+			v = v->parent();
+		}
+
+		return s.empty();
+	}
+
+	bool StyleSelector::MatchRuleInternal(View* v) const
+	{
+		if (HasId() && (v->id() != *id_or_tag_))
+			return false;
+
+		if (HasTag() && (v->tag() != *id_or_tag_))
+			return false;
+
+		if (HasClass()) {
+			for (const std::string& c : class_list_)
+			{
+				if (!v->HaveClass(c))
+					return false;
+			}
+		}
+
+		if (IsPseudo()) {
+			//ÔÝÊ±²»¹Ü
+			//if (type_ == PSEUDO_HOVER && v->Is) 
+		}
+		return true;
+	}
+
 
 	StyleSelectorList::StyleSelectorList()
 	{
@@ -101,6 +156,16 @@ namespace ui
 	StyleSelectorList::~StyleSelectorList()
 	{
 
+	}
+
+	bool StyleSelectorList::MatchRule(View* v) const
+	{
+		for (StyleSelector* item : container_)
+		{
+			if (item->MatchRule(v))
+				return true;
+		}
+		return false;
 	}
 
 }
