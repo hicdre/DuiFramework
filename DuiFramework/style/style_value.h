@@ -49,6 +49,7 @@ namespace ui
 		bool IsIntValue() const;
 		bool IsStringValue() const;
 		bool IsArrayValue() const;
+		bool IsColorValue() const;
 		
 		bool IsAutoValue() const;
 		int32 GetIntValue() const;

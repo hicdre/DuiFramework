@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Window width="600" height="450" background-color="#FFFFFFFF" layout="vbox">
+<Window layout="vbox">
   <StyleSheet src="test.css"/>
-  <View width="100%" height="60" background-color="#FF00FF00">
+  <View id="ab" class="hh h-t">
   </View>
-  <View width="100%" height="5" background-color="#00000000">
+  <View id="zz">
   </View>
-  <View width="100%" height="200" background-color="#4F00FFFF" layout="hbox">
-    <View width="40%" height="100%" background-color="#4FFFFF00">
+  <View class="span" layout="hbox">
+    <View class="block">
     </View>
-    <View width="20%" height="100%" background-color="#00000000">
+    <View class="block">
     </View>
-    <View width="40%" height="100%" background-color="#4FFF00FF">
+    <View class="block">
     </View>
   </View>
 </Window>

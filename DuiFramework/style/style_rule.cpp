@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "style_rule.h"
-
+#include "style_sheet.h"
 namespace ui
 {
 

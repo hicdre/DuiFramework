@@ -358,7 +358,7 @@ namespace ui
 // 		else {
 // 			mSheet->AppendStyleRule(aRule);
 // 		}
-		if (sheet_)
+		if (sheet_.get())
 			sheet_->AppendStyleRule(rule);
 	}
 

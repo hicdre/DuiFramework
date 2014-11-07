@@ -184,6 +184,11 @@ namespace ui
 		return (int32)float_value_;
 	}
 
+	bool StyleValue::IsColorValue() const
+	{
+		return type_ == StyleValue_Color;
+	}
+
 
 	void StyleValueString::Set(const std::string& val)
 	{

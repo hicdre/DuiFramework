@@ -102,6 +102,11 @@ namespace ui
 		int layoutX();
 		int layoutY();
 
+		int marginLeft() const;
+		int marginTop() const;
+		int marginRight() const;
+		int marginBottom() const;
+
 		//style
 		void UpdateStyleRules(StyleSheetList* sheets);
 
@@ -119,6 +124,7 @@ namespace ui
 		virtual void OnChildSchedulePaintInRect(View* child, const Rect& r);
 		Rect ConvertRectFromChild(View* child, const Rect& r);
 	protected:
+		int GetMarginValue(StyleProperty p) const;
 		//²ã¼¶¹ØÏµ
 		scoped_ptr<Container> container_;
 		View* parent_{ NULL };

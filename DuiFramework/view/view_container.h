@@ -14,6 +14,7 @@ namespace ui
 
 	class View;
 	class RenderContext;
+	class StyleSheetList;
 	class Container
 	{
 	public:

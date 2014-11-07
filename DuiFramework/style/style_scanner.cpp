@@ -212,7 +212,11 @@ namespace ui
 		//, mReporter(nullptr)
 		, mRecording(false)
 	{
-
+		if (!memcmp(mBuffer, "\xef\xbb\xbf", 3))
+		{
+			mBuffer += 3;
+			mCount -= 3;
+		}
 	}
 
 	StyleScanner::~StyleScanner()

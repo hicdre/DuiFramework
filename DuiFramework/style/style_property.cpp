@@ -86,6 +86,13 @@ namespace ui
 	const char* kStyleProperty[] = {
 		"width",
 		"height",
+
+		"margin-left",
+		"margin-top",
+		"margin-right",
+		"margin-bottom",
+
+		"background-color",
 	};
 
 	enum FlagType{
@@ -97,6 +104,13 @@ namespace ui
 	const uint32 kStyleVariant[][FlagCount] = {
 			{ VARIANT_ALP, PROPERTY_PARSE_VALUE | PROPERTY_VALUE_NONNEGATIVE },
 			{ VARIANT_ALP, PROPERTY_PARSE_VALUE | PROPERTY_VALUE_NONNEGATIVE },
+
+			{ VARIANT_ALP, PROPERTY_PARSE_VALUE },
+			{ VARIANT_ALP, PROPERTY_PARSE_VALUE },
+			{ VARIANT_ALP, PROPERTY_PARSE_VALUE },
+			{ VARIANT_ALP, PROPERTY_PARSE_VALUE },
+
+			{ VARIANT_COLOR, PROPERTY_PARSE_VALUE },
 	};
 
 	static std::unordered_map<std::string, StyleProperty> kStylePropertyMap;

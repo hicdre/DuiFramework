@@ -16,6 +16,8 @@ namespace ui
 		Window();
 		virtual ~Window();
 
+		virtual const char* tag() const override;
+
 		void Load(const std::string& str);
 		void LoadFile(const std::wstring& file);
 
@@ -42,8 +44,9 @@ namespace ui
 			WPARAM w_param,
 			LPARAM l_param,
 			LRESULT& result) override;
-#if 0
+
 		void ProcessMouseMessage(UINT message, WPARAM w_param, LPARAM l_param);
+#if 0
 		void DispatchMouseLeaveEvent(View* from, View* to, const Point& pt);
 		void DispatchMouseEnterEvent(View* from, View* to, const Point& pt);
 

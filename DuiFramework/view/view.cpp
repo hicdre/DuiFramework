@@ -569,92 +569,156 @@ namespace ui
 
 	int View::layoutWidth()
 	{
-		int w = 0;
-		const Length& w_length = layout_data_->width();
-		if (w_length.IsPercent() && parent_)
-		{
-			w = parent_->GetContentsBounds().width() * w_length.percent();
+		StyleValueType type = StyleValue_Auto;
+		StyleValue* v = style_declarations_.FindValue(Style_Width);
+		if (v)
+			type = v->GetType();
+		if (type == StyleValue_Pixel) {
+			return v->GetPixel();
 		}
-		else if (w_length.IsFixed())
-		{
-			w = w_length.intValue();
+
+		if (type == StyleValue_Percent && parent_) {
+			return parent_->GetContentsBounds().width() * v->GetPercentValue();
 		}
-		else if (w_length.IsAuto())
-		{
-			if (container_.get())
-				w = container_->GetAutoWidth();
-			else
-				w = 0;
+
+		if (type == StyleValue_Auto) {
+			if (parent_ && parent_->IsVerticalLayout()) {
+				return parent_->GetContentsBounds().width() - marginLeft() - marginRight();
+			}
+
+			if (container_.get()) {
+				return container_->GetAutoWidth();
+			}
 		}
-		return w;
+
+		return 0;
 	}
 
 	int View::layoutHeight()
 	{
-		int h = 0;
-		const Length& h_length = layout_data_->height();
-		if (h_length.IsPercent() && parent_)
-		{
-			h = parent_->GetContentsBounds().height() * h_length.percent();
+		StyleValueType type = StyleValue_Auto;
+		StyleValue* v = style_declarations_.FindValue(Style_Height);
+		if (v)
+			type = v->GetType();
+		if (type == StyleValue_Pixel) {
+			return v->GetPixel();
 		}
-		else if (h_length.IsFixed())
-		{
-			h = h_length.intValue();
+
+		if (type == StyleValue_Percent && parent_) {
+			return parent_->GetContentsBounds().height() * v->GetPercentValue();
 		}
-		else if (h_length.IsAuto())
-		{
-			if (container_.get())
-				h = container_->GetAutoHeight();
-			else
-				h = 0;
+
+		if (type == StyleValue_Auto) {
+			if (parent_ && parent_->IsHorizonalLayout()) {
+				return parent_->GetContentsBounds().height() - marginTop() - marginBottom();
+			}
+
+			if (container_.get()) {
+				return container_->GetAutoHeight();
+			}
 		}
-		return h;
+
+		return 0;
 	}
 
 	int View::layoutX()
 	{
 		if (!parent_)
 			return 0;
-		int x = 0;
-		//StyleValue* v = style_declarations_.FindValue(Style_Width);
-		const Length& x_length = layout_data_->x();
-		if (x_length.IsPercent())
-		{
-			x = parent_->GetContentsBounds().width() * x_length.percent();
-		}
-		else if (x_length.IsFixed())
-		{
-			x = x_length.intValue();
-		}
+
+		int dx = marginLeft();
 		View* prev_silbing = prevSibling();
+		while (prev_silbing && !prev_silbing->visible())
+		{
+			prev_silbing = prev_silbing->prevSibling();
+		}
 		if (parent_->IsHorizonalLayout() && prev_silbing)
 		{//此情况是相对于前一个
-			x += prev_silbing->bounds().right();
+			int pdx = prev_silbing->marginRight();
+			if (dx < pdx) {
+				int t = dx;
+				dx = pdx;
+				pdx = t;
+			}
+			if (pdx > 0 || dx < 0) {
+				return dx + prev_silbing->bounds().right();
+			}
+			else {
+				return dx + pdx + prev_silbing->bounds().right();
+			}
 		}
-		return x;
+		return dx;
 	}
 
 	int View::layoutY()
 	{
 		if (!parent_)
 			return 0;
-		int y = 0;
-		const Length& y_length = layout_data_->y();
-		if (y_length.IsPercent())
-		{
-			y = parent_->GetContentsBounds().height() * y_length.percent();
-		}
-		else if (y_length.IsFixed())
-		{
-			y = y_length.intValue();
-		}
+		int dy = marginTop();
 		View* prev_silbing = prevSibling();
+		while (prev_silbing && !prev_silbing->visible())
+		{
+			prev_silbing = prev_silbing->prevSibling();
+		}
 		if (parent_->IsVerticalLayout() && prev_silbing)
 		{//此情况是相对于前一个
-			y += prev_silbing->bounds().bottom();
+			int pdy = prev_silbing->marginTop();
+			if (dy < pdy) {
+				int t = dy;
+				dy = pdy;
+				pdy = t;
+			}
+			if (pdy > 0 || dy < 0) {
+				return dy + prev_silbing->bounds().bottom();
+			}
+			else {
+				return dy + pdy + prev_silbing->bounds().bottom();
+			}
 		}
-		return y;
+		return dy;
 	}
+
+	int View::marginLeft() const
+	{
+		return GetMarginValue(Style_MarginLeft);
+	}
+
+	int View::marginTop() const
+	{
+		return GetMarginValue(Style_MarginTop);
+	}
+
+	int View::marginRight() const
+	{
+		return GetMarginValue(Style_MarginRight);
+	}
+
+	int View::marginBottom() const
+	{
+		return GetMarginValue(Style_MarginBottom);
+	}
+
+
+	int View::GetMarginValue(StyleProperty p) const
+	{
+		StyleValue* v = style_declarations_.FindValue(p);
+		if (!v)
+			return 0;
+		StyleValueType type = v->GetType();
+		if (type == StyleValue_Pixel) {
+			return v->GetPixel();
+		}
+
+		if (type == StyleValue_Percent && parent_)	{
+			if (p == Style_MarginLeft || p == Style_MarginRight)
+				return parent_->GetContentsBounds().width() * v->GetPercentValue();
+			else if (p == Style_MarginTop || p == Style_MarginBottom)
+				return parent_->GetContentsBounds().height() * v->GetPercentValue();
+		}
+		return 0;
+	}
+
+
 
 	bool View::IsAbsouletLayout() const
 	{
@@ -719,7 +783,15 @@ namespace ui
 	{
 		sheets->MatchRules(this, style_declarations_);
 
-		StyleValue* v = style_declarations_.FindValue(Style_Width);
+		StyleValue* color = style_declarations_.FindValue(Style_BackgroundColor);
+		if (color && color->IsColorValue())
+		{
+			if (!background_.get())
+			{
+				background_.reset(new Background);
+			}
+			background_->SetColor(color->GetColorValue());
+		}
 		////set into layout box
 		
 
@@ -728,6 +800,8 @@ namespace ui
 
 
 	}
+
+	
 
 	
 #if 0

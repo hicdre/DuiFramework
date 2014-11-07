@@ -116,34 +116,8 @@ namespace ui
 	{
 		if (message == WM_PAINT)
 		{
-#if 1
 			RenderContext painter(widget());
 			DoPaint(&painter, GetLocalBounds());
-#else
-			PAINTSTRUCT ps_;
-			HDC wnd_dc = BeginPaint(window, &ps_);
-			HDC dc_ = ps_.hdc;
-			SetGraphicsMode(dc_, GM_ADVANCED);
-			SetMapMode(dc_, MM_TEXT);
-			SetBkMode(dc_, OPAQUE);
-
-			RECT rc;
-			::GetClientRect(window, &rc);
-			Rect rect_(rc);
-
-			HBITMAP bitmap_ = CreateDIB(rect_.width(), rect_.height());
-			::SelectObject(dc_, bitmap_);
-
-			HBRUSH hbrush = ::CreateSolidBrush(0x0000FF00);
-			
-			//RECT rc = { 0, 0, 200, 10 };
-			::FillRect(ps_.hdc, &rc, hbrush);
-
-			::SelectObject(dc_, NULL);
-			::DeleteObject(bitmap_);
-			::EndPaint(window, &ps_);
-#endif
-
 			return TRUE;
 		}
 		else if ((message >= WM_MOUSEFIRST && message <= WM_MOUSELAST)
@@ -151,7 +125,7 @@ namespace ui
 			|| message == WM_MOUSELEAVE
 			|| message == WM_NCMOUSELEAVE)
 		{
-			//ProcessMouseMessage(message, w_param, l_param);
+			ProcessMouseMessage(message, w_param, l_param);
 			return TRUE;
 		}
 		else if (message == WM_KEYDOWN
@@ -212,10 +186,16 @@ namespace ui
 		return &style_sheets_;
 	}
 
-#if 0
+	const char* Window::tag() const 
+	{
+		return "Window";
+	}
+
+
 	void Window::ProcessMouseMessage(UINT message, WPARAM w_param, LPARAM l_param)
 	{
-
+		widget()->SetCursor(GetCursor());
+#if 0
 		Point pt = GetMousePosition(widget());
 
 		View* old_view = hittest_view_;
@@ -325,9 +305,9 @@ namespace ui
 
 		if (evt.IsMouseEvent())
 			hittest_view_->HandleEvent(&evt);
-
+#endif
 	}
-
+#if 0
 	void Window::DispatchMouseLeaveEvent(View* from, View* to, const Point& pt)
 	{
 		if (to == NULL)

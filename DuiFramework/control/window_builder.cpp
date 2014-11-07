@@ -61,13 +61,13 @@ namespace ui
 	{
 		const char* tag_name = e->Name();
 		View* elem = NULL;
-		if (tag_name == "StyleSheet") {
+		if (!strcmp(tag_name,"StyleSheet")) {
 			BuildStyleSheet(e);
 			return NULL;
 		}
 		elem = new View;
+		BuildViewAttribute(elem, e);
 		BuildContainer(elem, e);
-		BuildLayoutBox(elem, e);
 		BuildBorder(elem, e);
 		BuildBackground(elem, e);
 		return elem;
@@ -111,88 +111,38 @@ namespace ui
 	}
 
 
-	void WindowBuilder::BuildLayoutBox(View* v, tinyxml2::XMLElement* xml_element)
+	void WindowBuilder::BuildViewAttribute(View* v, tinyxml2::XMLElement* xml_element)
 	{
-		LayoutBox* box = v->layoutBox();
-		//layoutbox
 		{
-			const char* val = xml_element->Attribute("width");
+			const char* val = xml_element->Attribute("id");
 			if (val)
 			{
-				//box->setWidth(Length::FromString(val));
+				v->SetId(val);
 			}
 		}
 		{
-			const char* val = xml_element->Attribute("height");
+			const char* val = xml_element->Attribute("class");
 			if (val)
 			{
+				while (true)
+				{
+					while (*val && isspace(*val))
+						++val;
+					if (!*val)
+						break;
+
+					const char* begin = val;
+
+					while (*val && (isalpha(*val) || isdigit(*val) || *val == '_' || *val == '-'))
+						++val;
+
+					const char* end = val;
+					if (begin < end)
+						v->AddClass(std::string(begin, end - begin));
+				}
 				//box->setHeight(Length::FromString(val));
 			}
 		}
-		{
-			std::vector<std::string> strs;
-			const char* marginLeft = 0, *marginTop = 0, *marginRight = 0, *marginBottom = 0;
-
-			if (v->IsAbsouletLayout())
-			{
-				const char* val = xml_element->Attribute("pos");
-				if (val)
-				{
-					spilt_string(val, ',', strs, 2);
-					if (strs.size() == 2)
-					{
-						marginLeft = strs[0].c_str();
-						marginTop = strs[1].c_str();
-					}
-				}
-			}
-			else
-			{
-				const char* val = xml_element->Attribute("margin");
-				if (val)
-				{
-					spilt_string(val, ',', strs, 4);
-					if (strs.size() == 4)
-					{
-						marginLeft = strs[0].c_str();
-						marginTop = strs[1].c_str();
-						marginRight = strs[2].c_str();
-						marginBottom = strs[3].c_str();
-					}
-				}
-			}
-			
-			{
-				const char* val = xml_element->Attribute("marginLeft", marginLeft);
-				if (val)
-				{
-					//box->setMarginLeft(Length::FromString(val));
-				}
-			}
-			{
-				const char* val = xml_element->Attribute("marginTop", marginTop);
-				if (val)
-				{
-					//box->setMarginTop(Length::FromString(val));
-				}
-			}
-			{
-				const char* val = xml_element->Attribute("marginRight", marginRight);
-				if (val)
-				{
-					//box->setMarginRight(Length::FromString(val));
-				}
-			}
-			{
-				const char* val = xml_element->Attribute("marginBottom", marginBottom);
-				if (val)
-				{
-					//box->setMarginBottom(Length::FromString(val));
-				}
-			}
-			
-		}
-		
 	}
 
 	void WindowBuilder::BuildBackground(View* v, tinyxml2::XMLElement* xml_element)

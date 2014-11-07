@@ -21,7 +21,8 @@ namespace ui
 		void BuildTree(Container* container, tinyxml2::XMLElement* xml_element);
 
 		void BuildContainer(View* v, tinyxml2::XMLElement* xml_element);
-		void BuildLayoutBox(View* v, tinyxml2::XMLElement* xml_element);
+		void BuildViewAttribute(View* v, tinyxml2::XMLElement* xml_element);
+
 		void BuildBackground(View* v, tinyxml2::XMLElement* xml_element);
 		void BuildBorder(View* v, tinyxml2::XMLElement* xml_element);
 

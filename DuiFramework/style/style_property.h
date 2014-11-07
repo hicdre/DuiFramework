@@ -12,6 +12,13 @@ namespace ui
 		Style_Width = Style_BEGIN,
 		Style_Height,
 
+		Style_MarginLeft,
+		Style_MarginTop,
+		Style_MarginRight,
+		Style_MarginBottom,
+
+		Style_BackgroundColor,
+
 		Style_END,
 	};	
 

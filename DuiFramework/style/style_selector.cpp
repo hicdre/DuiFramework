@@ -99,6 +99,7 @@ namespace ui
 		std::stack<const StyleSelector*> s;
 		{
 			const StyleSelector* selector = this;
+			s.push(selector);
 			while (selector->child_)
 			{
 				s.push(selector);

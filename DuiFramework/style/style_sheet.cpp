@@ -50,9 +50,9 @@ namespace ui
 
 	void StyleSheet::MatchRules(View* v, StyleDeclarationList& r)
 	{
-		for (StyleRule* r : rules_)
+		for (StyleRule* rule : rules_)
 		{
-			r->MatchRules(v, r);
+			rule->MatchRules(v, r);
 		}
 	}
 

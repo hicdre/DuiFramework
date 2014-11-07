@@ -197,7 +197,9 @@ namespace ui
 		{
 			if (view->visible())
 			{
-				width += view->layoutWidth();
+				int new_width = view->layoutX() + view->layoutWidth() + view->marginRight();
+				if (new_width > width)
+					width = new_width;
 			}
 		}
 		return width;
@@ -210,7 +212,9 @@ namespace ui
 		{
 			if (view->visible())
 			{
-				height += view->layoutHeight();
+				int new_height = view->marginTop() + view->layoutHeight() + view->marginBottom();
+				if (height < new_height)
+					height = new_height;
 			}
 		}
 		return height;
@@ -261,7 +265,9 @@ namespace ui
 		{
 			if (view->visible())
 			{
-				width += view->layoutWidth();
+				int new_width = view->layoutWidth() + view->marginLeft() + view->marginRight();
+				if (width < new_width)
+					width = new_width;
 			}
 		}
 		return width;
@@ -274,7 +280,9 @@ namespace ui
 		{
 			if (view->visible())
 			{
-				height += view->layoutHeight();
+				int new_height = view->layoutY() + view->layoutHeight() + view->marginBottom();
+				if (new_height > height)
+					height = new_height;
 			}
 		}
 		return height;
