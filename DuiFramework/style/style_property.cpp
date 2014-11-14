@@ -93,6 +93,18 @@ namespace ui
 		"margin-bottom",
 
 		"background-color",
+		"background-image",
+
+		"border-left-color",
+		"border-left-width",
+		"border-top-color",
+		"border-top-width",
+		"border-right-color",
+		"border-right-width",
+		"border-bottom-color",
+		"border-bottom-width",
+
+		"cursor",
 	};
 
 	enum FlagType{
@@ -111,6 +123,18 @@ namespace ui
 			{ VARIANT_ALP, PROPERTY_PARSE_VALUE },
 
 			{ VARIANT_COLOR, PROPERTY_PARSE_VALUE },
+			{ VARIANT_IMAGE, PROPERTY_PARSE_VALUE_LIST },
+
+			{ VARIANT_COLOR, PROPERTY_PARSE_VALUE },
+			{ VARIANT_AL, PROPERTY_PARSE_VALUE | PROPERTY_VALUE_NONNEGATIVE },
+			{ VARIANT_COLOR, PROPERTY_PARSE_VALUE },
+			{ VARIANT_AL, PROPERTY_PARSE_VALUE | PROPERTY_VALUE_NONNEGATIVE },
+			{ VARIANT_COLOR, PROPERTY_PARSE_VALUE },
+			{ VARIANT_AL, PROPERTY_PARSE_VALUE | PROPERTY_VALUE_NONNEGATIVE },
+			{ VARIANT_COLOR, PROPERTY_PARSE_VALUE },
+			{ VARIANT_AL, PROPERTY_PARSE_VALUE | PROPERTY_VALUE_NONNEGATIVE },
+
+			{ 0, PROPERTY_PARSE_VALUE | PROPERTY_PARSE_FUNCTION },
 	};
 
 	static std::unordered_map<std::string, StyleProperty> kStylePropertyMap;

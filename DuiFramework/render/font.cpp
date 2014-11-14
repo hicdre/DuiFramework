@@ -36,11 +36,14 @@ namespace ui
 	Font::Font()
 		: font_ref_(CreateDefalutHFontRef())
 	{
+		font_ref_->AddRef();
 	}
 
 
 	Font::Font(const Font& other)
 	{
+		if (font_ref_)
+			font_ref_->Release();
 		font_ref_ = other.font_ref_;
 		font_ref_->AddRef();
 	}
@@ -69,6 +72,8 @@ namespace ui
 
 	Font& Font::operator=(const Font& other)
 	{
+		if (font_ref_)
+			font_ref_->Release();
 		font_ref_ = other.font_ref_;
 		font_ref_->AddRef();
 		return *this;

@@ -30,8 +30,6 @@ namespace ui
 		void DeleteChildren();
 		void DeleteChild(DOMNode* n);
 
-		void attach();
-		void detach();
 		//RenderObject* renderer() const
 	protected:
 		DOMNode(DOMDocument*);

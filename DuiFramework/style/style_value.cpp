@@ -189,6 +189,19 @@ namespace ui
 		return type_ == StyleValue_Color;
 	}
 
+	void StyleValue::SetArrayValue(StyleValueArray* value)
+	{
+		Reset();
+		type_ = StyleValue_Array;
+		array_value_ = value;
+	}
+
+	StyleValueArray* StyleValue::GetArrayValue() const
+	{
+		assert(type_ == StyleValue_Array);
+		return array_value_;
+	}
+
 
 	void StyleValueString::Set(const std::string& val)
 	{

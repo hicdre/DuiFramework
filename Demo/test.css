@@ -19,6 +19,8 @@
 
 .span {
     background-color: #63995a;
+    border-left-color: #D3D;
+    border-left-width: 15px;
 }
 
 .block {

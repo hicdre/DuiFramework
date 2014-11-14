@@ -2,16 +2,16 @@
 
 namespace ui
 {
-	class Padding {
+	class Inseting {
 	public:
-		Padding();
-		Padding(int left, int top, int right, int bottom);
+		Inseting();
+		Inseting(int left, int top, int right, int bottom);
 
-		~Padding() {}
+		~Inseting() {}
 
-		Padding& operator=(const Padding& p);
+		Inseting& operator=(const Inseting& p);
 
-		void SetPadding(int left, int top, int right, int bottom);
+		void Set(int left, int top, int right, int bottom);
 
 		int left() const { return left_; }
 		void set_left(int v) { left_ = v; }

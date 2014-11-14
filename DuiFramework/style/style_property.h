@@ -18,6 +18,18 @@ namespace ui
 		Style_MarginBottom,
 
 		Style_BackgroundColor,
+		Style_BackgroundImage,
+
+		Style_BorderLeftColor,
+		Style_BorderLeftWidth,
+		Style_BorderTopColor,
+		Style_BorderTopWidth,
+		Style_BorderRightColor,
+		Style_BorderRightWidth,
+		Style_BorderBottomColor,
+		Style_BorderBottomWidth,
+
+		Style_Cursor,
 
 		Style_END,
 	};	
@@ -37,6 +49,9 @@ namespace ui
 	const uint32 VARIANT_NONE     = 1 << 11;
 	const uint32 VARIANT_ZERO_ANGLE = 1 << 12;
 
+	const uint32 VARIANT_IMAGE = VARIANT_URL | VARIANT_NONE | VARIANT_GRADIENT;
+		//VARIANT_IMAGE_RECT | VARIANT_ELEMENT
+
 	const uint32 VARIANT_POSITIVE_DIMENSION = 0x10000000; // Only lengths greater than 0.0
 	const uint32 VARIANT_NONNEGATIVE_DIMENSION = 0x20000000; // Only lengths greater than or equal to 0.0
 
@@ -47,14 +62,14 @@ namespace ui
 
 	//parse property flags
 	const uint32 PROPERTY_PARSE_PROPERTY_MASK = 7 << 9;
+	const uint32 PROPERTY_PARSE_FUNCTION = 2 << 9;
 	const uint32 PROPERTY_PARSE_VALUE = 3 << 9;
+	const uint32 PROPERTY_PARSE_VALUE_LIST = 4 << 9;
 	
 	//value restriction flags
 	const uint32 PROPERTY_VALUE_RESTRICTION_MASK = 3 << 13;
 	const uint32 PROPERTY_VALUE_NONNEGATIVE = 1 << 13;
 	const uint32 PROPERTY_VALUE_AT_LEAST_ONE = 2 << 13;
-
-
 
 	void InitStyleProperty();
 

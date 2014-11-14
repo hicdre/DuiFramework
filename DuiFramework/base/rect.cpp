@@ -68,7 +68,7 @@ namespace ui
 		set_height((std::max)(height() - top - bottom, 0));
 	}
 
-	void Rect::Inset(const Padding& p)
+	void Rect::Inset(const Inseting& p)
 	{
 		Inset(p.left(), p.top(), p.right(), p.bottom());
 	}

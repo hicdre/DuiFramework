@@ -86,12 +86,13 @@
   <ItemGroup>
     <ClCompile Include="base\color.cpp" />
     <ClCompile Include="base\length.cpp" />
-    <ClCompile Include="base\padding.cpp" />
+    <ClCompile Include="base\inseting.cpp" />
     <ClCompile Include="base\point.cpp" />
     <ClCompile Include="base\range.cpp" />
     <ClCompile Include="base\rect.cpp" />
     <ClCompile Include="base\size.cpp" />
     <ClCompile Include="base\matrix.cpp" />
+    <ClCompile Include="base\url.cpp" />
     <ClCompile Include="base\value.cpp" />
     <ClCompile Include="control\button.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
@@ -129,6 +130,7 @@
     </ClCompile>
     <ClCompile Include="render\font.cpp" />
     <ClCompile Include="render\image.cpp" />
+    <ClCompile Include="render\render_box.cpp" />
     <ClCompile Include="render\render_context.cpp" />
     <ClCompile Include="render\render_object.cpp" />
     <ClCompile Include="render\uniscribe.cpp">
@@ -145,6 +147,21 @@
     <ClCompile Include="style\style_selector.cpp" />
     <ClCompile Include="style\style_sheet.cpp" />
     <ClCompile Include="style\style_value.cpp" />
+    <ClCompile Include="third_party\gurl\gurl.cc" />
+    <ClCompile Include="third_party\gurl\url_canon_etc.cc" />
+    <ClCompile Include="third_party\gurl\url_canon_fileurl.cc" />
+    <ClCompile Include="third_party\gurl\url_canon_host.cc" />
+    <ClCompile Include="third_party\gurl\url_canon_icu.cc" />
+    <ClCompile Include="third_party\gurl\url_canon_internal.cc" />
+    <ClCompile Include="third_party\gurl\url_canon_ip.cc" />
+    <ClCompile Include="third_party\gurl\url_canon_path.cc" />
+    <ClCompile Include="third_party\gurl\url_canon_pathurl.cc" />
+    <ClCompile Include="third_party\gurl\url_canon_query.cc" />
+    <ClCompile Include="third_party\gurl\url_canon_relative.cc" />
+    <ClCompile Include="third_party\gurl\url_canon_stdurl.cc" />
+    <ClCompile Include="third_party\gurl\url_parse.cc" />
+    <ClCompile Include="third_party\gurl\url_parse_file.cc" />
+    <ClCompile Include="third_party\gurl\url_util.cc" />
     <ClCompile Include="third_party\stb_image.cpp" />
     <ClCompile Include="third_party\tinyxml2.cpp" />
     <ClCompile Include="utils\app_init_helper.cpp" />
@@ -163,7 +180,7 @@
     <ClInclude Include="base\basictypes.h" />
     <ClInclude Include="base\color.h" />
     <ClInclude Include="base\length.h" />
-    <ClInclude Include="base\padding.h" />
+    <ClInclude Include="base\inseting.h" />
     <ClInclude Include="base\point.h" />
     <ClInclude Include="base\range.h" />
     <ClInclude Include="base\rect.h" />
@@ -171,6 +188,7 @@
     <ClInclude Include="base\scoped_ptr.h" />
     <ClInclude Include="base\size.h" />
     <ClInclude Include="base\matrix.h" />
+    <ClInclude Include="base\url.h" />
     <ClInclude Include="base\value.h" />
     <ClInclude Include="control\button.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
@@ -210,6 +228,7 @@
     </ClInclude>
     <ClInclude Include="render\font.h" />
     <ClInclude Include="render\image.h" />
+    <ClInclude Include="render\render_box.h" />
     <ClInclude Include="render\render_context.h" />
     <ClInclude Include="render\render_object.h" />
     <ClInclude Include="render\uniscribe.h">
@@ -225,6 +244,19 @@
     <ClInclude Include="style\style_sheet.h" />
     <ClInclude Include="style\style_value.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="third_party\gurl\gurl.h" />
+    <ClInclude Include="third_party\gurl\url_canon.h" />
+    <ClInclude Include="third_party\gurl\url_canon_icu.h" />
+    <ClInclude Include="third_party\gurl\url_canon_internal.h" />
+    <ClInclude Include="third_party\gurl\url_canon_internal_file.h" />
+    <ClInclude Include="third_party\gurl\url_canon_ip.h" />
+    <ClInclude Include="third_party\gurl\url_canon_stdstring.h" />
+    <ClInclude Include="third_party\gurl\url_common.h" />
+    <ClInclude Include="third_party\gurl\url_file.h" />
+    <ClInclude Include="third_party\gurl\url_parse.h" />
+    <ClInclude Include="third_party\gurl\url_parse_internal.h" />
+    <ClInclude Include="third_party\gurl\url_util.h" />
+    <ClInclude Include="third_party\gurl\url_util_internal.h" />
     <ClInclude Include="third_party\stb_image.h" />
     <ClInclude Include="third_party\tinyxml2.h" />
     <ClInclude Include="utils\app_init_helper.h" />

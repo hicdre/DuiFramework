@@ -125,6 +125,7 @@ namespace ui
 		Rect ConvertRectFromChild(View* child, const Rect& r);
 	protected:
 		int GetMarginValue(StyleProperty p) const;
+		void UpdateBorderStyle();
 		//²ã¼¶¹ØÏµ
 		scoped_ptr<Container> container_;
 		View* parent_{ NULL };

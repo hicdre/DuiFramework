@@ -27,8 +27,38 @@ namespace ui
 
 		DOMElement* CreateDOMElement(tinyxml2::XMLElement* e)
 		{
-			DOMElement* elem = new DOMElement;
-			elem->setTag(e->Name());
+			DOMElement* elem = new DOMElement(doc_);
+
+			//elem->setTag(e->Name());
+			{
+				const char* val = e->Attribute("id");
+				if (val)
+				{
+					elem->setId(val);
+				}
+			}
+			{
+				const char* val = e->Attribute("class");
+				if (val)
+				{
+					while (true)
+					{
+						while (*val && isspace(*val))
+							++val;
+						if (!*val)
+							break;
+
+						const char* begin = val;
+
+						while (*val && (isalpha(*val) || isdigit(*val) || *val == '_' || *val == '-'))
+							++val;
+
+						const char* end = val;
+						if (begin < end)
+							elem->addClass(std::string(begin, end - begin));
+					}
+				}
+			}
 			return elem;
 		}
 

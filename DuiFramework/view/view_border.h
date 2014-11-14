@@ -30,6 +30,8 @@ namespace ui
 
 		void SetBorder(Direction direction, int size, Color color);
 		void SetBorder(int size, Color color);
+		void SetBorderColor(Direction direction, Color color);
+		void SetBorderWidth(Direction direction, int size);
 
 		int size(Direction direction) const;
 		Color color(Direction direction) const;
@@ -44,7 +46,7 @@ namespace ui
 		Color right_color() const;
 		Color bottom_color() const;
 
-		Padding GetPadding();
+		Inseting GetPadding();
 
 		void DoPaint(RenderContext* painter, const Rect& dest);
 	private:

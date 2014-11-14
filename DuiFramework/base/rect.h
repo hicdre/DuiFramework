@@ -1,7 +1,7 @@
 #pragma once
 #include "base/point.h"
 #include "base/size.h"
-#include "base/padding.h"
+#include "base/inseting.h"
 
 typedef struct tagRECT RECT;
 
@@ -48,7 +48,7 @@ namespace ui
 
 		// Shrink the rectangle by the specified amount on each side.
 		void Inset(int left, int top, int right, int bottom);
-		void Inset(const Padding& p);
+		void Inset(const Inseting& p);
 
 		// Move the rectangle by a horizontal and vertical distance.
 		void Offset(int horizontal, int vertical);

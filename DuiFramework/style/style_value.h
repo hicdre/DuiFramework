@@ -6,8 +6,10 @@ namespace ui
 	enum StyleValueType
 	{
 		StyleValue_Null,
-		StyleValue_None,
 		StyleValue_Auto,
+		StyleValue_Inherit,
+		StyleValue_None,
+		
 
 		StyleValue_Integer, //int
 		StyleValue_Percent, //float
@@ -58,6 +60,7 @@ namespace ui
 		float GetFloatValue() const;
 		const std::string& GetStringValue() const;
 		Color GetColorValue() const;
+		StyleValueArray* GetArrayValue() const;
 
 		void SetAutoValue();
 		void SetIntValue(int32 value, StyleValueType type);
@@ -65,6 +68,8 @@ namespace ui
 		void SetFloatValue(float value, StyleValueType type);
 		void SetStringValue(const std::string& val, StyleValueType type);
 		void SetColorValue(Color value);
+		void SetArrayValue(StyleValueArray* value);
+
 
 		bool IsEqual(StyleValue* val) const;
 	private:
@@ -122,4 +127,5 @@ namespace ui
 		std::vector<StyleValue*> array_;
 		DISALLOW_COPY_AND_ASSIGN(StyleValueArray);
 	};
+
 }

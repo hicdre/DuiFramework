@@ -37,6 +37,9 @@
     <Filter Include="style">
       <UniqueIdentifier>{aa7fb73c-905b-45ea-b9e1-a46578b5eaa4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="third_party\gurl">
+      <UniqueIdentifier>{829d8fb0-5f13-4e66-97e7-2de7c2318ace}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -101,9 +104,6 @@
     </ClCompile>
     <ClCompile Include="core\view_factory.cpp">
       <Filter>core</Filter>
-    </ClCompile>
-    <ClCompile Include="base\padding.cpp">
-      <Filter>base</Filter>
     </ClCompile>
     <ClCompile Include="base\point.cpp">
       <Filter>base</Filter>
@@ -195,6 +195,60 @@
     <ClCompile Include="style\style_sheet.cpp">
       <Filter>style</Filter>
     </ClCompile>
+    <ClCompile Include="base\inseting.cpp">
+      <Filter>base</Filter>
+    </ClCompile>
+    <ClCompile Include="render\render_box.cpp">
+      <Filter>render</Filter>
+    </ClCompile>
+    <ClCompile Include="third_party\gurl\gurl.cc">
+      <Filter>third_party\gurl</Filter>
+    </ClCompile>
+    <ClCompile Include="third_party\gurl\url_canon_etc.cc">
+      <Filter>third_party\gurl</Filter>
+    </ClCompile>
+    <ClCompile Include="third_party\gurl\url_canon_fileurl.cc">
+      <Filter>third_party\gurl</Filter>
+    </ClCompile>
+    <ClCompile Include="third_party\gurl\url_canon_host.cc">
+      <Filter>third_party\gurl</Filter>
+    </ClCompile>
+    <ClCompile Include="third_party\gurl\url_canon_icu.cc">
+      <Filter>third_party\gurl</Filter>
+    </ClCompile>
+    <ClCompile Include="third_party\gurl\url_canon_internal.cc">
+      <Filter>third_party\gurl</Filter>
+    </ClCompile>
+    <ClCompile Include="third_party\gurl\url_canon_ip.cc">
+      <Filter>third_party\gurl</Filter>
+    </ClCompile>
+    <ClCompile Include="third_party\gurl\url_canon_path.cc">
+      <Filter>third_party\gurl</Filter>
+    </ClCompile>
+    <ClCompile Include="third_party\gurl\url_canon_pathurl.cc">
+      <Filter>third_party\gurl</Filter>
+    </ClCompile>
+    <ClCompile Include="third_party\gurl\url_canon_query.cc">
+      <Filter>third_party\gurl</Filter>
+    </ClCompile>
+    <ClCompile Include="third_party\gurl\url_canon_relative.cc">
+      <Filter>third_party\gurl</Filter>
+    </ClCompile>
+    <ClCompile Include="third_party\gurl\url_canon_stdurl.cc">
+      <Filter>third_party\gurl</Filter>
+    </ClCompile>
+    <ClCompile Include="third_party\gurl\url_parse.cc">
+      <Filter>third_party\gurl</Filter>
+    </ClCompile>
+    <ClCompile Include="third_party\gurl\url_parse_file.cc">
+      <Filter>third_party\gurl</Filter>
+    </ClCompile>
+    <ClCompile Include="third_party\gurl\url_util.cc">
+      <Filter>third_party\gurl</Filter>
+    </ClCompile>
+    <ClCompile Include="base\url.cpp">
+      <Filter>base</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -274,9 +328,6 @@
       <Filter>core</Filter>
     </ClInclude>
     <ClInclude Include="base\color.h">
-      <Filter>base</Filter>
-    </ClInclude>
-    <ClInclude Include="base\padding.h">
       <Filter>base</Filter>
     </ClInclude>
     <ClInclude Include="base\point.h">
@@ -368,6 +419,54 @@
     </ClInclude>
     <ClInclude Include="style\style_sheet.h">
       <Filter>style</Filter>
+    </ClInclude>
+    <ClInclude Include="base\inseting.h">
+      <Filter>base</Filter>
+    </ClInclude>
+    <ClInclude Include="render\render_box.h">
+      <Filter>render</Filter>
+    </ClInclude>
+    <ClInclude Include="base\url.h">
+      <Filter>base</Filter>
+    </ClInclude>
+    <ClInclude Include="third_party\gurl\gurl.h">
+      <Filter>third_party\gurl</Filter>
+    </ClInclude>
+    <ClInclude Include="third_party\gurl\url_canon.h">
+      <Filter>third_party\gurl</Filter>
+    </ClInclude>
+    <ClInclude Include="third_party\gurl\url_canon_icu.h">
+      <Filter>third_party\gurl</Filter>
+    </ClInclude>
+    <ClInclude Include="third_party\gurl\url_canon_internal.h">
+      <Filter>third_party\gurl</Filter>
+    </ClInclude>
+    <ClInclude Include="third_party\gurl\url_canon_internal_file.h">
+      <Filter>third_party\gurl</Filter>
+    </ClInclude>
+    <ClInclude Include="third_party\gurl\url_canon_ip.h">
+      <Filter>third_party\gurl</Filter>
+    </ClInclude>
+    <ClInclude Include="third_party\gurl\url_canon_stdstring.h">
+      <Filter>third_party\gurl</Filter>
+    </ClInclude>
+    <ClInclude Include="third_party\gurl\url_file.h">
+      <Filter>third_party\gurl</Filter>
+    </ClInclude>
+    <ClInclude Include="third_party\gurl\url_parse.h">
+      <Filter>third_party\gurl</Filter>
+    </ClInclude>
+    <ClInclude Include="third_party\gurl\url_parse_internal.h">
+      <Filter>third_party\gurl</Filter>
+    </ClInclude>
+    <ClInclude Include="third_party\gurl\url_util.h">
+      <Filter>third_party\gurl</Filter>
+    </ClInclude>
+    <ClInclude Include="third_party\gurl\url_util_internal.h">
+      <Filter>third_party\gurl</Filter>
+    </ClInclude>
+    <ClInclude Include="third_party\gurl\url_common.h">
+      <Filter>third_party\gurl</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

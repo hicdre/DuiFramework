@@ -533,37 +533,43 @@ namespace ui
 
 	bool StyleParser::ParseProperty(StyleProperty aPropID, StyleValue*& v)
 	{
-		bool result;
+		bool result = false;
+		scoped_refptr<StyleValue> value(new StyleValue);
 		switch (StyleFindParseType(aPropID)) {
-// 		case PROPERTY_PARSE_FUNCTION: {
-// 				result = ParsePropertyByFunction(aPropID);
-// 				break;
-// 			}
-		case PROPERTY_PARSE_VALUE:{
-				result = false;
-				scoped_refptr<StyleValue> value(new StyleValue);
-				if (ParseSingleValueProperty(aPropID, value.get())) {
-					if (ExpectEndProperty()) {
-						v = value.get();
-						v->AddRef();
-						result = true;
-					}
-					// XXX Report errors?
+		case PROPERTY_PARSE_FUNCTION:
+			if (ParsePropertyByFunction(aPropID, value.get())) {
+				v = value.get();
+				v->AddRef();
+				result = true;
+			}
+			break;
+		case PROPERTY_PARSE_VALUE:
+			if (ParseSingleValueProperty(aPropID, value.get())) {
+				if (ExpectEndProperty()) {
+					v = value.get();
+					v->AddRef();
+					result = true;
 				}
 				// XXX Report errors?
-				break;
 			}
-// 	   case PROPERTY_PARSE_VALUE_LIST: {
-// 				result = ParseValueList(aPropID);
-// 				break;
-// 			}
-		default: {
-				result = false;
-				//NS_ABORT_IF_FALSE(false,
-				//	"Property's flags field in nsCSSPropList.h is missing "
-				//	"one of the CSS_PROPERTY_PARSE_* constants");
-				break;
+			// XXX Report errors?
+			break;
+		case PROPERTY_PARSE_VALUE_LIST: 
+			value->SetArrayValue(new StyleValueArray);
+			if (ParseValueList(aPropID, value->GetArrayValue()))
+			{
+				v = value.get();
+				v->AddRef();
+				result = true;
 			}
+			//scoped_refptr<StyleValue> value(new StyleValue);
+ 			break;
+ 			
+		default: 
+			//NS_ABORT_IF_FALSE(false,
+			//	"Property's flags field in nsCSSPropList.h is missing "
+			//	"one of the CSS_PROPERTY_PARSE_* constants");
+			break;
 		}
 
 		return result;
@@ -635,6 +641,26 @@ namespace ui
 		return false;
 	}
 
+
+	bool StyleParser::ParseValueList(StyleProperty p, StyleValueArray* a)
+	{
+		for (;;) {
+			scoped_refptr<StyleValue> value(new StyleValue);
+			if (!ParseSingleValueProperty(p, value.get())) {
+				return false;
+			}
+			if (CheckEndProperty()) {
+				break;
+			}
+			if (!ExpectSymbol(',', true)) {
+				return false;
+			}
+			a->Add(value.get());
+		}
+		return true;
+	}
+
+
 	bool StyleParser::ParseVariant(StyleValue* aValue, int32 aVariantMask)
 	{
 		if (!GetToken(true)) {
@@ -693,8 +719,15 @@ namespace ui
 			return true;
 		}
 
+		if (((aVariantMask & VARIANT_URL) != 0) &&
+			Token_URL == tk->mType) {
+			SetValueToURL(aValue, tk->mIdent);
+			return true;
+		}
+
 		if ((aVariantMask & VARIANT_GRADIENT) != 0 &&
 			Token_Function == tk->mType) {
+			ParseLinearGradient(aValue);
 			return false;
 		}
 
@@ -1245,6 +1278,34 @@ namespace ui
 		return false;
 	}
 
-	
+	void StyleParser::SetValueToURL(StyleValue* v, const std::string& str)
+	{
+		v->SetStringValue(str, StyleValue_ResourceImage);
+	}
+
+	bool StyleParser::ParseLinearGradient(StyleValue* v)
+	{
+		return false;
+	}
+
+	bool StyleParser::ParsePropertyByFunction(StyleProperty p, StyleValue* v)
+	{
+		switch (p) {
+		case Style_Cursor:
+			return ParseCursor(v);
+		default:
+			return false;
+		}
+	}
+
+	bool StyleParser::ParseCursor(StyleValue* v)
+	{
+		scoped_ptr<StyleValueArray> cur(new StyleValueArray);
+		for (;;) {
+		}
+		return false;
+	}
 
 }
+
+

@@ -35,7 +35,9 @@ namespace ui
 			bool aMustCallValueAppended,
 			bool* aChanged);
 		bool ParseProperty(StyleProperty p, StyleValue*& v);
+		bool ParsePropertyByFunction(StyleProperty p, StyleValue* v);
 		bool ParseSingleValueProperty(StyleProperty p, StyleValue* v);
+		bool ParseValueList(StyleProperty p, StyleValueArray* a);
 		bool ParseVariant(StyleValue* v, int32 aVariantMask);
 		bool ParseNonNegativeVariant(StyleValue* v, int32 aVariantMask);
 
@@ -43,6 +45,11 @@ namespace ui
 		bool ParseColorComponent(uint8& aComponent, int32& aType, char aStop);
 		bool ParseColorOpacity(uint8& aOpacity);
 		bool ParseHSLColor(Color& aColor, char aStop);
+
+		bool ParseLinearGradient(StyleValue* v);
+		bool ParseCursor(StyleValue* v);
+
+		void SetValueToURL(StyleValue* v, const std::string& str);
 
 		void AppendRule(StyleRule* rule);
 

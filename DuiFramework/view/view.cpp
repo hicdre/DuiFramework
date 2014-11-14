@@ -783,15 +783,22 @@ namespace ui
 	{
 		sheets->MatchRules(this, style_declarations_);
 
-		StyleValue* color = style_declarations_.FindValue(Style_BackgroundColor);
-		if (color && color->IsColorValue())
-		{
-			if (!background_.get())
+		{//backaground-color
+			StyleValue* color = style_declarations_.FindValue(Style_BackgroundColor);
+			if (color && color->IsColorValue())
 			{
-				background_.reset(new Background);
+				if (!background_.get())
+				{
+					background_.reset(new Background);
+				}
+				background_->SetColor(color->GetColorValue());
 			}
-			background_->SetColor(color->GetColorValue());
 		}
+
+		UpdateBorderStyle();
+		
+		//cursor
+
 		////set into layout box
 		
 
@@ -800,6 +807,40 @@ namespace ui
 
 
 	}
+
+	void View::UpdateBorderStyle()
+	{
+		const StyleProperty kBorderColor[] = {
+			Style_BorderLeftColor,
+			Style_BorderTopColor,
+			Style_BorderRightColor,
+			Style_BorderBottomColor
+		};
+		for (int i = 0; i < 4; i++)
+		{
+			StyleValue* color = style_declarations_.FindValue(kBorderColor[i]);
+			if (color && color->IsColorValue())
+			{
+				if (!border_.get())
+				{
+					border_.reset(new Border);
+				}
+				border_->SetBorderColor((Border::Direction)(Border::LEFT + i), color->GetColorValue());
+			}
+
+			StyleValue* width = style_declarations_.FindValue(StyleProperty(kBorderColor[i] + 1));
+			if (width && width->GetType() == StyleValue_Pixel)
+			{
+				if (!border_.get())
+				{
+					border_.reset(new Border);
+				}
+				border_->SetBorderWidth(Border::LEFT, width->GetPixel());
+			}
+		}
+			
+	}
+
 
 	
 

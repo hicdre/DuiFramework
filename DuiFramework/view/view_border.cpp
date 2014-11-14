@@ -91,9 +91,20 @@ namespace ui
 		return color(BOTTOM);
 	}
 
-	ui::Padding Border::GetPadding()
+	ui::Inseting Border::GetPadding()
 	{
-		return Padding(left(), top(), right(), bottom());
+		return Inseting(left(), top(), right(), bottom());
+	}
+
+	void Border::SetBorderColor(Direction direction, Color color)
+	{
+		border_color_[direction] = color;
+	}
+
+	void Border::SetBorderWidth(Direction direction, int size)
+	{
+		border_size_[direction] = size;
+		
 	}
 
 }
