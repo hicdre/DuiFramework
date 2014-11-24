@@ -43,6 +43,8 @@ namespace ui
 		Token_Bad_String,     // 'foo bar
 		Token_URL,            // url(foobar) url("foo bar")
 		Token_Bad_URL,        // url(foo
+		Token_RES,            // res(abc) res("adb")
+		Token_Bad_RES,            // res(abc
 
 		// Any one-character symbol.  mSymbol holds the character.
 		Token_Symbol,         // . ; { } ! *
@@ -131,6 +133,8 @@ namespace ui
 		// tokens behave like url().  Please do not add new uses to the
 		// parser.
 		bool NextURL(StyleToken& aTokenResult);
+
+		bool NextRES(StyleToken& aTokenResult);
 
 		// This is exposed for use by nsCSSParser::ParsePseudoClassWithNthPairArg,
 		// because "2n-1" is a single DIMENSION token, and "n-1" is a single

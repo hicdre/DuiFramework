@@ -21,5 +21,14 @@ namespace ui
 
 	void spilt_string(const std::string& input, char tag, std::vector<std::string>& output, size_t maxcount = static_cast<size_t>(-1));
 
+	std::wstring dirname(const std::wstring& path);
 
+	bool isdir(const std::wstring& path);
+
+	bool mkdir(const std::wstring& path);
+
+	bool rm(const std::wstring& path, bool recursive);
+
+	std::wstring pathcombine(const std::wstring& dir, const wchar_t* file);
+	std::wstring pathcombine(const std::wstring& dir, const std::wstring& file);
 }

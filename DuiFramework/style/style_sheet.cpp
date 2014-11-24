@@ -1,13 +1,14 @@
 #include "stdafx.h"
 #include "style_sheet.h"
 #include "utils/utils.h"
+#include "utils/resource_loader.h"
 #include "style_parser.h"
 
 namespace ui
 {
 
-
-	StyleSheet::StyleSheet()
+	StyleSheet::StyleSheet(const URL& url)
+		: url_(url)
 	{
 
 	}
@@ -32,20 +33,6 @@ namespace ui
 	int32 StyleSheet::StyleRuleCount() const
 	{
 		return rules_.size();
-	}
-
-	scoped_refptr<StyleSheet> StyleSheet::LoadFromFile(const std::wstring& path)
-	{
-		std::string contents;
-		if (!ReadFileToString(path, &contents))
-			return NULL;
-
-		StyleParser parser;
-		scoped_refptr<StyleSheet> sheet(new StyleSheet);
-		parser.SetStyleSheet(sheet.get());
-		if (!parser.ParseSheet(contents, 0))
-			return NULL;
-		return sheet;
 	}
 
 	void StyleSheet::MatchRules(View* v, StyleDeclarationList& r)

@@ -116,6 +116,7 @@
     <ClCompile Include="dom\dom_document.cpp" />
     <ClCompile Include="dom\dom_element.cpp" />
     <ClCompile Include="dom\dom_node.cpp" />
+    <ClCompile Include="dom\dom_parser.cpp" />
     <ClCompile Include="event\event.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
@@ -165,9 +166,12 @@
     <ClCompile Include="third_party\stb_image.cpp" />
     <ClCompile Include="third_party\tinyxml2.cpp" />
     <ClCompile Include="utils\app_init_helper.cpp" />
+    <ClCompile Include="utils\icu_utf.cpp" />
     <ClCompile Include="utils\image_file.cpp" />
     <ClCompile Include="utils\image_store.cpp" />
     <ClCompile Include="utils\lex_parser.cpp" />
+    <ClCompile Include="utils\resource_cache.cpp" />
+    <ClCompile Include="utils\resource_loader.cpp" />
     <ClCompile Include="utils\utils.cpp" />
     <ClCompile Include="view\view_background.cpp" />
     <ClCompile Include="view\view_border.cpp" />
@@ -213,6 +217,7 @@
     <ClInclude Include="dom\dom_document.h" />
     <ClInclude Include="dom\dom_element.h" />
     <ClInclude Include="dom\dom_node.h" />
+    <ClInclude Include="dom\dom_parser.h" />
     <ClInclude Include="duiframework.h" />
     <ClInclude Include="event\event.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
@@ -249,6 +254,7 @@
     <ClInclude Include="third_party\gurl\url_canon_icu.h" />
     <ClInclude Include="third_party\gurl\url_canon_internal.h" />
     <ClInclude Include="third_party\gurl\url_canon_internal_file.h" />
+    <ClInclude Include="third_party\gurl\url_canon_internal_res.h" />
     <ClInclude Include="third_party\gurl\url_canon_ip.h" />
     <ClInclude Include="third_party\gurl\url_canon_stdstring.h" />
     <ClInclude Include="third_party\gurl\url_common.h" />
@@ -260,9 +266,12 @@
     <ClInclude Include="third_party\stb_image.h" />
     <ClInclude Include="third_party\tinyxml2.h" />
     <ClInclude Include="utils\app_init_helper.h" />
+    <ClInclude Include="utils\icu_utf.h" />
     <ClInclude Include="utils\image_file.h" />
     <ClInclude Include="utils\image_store.h" />
     <ClInclude Include="utils\lex_parser.h" />
+    <ClInclude Include="utils\resource_cache.h" />
+    <ClInclude Include="utils\resource_loader.h" />
     <ClInclude Include="utils\utils.h" />
     <ClInclude Include="view\view_background.h" />
     <ClInclude Include="view\view_border.h" />

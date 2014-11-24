@@ -59,11 +59,12 @@ inline bool DoLowerCaseEqualsASCII(Iter a_begin, Iter a_end, const char* b) {
   return *b == 0;
 }
 
-const int kNumStandardURLSchemes = 3;
+const int kNumStandardURLSchemes = 4;
 const char* kStandardURLSchemes[kNumStandardURLSchemes] = {
   "http",
   "https",
   kFileScheme,  // Yes, file urls can have a hostname!
+  "res",
 };
 
 // List of the currently installed standard schemes. This list is lazily
@@ -325,10 +326,10 @@ bool DoReplaceComponents(const char* spec,
     return url_canon::ReplaceStandardURL(spec, parsed, replacements,
                                          charset_converter, output, out_parsed);
   }
-  if (DoCompareSchemeComponent(spec, parsed.scheme, kMailtoScheme)) {
+  /*if (DoCompareSchemeComponent(spec, parsed.scheme, kMailtoScheme)) {
      return url_canon::ReplaceMailtoURL(spec, parsed, replacements,
                                         output, out_parsed);
-  }
+  }*/
 
   // Default is a path URL.
   return url_canon::ReplacePathURL(spec, parsed, replacements,

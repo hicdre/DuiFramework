@@ -6,14 +6,15 @@
 
 namespace ui
 {
-	class DOMElement : public DOMNode
+	class UIElement : public UINode
 	{
-		friend class DOMDocument;
+		friend class UIDocument;
 	public:
-		DOMElement(DOMDocument* doc);
-		~DOMElement();
+		UIElement(UIDocumentPtr doc);
+		~UIElement();
 
-		virtual const char* getTag() const;
+		void setTag(const std::string& tag);
+		const std::string& getTag() const;
 
 		void setId(const std::string& id);
 		const std::string& getId() const;
@@ -26,6 +27,7 @@ namespace ui
 
 
 	protected:
+		std::string tag_;
 		std::string id_;
 		std::set<std::string> classes_;
 		RenderObject* render_tree_;

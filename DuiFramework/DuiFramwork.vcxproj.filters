@@ -249,6 +249,18 @@
     <ClCompile Include="base\url.cpp">
       <Filter>base</Filter>
     </ClCompile>
+    <ClCompile Include="utils\resource_loader.cpp">
+      <Filter>utils</Filter>
+    </ClCompile>
+    <ClCompile Include="utils\resource_cache.cpp">
+      <Filter>utils</Filter>
+    </ClCompile>
+    <ClCompile Include="dom\dom_parser.cpp">
+      <Filter>dom</Filter>
+    </ClCompile>
+    <ClCompile Include="utils\icu_utf.cpp">
+      <Filter>utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -466,6 +478,21 @@
       <Filter>third_party\gurl</Filter>
     </ClInclude>
     <ClInclude Include="third_party\gurl\url_common.h">
+      <Filter>third_party\gurl</Filter>
+    </ClInclude>
+    <ClInclude Include="utils\resource_loader.h">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="utils\resource_cache.h">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="dom\dom_parser.h">
+      <Filter>dom</Filter>
+    </ClInclude>
+    <ClInclude Include="utils\icu_utf.h">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="third_party\gurl\url_canon_internal_res.h">
       <Filter>third_party\gurl</Filter>
     </ClInclude>
   </ItemGroup>

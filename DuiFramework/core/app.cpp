@@ -62,6 +62,12 @@ namespace ui
 
 		InitMessageWndClass();
 		Widget::InitClass();
+
+		{
+			app_path_.resize(MAX_PATH);
+			DWORD size = GetModuleFileName(instance_, &app_path_[0], MAX_PATH);
+			app_path_.resize(size);
+		}
 	}
 
 
@@ -197,9 +203,24 @@ namespace ui
 		return image_store_.get();
 	}
 
+
+	ResourceLoader* App::GetResourceLoader()
+	{
+		if (!resource_loader_.get()) {
+			resource_loader_.reset(new ResourceLoader);
+		}
+		return resource_loader_.get();
+	}
+
+
 	void App::Quit()
 	{
 		::PostQuitMessage(0);
+	}
+
+	std::wstring App::GetAppPath() const
+	{
+		return app_path_;
 	}
 
 

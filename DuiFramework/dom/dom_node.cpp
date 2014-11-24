@@ -1,193 +1,207 @@
 #include "stdafx.h"
 #include "dom_node.h"
+#include "dom_element.h"
+#include "dom_document.h"
 
 namespace ui
 {
-	DOMNode* DOMNode::lastChild() const
-	{
-		return last_child_;
-	}
-
-	DOMNode* DOMNode::firstChild() const
-	{
-		return first_child_;
-	}
-
-	DOMNode* DOMNode::nextSibling() const
-	{
-		return next_sibling_;
-	}
-
-	DOMNode* DOMNode::previousSibling() const
-	{
-		return prev_sibling_;
-	}
-
-	bool DOMNode::HasChildren() const
-	{
-		return !!first_child_;
-	}
-
-	DOMNode* DOMNode::parent()
-	{
-		return parent_;
-	}
-
-	DOMDocument* DOMNode::GetDocument()
-	{
-		return document_;
-	}
-
-	DOMNode::DOMNode(DOMDocument* doc)
+	UINode::UINode(UIDocumentPtr doc)
 		: document_(doc)
 	{
 
 	}
-	DOMNode::~DOMNode()
+
+	UINode::~UINode()
 	{
-		DeleteChildren();
+		RemoveChildren();
 	}
 
-	DOMNode* DOMNode::AppendTo(DOMNode* parent)
+	UIDocumentPtr UINode::GetDocument()
 	{
-		return parent->Append(this);
+		return document_;
 	}
 
-	DOMNode* DOMNode::Detach()
+	UINodePtr UINode::lastChild() const
 	{
-		return parent_->Remove(this);
+		return last_child_;
 	}
 
-	DOMNode* DOMNode::Append(DOMNode* child)
+	UINodePtr UINode::firstChild() const
 	{
-		return InsertAfter(last_child_, child);
+		return first_child_;
 	}
 
-	DOMNode* DOMNode::Remove(DOMNode* child)
+	UINodePtr UINode::nextSibling() const
 	{
-		//只允许移除子节点
-		if (!child || child->parent_ != this)
-		{
-			assert(0); //<< "can only remove child node";
-			return NULL;
+		return next_sibling_;
+	}
+
+	UINodePtr UINode::previousSibling() const
+	{
+		return prev_sibling_;
+	}
+
+	bool UINode::HasChildren() const
+	{
+		return !!first_child_;
+	}
+
+	UINodePtr UINode::parent()
+	{
+		return parent_;
+	}
+
+	void UINode::AppendTo(UINodePtr parent)
+	{
+		parent_->Append(this);
+	}
+
+	void UINode::Detach()
+	{
+		if (parent_)
+			parent_->Remove(this);
+	}
+
+	void UINode::Append(UINodePtr child)
+	{
+		if (child->document_ != document_) {
+			assert(0);
+			return;
 		}
 
-		//更新父子关系
-		child->parent_ = NULL;
-		if (first_child_ == child)
-		{
-			first_child_ = child->next_sibling_;
-		}
-		if (last_child_ == child)
-		{
-			last_child_ = child->prev_sibling_;
+		if (child->parent_) {
+			child->parent_->Unlink(child);
 		}
 
-		//更新兄弟关系
-		if (child->prev_sibling_)
-		{
+		if (last_child_) {
+			last_child_->next_sibling_ = child;
+			child->prev_sibling_ = last_child_;
+			last_child_ = child;
+			child->next_sibling_ = NULL;
+		}
+		else {
+			first_child_ = child;
+			last_child_ = child;
+
+			child->prev_sibling_ = NULL;
+			child->next_sibling_ = NULL;
+		}
+
+		child->parent_ = UINodePtr(this);
+	}
+
+
+	void UINode::Prepend(UINodePtr child)
+	{
+		if (child->document_ != document_) {
+			assert(0);
+			return;
+		}
+
+		if (child->parent_) {
+			child->parent_->Unlink(child);
+		}
+
+		if (first_child_) {
+			first_child_->prev_sibling_ = child;
+			child->next_sibling_ = first_child_;
+			first_child_ = child;
+			child->prev_sibling_ = NULL;
+		}
+		else {
+			first_child_ = child;
+			last_child_ = child;
+
+			child->prev_sibling_ = NULL;
+			child->next_sibling_ = NULL;
+		}
+
+		child->parent_ = UINodePtr(this);
+	}
+
+	void UINode::Unlink(UINodePtr child)
+	{
+		if (first_child_.get() == child.get()) {
+			first_child_ = first_child_->next_sibling_;
+		}
+
+		if (last_child_.get() == child.get()) {
+			last_child_ = last_child_->prev_sibling_;
+		}
+
+		if (child->prev_sibling_) {
 			child->prev_sibling_->next_sibling_ = child->next_sibling_;
 		}
-
-		if (child->next_sibling_)
-		{
+		if (child->next_sibling_) {
 			child->next_sibling_->prev_sibling_ = child->prev_sibling_;
 		}
-
-		child->next_sibling_ = NULL;
-		child->prev_sibling_ = NULL;
-
-		//child_count_--;
-
-		return child;
+		child->parent_.reset();
 	}
 
-	DOMNode* DOMNode::InsertAfter(DOMNode* ref, DOMNode* child)
+	void UINode::Remove(UINodePtr child)
 	{
-		if (ref == child || child == NULL || (ref && ref->parent_ != this))
+		//只允许移除子节点
+		if (!child || child->parent_.get() != this)
+		{
+			assert(0); //<< "can only remove child node";
+			return;
+		}
+
+		Unlink(child);
+
+		child->prev_sibling_ = NULL;
+		child->next_sibling_ = NULL;
+	}
+
+	void UINode::InsertAfterChild(UINodePtr ref, UINodePtr child)
+	{
+		if (ref == child || child == NULL || (ref && ref->parent_.get() != this))
 		{
 			assert(0);
-			return NULL;
+			return;
 		}
 
-		//先从原节点移除
-		if (child->parent_)
-		{
-			child->parent_->Remove(child);
+		if (!ref->next_sibling_) {
+			Append(child);
+			return;
 		}
-		child->parent_ = this;
+
+		if (child->parent_)
+			child->parent_->Unlink(child);
 
 		child->prev_sibling_ = ref;
-		if (ref)
-		{//插到中间或最后
-			child->next_sibling_ = ref->next_sibling_;
-			if (ref->next_sibling_)
-			{
-				ref->next_sibling_->prev_sibling_ = child;
-			}
-			ref->next_sibling_ = child;
+		child->next_sibling_ = ref->next_sibling_;
+		ref->next_sibling_->prev_sibling_ = child;
+		ref->next_sibling_ = ref;
 
-			assert(last_child_);
-			//插到最后了
-			if (last_child_->next_sibling_)
-			{
-				last_child_ = last_child_->next_sibling_;
-			}
-		}
-		else
-		{//插到最前
-			child->next_sibling_ = first_child_;
-			if (first_child_)
-			{
-				first_child_->prev_sibling_ = child;
-			}
-			first_child_ = child;
-
-			//原来没有子元素
-			if (last_child_ == NULL)
-			{
-				last_child_ = child;
-			}
-		}
-		//child_count_++;
-
-		return child;
+		child->parent_ = UINodePtr(this);
 	}
 
-	DOMNode* DOMNode::InsertBefore(DOMNode* ref, DOMNode* child)
+	void UINode::InsertBeforeChild(UINodePtr ref, UINodePtr child)
 	{
-		if (ref == child || child == NULL || (ref && ref->parent_ != this))
+		if (ref == child || child.get() == NULL || (ref && ref->parent_.get() != this))
 		{
 			assert(0);// << "insert before invalid";
-			return NULL;
+			return;
 		}
 
-		if (ref)
+		if (ref->prev_sibling_)
 		{
-			return InsertAfter(ref->prev_sibling_, child);
+			return InsertAfterChild(ref->prev_sibling_, child);
 		}
 		else
 		{
-			return InsertAfter(last_child_, child);
+			return Prepend(child);
 		}
 	}
 
-	void DOMNode::DeleteChildren()
+	void UINode::RemoveChildren()
 	{
 		while (first_child_) {
-			DOMNode* node = first_child_;
-			DeleteChild(node);
+			UINodePtr node = first_child_;
+
+			Unlink(node);
 		}
 	}
-
-	void DOMNode::DeleteChild(DOMNode* n)
-	{
-		DOMNode* node = Remove(n);
-		if (node) {
-			delete node;
-		}
-	}
-
-
 
 }

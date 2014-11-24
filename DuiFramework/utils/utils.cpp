@@ -3,6 +3,9 @@
 
 #include "base/basictypes.h"
 #include <cassert>
+#include <ShellAPI.h>
+#include <shlwapi.h>
+
 
 namespace ui
 {
@@ -211,6 +214,134 @@ namespace ui
 			output.push_back(temp.substr(0, ipos));
 			temp = temp.substr(ipos + 1);
 		}
+	}
+
+	std::wstring dirname(const std::wstring& path)
+	{
+		wchar_t buffer[MAX_PATH] = { 0 };
+		memcpy(buffer, path.c_str(), sizeof(wchar_t)*path.size());
+		PathRemoveFileSpecW(buffer);
+		return buffer;
+	}
+
+	bool isdir(const std::wstring& path)
+	{
+		WIN32_FILE_ATTRIBUTE_DATA attr;
+		if (!::GetFileAttributesEx(path.c_str(),
+			GetFileExInfoStandard, &attr)) {
+			return false;
+		}
+
+		if (attr.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
+			return true;
+		return false;
+	}
+
+	bool mkdir(const std::wstring& path)
+	{
+		// If the path exists, we've succeeded if it's a directory, failed otherwise.
+		const wchar_t* full_path_str = path.c_str();
+		DWORD fileattr = ::GetFileAttributes(full_path_str);
+		if (fileattr != INVALID_FILE_ATTRIBUTES) {
+			if ((fileattr & FILE_ATTRIBUTE_DIRECTORY) != 0) {
+				return true;
+			}
+			return false;
+		}
+
+		// Invariant:  Path does not exist as file or directory.
+
+		// Attempt to create the parent recursively.  This will immediately return
+		// true if it already exists, otherwise will create all required parent
+		// directories starting with the highest-level missing parent.
+		std::wstring parent_path = dirname(path);
+		if (parent_path == path) {
+			return false;
+		}
+		if (!mkdir(parent_path)) {
+			//DLOG(WARNING) << "Failed to create one of the parent directories.";
+			return false;
+		}
+
+		if (!::CreateDirectory(full_path_str, NULL)) {
+			DWORD error_code = ::GetLastError();
+			if (error_code == ERROR_ALREADY_EXISTS && isdir(path)) {
+				// This error code ERROR_ALREADY_EXISTS doesn't indicate whether we
+				// were racing with someone creating the same directory, or a file
+				// with the same path.  If DirectoryExists() returns true, we lost the
+				// race to create the same directory.
+				return true;
+			}
+			else {
+				return false;
+			}
+		}
+		else {
+			return true;
+		}
+	}
+
+	bool rm(const std::wstring& path, bool recursive)
+	{
+		if (path.size() >= MAX_PATH)
+			return false;
+
+		if (!recursive) {
+			// If not recursing, then first check to see if |path| is a directory.
+			// If it is, then remove it with RemoveDirectory.
+			WIN32_FILE_ATTRIBUTE_DATA attr;
+			if (!::GetFileAttributesEx(path.c_str(),
+				GetFileExInfoStandard, &attr)) {
+				return false;
+			}
+
+			if (attr.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
+				return ::RemoveDirectory(path.c_str()) != 0;
+
+			// Otherwise, it's a file, wildcard or non-existant. Try DeleteFile first
+			// because it should be faster. If DeleteFile fails, then we fall through
+			// to SHFileOperation, which will do the right thing.
+			if (::DeleteFile(path.c_str()) != 0)
+				return true;
+		}
+
+		// SHFILEOPSTRUCT wants the path to be terminated with two NULLs,
+		// so we have to use wcscpy because wcscpy_s writes non-NULLs
+		// into the rest of the buffer.
+		wchar_t double_terminated_path[MAX_PATH + 1] = { 0 };
+		wcscpy_s(double_terminated_path, path.size() + 1, path.c_str());
+
+		SHFILEOPSTRUCT file_operation = { 0 };
+		file_operation.wFunc = FO_DELETE;
+		file_operation.pFrom = double_terminated_path;
+		file_operation.fFlags = FOF_NOERRORUI | FOF_SILENT | FOF_NOCONFIRMATION;
+		if (!recursive)
+			file_operation.fFlags |= FOF_NORECURSION | FOF_FILESONLY;
+		int err = ::SHFileOperation(&file_operation);
+
+		// Since we're passing flags to the operation telling it to be silent,
+		// it's possible for the operation to be aborted/cancelled without err
+		// being set (although MSDN doesn't give any scenarios for how this can
+		// happen).  See MSDN for SHFileOperation and SHFILEOPTSTRUCT.
+		if (file_operation.fAnyOperationsAborted)
+			return false;
+
+		// Some versions of Windows return ERROR_FILE_NOT_FOUND (0x2) when deleting
+		// an empty directory and some return 0x402 when they should be returning
+		// ERROR_FILE_NOT_FOUND. MSDN says Vista and up won't return 0x402.
+		return (err == 0 || err == ERROR_FILE_NOT_FOUND || err == 0x402);
+	}
+
+	std::wstring pathcombine(const std::wstring& dir, const wchar_t* file)
+	{
+		wchar_t buffer[MAX_PATH] = { 0 };
+		PathCombineW(buffer, dir.c_str(), file);
+		return std::wstring(buffer);
+	}
+
+	std::wstring pathcombine(const std::wstring& dir, const std::wstring& file)
+	{
+		return pathcombine(dir, file.c_str());
 	}
 
 

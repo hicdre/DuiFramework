@@ -6,18 +6,18 @@ namespace ui
 	/*
 		RenderTree
 	*/
-	class DOMElement;
+	class UIElement;
 	class RenderContext;
 	class RenderObject
 	{
 	public:
-		RenderObject(DOMElement* elem);
+		RenderObject(UIElement* elem);
 		~RenderObject();
 
 		RenderObject* parent() const;
 		bool isDescendantOf(const RenderObject*) const;
 
-		DOMElement* domElement();
+		UIElement* domElement();
 
 		RenderObject* firstChild() const;
 		RenderObject* lastChild() const;
@@ -55,6 +55,6 @@ namespace ui
 
 		Rect bounds_; //  µº Œª÷√
 
-		DOMElement* element_;
+		UIElement* element_;
 	};
 }

@@ -3,6 +3,7 @@
 #include "view/view.h"
 #include "utils/utils.h"
 #include "window.h"
+#include "utils/resource_loader.h"
 
 namespace ui
 {
@@ -243,9 +244,9 @@ namespace ui
 		const char* file = xml_element->Attribute("src");
 		if (file) 
 		{
-			scoped_refptr<StyleSheet>  sheet = StyleSheet::LoadFromFile(MultiByteToWide(file));
-			if (sheet.get())
-				window_->AddStyleSheet(sheet.get());
+			//scoped_refptr<StyleSheet>  sheet = ResourceLoader::Get()->GetStyleSheet(MultiByteToWide(file));
+			//if (sheet.get())
+			//	window_->AddStyleSheet(sheet.get());
 		}
 	}
 

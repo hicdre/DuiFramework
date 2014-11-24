@@ -153,6 +153,11 @@ public:
 		if (p_)
 			p_->AddRef();
 	}
+	scoped_refptr<T>& operator=(const scoped_refptr<T>& r) {
+		reset(r.p_);
+		return (*this);
+	}
+
 	void Clear()
 	{
 		if (p_)
@@ -174,12 +179,28 @@ public:
 	{
 		return p_;
 	}
-	void reset(T* p)
+	void reset(T* p = NULL)
 	{
 		Clear();
 		p_ = p;
 		if (p_)
 			p_->AddRef();
+	}
+
+	bool operator!() const {
+		return !p_;
+	}
+
+	explicit operator bool() const {
+		return !!p_;
+	}
+
+	bool operator==(const scoped_refptr<T>& other) const {
+		return p_ == other.p_;
+	}
+
+	bool operator!=(const scoped_refptr<T>& other) const {
+		return p_ != other.p_;
 	}
 private:
 	T* p_;

@@ -6,7 +6,7 @@ namespace ui
 {
 
 
-	RenderObject::RenderObject(DOMElement* elem)
+	RenderObject::RenderObject(UIElement* elem)
 		: parent_(NULL)
 		, first_(NULL)
 		, last_(NULL)
@@ -36,7 +36,7 @@ namespace ui
 		return p != NULL;
 	}
 
-	DOMElement* RenderObject::domElement()
+	UIElement* RenderObject::domElement()
 	{
 		return element_;
 	}

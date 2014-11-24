@@ -129,7 +129,7 @@ void ICUCharsetConverter::ConvertFromUTF16(const wchar_t* input,
   } while (true);
 #endif
 }
-#if 0
+
 // Converts the Unicode input representing a hostname to ASCII using IDN rules.
 // The output must be ASCII, but is represented as wide characters.
 //
@@ -140,6 +140,9 @@ void ICUCharsetConverter::ConvertFromUTF16(const wchar_t* input,
 //
 // On error, this will return false. The output in this case is undefined.
 bool IDNToASCII(const wchar_t* src, int src_len, CanonOutputW* output) {
+	assert(0);
+	return false;
+#if 0
   DCHECK(output->length() == 0);  // Output buffer is assumed empty.
   while (true) {
     // Use ALLOW_UNASSIGNED to be more tolerant of hostnames that violate
@@ -159,8 +162,9 @@ bool IDNToASCII(const wchar_t* src, int src_len, CanonOutputW* output) {
     // Not enough room in our buffer, expand.
     output->Resize(output->capacity() * 2);
   }
+#endif
 }
-
+#if 0
 bool ReadUTFChar(const char* str, int* begin, int length,
                  unsigned* code_point_out) {
   int code_point;  // Avoids warning when U8_NEXT writes -1 to it.

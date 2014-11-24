@@ -5,6 +5,7 @@
 #include "utils/utils.h"
 #include "third_party/tinyxml2.h"
 #include "window_builder.h"
+#include "utils/resource_loader.h"
 
 namespace ui
 {
@@ -169,7 +170,8 @@ namespace ui
 	void Window::LoadFile( const std::wstring& file )
 	{
 		tinyxml2::XMLDocument xml;
-		if (tinyxml2::XML_SUCCESS == xml.LoadFile(WideToMultiByte(file).c_str()))
+		if (tinyxml2::XML_SUCCESS == xml.LoadFile(WideToMultiByte(
+			ResourceLoader::Get()->ResolvePath(file)).c_str()))
 		{
 			WindowBuilder builder(this, &xml);
 			builder.Run();

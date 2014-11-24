@@ -31,37 +31,37 @@ namespace ui
 
 		static const uint8 gLexTable[] = {
 			// 00    01    02    03    04    05    06    07
-			0, S, S, S, S, S, S, S,
+			    0,    S,    S,    S,    S,    S,    S,    S,
 			// 08   TAB    LF    0B    FF    CR    0E    0F
-			S, SH, V, S, V, V, S, S,
+			    S,   SH,    V,    S,    V,    V,    S,    S,
 			// 10    11    12    13    14    15    16    17
-			S, S, S, S, S, S, S, S,
+			    S,    S,    S,    S,    S,    S,    S,    S,
 			// 18    19    1A    1B    1C    1D    1E    1F
-			S, S, S, S, S, S, S, S,
+			    S,    S,    S,    S,    S,    S,    S,    S,
 			//SPC     !     "     #     $     %     &     '
-			SH, SU, 0, SU, SU, SU, SU, 0,
+			   SH,   SU,    0,   SU,   SU,   SU,   SU,    0,
 			//  (     )     *     +     ,     -     .     /
-			S, S, SU, SU, SU, SUI, SU, SU,
+			    S,    S,   SU,   SU,   SU,  SUI,   SU,   SU,
 			//  0     1     2     3     4     5     6     7
-			SUIX, SUIX, SUIX, SUIX, SUIX, SUIX, SUIX, SUIX,
+			 SUIX, SUIX, SUIX, SUIX, SUIX, SUIX, SUIX, SUIX,
 			//  8     9     :     ;     <     =     >     ?
-			SUIX, SUIX, SU, SU, SU, SU, SU, SU,
+			 SUIX, SUIX,   SU,   SU,   SU,   SU,   SU,   SU,
 			//  @     A     B     C     D     E     F     G
-			SU, SUIJX, SUIJX, SUIJX, SUIJX, SUIJX, SUIJX, SUIJ,
+			   SU,SUIJX,SUIJX,SUIJX,SUIJX,SUIJX,SUIJX, SUIJ,
 			//  H     I     J     K     L     M     N     O
-			SUIJ, SUIJ, SUIJ, SUIJ, SUIJ, SUIJ, SUIJ, SUIJ,
+			 SUIJ, SUIJ, SUIJ, SUIJ, SUIJ, SUIJ, SUIJ, SUIJ,
 			//  P     Q     R     S     T     U     V     W
-			SUIJ, SUIJ, SUIJ, SUIJ, SUIJ, SUIJ, SUIJ, SUIJ,
+			 SUIJ, SUIJ, SUIJ, SUIJ, SUIJ, SUIJ, SUIJ, SUIJ,
 			//  X     Y     Z     [     \     ]     ^     _
-			SUIJ, SUIJ, SUIJ, SU, J, SU, SU, SUIJ,
+			 SUIJ, SUIJ, SUIJ,   SU,    J,   SU,   SU, SUIJ,
 			//  `     a     b     c     d     e     f     g
-			SU, SUIJX, SUIJX, SUIJX, SUIJX, SUIJX, SUIJX, SUIJ,
+			   SU,SUIJX,SUIJX,SUIJX,SUIJX,SUIJX,SUIJX, SUIJ,
 			//  h     i     j     k     l     m     n     o
-			SUIJ, SUIJ, SUIJ, SUIJ, SUIJ, SUIJ, SUIJ, SUIJ,
+			 SUIJ, SUIJ, SUIJ, SUIJ, SUIJ, SUIJ, SUIJ, SUIJ,
 			//  p     q     r     s     t     u     v     w
-			SUIJ, SUIJ, SUIJ, SUIJ, SUIJ, SUIJ, SUIJ, SUIJ,
+			 SUIJ, SUIJ, SUIJ, SUIJ, SUIJ, SUIJ, SUIJ, SUIJ,
 			//  x     y     z     {     |     }     ~    7F
-			SUIJ, SUIJ, SUIJ, SU, SU, SU, SU, S,
+			 SUIJ, SUIJ, SUIJ,   SU,   SU,   SU,   SU,    S,
 		};
 
 #undef I
@@ -389,6 +389,50 @@ namespace ui
 		return true;
 	}
 
+
+	bool StyleScanner::NextRES(StyleToken& aToken)
+	{
+		SkipWhitespace();
+
+		int32 ch = Peek();
+		if (ch < 0) {
+			return false;
+		}
+
+		// aToken.mIdent may be "url" at this point; clear that out
+		aToken.mIdent.clear();
+
+		// Do we have a string?
+		if (ch == '"' || ch == '\'') {
+			ScanString(aToken);
+			if (aToken.mType == Token_Bad_String) {
+				aToken.mType = Token_Bad_RES;
+				return true;
+			}
+			//DCHECK(aToken.mType == Token_String) << "unexpected token type";
+
+		}
+		else {
+			// Otherwise, this is the start of a non-quoted url (which may be empty).
+			aToken.mSymbol = 0;
+			GatherText(IS_IDCHAR, aToken.mIdent);
+		}
+
+		// Consume trailing whitespace and then look for a close parenthesis.
+		SkipWhitespace();
+		ch = Peek();
+		if (ch < 0 || ch == ')') {
+			Advance();
+			aToken.mType = Token_RES;
+		}
+		else {
+			aToken.mType = Token_Bad_RES;
+		}
+		return true;
+	}
+
+
+
 	/**
 	* Back up |mOffset| over |n| code units.  Backup(0) is a no-op.
 	* If |n| is greater than the distance to beginning of input, will
@@ -587,6 +631,9 @@ namespace ui
 		//if (aToken.mIdent.LowerCaseEqualsLiteral("url")) {
 		if (!_strnicmp(aToken.mIdent.c_str(), "url", 3)){
 			NextURL(aToken);
+		}
+		else if (!_strnicmp(aToken.mIdent.c_str(), "res", 3)) {
+			NextRES(aToken);
 		}
 		return true;
 	}

@@ -3,46 +3,56 @@
 
 namespace ui
 {
-	class DOMDocument;
-	class DOMNode
+	class UIDocument;
+	class UINode;
+	class UIElement;
+	typedef scoped_refptr<UIDocument> UIDocumentPtr;
+	typedef scoped_refptr<UINode> UINodePtr;
+	typedef scoped_refptr<UIElement> UIElementPtr;
+
+	class UINode : public RefCounted<UINode>
 	{
-		friend class DOMDocument;
-		friend class DOMElement;
+		friend class UIDocument;
+		friend class UIElement;
+		friend class RefCounted<UINode>;
 	public:
-		DOMDocument* GetDocument();
-		//virtual Element* ToElement() { return NULL; }
+		UIDocumentPtr GetDocument();
 
-		DOMNode* parent();
+		UINodePtr parent();
 		bool HasChildren() const;
-		DOMNode* previousSibling() const;
-		DOMNode* nextSibling() const;
-		DOMNode* firstChild() const;
-		DOMNode* lastChild() const;
 
-		DOMNode* AppendTo(DOMNode* parent);
-		DOMNode* Detach();
+		UINodePtr previousSibling() const;
+		UINodePtr nextSibling() const;
+		UINodePtr firstChild() const;
+		UINodePtr lastChild() const;
 
-		DOMNode* Append(DOMNode* child);
-		DOMNode* Remove(DOMNode* child);
-		DOMNode* InsertAfter(DOMNode* ref, DOMNode* child);
-		DOMNode* InsertBefore(DOMNode* ref, DOMNode* child);
+		void AppendTo(UINodePtr parent);
+		void Detach();
 
-		void DeleteChildren();
-		void DeleteChild(DOMNode* n);
+		void Append(UINodePtr child);
+		void Prepend(UINodePtr child);
+		void Remove(UINodePtr child);
+		void InsertAfterChild(UINodePtr ref, UINodePtr child);
+		void InsertBeforeChild(UINodePtr ref, UINodePtr child);
 
-		//RenderObject* renderer() const
+		void RemoveChildren();
+		void RemoveChild(UINodePtr n);
+
 	protected:
-		DOMNode(DOMDocument*);
-		virtual ~DOMNode();
-		DOMDocument* document_;
+		void Unlink(UINodePtr child);
 		
-		DOMNode* parent_{ NULL };
-		DOMNode* prev_sibling_{ NULL };
-		DOMNode* next_sibling_{ NULL };
-		DOMNode* first_child_{ NULL };
-		DOMNode* last_child_{ NULL };
+		UINode(UIDocumentPtr);
+		virtual ~UINode();
+
+		UIDocumentPtr document_;
+		
+		UINodePtr parent_{ NULL };
+		UINodePtr prev_sibling_{ NULL };
+		UINodePtr next_sibling_{ NULL };
+		UINodePtr first_child_{ NULL };
+		UINodePtr last_child_{ NULL };
 
 	private:
-		DISALLOW_COPY_AND_ASSIGN(DOMNode);
+		DISALLOW_COPY_AND_ASSIGN(UINode);
 	};
 }

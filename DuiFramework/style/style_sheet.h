@@ -6,10 +6,10 @@ namespace ui
 	class StyleSheet : public RefCounted<StyleSheet>
 	{
 	public:
-		StyleSheet();
+		StyleSheet(const URL& url);
 		~StyleSheet();
 
-		static scoped_refptr<StyleSheet> LoadFromFile(const std::wstring& path);
+		//static scoped_refptr<StyleSheet> LoadFromFile(const std::wstring& path);
 
 		void AppendStyleRule(StyleRule* rule);
 
@@ -18,6 +18,7 @@ namespace ui
 		int32 StyleRuleCount() const;
 	private:
 		std::vector<StyleRule*> rules_;
+		URL url_;
 		DISALLOW_COPY_AND_ASSIGN(StyleSheet);
 	};
 

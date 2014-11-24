@@ -1,6 +1,7 @@
 #pragma once
 #include "base/scoped_ptr.h"
 #include "utils/image_store.h"
+#include "utils/resource_loader.h"
 
 namespace ui
 {
@@ -12,6 +13,10 @@ namespace ui
 		void Run();
 
 		ImageStore* DefaultImageStore();
+
+		ResourceLoader* GetResourceLoader();
+
+		std::wstring GetAppPath() const;
 
 		void Quit();
 	private:
@@ -35,9 +40,11 @@ namespace ui
 		HWND message_hwnd_;
 		HINSTANCE instance_;
 
+		std::wstring app_path_;
 		bool should_quit_{ false };
 
 		scoped_ptr<ImageStore> image_store_;
+		scoped_ptr<ResourceLoader> resource_loader_;
 
 		ULONG_PTR gdiplusToken_;
 	};

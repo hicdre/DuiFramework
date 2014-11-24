@@ -4,6 +4,55 @@
 #include "base/ref_counted.h"
 
 #include "third_party/gurl/gurl.h"
+#include "third_party/gurl/url_canon_internal.h"
+#include "utils/icu_utf.h"
+
+namespace url_canon {
+	bool ReadUTFChar(const char* str, int* begin, int length,
+		unsigned* code_point_out) {
+		int code_point;  // Avoids warning when U8_NEXT writes -1 to it.
+		CBU8_NEXT(str, *begin, length, code_point);
+		*code_point_out = static_cast<unsigned>(code_point);
+
+		// The ICU macro above moves to the next char, we want to point to the last
+		// char consumed.
+		(*begin)--;
+
+		// Validate the decoded value.
+		if (CBU_IS_UNICODE_CHAR(code_point))
+			return true;
+		*code_point_out = kUnicodeReplacementCharacter;
+		return false;
+	}
+
+	bool ReadUTFChar(const wchar_t* str, int* begin, int length,
+		unsigned* code_point) {
+		if (CBU16_IS_SURROGATE(str[*begin])) {
+			if (!CBU16_IS_SURROGATE_LEAD(str[*begin]) || *begin + 1 >= length ||
+				!CBU16_IS_TRAIL(str[*begin + 1])) {
+				// Invalid surrogate pair.
+				*code_point = kUnicodeReplacementCharacter;
+				return false;
+			}
+			else {
+				// Valid surrogate pair.
+				*code_point = CBU16_GET_SUPPLEMENTARY(str[*begin], str[*begin + 1]);
+				(*begin)++;
+			}
+		}
+		else {
+			// Not a surrogate, just one 16-bit word.
+			*code_point = str[*begin];
+		}
+
+		if (CBU_IS_UNICODE_CHAR(*code_point))
+			return true;
+
+		// Invalid code point.
+		*code_point = kUnicodeReplacementCharacter;
+		return false;
+	}
+}
 
 namespace ui
 {
@@ -41,7 +90,8 @@ namespace ui
 
 	URL::URL(const URL& other)
 	{
-		url_->Release();
+		if (url_)
+			url_->Release();
 		url_ = other.url_;
 		url_->AddRef();
 	}

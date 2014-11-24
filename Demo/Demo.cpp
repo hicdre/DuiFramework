@@ -20,19 +20,21 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 	UNREFERENCED_PARAMETER(lpCmdLine);
 
 	ui::App* app = ui::App::Get();
+	std::wstring app_dir = ui::dirname(app->GetAppPath());
+	app->GetResourceLoader()->Rebase(ui::pathcombine(app_dir, L"../../../Demo/res/"));
 
-
+	ui::UIDocumentPtr document =
+		app->GetResourceLoader()->GetUIDocument(ui::URL("res://local/test.xml"));
 	//ui::ImageStore::Default()->AddImageRecord("test", LR"(E:\work\xinyi\RomasterPC\bin\skin\avatar.png)");
-
-	ui::Window* window = new ui::Window;
-	window->LoadFile(L"test.xml");
-	window->AttachWidget(ui::Widget::Create());
-	window->widget()->Show(SW_SHOWNORMAL);
-	window->CenterWindow();
+// 	ui::Window* window = new ui::Window;
+// 	window->LoadFile(L"test.xml");
+// 	window->AttachWidget(ui::Widget::Create());
+// 	window->widget()->Show(SW_SHOWNORMAL);
+// 	window->CenterWindow();
 
 	app->Run();
 
-	delete window;
+//	delete window;
 
 	return 0;
 }

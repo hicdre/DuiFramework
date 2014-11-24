@@ -397,11 +397,11 @@ void DoParseFileSystemURL(const CHAR* spec, int spec_len, Parsed* parsed) {
       spec, inner_scheme, url_util::kFileScheme)) {
     // File URLs are special.
     ParseFileURL(inner_spec, inner_spec_len, &inner_parsed);
-  } else if (url_util::CompareSchemeComponent(spec, inner_scheme,
+  } /*else if (url_util::CompareSchemeComponent(spec, inner_scheme,
       url_util::kFileSystemScheme)) {
     // Filesystem URLs don't nest.
     return;
-  } else if (url_util::IsStandard(spec, inner_scheme)) {
+  }*/ else if (url_util::IsStandard(spec, inner_scheme)) {
     // All "normal" URLs.
     DoParseStandardURL(inner_spec, inner_spec_len, &inner_parsed);
   } else {

@@ -1,24 +1,30 @@
 #pragma once
 #include "base/basictypes.h"
 #include "dom/dom_node.h"
+#include "dom/dom_element.h"
+#include "style/style_sheet.h"
 #include <string>
 
 namespace ui
 {
-	class DOMDocument : public DOMNode
+	class UIDocument : public RefCounted<UIDocument>
 	{
-		friend class DOMElement;
+		friend class UIElement;
 		friend class DOMDocumentBuilder;
 	public:
-		DOMDocument();
-		~DOMDocument();
+		UIDocument(const URL& url);
+		~UIDocument();
 
-		void Load(const std::string& str);
-		void LoadFile(const std::wstring& file);
+		UIElementPtr RootElement();
+		void SetRootElement(UIElementPtr elem);
+		const URL& url() const;
 
-		DOMElement* RootElement();
-
+		void AddStyleSheet(StyleSheet* s);
 	private:
-		DISALLOW_COPY_AND_ASSIGN(DOMDocument);
+		UIElementPtr root_element_;
+		URL url_;
+
+		StyleSheetList style_sheets_;
+		DISALLOW_COPY_AND_ASSIGN(UIDocument);
 	};
 }
