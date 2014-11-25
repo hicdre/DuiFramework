@@ -1,6 +1,8 @@
 #pragma once
 #include "style/style_declaration.h"
 #include "style/style_selector.h"
+#include "render/render_forward.h"
+#include "dom/dom_forward.h"
 
 namespace ui
 {
@@ -17,7 +19,8 @@ namespace ui
 
 		void AddDeclaction(StyleProperty p, StyleValue* v);
 
-		void MatchRules(View* v, StyleDeclarationList& l);
+		void SelectStyles(UIElement* e, RenderStyles* s);
+		StyleValue* FindValue(StyleProperty p) const;
 
 		void SetLineNumber(uint32 num);
 		void SetStyleSheet(StyleSheet* sheet);

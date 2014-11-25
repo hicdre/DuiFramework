@@ -1,7 +1,8 @@
 #include "stdafx.h"
 #include "dom_node.h"
-#include "dom_element.h"
-#include "dom_document.h"
+#include "dom_include.h"
+
+#include "render/render_object.h"
 
 namespace ui
 {
@@ -45,6 +46,13 @@ namespace ui
 	{
 		return !!first_child_;
 	}
+
+
+	bool UINode::HasParent() const
+	{
+		return !!parent_;
+	}
+
 
 	UINodePtr UINode::parent()
 	{
@@ -202,6 +210,31 @@ namespace ui
 
 			Unlink(node);
 		}
+	}
+
+	void UINode::AttatchRender()
+	{
+
+	}
+
+	void UINode::DetachRender()
+	{
+
+	}
+
+	RenderObject* UINode::GetRenderObject()
+	{
+		return render_obj_.get();
+	}
+
+	Rect UINode::GetRenderBounds()
+	{
+		return Rect();
+	}
+
+	Rect UINode::GetContentBounds()
+	{
+		return Rect();
 	}
 
 }

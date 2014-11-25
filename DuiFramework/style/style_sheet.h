@@ -13,7 +13,7 @@ namespace ui
 
 		void AppendStyleRule(StyleRule* rule);
 
-		void MatchRules(View* v, StyleDeclarationList& r);
+		void SelectStyles(UIElement* e, RenderStyles* s);
 
 		int32 StyleRuleCount() const;
 	private:
@@ -29,7 +29,7 @@ namespace ui
 		~StyleSheetList();
 
 		void AddStyleSheet(StyleSheet* sheet);
-		void MatchRules(View* v, StyleDeclarationList& r);
+		void SelectStyles(UIElement* e, RenderStyles* s);
 	private:
 		std::vector<StyleSheet*> sheets_;
 		DISALLOW_COPY_AND_ASSIGN(StyleSheetList);

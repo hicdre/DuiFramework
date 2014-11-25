@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "dom_parser.h"
+#include "dom_include.h"
 #include "third_party/tinyxml2.h"
 #include "utils/resource_loader.h"
 #include <functional>

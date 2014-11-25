@@ -1,15 +1,11 @@
 #pragma once
-#include "base\basictypes.h"
+#include "base/basictypes.h"
+#include "dom/dom_forward.h"
 
 namespace ui
 {
-	class UIDocument;
-	class UINode;
-	class UIElement;
-	typedef scoped_refptr<UIDocument> UIDocumentPtr;
-	typedef scoped_refptr<UINode> UINodePtr;
-	typedef scoped_refptr<UIElement> UIElementPtr;
 
+	class RenderObject;
 	class UINode : public RefCounted<UINode>
 	{
 		friend class UIDocument;
@@ -20,6 +16,7 @@ namespace ui
 
 		UINodePtr parent();
 		bool HasChildren() const;
+		bool HasParent() const;
 
 		UINodePtr previousSibling() const;
 		UINodePtr nextSibling() const;
@@ -38,6 +35,14 @@ namespace ui
 		void RemoveChildren();
 		void RemoveChild(UINodePtr n);
 
+		virtual void AttatchRender();
+		virtual void DetachRender();
+
+		RenderObject* GetRenderObject();
+
+		virtual Rect GetRenderBounds();
+		virtual Rect GetContentBounds();
+
 	protected:
 		void Unlink(UINodePtr child);
 		
@@ -52,7 +57,8 @@ namespace ui
 		UINodePtr first_child_{ NULL };
 		UINodePtr last_child_{ NULL };
 
-	private:
+		scoped_refptr<RenderObject> render_obj_;
+
 		DISALLOW_COPY_AND_ASSIGN(UINode);
 	};
 }

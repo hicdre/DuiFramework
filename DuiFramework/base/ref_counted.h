@@ -1,5 +1,5 @@
 #pragma once
-#include "base\basictypes.h"
+#include "base\base_defines.h"
 
 template <class T>
 class RefCounted

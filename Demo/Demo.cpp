@@ -25,6 +25,7 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 
 	ui::UIDocumentPtr document =
 		app->GetResourceLoader()->GetUIDocument(ui::URL("res://local/test.xml"));
+	document->CreateWidget()->Show(SW_SHOWNORMAL);
 	//ui::ImageStore::Default()->AddImageRecord("test", LR"(E:\work\xinyi\RomasterPC\bin\skin\avatar.png)");
 // 	ui::Window* window = new ui::Window;
 // 	window->LoadFile(L"test.xml");

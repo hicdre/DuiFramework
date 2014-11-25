@@ -781,7 +781,7 @@ namespace ui
 
 	void View::UpdateStyleRules(StyleSheetList* sheets)
 	{
-		sheets->MatchRules(this, style_declarations_);
+		//sheets->MatchRules(this, style_declarations_);
 
 		{//backaground-color
 			StyleValue* color = style_declarations_.FindValue(Style_BackgroundColor);

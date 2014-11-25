@@ -1,11 +1,11 @@
 #pragma once
-#include "base/basictypes.h"
 #include "dom/dom_node.h"
-#include "render/render_object.h"
+#include "render/render_forward.h"
 #include <set>
 
 namespace ui
 {
+	class RenderBox;
 	class UIElement : public UINode
 	{
 		friend class UIDocument;
@@ -24,12 +24,20 @@ namespace ui
 		bool haveClass(const std::string& v) const;
 		void clearClass();
 
+		virtual void AttatchRender() override;
+		virtual void DetachRender() override;
 
+		RenderBox* GetRenderBox();
 
+		RenderStyles* GetRenderStyles();
+
+		virtual Rect GetRenderBounds() override;
+		virtual Rect GetContentBounds() override;
 	protected:
 		std::string tag_;
 		std::string id_;
 		std::set<std::string> classes_;
-		RenderObject* render_tree_;
+		
+		scoped_ptr<RenderStyles> styles_;
 	};
 }

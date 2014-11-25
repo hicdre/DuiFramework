@@ -2,7 +2,6 @@
 
 #include "base/basictypes.h"
 #include "utils/image_file.h"
-#include "render/font.h"
 
 #include <string>
 

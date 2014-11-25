@@ -85,6 +85,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="base\color.cpp" />
+    <ClCompile Include="base\font.cpp" />
     <ClCompile Include="base\length.cpp" />
     <ClCompile Include="base\inseting.cpp" />
     <ClCompile Include="base\point.cpp" />
@@ -129,11 +130,13 @@
     <ClCompile Include="event\mouse_event.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="render\font.cpp" />
     <ClCompile Include="render\image.cpp" />
     <ClCompile Include="render\render_box.cpp" />
+    <ClCompile Include="render\render_content.cpp" />
     <ClCompile Include="render\render_context.cpp" />
     <ClCompile Include="render\render_object.cpp" />
+    <ClCompile Include="render\render_styles.cpp" />
+    <ClCompile Include="render\render_widget.cpp" />
     <ClCompile Include="render\uniscribe.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
@@ -183,6 +186,7 @@
     <ClInclude Include="base\base_defines.h" />
     <ClInclude Include="base\basictypes.h" />
     <ClInclude Include="base\color.h" />
+    <ClInclude Include="base\font.h" />
     <ClInclude Include="base\length.h" />
     <ClInclude Include="base\inseting.h" />
     <ClInclude Include="base\point.h" />
@@ -216,6 +220,8 @@
     <ClInclude Include="core\widget.h" />
     <ClInclude Include="dom\dom_document.h" />
     <ClInclude Include="dom\dom_element.h" />
+    <ClInclude Include="dom\dom_forward.h" />
+    <ClInclude Include="dom\dom_include.h" />
     <ClInclude Include="dom\dom_node.h" />
     <ClInclude Include="dom\dom_parser.h" />
     <ClInclude Include="duiframework.h" />
@@ -231,11 +237,15 @@
     <ClInclude Include="event\mouse_event.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClInclude>
-    <ClInclude Include="render\font.h" />
     <ClInclude Include="render\image.h" />
     <ClInclude Include="render\render_box.h" />
+    <ClInclude Include="render\render_content.h" />
     <ClInclude Include="render\render_context.h" />
+    <ClInclude Include="render\render_forward.h" />
+    <ClInclude Include="render\render_include.h" />
     <ClInclude Include="render\render_object.h" />
+    <ClInclude Include="render\render_styles.h" />
+    <ClInclude Include="render\render_widget.h" />
     <ClInclude Include="render\uniscribe.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClInclude>

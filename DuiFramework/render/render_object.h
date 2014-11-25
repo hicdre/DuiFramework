@@ -1,23 +1,25 @@
 #pragma once
 #include "base/basictypes.h"
+#include "dom/dom_forward.h"
+#include "render/render_forward.h"
 
 namespace ui
 {
 	/*
 		RenderTree
 	*/
-	class UIElement;
-	class RenderContext;
-	class RenderObject
+	class RenderObject : public RefCounted<RenderObject>
 	{
 	public:
-		RenderObject(UIElement* elem);
-		~RenderObject();
+		RenderObject(UINode* node);
+		virtual ~RenderObject();
+
+		static RenderObject* Create(UIElement* elem);
 
 		RenderObject* parent() const;
 		bool isDescendantOf(const RenderObject*) const;
 
-		UIElement* domElement();
+		UIElement* GetUIElement();
 
 		RenderObject* firstChild() const;
 		RenderObject* lastChild() const;
@@ -28,7 +30,6 @@ namespace ui
 		RenderObject* Remove(RenderObject* child);
 		RenderObject* InsertAfter(RenderObject* ref, RenderObject* child);
 		RenderObject* InsertBefore(RenderObject* ref, RenderObject* child);
-
 
 		void SetBounds(int x, int y, int width, int height);
 		void SetBoundsRect(const Rect& bounds);
@@ -44,17 +45,19 @@ namespace ui
 		int width() const { return bounds_.width(); }
 		int height() const { return bounds_.height(); }
 		const Size& size() const { return bounds_.size(); }
+		Rect GetLocalBounds() const;
 
 		virtual void DoPaint(RenderContext* painter, const Rect& r) = 0;
+		virtual void Layout() = 0;
 	protected:
-		RenderObject* parent_;
-		RenderObject* first_;
-		RenderObject* last_;
-		RenderObject* prev_;
-		RenderObject* next_;
+		RenderObjectPtr parent_;
+		RenderObjectPtr first_;
+		RenderObjectPtr last_;
+		RenderObjectPtr prev_;
+		RenderObjectPtr next_;
 
 		Rect bounds_; //  µº Œª÷√
 
-		UIElement* element_;
+		UINodePtr node_;
 	};
 }

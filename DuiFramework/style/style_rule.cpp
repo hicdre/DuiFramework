@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "style_rule.h"
 #include "style_sheet.h"
+
+#include "render/render_styles.h"
 namespace ui
 {
 
@@ -50,25 +52,17 @@ namespace ui
 		sheet_.reset(sheet);
 	}
 
-	void StyleRule::MatchRules(View* v, StyleDeclarationList& l)
+	void StyleRule::SelectStyles(UIElement* e, RenderStyles* s)
 	{
-		if (selectors_->MatchRule(v))
+		if (selectors_->MatchElement(e))
 		{
-			StylePropertyList plist;
-			declarations_->GetOrderedPropertyList(plist);
-			for (StyleProperty p : plist)
-			{
-				StyleDeclaration* nd = declarations_->Find(p);
-				StyleDeclaration* od = l.Find(p);
-				if (!od) {
-					//结果中没有
-					l.Insert(nd);
-				}
-				else {
-					//比较weight
-				}
-			}
+			s->AddStyleRule(this);
 		}
+	}
+
+	StyleValue* StyleRule::FindValue(StyleProperty p) const
+	{
+		return declarations_->FindValue(p);
 	}
 
 }

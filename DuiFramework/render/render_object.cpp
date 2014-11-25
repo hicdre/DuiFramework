@@ -1,18 +1,27 @@
 #include "stdafx.h"
 #include "render_object.h"
-#include "dom/dom_element.h"
+#include "render_include.h"
+
+#include "dom/dom_include.h"
 
 namespace ui
 {
+	RenderObject* RenderObject::Create(UIElement* elem)
+	{
+		const std::string& tag = elem->getTag();
+		if (tag == "Window") {
+			return new RenderWidget(elem);
+		}
+		return NULL;
+	}
 
-
-	RenderObject::RenderObject(UIElement* elem)
+	RenderObject::RenderObject(UINode* node)
 		: parent_(NULL)
 		, first_(NULL)
 		, last_(NULL)
 		, prev_(NULL)
 		, next_(NULL)
-		, element_(elem)
+		, node_(node)
 
 	{
 
@@ -25,51 +34,51 @@ namespace ui
 
 	RenderObject* RenderObject::parent() const
 	{
-		return parent_;
+		return parent_.get();
 	}
 
 	bool RenderObject::isDescendantOf(const RenderObject* obj) const
 	{
-		RenderObject* p = parent_;
+		RenderObject* p = parent_.get();
 		while (p && p != obj)
 			p = p->parent();
 		return p != NULL;
 	}
 
-	UIElement* RenderObject::domElement()
+	UIElement* RenderObject::GetUIElement()
 	{
-		return element_;
+		return dynamic_cast<UIElement*>(node_.get());
 	}
 
 	RenderObject* RenderObject::firstChild() const
 	{
-		return first_;
+		return first_.get();
 	}
 
 	RenderObject* RenderObject::lastChild() const
 	{
-		return last_;
+		return last_.get();
 	}
 
 	RenderObject* RenderObject::previousSibling() const
 	{
-		return prev_;
+		return prev_.get();
 	}
 
 	RenderObject* RenderObject::nextSibling() const
 	{
-		return next_;
+		return next_.get();
 	}
 
 	RenderObject* RenderObject::Append(RenderObject* child)
 	{
-		return InsertAfter(last_, child);
+		return InsertAfter(last_.get(), child);
 	}
 
 	RenderObject* RenderObject::Remove(RenderObject* child)
 	{
 		//只允许移除子节点
-		if (!child || child->parent_ != this)
+		if (!child || child->parent_.get() != this)
 		{
 			assert(0); //<< "can only remove child node";
 			return NULL;
@@ -167,11 +176,11 @@ namespace ui
 
 		if (ref)
 		{
-			return InsertAfter(ref->prev_, child);
+			return InsertAfter(ref->prev_.get(), child);
 		}
 		else
 		{
-			return InsertAfter(last_, child);
+			return InsertAfter(last_.get(), child);
 		}
 	}
 
@@ -182,7 +191,15 @@ namespace ui
 
 	void RenderObject::SetBoundsRect(const Rect& bounds)
 	{
+		if(bounds == bounds_) {
+			return;
+		}
+
+		Rect prev = bounds_;
 		bounds_ = bounds;
+		if (prev.size() != size()) {
+			Layout();
+		}
 	}
 
 	void RenderObject::SetSize(const Size& size)
@@ -204,5 +221,12 @@ namespace ui
 	{
 		SetBounds(x(), y, width(), height());
 	}
+
+	Rect RenderObject::GetLocalBounds() const
+	{
+		return Rect(width(), height());
+	}
+
+	
 
 }

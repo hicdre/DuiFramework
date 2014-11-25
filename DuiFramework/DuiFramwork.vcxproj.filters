@@ -66,9 +66,6 @@
     <ClCompile Include="utils\image_store.cpp">
       <Filter>utils</Filter>
     </ClCompile>
-    <ClCompile Include="render\font.cpp">
-      <Filter>render</Filter>
-    </ClCompile>
     <ClCompile Include="event\event.cpp">
       <Filter>event</Filter>
     </ClCompile>
@@ -261,6 +258,18 @@
     <ClCompile Include="utils\icu_utf.cpp">
       <Filter>utils</Filter>
     </ClCompile>
+    <ClCompile Include="render\render_widget.cpp">
+      <Filter>render</Filter>
+    </ClCompile>
+    <ClCompile Include="render\render_content.cpp">
+      <Filter>render</Filter>
+    </ClCompile>
+    <ClCompile Include="base\font.cpp">
+      <Filter>base</Filter>
+    </ClCompile>
+    <ClCompile Include="render\render_styles.cpp">
+      <Filter>render</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -295,9 +304,6 @@
     </ClInclude>
     <ClInclude Include="utils\image_store.h">
       <Filter>utils</Filter>
-    </ClInclude>
-    <ClInclude Include="render\font.h">
-      <Filter>render</Filter>
     </ClInclude>
     <ClInclude Include="core\constants.h">
       <Filter>core</Filter>
@@ -494,6 +500,30 @@
     </ClInclude>
     <ClInclude Include="third_party\gurl\url_canon_internal_res.h">
       <Filter>third_party\gurl</Filter>
+    </ClInclude>
+    <ClInclude Include="render\render_widget.h">
+      <Filter>render</Filter>
+    </ClInclude>
+    <ClInclude Include="render\render_content.h">
+      <Filter>render</Filter>
+    </ClInclude>
+    <ClInclude Include="dom\dom_include.h">
+      <Filter>dom</Filter>
+    </ClInclude>
+    <ClInclude Include="dom\dom_forward.h">
+      <Filter>dom</Filter>
+    </ClInclude>
+    <ClInclude Include="render\render_forward.h">
+      <Filter>render</Filter>
+    </ClInclude>
+    <ClInclude Include="render\render_include.h">
+      <Filter>render</Filter>
+    </ClInclude>
+    <ClInclude Include="base\font.h">
+      <Filter>base</Filter>
+    </ClInclude>
+    <ClInclude Include="render\render_styles.h">
+      <Filter>render</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

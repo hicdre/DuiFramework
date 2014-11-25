@@ -8,7 +8,6 @@
 
 #include "control/window.h"
 
-#include "render/font.h"
 #include "render/image.h"
 
 #include "utils/image_store.h"
@@ -19,6 +18,6 @@
 
 #include "style/style_parser.h"
 
+#include "dom/dom_include.h"
+#include "render/render_include.h"
 
-//#include "layout/box_layout.h"
-//#include "layout/frame_layout.h"

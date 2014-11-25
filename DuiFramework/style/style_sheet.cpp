@@ -35,11 +35,11 @@ namespace ui
 		return rules_.size();
 	}
 
-	void StyleSheet::MatchRules(View* v, StyleDeclarationList& r)
+	void StyleSheet::SelectStyles(UIElement* e, RenderStyles* s)
 	{
 		for (StyleRule* rule : rules_)
 		{
-			rule->MatchRules(v, r);
+			rule->SelectStyles(e, s);
 		}
 	}
 
@@ -64,11 +64,11 @@ namespace ui
 		sheet->AddRef();
 	}
 
-	void StyleSheetList::MatchRules(View* v, StyleDeclarationList& r)
+	void StyleSheetList::SelectStyles(UIElement* e, RenderStyles* s)
 	{
 		for (StyleSheet* sheet : sheets_)
 		{
-			sheet->MatchRules(v, r);
+			sheet->SelectStyles(e, s);
 		}
 	}
 

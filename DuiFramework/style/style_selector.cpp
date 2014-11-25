@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "style_selector.h"
 #include <stack>
-#include "view/view.h"
+#include "dom/dom_include.h"
 
 namespace ui
 {
@@ -94,7 +94,7 @@ namespace ui
 
 	}
 
-	bool StyleSelector::MatchRule(View* v) const
+	bool StyleSelector::MatchElement(UIElement* v) const
 	{
 		std::stack<const StyleSelector*> s;
 		{
@@ -108,35 +108,35 @@ namespace ui
 		}
 
 		const StyleSelector* selector = s.top();
-		if (!selector->MatchRuleInternal(v))
+		if (!selector->MatchElementInternal(v))
 			return false;
 
 		s.pop();
-		v = v->parent();
+		v = dynamic_cast<UIElement*>(v->parent().get());
 		while (!s.empty() && !v)
 		{
 			const StyleSelector* selector = s.top();
-			if (selector->MatchRuleInternal(v))
+			if (selector->MatchElementInternal(v))
 				s.pop();
 
-			v = v->parent();
+			v = dynamic_cast<UIElement*>(v->parent().get());
 		}
 
 		return s.empty();
 	}
 
-	bool StyleSelector::MatchRuleInternal(View* v) const
+	bool StyleSelector::MatchElementInternal(UIElement* v) const
 	{
-		if (HasId() && (v->id() != *id_or_tag_))
+		if (HasId() && (v->getId() != *id_or_tag_))
 			return false;
 
-		if (HasTag() && (v->tag() != *id_or_tag_))
+		if (HasTag() && (v->getTag() != *id_or_tag_))
 			return false;
 
 		if (HasClass()) {
 			for (const std::string& c : class_list_)
 			{
-				if (!v->HaveClass(c))
+				if (!v->haveClass(c))
 					return false;
 			}
 		}
@@ -159,11 +159,11 @@ namespace ui
 
 	}
 
-	bool StyleSelectorList::MatchRule(View* v) const
+	bool StyleSelectorList::MatchElement(UIElement* v) const
 	{
 		for (StyleSelector* item : container_)
 		{
-			if (item->MatchRule(v))
+			if (item->MatchElement(v))
 				return true;
 		}
 		return false;

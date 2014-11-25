@@ -4,7 +4,6 @@
 #include <cassert>
 #include "core/widget.h"
 #include "utils/utils.h"
-#include "render/font.h"
 #include "style/style_property.h"
 
 namespace ui

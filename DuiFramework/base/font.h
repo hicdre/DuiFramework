@@ -1,5 +1,5 @@
 #pragma once
-#include "base/basictypes.h"
+#include "base/base_defines.h"
 #include "base/ref_counted.h"
 
 #include <string>
@@ -51,9 +51,8 @@ namespace ui
 
 		HFONT ToHFONT() const;
 
-		
+		static void UnInitFont();
 	private:
-		friend class App;
 		class HFontRef : public RefCounted<HFontRef> {
 		public:
 			// This constructor takes control of the HFONT, and will delete it when
@@ -79,7 +78,7 @@ namespace ui
 
 			// Returns the average character width in dialog units.
 			//int GetDluBaseX();
-
+			
 		private:
 			friend class RefCounted<HFontRef>;
 
@@ -113,7 +112,6 @@ namespace ui
 
 		//static void InitFont(const std::wstring& font_name,
 		//	int font_size);
-		static void UnInitFont();
 
 		static HFontRef* CreateHFontRef(HFONT font);
 		static HFontRef* CreateHFontRef(HFONT font, const TEXTMETRIC& font_metrics);

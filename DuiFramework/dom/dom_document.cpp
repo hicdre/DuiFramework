@@ -1,84 +1,15 @@
 #include "stdafx.h"
 #include "dom_document.h"
-#include "dom_element.h"
+#include "dom_include.h"
 #include "utils/utils.h"
-#include "third_party/tinyxml2.h"
+#include "render/render_widget.h"
 
 namespace ui
 {
-	using namespace tinyxml2;
-
-// 	class DOMDocumentBuilder
-// 	{
-// 	public:
-// 		DOMDocumentBuilder(UIDocument* doc, tinyxml2::XMLDocument* xml)
-// 			: doc_(doc), xml_(xml) {}
-// 		~DOMDocumentBuilder() {}
-// 
-// 		void Run()
-// 		{
-// 			tinyxml2::XMLElement* xml_element = xml_->RootElement();
-// 			DomElement* dom_element = CreateDOMElement(xml_element);
-// 			doc_->Append(dom_element);
-// 
-// 			BuildTree(dom_element, xml_element);
-// 			
-// 		}
-// 
-// 		DomElement* CreateDOMElement(tinyxml2::XMLElement* e)
-// 		{
-// 			DomElement* elem = new DomElement(doc_);
-// 
-// 			//elem->setTag(e->Name());
-// 			{
-// 				const char* val = e->Attribute("id");
-// 				if (val)
-// 				{
-// 					elem->setId(val);
-// 				}
-// 			}
-// 			{
-// 				const char* val = e->Attribute("class");
-// 				if (val)
-// 				{
-// 					while (true)
-// 					{
-// 						while (*val && isspace(*val))
-// 							++val;
-// 						if (!*val)
-// 							break;
-// 
-// 						const char* begin = val;
-// 
-// 						while (*val && (isalpha(*val) || isdigit(*val) || *val == '_' || *val == '-'))
-// 							++val;
-// 
-// 						const char* end = val;
-// 						if (begin < end)
-// 							elem->addClass(std::string(begin, end - begin));
-// 					}
-// 				}
-// 			}
-// 			return elem;
-// 		}
-// 
-// 		void BuildTree(DomElement* dom_element, tinyxml2::XMLElement* xml_element)
-// 		{
-// 			for (tinyxml2::XMLElement* e = xml_element->FirstChildElement();
-// 				e; e = e->NextSiblingElement())
-// 			{
-// 				DomElement* n = CreateDOMElement(e);
-// 				dom_element->Append(n);
-// 				BuildTree(n, e);
-// 			}
-// 		}
-// 	private:
-// 		UIDocument* doc_;
-// 		tinyxml2::XMLDocument* xml_;
-// 	};
 
 	UIDocument::UIDocument(const URL& url)
 		: url_(url)
+		, widget_(NULL)
 	{
 	}
 
@@ -104,6 +35,26 @@ namespace ui
 	void UIDocument::AddStyleSheet(StyleSheet* s)
 	{
 		style_sheets_.AddStyleSheet(s);
+	}
+
+	Widget* UIDocument::GetWidget()
+	{
+		return widget_;
+	}
+
+	Widget* UIDocument::CreateWidget()
+	{
+		if (widget_)
+			return widget_;
+		widget_ = Widget::Create();
+		UIElementPtr root = RootElement();
+		root->AttatchRender();
+		return widget_;
+	}
+
+	void UIDocument::SelectStyles(UIElement* elem, RenderStyles* styles)
+	{
+		style_sheets_.SelectStyles(elem, styles);
 	}
 
 // 	void UIDocument::Load(const std::string& str)
