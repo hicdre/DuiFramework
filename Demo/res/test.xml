@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Window layout="vbox">
+<Window>
   <StyleSheet src="test.css"/>
-  <View id="ab" class="hh h-t">
-  </View>
-  <View id="zz">
-  </View>
-  <View class="span" layout="hbox">
-    <View class="block">
-    </View>
-    <View class="block">
-    </View>
-    <View class="block">
-    </View>
-  </View>
+  <VBox id="content">
+    <Box id="ab" class="hh h-t">
+    </Box>
+    <Box id="zz">
+    </Box>
+    <HBox class="span">
+      <Box class="block">
+      </Box>
+      <Box class="block">
+      </Box>
+      <Box class="block">
+      </Box>
+    </HBox>
+  </VBox>
 </Window>

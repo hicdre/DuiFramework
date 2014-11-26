@@ -11,10 +11,10 @@ namespace ui
 	class RenderObject : public RefCounted<RenderObject>
 	{
 	public:
-		RenderObject(UINode* node);
+		RenderObject(UIElement* node);
 		virtual ~RenderObject();
 
-		static RenderObject* Create(UIElement* elem);
+		static RenderObject* Create(UIElement* elem, RenderStyles* s);
 
 		RenderObject* parent() const;
 		bool isDescendantOf(const RenderObject*) const;
@@ -26,15 +26,15 @@ namespace ui
 		RenderObject* previousSibling() const;
 		RenderObject* nextSibling() const;
 
-		RenderObject* Append(RenderObject* child);
-		RenderObject* Remove(RenderObject* child);
-		RenderObject* InsertAfter(RenderObject* ref, RenderObject* child);
-		RenderObject* InsertBefore(RenderObject* ref, RenderObject* child);
+		virtual void addChild(RenderObject* child);
+		virtual void addChildAfter(RenderObject* beforechild, RenderObject* child);
+		virtual void removeChild(RenderObject* child);
 
 		void SetBounds(int x, int y, int width, int height);
 		void SetBoundsRect(const Rect& bounds);
 		void SetSize(const Size& size);
 		void SetPosition(const Point& position);
+		void SetPosition(int x, int y);
 		void SetX(int x);
 		void SetY(int y);
 
@@ -47,9 +47,24 @@ namespace ui
 		const Size& size() const { return bounds_.size(); }
 		Rect GetLocalBounds() const;
 
+		virtual void SchedulePaint();
+		virtual void SchedulePaintInRect(const Rect& r);
+		virtual void OnChildSchedulePaintInRect(RenderObject* child, const Rect& r);
+		virtual void OnBoundsChanged();
+
 		virtual void DoPaint(RenderContext* painter, const Rect& r) = 0;
 		virtual void Layout() = 0;
+		virtual void LayoutIfNeeded() = 0;
+
+		RenderStyles* styles() const;
 	protected:
+		RenderObject* Append(RenderObject* child);
+		RenderObject* Remove(RenderObject* child);
+		RenderObject* InsertAfter(RenderObject* ref, RenderObject* child);
+		RenderObject* InsertBefore(RenderObject* ref, RenderObject* child);
+
+		Rect ConvertRectFromChild(RenderObject* child, const Rect& r);
+
 		RenderObjectPtr parent_;
 		RenderObjectPtr first_;
 		RenderObjectPtr last_;
@@ -58,6 +73,10 @@ namespace ui
 
 		Rect bounds_; //  µº Œª÷√
 
-		UINodePtr node_;
+		UIElementPtr node_;
+
+		RenderStyles* styles_;
+
+		
 	};
 }

@@ -17,11 +17,18 @@ namespace ui
 		int marginRight() const;
 		int marginBottom() const;
 
+		int pixelWidth() const;
+		bool autoWidth() const;
+		int pixelHeight() const;
+		bool autoHeight() const;
+
+		Color backgroundColor() const;
+		
 	private:
+		Rect GetParentContentBounds() const;
 		int GetMarginValue(StyleProperty p) const;
 
 		StyleValue* FindProperty(StyleProperty p) const;
-		
 
 		UIElement* elem_;
 		std::vector<StyleRule*> rules_;

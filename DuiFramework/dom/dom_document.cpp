@@ -49,6 +49,7 @@ namespace ui
 		widget_ = Widget::Create();
 		UIElementPtr root = RootElement();
 		root->AttatchRender();
+		root->GetRenderObject()->Layout();
 		return widget_;
 	}
 

@@ -6,23 +6,32 @@
 
 namespace ui
 {
-	RenderObject* RenderObject::Create(UIElement* elem)
+	RenderObject* RenderObject::Create(UIElement* elem, RenderStyles* s)
 	{
 		const std::string& tag = elem->getTag();
 		if (tag == "Window") {
 			return new RenderWidget(elem);
 		}
+		else if (tag == "Box") {
+			return new RenderBox(elem);
+		}
+		else if (tag == "HBox") {
+			return new RenderHBox(elem);
+		}
+		else if (tag == "VBox") {
+			return new RenderVBox(elem);
+		}
 		return NULL;
 	}
 
-	RenderObject::RenderObject(UINode* node)
+	RenderObject::RenderObject(UIElement* node)
 		: parent_(NULL)
 		, first_(NULL)
 		, last_(NULL)
 		, prev_(NULL)
 		, next_(NULL)
 		, node_(node)
-
+		, styles_(node->GetRenderStyles())
 	{
 
 	}
@@ -198,7 +207,7 @@ namespace ui
 		Rect prev = bounds_;
 		bounds_ = bounds;
 		if (prev.size() != size()) {
-			Layout();
+			OnBoundsChanged();
 		}
 	}
 
@@ -210,6 +219,11 @@ namespace ui
 	void RenderObject::SetPosition(const Point& position)
 	{
 		SetBounds(position.x(), position.y(), width(), height());
+	}
+
+	void RenderObject::SetPosition(int x, int y)
+	{
+		SetBounds(x, y, width(), height());
 	}
 
 	void RenderObject::SetX(int x)
@@ -225,6 +239,53 @@ namespace ui
 	Rect RenderObject::GetLocalBounds() const
 	{
 		return Rect(width(), height());
+	}
+
+	void RenderObject::SchedulePaint()
+	{
+		SchedulePaintInRect(GetLocalBounds());
+	}
+
+	void RenderObject::SchedulePaintInRect(const Rect& r)
+	{
+		if (parent_) {
+			parent_->OnChildSchedulePaintInRect(this, r);
+		}
+	}
+
+	void RenderObject::OnChildSchedulePaintInRect(RenderObject* child, const Rect& r)
+	{
+		SchedulePaintInRect(ConvertRectFromChild(child, r));
+	}
+
+	Rect RenderObject::ConvertRectFromChild(RenderObject* child, const Rect& r)
+	{
+		return Rect(r.x() + child->x(), r.y() + child->y(), r.width(), r.height());
+	}
+
+	void RenderObject::addChild(RenderObject* child)
+	{
+		Append(child);
+	}
+
+	void RenderObject::addChildAfter(RenderObject* beforechild, RenderObject* child)
+	{
+		InsertAfter(beforechild, child);
+	}
+
+	void RenderObject::removeChild(RenderObject* child)
+	{
+		Remove(child);
+	}
+
+	RenderStyles* RenderObject::styles() const
+	{
+		return styles_;
+	}
+
+	void RenderObject::OnBoundsChanged()
+	{
+
 	}
 
 	

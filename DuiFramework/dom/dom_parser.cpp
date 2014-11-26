@@ -91,7 +91,7 @@ namespace ui
 		{
 			UIElementPtr child = ParseXmlElement(el);
 			if (child)
-				elem->Append(UINodePtr(child.get()));
+				elem->Append(UIElementPtr(child.get()));
 		}
 		return elem;
 	}

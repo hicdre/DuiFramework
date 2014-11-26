@@ -1,12 +1,11 @@
 #pragma once
-#include "base/basictypes.h"
-#include "render/render_object.h"
+#include "render/render_box.h"
 #include "core/widget.h"
 
 namespace ui
 {
 	class RenderWidget 
-		: public RenderObject
+		: public RenderBox
 		, public Widget::MessageHandler
 	{
 	public:
@@ -15,6 +14,8 @@ namespace ui
 
 		virtual void DoPaint(RenderContext* painter, const Rect& r) override;
 		virtual void Layout() override;
+
+		virtual void SchedulePaintInRect(const Rect& r) override;
 
 		virtual BOOL ProcessWindowMessage(HWND window,
 			UINT message,

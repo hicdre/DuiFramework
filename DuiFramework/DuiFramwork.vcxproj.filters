@@ -150,12 +150,6 @@
     <ClCompile Include="dom\dom_document.cpp">
       <Filter>dom</Filter>
     </ClCompile>
-    <ClCompile Include="dom\dom_element.cpp">
-      <Filter>dom</Filter>
-    </ClCompile>
-    <ClCompile Include="dom\dom_node.cpp">
-      <Filter>dom</Filter>
-    </ClCompile>
     <ClCompile Include="control\window_builder.cpp">
       <Filter>control</Filter>
     </ClCompile>
@@ -261,14 +255,14 @@
     <ClCompile Include="render\render_widget.cpp">
       <Filter>render</Filter>
     </ClCompile>
-    <ClCompile Include="render\render_content.cpp">
-      <Filter>render</Filter>
-    </ClCompile>
     <ClCompile Include="base\font.cpp">
       <Filter>base</Filter>
     </ClCompile>
     <ClCompile Include="render\render_styles.cpp">
       <Filter>render</Filter>
+    </ClCompile>
+    <ClCompile Include="dom\dom_element.cpp">
+      <Filter>dom</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -399,12 +393,6 @@
     <ClInclude Include="dom\dom_document.h">
       <Filter>dom</Filter>
     </ClInclude>
-    <ClInclude Include="dom\dom_element.h">
-      <Filter>dom</Filter>
-    </ClInclude>
-    <ClInclude Include="dom\dom_node.h">
-      <Filter>dom</Filter>
-    </ClInclude>
     <ClInclude Include="control\window_builder.h">
       <Filter>control</Filter>
     </ClInclude>
@@ -504,9 +492,6 @@
     <ClInclude Include="render\render_widget.h">
       <Filter>render</Filter>
     </ClInclude>
-    <ClInclude Include="render\render_content.h">
-      <Filter>render</Filter>
-    </ClInclude>
     <ClInclude Include="dom\dom_include.h">
       <Filter>dom</Filter>
     </ClInclude>
@@ -524,6 +509,9 @@
     </ClInclude>
     <ClInclude Include="render\render_styles.h">
       <Filter>render</Filter>
+    </ClInclude>
+    <ClInclude Include="dom\dom_element.h">
+      <Filter>dom</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

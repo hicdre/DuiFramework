@@ -116,7 +116,6 @@
     <ClCompile Include="core\widget.cpp" />
     <ClCompile Include="dom\dom_document.cpp" />
     <ClCompile Include="dom\dom_element.cpp" />
-    <ClCompile Include="dom\dom_node.cpp" />
     <ClCompile Include="dom\dom_parser.cpp" />
     <ClCompile Include="event\event.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
@@ -132,7 +131,6 @@
     </ClCompile>
     <ClCompile Include="render\image.cpp" />
     <ClCompile Include="render\render_box.cpp" />
-    <ClCompile Include="render\render_content.cpp" />
     <ClCompile Include="render\render_context.cpp" />
     <ClCompile Include="render\render_object.cpp" />
     <ClCompile Include="render\render_styles.cpp" />
@@ -219,10 +217,9 @@
     </ClInclude>
     <ClInclude Include="core\widget.h" />
     <ClInclude Include="dom\dom_document.h" />
-    <ClInclude Include="dom\dom_element.h" />
     <ClInclude Include="dom\dom_forward.h" />
     <ClInclude Include="dom\dom_include.h" />
-    <ClInclude Include="dom\dom_node.h" />
+    <ClInclude Include="dom\dom_element.h" />
     <ClInclude Include="dom\dom_parser.h" />
     <ClInclude Include="duiframework.h" />
     <ClInclude Include="event\event.h">
@@ -239,7 +236,6 @@
     </ClInclude>
     <ClInclude Include="render\image.h" />
     <ClInclude Include="render\render_box.h" />
-    <ClInclude Include="render\render_content.h" />
     <ClInclude Include="render\render_context.h" />
     <ClInclude Include="render\render_forward.h" />
     <ClInclude Include="render\render_include.h" />
