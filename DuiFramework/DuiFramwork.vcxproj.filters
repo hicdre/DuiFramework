@@ -264,6 +264,18 @@
     <ClCompile Include="dom\dom_element.cpp">
       <Filter>dom</Filter>
     </ClCompile>
+    <ClCompile Include="event\event_target.cpp">
+      <Filter>event</Filter>
+    </ClCompile>
+    <ClCompile Include="event\event_listener.cpp">
+      <Filter>event</Filter>
+    </ClCompile>
+    <ClCompile Include="event\event_ui.cpp">
+      <Filter>event</Filter>
+    </ClCompile>
+    <ClCompile Include="event\event_dispatcher.cpp">
+      <Filter>event</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -512,6 +524,24 @@
     </ClInclude>
     <ClInclude Include="dom\dom_element.h">
       <Filter>dom</Filter>
+    </ClInclude>
+    <ClInclude Include="event\event_forward.h">
+      <Filter>event</Filter>
+    </ClInclude>
+    <ClInclude Include="event\event_include.h">
+      <Filter>event</Filter>
+    </ClInclude>
+    <ClInclude Include="event\event_target.h">
+      <Filter>event</Filter>
+    </ClInclude>
+    <ClInclude Include="event\event_listener.h">
+      <Filter>event</Filter>
+    </ClInclude>
+    <ClInclude Include="event\event_ui.h">
+      <Filter>event</Filter>
+    </ClInclude>
+    <ClInclude Include="event\event_dispatcher.h">
+      <Filter>event</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
