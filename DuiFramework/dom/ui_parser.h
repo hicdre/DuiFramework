@@ -1,6 +1,6 @@
 #pragma once
 #include "base/basictypes.h"
-#include "dom/dom_document.h"
+#include "dom/ui_document.h"
 
 namespace ui
 {
@@ -16,6 +16,8 @@ namespace ui
 		UIElementPtr ParseXmlElement(void* elem);
 		UIElementPtr ParseUIElement(void* elem, const char* tag);
 		void ParseStyleSheet(void* elem);
+
+		UIElement* CreateUIElement(const char* tag);
 
 		bool ParseElementClasses(UIElementPtr elem, const char* val);
 		UIDocumentPtr document_;

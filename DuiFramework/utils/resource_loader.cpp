@@ -3,7 +3,7 @@
 #include "core/app.h"
 #include "utils/utils.h"
 #include "style/style_parser.h"
-#include "dom/dom_parser.h"
+#include "dom/ui_parser.h"
 
 namespace ui
 {

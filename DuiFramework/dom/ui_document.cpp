@@ -1,8 +1,7 @@
 #include "stdafx.h"
-#include "dom_document.h"
-#include "dom_include.h"
+#include "ui_document.h"
+#include "ui_include.h"
 #include "utils/utils.h"
-#include "render/render_widget.h"
 
 namespace ui
 {
@@ -47,15 +46,20 @@ namespace ui
 		if (widget_)
 			return widget_;
 		widget_ = Widget::Create();
-		UIElementPtr root = RootElement();
-		root->AttatchRender();
-		root->GetRenderObject()->Layout();
+		UIWindow* window = dynamic_cast<UIWindow*>(RootElement().get());
+		window->AttatchWidget(widget_);
+		window->LayoutIfNeeded();
 		return widget_;
 	}
 
 	void UIDocument::SelectStyles(UIElement* elem, RenderStyles* styles)
 	{
 		style_sheets_.SelectStyles(elem, styles);
+	}
+
+	void UIDocument::UpdateStyles()
+	{
+		root_element_->UpdateStyles();
 	}
 
 // 	void UIDocument::Load(const std::string& str)

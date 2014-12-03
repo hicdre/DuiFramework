@@ -1,7 +1,7 @@
 #pragma once
 #include "base/basictypes.h"
 #include "style/style_sheet.h"
-#include "dom/dom_document.h"
+#include "dom/ui_document.h"
 
 namespace ui
 {

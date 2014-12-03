@@ -19,12 +19,14 @@ namespace ui
 
 	bool EventHandler::HandleMouseMoveEvent(MouseEvent* evt)
 	{
-		bool result = HandleMouseMoveOrLeaveEvent(evt, &hoveredNode);
+		bool result = HandleMouseMoveOrLeaveEvent(evt);
+		return false;
 	}
 
 	bool EventHandler::HandleMouseMoveOrLeaveEvent(MouseEvent* evt)
 	{
 		//widget_->Hittest()
+		return false;
 	}
 
 }

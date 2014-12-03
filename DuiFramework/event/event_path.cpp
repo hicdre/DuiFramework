@@ -2,7 +2,7 @@
 #include "event_path.h"
 #include "event_include.h"
 
-#include "dom/dom_include.h"
+#include "dom/ui_include.h"
 
 namespace ui
 {

@@ -18,6 +18,6 @@
 
 #include "style/style_parser.h"
 
-#include "dom/dom_include.h"
+#include "dom/ui_include.h"
 #include "render/render_include.h"
 

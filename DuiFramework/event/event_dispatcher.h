@@ -1,9 +1,9 @@
 #pragma once
 #include "event/event_forward.h"
+#include "dom/ui_element.h"
 
 namespace ui
 {
-	class UIElement;
 	class EventDispatcher
 	{
 	public:
@@ -15,7 +15,7 @@ namespace ui
 	private:
 		EventDispatcher(UIElement*, Event*);
 
-		scoped_refptr<UIElement> elem_;
+		UIElementPtr elem_;
 		scoped_refptr<Event> event_;
 	};
 }

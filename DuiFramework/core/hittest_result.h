@@ -1,8 +1,9 @@
 #pragma once
-#include "dom/dom_element.h"
+#include "base/basictypes.h"
 
 namespace ui
 {
+	class UIElement;
 	class HittestResult
 	{
 	public:

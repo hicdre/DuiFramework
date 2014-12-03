@@ -1,5 +1,5 @@
 #pragma once
-#include "dom/dom_forward.h"
+#include "dom/ui_forward.h"
 #include "style/style_rule.h"
 
 namespace ui

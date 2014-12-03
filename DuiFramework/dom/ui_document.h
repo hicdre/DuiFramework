@@ -1,6 +1,6 @@
 #pragma once
 #include "base/basictypes.h"
-#include "dom/dom_forward.h"
+#include "dom/ui_forward.h"
 #include "render/render_forward.h"
 #include "style/style_sheet.h"
 #include <string>
@@ -22,6 +22,8 @@ namespace ui
 
 		void AddStyleSheet(StyleSheet* s);
 		void SelectStyles(UIElement* elem, RenderStyles* styles);
+
+		void UpdateStyles();
 
 		Widget* CreateWidget();
 

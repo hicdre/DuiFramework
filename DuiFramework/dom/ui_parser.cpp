@@ -1,6 +1,6 @@
 #include "stdafx.h"
-#include "dom_parser.h"
-#include "dom_include.h"
+#include "ui_parser.h"
+#include "ui_include.h"
 #include "third_party/tinyxml2.h"
 #include "utils/resource_loader.h"
 #include <functional>
@@ -28,6 +28,7 @@ namespace ui
 
 		UIElementPtr elem = ParseXmlElement(xml.RootElement());
 		document_->SetRootElement(elem);
+		document_->UpdateStyles();
 		return true;
 	}
 
@@ -62,14 +63,29 @@ namespace ui
 			ParseStyleSheet(elem);
 			return NULL;
 		}
-		else
+		else {
 			return ParseUIElement(elem, xml_tag);
+		}
 	}
+
+
+	ui::UIElement* UIParser::CreateUIElement(const char* tag)
+	{
+		if (!_strcmpi(tag, "Window"))
+			return new UIWindow(document_);
+		if (!_strcmpi(tag, "HBox"))
+			return new UIHBox(document_);
+		if (!_strcmpi(tag, "VBox"))
+			return new UIVBox(document_);
+		return new UIElement(document_);
+	}
+
 
 	ui::UIElementPtr UIParser::ParseUIElement(void* p, const char* tag)
 	{
 		tinyxml2::XMLElement* e = static_cast<tinyxml2::XMLElement*>(p);
-		UIElementPtr elem(new UIElement(document_));
+
+		UIElementPtr elem(CreateUIElement(tag));
 		elem->setTag(tag);
 		{
 			const char* val = e->Attribute("id");

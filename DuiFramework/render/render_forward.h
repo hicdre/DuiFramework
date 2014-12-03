@@ -4,10 +4,10 @@
 namespace ui
 {
 	class RenderContext;
-	class RenderObject;
-	class RenderBox;
-	class RenderWidget;
+	//class RenderObject;
+	//class RenderBox;
+	//class RenderWidget;
 	class RenderStyles;
-	typedef scoped_refptr<RenderObject> RenderObjectPtr;
-	typedef scoped_refptr<RenderBox> RenderBoxPtr;
+	//typedef scoped_refptr<RenderObject> RenderObjectPtr;
+	//typedef scoped_refptr<RenderBox> RenderBoxPtr;
 }

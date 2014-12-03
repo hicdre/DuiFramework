@@ -107,6 +107,7 @@
     <ClCompile Include="control\window.cpp" />
     <ClCompile Include="control\window_builder.cpp" />
     <ClCompile Include="core\app.cpp" />
+    <ClCompile Include="core\hittest_result.cpp" />
     <ClCompile Include="core\text.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
@@ -114,9 +115,12 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="core\widget.cpp" />
-    <ClCompile Include="dom\dom_document.cpp" />
-    <ClCompile Include="dom\dom_element.cpp" />
-    <ClCompile Include="dom\dom_parser.cpp" />
+    <ClCompile Include="dom\ui_document.cpp" />
+    <ClCompile Include="dom\ui_element.cpp" />
+    <ClCompile Include="dom\ui_hbox.cpp" />
+    <ClCompile Include="dom\ui_parser.cpp" />
+    <ClCompile Include="dom\ui_vbox.cpp" />
+    <ClCompile Include="dom\ui_window.cpp" />
     <ClCompile Include="event\event.cpp" />
     <ClCompile Include="event\event_dispatcher.cpp" />
     <ClCompile Include="event\event_dispatch_mediator.cpp" />
@@ -133,13 +137,18 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="event\mouse_event.cpp" />
-    <ClCompile Include="render\hittest_result.cpp" />
     <ClCompile Include="render\image.cpp" />
-    <ClCompile Include="render\render_box.cpp" />
+    <ClCompile Include="render\render_box.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="render\render_context.cpp" />
-    <ClCompile Include="render\render_object.cpp" />
+    <ClCompile Include="render\render_object.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="render\render_styles.cpp" />
-    <ClCompile Include="render\render_widget.cpp" />
+    <ClCompile Include="render\render_widget.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="render\uniscribe.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
@@ -214,6 +223,7 @@
     <ClInclude Include="control\window_builder.h" />
     <ClInclude Include="core\app.h" />
     <ClInclude Include="core\constants.h" />
+    <ClInclude Include="core\hittest_result.h" />
     <ClInclude Include="core\text.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClInclude>
@@ -221,11 +231,14 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="core\widget.h" />
-    <ClInclude Include="dom\dom_document.h" />
-    <ClInclude Include="dom\dom_forward.h" />
-    <ClInclude Include="dom\dom_include.h" />
-    <ClInclude Include="dom\dom_element.h" />
-    <ClInclude Include="dom\dom_parser.h" />
+    <ClInclude Include="dom\ui_document.h" />
+    <ClInclude Include="dom\ui_forward.h" />
+    <ClInclude Include="dom\ui_hbox.h" />
+    <ClInclude Include="dom\ui_include.h" />
+    <ClInclude Include="dom\ui_element.h" />
+    <ClInclude Include="dom\ui_parser.h" />
+    <ClInclude Include="dom\ui_vbox.h" />
+    <ClInclude Include="dom\ui_window.h" />
     <ClInclude Include="duiframework.h" />
     <ClInclude Include="event\event.h" />
     <ClInclude Include="event\event_dispatcher.h" />
@@ -245,15 +258,20 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="event\mouse_event.h" />
-    <ClInclude Include="render\hittest_result.h" />
     <ClInclude Include="render\image.h" />
-    <ClInclude Include="render\render_box.h" />
+    <ClInclude Include="render\render_box.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="render\render_context.h" />
     <ClInclude Include="render\render_forward.h" />
     <ClInclude Include="render\render_include.h" />
-    <ClInclude Include="render\render_object.h" />
+    <ClInclude Include="render\render_object.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="render\render_styles.h" />
-    <ClInclude Include="render\render_widget.h" />
+    <ClInclude Include="render\render_widget.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="render\uniscribe.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClInclude>
