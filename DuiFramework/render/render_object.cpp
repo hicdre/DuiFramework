@@ -288,6 +288,21 @@ namespace ui
 
 	}
 
+	bool RenderObject::Hittest(HittestResult* result, const Point& pt)
+	{
+		if (!bounds().Contains(pt))
+			return false;
+
+		Point location(pt.x() - x(), pt.y() - y());
+		result->Add(node_.get(), location);
+
+		for (RenderObjectPtr obj = lastChild(); obj; obj = obj->previousSibling())
+		{
+			obj->Hittest(result, location);
+		}
+		return true;
+	}
+
 	
 
 }

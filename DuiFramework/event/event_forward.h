@@ -7,4 +7,9 @@ namespace ui
 	class Event;
 	class EventTarget;
 	class EventPath;
+	class EventDispatcher;
+	class EventDispatchMediator;
+
+	class InputEvent;
+	class MouseEvent;
 }

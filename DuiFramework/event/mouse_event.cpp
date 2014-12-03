@@ -1,45 +1,34 @@
 #include "stdafx.h"
 #include "mouse_event.h"
-
-#include "core/view.h"
+#include "event_include.h"
 
 namespace ui
 {
-
-
-	MouseEvent::MouseEvent(EventType type, const Point& pt_in_widget, View* sender)
-		: Event(type)
-		, pt_in_widget_(pt_in_widget)
-		, flags_(GetMouseKeyFlags())
-		, sender_(sender)
+	MouseEvent::MouseEvent()
+		: m_button(ButtonNone)
+		, m_clickCount(0)
 	{
 
 	}
 
-	Point MouseEvent::GetPosition(View* v) const
+	int MouseEvent::x() const
 	{
-		return v->ConvertPointFromWidget(pt_in_widget_);
+		return m_clientLocation.x();
 	}
 
-	int MouseEvent::GetMouseKeyFlags() const
+	int MouseEvent::y() const
 	{
-		return flags_;
+		return m_clientLocation.y();
 	}
 
-	bool MouseEvent::HasMouseDown() const
+	bool MouseEvent::IsMouseEvent() const
 	{
-		return (flags_ & (MOUSE_LEFT | MOUSE_RIGHT | MOUSE_MIDDLE)) != 0;
+		return true;
 	}
 
-	void MouseEvent::SetSender(View* v)
+	bool MouseEvent::IsDragEvent() const
 	{
-		sender_ = v;
+		return false;
 	}
-
-	View* MouseEvent::sender() const
-	{
-		return sender_;
-	}
-
 
 }

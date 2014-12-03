@@ -270,11 +270,26 @@
     <ClCompile Include="event\event_listener.cpp">
       <Filter>event</Filter>
     </ClCompile>
-    <ClCompile Include="event\event_ui.cpp">
-      <Filter>event</Filter>
-    </ClCompile>
     <ClCompile Include="event\event_dispatcher.cpp">
       <Filter>event</Filter>
+    </ClCompile>
+    <ClCompile Include="event\event_dispatch_mediator.cpp">
+      <Filter>event</Filter>
+    </ClCompile>
+    <ClCompile Include="event\event_path.cpp">
+      <Filter>event</Filter>
+    </ClCompile>
+    <ClCompile Include="event\input_event.cpp">
+      <Filter>event</Filter>
+    </ClCompile>
+    <ClCompile Include="event\input_event_builder.cpp">
+      <Filter>event</Filter>
+    </ClCompile>
+    <ClCompile Include="event\event_handler.cpp">
+      <Filter>event</Filter>
+    </ClCompile>
+    <ClCompile Include="render\hittest_result.cpp">
+      <Filter>render</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -537,11 +552,26 @@
     <ClInclude Include="event\event_listener.h">
       <Filter>event</Filter>
     </ClInclude>
-    <ClInclude Include="event\event_ui.h">
-      <Filter>event</Filter>
-    </ClInclude>
     <ClInclude Include="event\event_dispatcher.h">
       <Filter>event</Filter>
+    </ClInclude>
+    <ClInclude Include="event\event_dispatch_mediator.h">
+      <Filter>event</Filter>
+    </ClInclude>
+    <ClInclude Include="event\event_path.h">
+      <Filter>event</Filter>
+    </ClInclude>
+    <ClInclude Include="event\input_event.h">
+      <Filter>event</Filter>
+    </ClInclude>
+    <ClInclude Include="event\input_event_builder.h">
+      <Filter>event</Filter>
+    </ClInclude>
+    <ClInclude Include="event\event_handler.h">
+      <Filter>event</Filter>
+    </ClInclude>
+    <ClInclude Include="render\hittest_result.h">
+      <Filter>render</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

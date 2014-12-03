@@ -119,18 +119,21 @@
     <ClCompile Include="dom\dom_parser.cpp" />
     <ClCompile Include="event\event.cpp" />
     <ClCompile Include="event\event_dispatcher.cpp" />
+    <ClCompile Include="event\event_dispatch_mediator.cpp" />
+    <ClCompile Include="event\event_handler.cpp" />
     <ClCompile Include="event\event_listener.cpp" />
+    <ClCompile Include="event\event_path.cpp" />
     <ClCompile Include="event\event_target.cpp" />
-    <ClCompile Include="event\event_ui.cpp" />
+    <ClCompile Include="event\input_event.cpp" />
     <ClCompile Include="event\focus_evnet.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="event\input_event_builder.cpp" />
     <ClCompile Include="event\key_event.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="event\mouse_event.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
+    <ClCompile Include="event\mouse_event.cpp" />
+    <ClCompile Include="render\hittest_result.cpp" />
     <ClCompile Include="render\image.cpp" />
     <ClCompile Include="render\render_box.cpp" />
     <ClCompile Include="render\render_context.cpp" />
@@ -226,20 +229,23 @@
     <ClInclude Include="duiframework.h" />
     <ClInclude Include="event\event.h" />
     <ClInclude Include="event\event_dispatcher.h" />
+    <ClInclude Include="event\event_dispatch_mediator.h" />
     <ClInclude Include="event\event_forward.h" />
+    <ClInclude Include="event\event_handler.h" />
     <ClInclude Include="event\event_include.h" />
     <ClInclude Include="event\event_listener.h" />
+    <ClInclude Include="event\event_path.h" />
     <ClInclude Include="event\event_target.h" />
-    <ClInclude Include="event\event_ui.h" />
+    <ClInclude Include="event\input_event.h" />
     <ClInclude Include="event\focus_evnet.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="event\input_event_builder.h" />
     <ClInclude Include="event\key_event.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClInclude>
-    <ClInclude Include="event\mouse_event.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </ClInclude>
+    <ClInclude Include="event\mouse_event.h" />
+    <ClInclude Include="render\hittest_result.h" />
     <ClInclude Include="render\image.h" />
     <ClInclude Include="render\render_box.h" />
     <ClInclude Include="render\render_context.h" />

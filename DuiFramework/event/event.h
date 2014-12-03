@@ -5,7 +5,7 @@
 
 namespace ui
 {
-	class Event : public RefCounted < Event >
+	class Event : public RefCounted <Event>
 	{
 	public:
 		virtual ~Event();

@@ -66,22 +66,4 @@ namespace ui
 		
 	};
 
-	enum NoneFlag{
-		FLAG_NONE = 0,
-	};
-
-	enum KeyFlag{
-		KEY_CAPS_LOCK = 1 << 0,
-		KEY_SHIFT = 1 << 1,
-		KEY_CONTROL = 1 << 2,
-		KEY_ALT = 1 << 3,
-	};
-
-	enum MouseFlag{
-		MOUSE_LEFT = 1 << 4,
-		MOUSE_MIDDLE = 1 << 5,
-		MOUSE_RIGHT = 1 << 6,
-	};
-
-
 }

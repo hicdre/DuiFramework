@@ -2,6 +2,7 @@
 #include "base/basictypes.h"
 #include "dom/dom_forward.h"
 #include "render/render_forward.h"
+#include "render/hittest_result.h"
 
 namespace ui
 {
@@ -46,6 +47,8 @@ namespace ui
 		int height() const { return bounds_.height(); }
 		const Size& size() const { return bounds_.size(); }
 		Rect GetLocalBounds() const;
+
+		virtual bool Hittest(HittestResult* result, const Point& pt);
 
 		virtual void SchedulePaint();
 		virtual void SchedulePaintInRect(const Rect& r);
