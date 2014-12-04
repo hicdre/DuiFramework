@@ -2,6 +2,7 @@
 #include "ui_window.h"
 #include "ui_include.h"
 #include "render/render_include.h"
+#include "event/input_event_builder.h"
 
 namespace ui
 {
@@ -9,6 +10,7 @@ namespace ui
 
 	UIWindow::UIWindow(UIDocumentPtr doc)
 		: UIElement(doc)
+		, event_handler_(this)
 	{
 		
 	}
@@ -37,6 +39,15 @@ namespace ui
 		{
 			Size sz = { LOWORD(l_param), HIWORD(l_param) };
 			SetSize(sz);
+			return TRUE;
+		}
+		else if ((message >= WM_MOUSEFIRST && message <= WM_MOUSELAST)
+			|| (message >= WM_NCMOUSEMOVE && message <= WM_NCXBUTTONDBLCLK)
+			|| message == WM_MOUSELEAVE
+			|| message == WM_NCMOUSELEAVE)
+		{
+			scoped_refptr<MouseEvent> event = BuildMouseEvent(owned_widget_->hwnd(), message, w_param, l_param, GetTickCount());
+			event_handler_.HandleMouseMoveEvent(event.get());
 			return TRUE;
 		}
 		return FALSE;

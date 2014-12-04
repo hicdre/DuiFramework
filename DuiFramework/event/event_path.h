@@ -7,19 +7,16 @@ namespace ui
 	class EventPath
 	{
 	public:
-		explicit EventPath(Event*);
 		explicit EventPath(UIElement*);
 		void resetWith(UIElement*);
 
 		bool isEmpty() const { return elements_.empty(); }
 		size_t size() const { return elements_.size(); }
 
-
-	private:
 		UIElement* at(size_t index) { return elements_[index]; }
 
+	private:
 		std::vector<UIElement*> elements_;
 		UIElement* elem_;
-		scoped_refptr<Event> event_;
 	};
 }

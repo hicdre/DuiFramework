@@ -4,6 +4,7 @@
 namespace ui
 {
 	class View;
+	class UIElement;
 	class MouseEvent : public InputEvent
 	{
 	public:
@@ -16,6 +17,8 @@ namespace ui
 		};
 
 		MouseEvent();
+
+		static MouseEvent* Create(EventType eventType, MouseEvent* other, int detail, UIElement* relatedTarget);
 
 		void setScreenLocation(int x, int y) { m_screenLocation.SetPoint(x, y); }
 		int screenX() const { return m_screenLocation.x(); }
@@ -30,9 +33,9 @@ namespace ui
 		int movementY() const { return m_movementDelta.y(); }
 		const Point& clientLocation() const { return m_clientLocation; }
 
-		void setLocation(int x, int y) { m_point.SetPoint(x, y); }
-		int x() const;
-		int y() const;
+		void setNeedCalcLocation() { m_needCalcLocation = true; }
+		int x();
+		int y();
 
 		Button button() const { return m_button; }
 		void setButton(Button b) { m_button = b; }
@@ -40,14 +43,17 @@ namespace ui
 		int clickCount() const { return m_clickCount; }
 		void setClickCount(int i) { m_clickCount = i; }
 
-
 		virtual bool IsMouseEvent() const override;
 		virtual bool IsDragEvent() const override final;
 	protected:
 
+		void CalcLocation();
+
 		Point m_screenLocation;//ÆÁÄ»×ø±ê
 		Point m_clientLocation;//client×ø±ê
 		Point m_movementDelta;//
+
+		bool m_needCalcLocation{ true };
 		Point m_point;
 
 		Button m_button;

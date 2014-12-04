@@ -67,11 +67,8 @@ namespace ui
 		bool cancelBubble() const { return is_cancel_bubble_; }
 		void setCancelBubble(bool cancel) { is_cancel_bubble_ = cancel; }
 
-		//Event* underlyingEvent() const { return m_underlyingEvent.get(); }
-		//void setUnderlyingEvent(PassRefPtrWillBeRawPtr<Event>);
-
-		EventPath& eventPath() { return *event_path_.get(); }
-		EventPath& ensureEventPath();
+		EventPath* eventPath() { return event_path_.get(); }
+		void setEventPath(EventPath* path) { event_path_.reset(path); }
 
 		bool isBeingDispatched() const { return !!event_path_.get(); }
 

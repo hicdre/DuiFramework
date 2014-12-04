@@ -6,13 +6,6 @@
 
 namespace ui
 {
-	EventPath::EventPath(Event* event)
-		: event_(event)
-		, elem_(NULL)
-	{
-
-	}
-
 	EventPath::EventPath(UIElement* elem)
 		: elem_(elem)
 	{

@@ -4,13 +4,13 @@
 namespace ui
 {
 
-	HittestResult::HittestResult()
+	HitTestResult::HitTestResult()
 		: first_(NULL)
 	{
 
 	}
 
-	HittestResult::~HittestResult()
+	HitTestResult::~HitTestResult()
 	{
 		ResultNode* node = first_;
 		while (node) {
@@ -20,26 +20,26 @@ namespace ui
 		}
 	}
 
-	UIElement* HittestResult::element() const
+	UIElement* HitTestResult::element() const
 	{
 		if (first_)
 			return first_->element;
 		return NULL;
 	}
 
-	const Point& HittestResult::point() const
+	const Point& HitTestResult::point() const
 	{
 		assert(first_);
 		return first_->location;
 	}
 
-	void HittestResult::Add(ResultNode* r)
+	void HitTestResult::Add(ResultNode* r)
 	{
 		r->next = first_;
 		first_ = r;
 	}
 
-	void HittestResult::Add(UIElement* e, const Point& p)
+	void HitTestResult::Add(UIElement* e, const Point& p)
 	{
 		
 		Add(new ResultNode{ p, e, NULL });

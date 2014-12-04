@@ -123,7 +123,6 @@
     <ClCompile Include="dom\ui_window.cpp" />
     <ClCompile Include="event\event.cpp" />
     <ClCompile Include="event\event_dispatcher.cpp" />
-    <ClCompile Include="event\event_dispatch_mediator.cpp" />
     <ClCompile Include="event\event_handler.cpp" />
     <ClCompile Include="event\event_listener.cpp" />
     <ClCompile Include="event\event_path.cpp" />
@@ -242,7 +241,6 @@
     <ClInclude Include="duiframework.h" />
     <ClInclude Include="event\event.h" />
     <ClInclude Include="event\event_dispatcher.h" />
-    <ClInclude Include="event\event_dispatch_mediator.h" />
     <ClInclude Include="event\event_forward.h" />
     <ClInclude Include="event\event_handler.h" />
     <ClInclude Include="event\event_include.h" />

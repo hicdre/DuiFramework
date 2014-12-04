@@ -264,9 +264,6 @@
     <ClCompile Include="event\event_dispatcher.cpp">
       <Filter>event</Filter>
     </ClCompile>
-    <ClCompile Include="event\event_dispatch_mediator.cpp">
-      <Filter>event</Filter>
-    </ClCompile>
     <ClCompile Include="event\event_path.cpp">
       <Filter>event</Filter>
     </ClCompile>
@@ -547,9 +544,6 @@
       <Filter>event</Filter>
     </ClInclude>
     <ClInclude Include="event\event_dispatcher.h">
-      <Filter>event</Filter>
-    </ClInclude>
-    <ClInclude Include="event\event_dispatch_mediator.h">
       <Filter>event</Filter>
     </ClInclude>
     <ClInclude Include="event\event_path.h">

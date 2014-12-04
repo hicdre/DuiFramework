@@ -4,7 +4,7 @@
 namespace ui
 {
 	class UIElement;
-	class HittestResult
+	class HitTestResult
 	{
 	public:
 		struct ResultNode {
@@ -12,8 +12,8 @@ namespace ui
 			UIElement* element;
 			ResultNode* next;
 		};
-		HittestResult();
-		~HittestResult();
+		HitTestResult();
+		~HitTestResult();
 
 		UIElement* element() const;
 		const Point& point() const;

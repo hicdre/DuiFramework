@@ -8,7 +8,6 @@ namespace ui
 	class EventTarget;
 	class EventPath;
 	class EventDispatcher;
-	class EventDispatchMediator;
 
 	class InputEvent;
 	class MouseEvent;

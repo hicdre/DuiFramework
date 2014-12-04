@@ -48,7 +48,7 @@ namespace ui
 		const Size& size() const { return bounds_.size(); }
 		Rect GetLocalBounds() const;
 
-		virtual bool Hittest(HittestResult* result, const Point& pt);
+		virtual bool Hittest(HitTestResult* result, const Point& pt);
 
 		virtual void SchedulePaint();
 		virtual void SchedulePaintInRect(const Rect& r);

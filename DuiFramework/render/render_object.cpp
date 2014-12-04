@@ -288,7 +288,7 @@ namespace ui
 
 	}
 
-	bool RenderObject::Hittest(HittestResult* result, const Point& pt)
+	bool RenderObject::Hittest(HitTestResult* result, const Point& pt)
 	{
 		if (!bounds().Contains(pt))
 			return false;

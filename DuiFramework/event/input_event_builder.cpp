@@ -162,7 +162,7 @@ namespace ui
 
 		int x = static_cast<short>(LOWORD(lparam));
 		int y = static_cast<short>(HIWORD(lparam));
-		result->setLocation(x, y);
+		//result->setLocation(x, y);
 		result->setClientLocation(x, y);
 
 		POINT global_point = { x, y };

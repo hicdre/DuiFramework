@@ -6,6 +6,8 @@ namespace ui
 	class UIDocument;
 	class UIElement;
 	class UIWindow;
+	class UIHBox;
+	class UIVBox;
 	typedef scoped_refptr<UIDocument> UIDocumentPtr;
 	typedef scoped_refptr<UIElement> UIElementPtr;
 }

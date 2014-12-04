@@ -6,16 +6,17 @@ namespace ui
 {
 
 
-	bool EventDispatcher::DispatchEvent(UIElement* elem, EventDispatchMediator* mediator)
+	bool EventDispatcher::DispatchEvent(UIElement* elem, Event* e)
 	{
-		if (!mediator->event())
-			return true;
-		EventDispatcher dispatcher(elem, mediator->event());
-		return mediator->DispatchEvent(&dispatcher);
+		EventDispatcher dispatcher(elem, e);
+		return dispatcher.Dispatch();
 	}
 
 	bool EventDispatcher::Dispatch()
 	{
+		event_->setTarget(elem_.get());
+
+		DispatchEventAtBubbling();
 		//todo:
 		return !event_->defaultPrevented();
 	}
@@ -25,6 +26,34 @@ namespace ui
 		, event_(event)
 	{
 
+	}
+
+	void EventDispatcher::DispatchEventAtBubbling()
+	{
+		EventPath* event_path = event_->eventPath();
+		size_t size = event_path->size();
+		for (size_t i = 0; i < size; ++i) {
+			UIElement* elem = event_path->at(i);
+			if (elem == elem_.get())
+				event_->setEventPhase(EVENT_AT_TARGET);
+			else if (event_->bubbles() && !event_->cancelBubble())
+				event_->setEventPhase(EVENT_BUBBLING_PHASE);
+			else
+				continue;
+			event_->setTarget(elem_.get());
+			event_->setCurrentTarget(elem);
+
+			if (event_->IsMouseEvent()) {
+				dynamic_cast<MouseEvent*>(event_.get())->setNeedCalcLocation();
+			}
+			elem->HandleLocalEvents(event_.get());
+			//eventContext.handleLocalEvents(m_event.get());
+			if (event_->propagationStopped())
+				return;
+		}
+		if (event_->bubbles() && !event_->cancelBubble()) {
+			event_->setEventPhase(EVENT_BUBBLING_PHASE);
+		}
 	}
 
 }

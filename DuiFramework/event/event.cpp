@@ -101,12 +101,6 @@ namespace ui
 	{
 		return false;
 	}
-
-	EventPath& Event::ensureEventPath()
-	{
-		return *event_path_.get();
-	}
-
 	
 	void Event::ReceivedTarget()
 	{

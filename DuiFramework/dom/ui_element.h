@@ -3,6 +3,7 @@
 #include "dom/ui_forward.h"
 #include "render/render_forward.h"
 #include "core/hittest_result.h"
+#include "event/event_target.h"
 
 #include <set>
 
@@ -10,11 +11,11 @@ namespace ui
 {
 
 	class RenderObject;
-	class UIElement : public RefCounted<UIElement>
+	class UIElement 
+		: public EventTarget
 	{
 		friend class UIDocument;
 		friend class UIElement;
-		friend class RefCounted<UIElement>;
 	public:
 		UIElement(UIDocumentPtr);
 		UIDocumentPtr GetDocument();
@@ -60,6 +61,8 @@ namespace ui
 		Rect GetLocalBounds() const;
 		Rect GetContentBounds() const;
 
+		static Point ConvertPointToElement(UIElement* elem, const Point& pt);
+
 		//=================================================
 		//attribute
 		void setTag(const std::string& tag);
@@ -99,7 +102,10 @@ namespace ui
 
 		//=================================================
 		//event
-		virtual bool Hittest(HittestResult* result, const Point& pt);
+		virtual bool Hittest(HitTestResult* result, const Point& pt);
+
+		void HandleLocalEvents(Event* event);
+		bool DispatchMouseEvent(MouseEvent* evt, EventType eventType, int clickCount = 0, UIElement* relatedTarget = NULL);
 	protected:
 		virtual ~UIElement();
 		void Unlink(UIElementPtr child);

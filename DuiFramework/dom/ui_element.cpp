@@ -3,6 +3,7 @@
 #include "ui_include.h"
 
 #include "render/render_include.h"
+#include "event/event_include.h"
 
 namespace ui
 {
@@ -464,7 +465,7 @@ namespace ui
 		child->Layout();
 	}
 
-	bool UIElement::Hittest(HittestResult* result, const Point& pt)
+	bool UIElement::Hittest(HitTestResult* result, const Point& pt)
 	{
 		if (!bounds().Contains(pt))
 			return false;
@@ -477,6 +478,36 @@ namespace ui
 			obj->Hittest(result, location);
 		}
 		return true;
+	}
+
+	bool UIElement::DispatchMouseEvent(MouseEvent* evt, EventType eventType, int clickCount, UIElement* relatedTarget)
+	{
+		MouseEvent* event = MouseEvent::Create(eventType, evt, clickCount, relatedTarget);
+		event->setEventPath(new EventPath(this));
+		return EventDispatcher::DispatchEvent(this, event);
+	}
+
+	void UIElement::HandleLocalEvents(Event* event)
+	{
+		//if (!HasEventTargetData())
+		//	return;
+
+		//if (isDisabledFormControl(this) && event->isMouseEvent())
+		//	return;
+
+		FireEventListeners(event);
+	}
+
+	Point UIElement::ConvertPointToElement(UIElement* elem, const Point& pt)
+	{
+		Point result(pt);
+		UIElement* p = elem;
+		while (p->parent())
+		{
+			result.Offset(p->x(), p->y());
+			p = p->parent().get();
+		}
+		return result;
 	}
 
 
