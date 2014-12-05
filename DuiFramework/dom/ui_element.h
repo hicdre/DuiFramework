@@ -105,7 +105,16 @@ namespace ui
 		virtual bool Hittest(HitTestResult* result, const Point& pt);
 
 		void HandleLocalEvents(Event* event);
-		bool DispatchMouseEvent(MouseEvent* evt, EventType eventType, int clickCount = 0, UIElement* relatedTarget = NULL);
+		bool DispatchEvent(Event* event, EventPath* path = NULL);
+
+		//=================================================
+		//state
+		bool hovered() const { return hovered_; }
+		bool actived() const { return actived_; }
+		bool focused() const { return focused_; }
+
+		void SetHovered(bool v);
+
 	protected:
 		virtual ~UIElement();
 		void Unlink(UIElementPtr child);
@@ -132,6 +141,10 @@ namespace ui
 		Rect bounds_; //  µº Œª÷√
 		bool needs_layout_{true};//self needs layout
 		bool child_needs_layout_{true};
+
+		bool hovered_{ false };
+		bool actived_{ false };
+		bool focused_{ false };
 
 		DISALLOW_COPY_AND_ASSIGN(UIElement);
 	};

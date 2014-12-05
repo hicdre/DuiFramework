@@ -23,12 +23,12 @@ namespace ui
 
 		bool ParseSelectorList(StyleSelectorList*& aListHead,
 			char aStopChar);
-		bool ParseSelectorGroup(StyleSelector*& aList);
-		bool ParseSelector(StyleSelector*& aList,
+		bool ParseSelector(StyleSelector*& aList);
+		bool ParseSelectorNode(StyleSelectorNode*& aList,
 			char aPrevCombinator);
-		bool ParseIDSelector(StyleSelector* s);
-		bool ParseClassSelector(StyleSelector* s);
-		bool ParsePseudoSelector(StyleSelector* s);
+		bool ParseIDSelectorNode(StyleSelectorNode* s);
+		bool ParseClassSelectorNode(StyleSelectorNode* s);
+		bool ParsePseudoSelectorNode(StyleSelectorNode* s);
 
 		bool ParseDeclarationBlock(StyleDeclarationList*& aList, bool inbraces);
 		bool ParseDeclaration(StyleDeclarationList* aList, bool inbraces,

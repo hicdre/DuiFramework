@@ -6,33 +6,22 @@
 namespace ui
 {
 
-
-	void StyleSelector::AddChildSelector(StyleSelector* s)
-	{
-		StyleSelector* v = this;
-		while (v->child_)
-		{
-			v = v->child_;
-		}
-		v->child_ = s;
-	}
-
-	void StyleSelector::RemoveClass(const std::string& v)
+	void StyleSelectorNode::RemoveClass(const std::string& v)
 	{
 		class_list_.erase(v);
 	}
 
-	void StyleSelector::AddClass(const std::string& v)
+	void StyleSelectorNode::AddClass(const std::string& v)
 	{
 		class_list_.insert(v);
 	}
 
-	void StyleSelector::SetPseduo(PseudoType type)
+	void StyleSelectorNode::SetPseduo(PseudoType type)
 	{
 		type_ = type;
 	}
 
-	void StyleSelector::SetTag(const std::string& tag)
+	void StyleSelectorNode::SetTag(const std::string& tag)
 	{
 		if (id_or_tag_)
 			delete id_or_tag_;
@@ -40,7 +29,7 @@ namespace ui
 		id_or_tag_ = new std::string(tag);
 	}
 
-	void StyleSelector::SetId(const std::string& id)
+	void StyleSelectorNode::SetId(const std::string& id)
 	{
 		if (id_or_tag_)
 			delete id_or_tag_;
@@ -48,27 +37,27 @@ namespace ui
 		id_or_tag_ = new std::string(id);
 	}
 
-	bool StyleSelector::IsPseudo() const
+	bool StyleSelectorNode::IsPseudo() const
 	{
 		return type_ != PSEUDO_NULL;
 	}
 
-	bool StyleSelector::HasTag() const
+	bool StyleSelectorNode::HasTag() const
 	{
 		return id_or_tag_ && !is_id_;
 	}
 
-	bool StyleSelector::HasClass() const
+	bool StyleSelectorNode::HasClass() const
 	{
 		return !class_list_.empty();
 	}
 
-	bool StyleSelector::HasId() const
+	bool StyleSelectorNode::HasId() const
 	{
 		return id_or_tag_ && is_id_;
 	}
 
-	void StyleSelector::Reset()
+	void StyleSelectorNode::Reset()
 	{
 		if (id_or_tag_) {
 			delete id_or_tag_;
@@ -77,55 +66,25 @@ namespace ui
 		class_list_.clear();
 		type_ = PSEUDO_NULL;
 
-		if (child_) {
-			delete child_;
+		if (next_) {
+			delete next_;
+			next_ = NULL;
 		}
 	}
 
-	StyleSelector::~StyleSelector()
+	StyleSelectorNode::~StyleSelectorNode()
 	{
 		Reset();
 	}
 
-	StyleSelector::StyleSelector() 
-		: id_or_tag_(NULL), child_(NULL)
+	StyleSelectorNode::StyleSelectorNode() 
+		: id_or_tag_(NULL), next_(NULL)
 		, is_id_(false), type_(PSEUDO_NULL)
 	{
 
 	}
 
-	bool StyleSelector::MatchElement(UIElement* v) const
-	{
-		std::stack<const StyleSelector*> s;
-		{
-			const StyleSelector* selector = this;
-			s.push(selector);
-			while (selector->child_)
-			{
-				s.push(selector);
-				selector = selector->child_;
-			}
-		}
-
-		const StyleSelector* selector = s.top();
-		if (!selector->MatchElementInternal(v))
-			return false;
-
-		s.pop();
-		v = dynamic_cast<UIElement*>(v->parent().get());
-		while (!s.empty() && !v)
-		{
-			const StyleSelector* selector = s.top();
-			if (selector->MatchElementInternal(v))
-				s.pop();
-
-			v = dynamic_cast<UIElement*>(v->parent().get());
-		}
-
-		return s.empty();
-	}
-
-	bool StyleSelector::MatchElementInternal(UIElement* v) const
+	bool StyleSelectorNode::MatchElement(UIElement* v) const
 	{
 		if (HasId() && (v->getId() != *id_or_tag_))
 			return false;
@@ -142,8 +101,13 @@ namespace ui
 		}
 
 		if (IsPseudo()) {
-			//ÔÝÊ±²»¹Ü
-			//if (type_ == PSEUDO_HOVER && v->Is) 
+			if (type_ == PSEUDO_HOVER && v->hovered())
+				return true;
+			if (type_ == PSEUDO_ACTIVE && v->actived())
+				return true;
+			if (type_ == PSEUDO_FOCUS && v->focused())
+				return true;
+			return false;
 		}
 		return true;
 	}
@@ -167,6 +131,69 @@ namespace ui
 				return true;
 		}
 		return false;
+	}
+
+
+	StyleSelector::StyleSelector()
+		: first_(NULL)
+		, specificity_(0)
+	{
+		if (first_) {
+			delete first_;
+			first_ = NULL;
+		}
+	}
+
+	StyleSelector::~StyleSelector()
+	{
+
+	}
+
+	void StyleSelector::AddChildSelector(StyleSelectorNode* node)
+	{
+		node->next_ = first_;
+		first_ = node;
+
+		const uint32 mask = 1 << 11 - 1;
+		uint32 id_count = specificity_ & (mask << 20);
+		uint32 class_count = specificity_ & (mask << 10);
+		uint32 tag_count = specificity_ & mask;
+		if (node->HasId()) {
+			id_count++;
+		}
+		if (node->HasTag()) {
+			tag_count++;
+		}
+		if (node->IsPseudo()) {
+			tag_count++;
+		}
+		class_count += node->GetClassCount();
+
+		specificity_ = (id_count << 20) | (class_count << 10) | tag_count;
+	}
+
+	bool StyleSelector::MatchElement(UIElement* v) const
+	{
+		const StyleSelectorNode* selector = first_;
+		if (!selector->MatchElement(v))
+			return false;
+
+		selector = first_->next_;
+		v = v->parent().get();
+		while (selector && v)
+		{
+			if (selector->MatchElement(v))
+				selector = first_->next_;
+
+			v = v->parent().get();
+		}
+
+		return selector == NULL;
+	}
+
+	uint32 StyleSelector::specificity() const
+	{
+		return specificity_;
 	}
 
 }

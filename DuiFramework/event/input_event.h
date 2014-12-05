@@ -44,8 +44,6 @@ namespace ui
 
 		virtual ~InputEvent() override;
 
-		Widget* widget() const { return widget_; }
-
 		int modifiers() const { return modifiers_; }
 		void setModifiers(int m) { modifiers_ = m; }
 
@@ -53,11 +51,9 @@ namespace ui
 		void setTimestamps(double t) { timestamps_ = t; }
 	protected:
 		InputEvent();
-		InputEvent(EventType type, bool canBubble, bool cancelable, Widget* widget);
+		InputEvent(EventType type, bool canBubble, bool cancelable, int modifiers);
 
 		double timestamps_; // Seconds since epoch.
 		int modifiers_;
-
-		Widget* widget_;
 	};
 }

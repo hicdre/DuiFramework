@@ -480,13 +480,6 @@ namespace ui
 		return true;
 	}
 
-	bool UIElement::DispatchMouseEvent(MouseEvent* evt, EventType eventType, int clickCount, UIElement* relatedTarget)
-	{
-		MouseEvent* event = MouseEvent::Create(eventType, evt, clickCount, relatedTarget);
-		event->setEventPath(new EventPath(this));
-		return EventDispatcher::DispatchEvent(this, event);
-	}
-
 	void UIElement::HandleLocalEvents(Event* event)
 	{
 		//if (!HasEventTargetData())
@@ -508,6 +501,22 @@ namespace ui
 			p = p->parent().get();
 		}
 		return result;
+	}
+
+	bool UIElement::DispatchEvent(Event* event, EventPath* path /*= NULL*/)
+	{
+		scoped_ptr<EventPath> eventPath(path ? path : new EventPath(this));
+		event->setEventPath(eventPath.release());
+		return EventDispatcher::DispatchEvent(this, event);
+	}
+
+	void UIElement::SetHovered(bool v)
+	{
+		if (v == hovered_)
+			return;
+		hovered_ = v;
+		UpdateStyles();
+		SchedulePaint();
 	}
 
 

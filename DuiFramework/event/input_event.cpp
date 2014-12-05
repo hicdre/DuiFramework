@@ -6,17 +6,15 @@ namespace ui
 {
 	InputEvent::InputEvent()
 		: Event()
-		, widget_(NULL)
 		, modifiers_(0)
 		, timestamps_(0)
 	{
 
 	}
 
-	InputEvent::InputEvent(EventType type, bool canBubble, bool cancelable, Widget* widget)
+	InputEvent::InputEvent(EventType type, bool canBubble, bool cancelable, int modifiers)
 		: Event(type, canBubble, cancelable)
-		, widget_(widget)
-		, modifiers_(0)
+		, modifiers_(modifiers)
 		, timestamps_(0)
 	{
 

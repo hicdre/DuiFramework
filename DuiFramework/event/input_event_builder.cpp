@@ -103,7 +103,7 @@ namespace ui
 		UINT message, WPARAM wparam, LPARAM lparam, 
 		DWORD time_ms)
 	{
-		scoped_refptr<MouseEvent> result(new MouseEvent);
+		scoped_refptr<MouseEvent> result(MouseEvent::Create());
 
 		switch (message) {
 		case WM_MOUSEMOVE:

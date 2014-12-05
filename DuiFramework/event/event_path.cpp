@@ -3,28 +3,46 @@
 #include "event_include.h"
 
 #include "dom/ui_include.h"
+#include <algorithm>
 
 namespace ui
 {
-	EventPath::EventPath(UIElement* elem)
-		: elem_(elem)
+	EventPath::EventPath()
 	{
-		resetWith(elem);
 	}
 
-
-	void EventPath::resetWith(UIElement* elem)
+	EventPath::EventPath(UIElement* elem)
 	{
-		elem_ = elem;
-		elements_.clear();
-
-		UIElement* current = elem_;
-		elements_.push_back(current);
-		while (current) {
-			current = current->parent().get();
-			if (current)
-				elements_.push_back(current);
+		UIElement* e = elem;
+		while (e)
+		{
+			elements_.push_back(e);
+			e = e->parent().get();
 		}
+	}
+
+	EventPath::~EventPath()
+	{
+
+	}
+
+	void EventPath::reverse()
+	{
+		std::reverse(elements_.begin(), elements_.end());
+	}
+
+	UIElement* EventPath::front() const
+	{
+		if (isEmpty())
+			return NULL;
+		return elements_.front();
+	}
+
+	UIElement* EventPath::back() const
+	{
+		if (isEmpty())
+			return NULL;
+		return elements_.back();
 	}
 
 }

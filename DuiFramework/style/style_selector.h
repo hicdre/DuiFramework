@@ -12,14 +12,15 @@ namespace ui
 		PSEUDO_ACTIVE,
 		PSEUDO_FOCUS,
 	};
+
 	//Ñ¡ÔñÆ÷
 	// #id.tt.bb:hover
 	// [id|tag]?[class]*[pseudo]
-	class StyleSelector
+	class StyleSelectorNode
 	{
 	public:
-		StyleSelector();
-		~StyleSelector();
+		StyleSelectorNode();
+		~StyleSelectorNode();
 
 		void Reset();
 
@@ -28,7 +29,9 @@ namespace ui
 		bool HasClass() const;
 		bool IsPseudo() const;
 
-		bool HasChild() const { return !!child_; }
+		int GetClassCount() const { return class_list_.size(); }
+
+		bool HasChild() const { return !!next_; }
 
 		void SetId(const std::string& id);
 
@@ -39,17 +42,34 @@ namespace ui
 		void AddClass(const std::string& v);
 		void RemoveClass(const std::string& v);
 
-		void AddChildSelector(StyleSelector* s);
-
 		bool MatchElement(UIElement* v) const;
 	private:
-		bool MatchElementInternal(UIElement* v) const;
+		friend class StyleSelector;
 		bool is_id_;
 		std::string* id_or_tag_;
 		std::set<std::string> class_list_;
 		PseudoType type_;
 
-		StyleSelector* child_;
+		StyleSelectorNode* next_;
+	};
+
+	class StyleSelector
+	{
+	public:
+		StyleSelector();
+		~StyleSelector();
+
+		void AddChildSelector(StyleSelectorNode* node);
+
+		bool MatchElement(UIElement* v) const;
+
+		uint32 specificity() const;
+	private:
+		//id : 10
+		//class : 10
+		//tag, pseudo : 10
+		uint32 specificity_;
+		StyleSelectorNode* first_;
 	};
 
 	class StyleSelectorList

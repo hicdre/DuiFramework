@@ -15,11 +15,7 @@ namespace ui
 
 	RenderStyles::~RenderStyles()
 	{
-		for (StyleRule* rule : rules_)
-		{
-			rule->Release();
-		}
-		rules_.clear();
+		Reset();
 	}
 
 	int RenderStyles::marginLeft() const
@@ -64,9 +60,26 @@ namespace ui
 
 	void RenderStyles::AddStyleRule(StyleRule* rule)
 	{
+		for (StyleRule* r : rules_)
+		{
+			if (r == rule) {
+				return;
+			}
+		}
 		rules_.push_back(rule);
 		rule->AddRef();
 	}
+
+
+	void RenderStyles::Reset()
+	{
+		for (StyleRule* rule : rules_)
+		{
+			rule->Release();
+		}
+		rules_.clear();
+	}
+
 
 	StyleValue* RenderStyles::FindProperty(StyleProperty p) const
 	{

@@ -152,7 +152,7 @@ namespace ui
 
 		scoped_ptr<StyleSelectorList> list(new StyleSelectorList);
 		StyleSelector* selector = NULL;
-		if (!ParseSelectorGroup(selector)) {
+		if (!ParseSelector(selector)) {
 			// must have at least one selector group
 			aListHead = NULL;
 			return false;
@@ -179,7 +179,7 @@ namespace ui
 				if (',' == tk->mSymbol) {
 					StyleSelector* newList = nullptr;
 					// Another selector group must follow
-					if (!ParseSelectorGroup(newList)) {
+					if (!ParseSelector(newList)) {
 						break;
 					}
 					// add new list to the end of the selector list
@@ -202,23 +202,21 @@ namespace ui
 	}
 
 
-	bool StyleParser::ParseSelectorGroup(StyleSelector*& aList)
+	bool StyleParser::ParseSelector(StyleSelector*& aList)
 	{
 		char combinator = 0;
 		scoped_ptr<StyleSelector> list;
 
 		for (;;) {
-			StyleSelector* selector = NULL;
-			if (!ParseSelector(selector, combinator)) {
+			StyleSelectorNode* selectorNode = NULL;
+			if (!ParseSelectorNode(selectorNode, combinator)) {
 				return false;
 			}
 
-			if (list.get()) {
-				list->AddChildSelector(selector);
+			if (!list.get()) {
+				list.reset(new StyleSelector);
 			}
-			else {
-				list.reset(selector);
-			}
+			list->AddChildSelector(selectorNode);
 
 			// Look for a combinator.
 			if (!GetToken(false)) {
@@ -260,7 +258,7 @@ namespace ui
 	}
 
 	// id | class 
-	bool StyleParser::ParseSelector(StyleSelector*& aList, char aPrevCombinator)
+	bool StyleParser::ParseSelectorNode(StyleSelectorNode*& aList, char aPrevCombinator)
 	{
 		aList = NULL;
 
@@ -269,7 +267,7 @@ namespace ui
 			return false;
 		}
 		
-		StyleSelector* selector = new StyleSelector;
+		StyleSelectorNode* selector = new StyleSelectorNode;
 		bool success = true;
 		bool has_id_or_tag = false;
 		while (success)
@@ -280,7 +278,7 @@ namespace ui
 					success = false;
 				else
 					has_id_or_tag = true;
-				success = ParseIDSelector(selector);
+				success = ParseIDSelectorNode(selector);
 			}
 			else if (token_.mType == Token_Ident) {    // tag
 				if (has_id_or_tag)
@@ -293,10 +291,10 @@ namespace ui
 				success = true;
 			}
 			else if (token_.IsSymbol('.')) {    // .class
-				success = ParseClassSelector(selector);
+				success = ParseClassSelectorNode(selector);
 			}
 			else if (token_.IsSymbol(':')) {    // :pseudo
-				success = ParsePseudoSelector(selector);
+				success = ParsePseudoSelectorNode(selector);
 			}
 			else {  // not a selector token, we're done
 				UngetToken();
@@ -362,13 +360,13 @@ namespace ui
 			sheet_->AppendStyleRule(rule);
 	}
 
-	bool StyleParser::ParseIDSelector(StyleSelector* s)
+	bool StyleParser::ParseIDSelectorNode(StyleSelectorNode* s)
 	{
 		s->SetId(token_.mIdent);
 		return true;
 	}
 
-	bool StyleParser::ParseClassSelector(StyleSelector* s)
+	bool StyleParser::ParseClassSelectorNode(StyleSelectorNode* s)
 	{
 		if (!GetToken(false)) { // get ident
 			//REPORT_UNEXPECTED_EOF(PEClassSelEOF);
@@ -384,7 +382,7 @@ namespace ui
 		return true;
 	}
 
-	bool StyleParser::ParsePseudoSelector(StyleSelector* s)
+	bool StyleParser::ParsePseudoSelectorNode(StyleSelectorNode* s)
 	{
 		if (!GetToken(false)) { // get ident
 			//REPORT_UNEXPECTED_EOF(PEClassSelEOF);

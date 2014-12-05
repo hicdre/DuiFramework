@@ -47,7 +47,7 @@ namespace ui
 			|| message == WM_NCMOUSELEAVE)
 		{
 			scoped_refptr<MouseEvent> event = BuildMouseEvent(owned_widget_->hwnd(), message, w_param, l_param, GetTickCount());
-			event_handler_.HandleMouseMoveEvent(event.get());
+			event_handler_.HandleMouseEvent(event.get());
 			return TRUE;
 		}
 		return FALSE;

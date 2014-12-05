@@ -4,6 +4,15 @@
 
 namespace ui
 {
+
+	struct StyleRuleCompare
+	{
+		bool operator() (const StyleRule* a, const StyleRule* b) const
+		{
+			return  a < b;
+		}
+	};
+
 	class RenderStyles
 	{
 	public:
@@ -11,6 +20,7 @@ namespace ui
 		~RenderStyles();
 
 		void AddStyleRule(StyleRule* rule);
+		void Reset();
 
 		int marginLeft() const;
 		int marginTop() const;
@@ -31,6 +41,6 @@ namespace ui
 		StyleValue* FindProperty(StyleProperty p) const;
 
 		UIElement* elem_;
-		std::vector<StyleRule*> rules_;
+		std::set<StyleRule*, StyleRuleCompare> rules_;
 	};
 }

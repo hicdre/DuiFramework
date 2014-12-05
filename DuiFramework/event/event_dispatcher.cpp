@@ -40,12 +40,8 @@ namespace ui
 				event_->setEventPhase(EVENT_BUBBLING_PHASE);
 			else
 				continue;
-			event_->setTarget(elem_.get());
 			event_->setCurrentTarget(elem);
-
-			if (event_->IsMouseEvent()) {
-				dynamic_cast<MouseEvent*>(event_.get())->setNeedCalcLocation();
-			}
+			event_->AdjustForTarget();
 			elem->HandleLocalEvents(event_.get());
 			//eventContext.handleLocalEvents(m_event.get());
 			if (event_->propagationStopped())

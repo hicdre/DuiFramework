@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "ui_document.h"
 #include "ui_include.h"
+#include "render/render_include.h"
 #include "utils/utils.h"
 
 namespace ui
@@ -54,6 +55,7 @@ namespace ui
 
 	void UIDocument::SelectStyles(UIElement* elem, RenderStyles* styles)
 	{
+		styles->Reset();
 		style_sheets_.SelectStyles(elem, styles);
 	}
 

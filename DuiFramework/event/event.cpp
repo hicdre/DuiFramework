@@ -112,4 +112,9 @@ namespace ui
 		current_target_.reset(currentTarget);
 	}
 
+	void Event::AdjustForTarget()
+	{
+
+	}
+
 }

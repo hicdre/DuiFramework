@@ -44,6 +44,8 @@ namespace ui
 		// Drag events are a subset of mouse events.
 		virtual bool IsDragEvent() const;
 
+		virtual void AdjustForTarget();
+
 		// These events lack a DOM interface.
 		//virtual bool isClipboardEvent() const;
 		//virtual bool isBeforeTextInsertedEvent() const;

@@ -9,6 +9,27 @@ namespace ui
 	MouseEvent::MouseEvent()
 		: m_button(ButtonNone)
 		, m_clickCount(0)
+		, m_needCalcLocation(true)
+	{
+
+	}
+
+	MouseEvent::MouseEvent(EventType eventType, 
+		bool canBubble, bool cancelable,
+		int modifiers,
+		const Point& screenLocation,
+		const Point& clientLocation,
+		const Point& movementDelta,
+		Button button,
+		int detail, UIElement* relatedTarget)
+		: InputEvent(eventType, canBubble, cancelable, modifiers)
+		, m_screenLocation(screenLocation)
+		, m_clientLocation(clientLocation)
+		, m_movementDelta(movementDelta)
+		, m_clickCount(detail)
+		, related_target_(relatedTarget)
+		, m_needCalcLocation(true)
+		, m_button(button)
 	{
 
 	}
@@ -35,6 +56,13 @@ namespace ui
 		return false;
 	}
 
+
+	MouseEvent* MouseEvent::Create()
+	{
+		return new MouseEvent;
+	}
+
+
 	MouseEvent* MouseEvent::Create(EventType eventType, MouseEvent* other, int detail, UIElement* relatedTarget)
 	{
 		assert(other->type() == EVENT_MOUSE_MOVE || other->button() != ButtonNone);
@@ -43,16 +71,9 @@ namespace ui
 		bool isCancelable = !isMouseEnterOrLeave;
 		bool isBubbling = !isMouseEnterOrLeave;
 
-		MouseEvent* new_event = new MouseEvent;
-		new_event->m_screenLocation = other->m_screenLocation;
-		new_event->m_clientLocation = other->m_clientLocation;
-		new_event->m_movementDelta = other->m_movementDelta;
-		new_event->m_point = other->m_point;
-		new_event->m_button = other->m_button;
-		new_event->m_clickCount = other->m_clickCount;
-		new_event->InitEvent(eventType, isBubbling, isCancelable);
-		//test
-		return new_event;
+		return new MouseEvent(eventType, isBubbling, isCancelable, other->modifiers(),
+			other->screenLocation(), other->clientLocation(), other->movementDelta(),
+			other->button(), detail, relatedTarget);
 	}
 
 	void MouseEvent::CalcLocation()
@@ -64,6 +85,11 @@ namespace ui
 			m_point = UIElement::ConvertPointToElement(elem, m_clientLocation);
 		}
 		m_needCalcLocation = false;
+	}
+
+	void MouseEvent::AdjustForTarget()
+	{
+		m_needCalcLocation = true;
 	}
 
 

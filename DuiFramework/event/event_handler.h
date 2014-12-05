@@ -12,15 +12,18 @@ namespace ui
 		explicit EventHandler(UIWindow* window);
 		~EventHandler();
 
+		bool HandleMouseEvent(MouseEvent* evt);
 		bool HandleMouseMoveEvent(MouseEvent* evt);
-		bool HandleMouseMoveOrLeaveEvent(MouseEvent* evt, HitTestResult* result);
 
 	private:
-		void UpdateMouseEventTarget(UIElement* target, MouseEvent* evt, bool fireMouseOut);
+		void UpdateElementHoverState(MouseEvent* evt, HitTestResult* result);
+		void UpdateMouseEventTarget(UIElement* target, MouseEvent* evt);
 		bool DispatchMouseEvent(EventType type, UIElement* target, int clickCount, MouseEvent* evt, bool setUnder);
 		UIWindow* window_;
 
 		UIElement* element_under_mouse_{NULL};
 		UIElement* last_element_under_mouse_{NULL};
+
+		scoped_refptr<MouseEvent> last_mouse_event_;
 	};
 }

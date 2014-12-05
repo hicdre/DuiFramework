@@ -36,3 +36,7 @@
     margin-bottom : 10px;
     background-color: #ff4b57;
 }
+
+.block:hover{    
+    background-color: #00FF00;
+}
