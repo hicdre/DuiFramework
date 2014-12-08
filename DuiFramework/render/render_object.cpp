@@ -6,7 +6,7 @@
 
 namespace ui
 {
-	RenderObject* RenderObject::Create(UIElement* elem, RenderStyles* s)
+	RenderObject* RenderObject::Create(UIElement* elem, UIStyles* s)
 	{
 		const std::string& tag = elem->getTag();
 		if (tag == "Window") {
@@ -278,7 +278,7 @@ namespace ui
 		Remove(child);
 	}
 
-	RenderStyles* RenderObject::styles() const
+	UIStyles* RenderObject::styles() const
 	{
 		return styles_;
 	}

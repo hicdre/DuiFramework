@@ -98,7 +98,7 @@ namespace ui
 			container_.push_back(s);
 		}
 
-		bool MatchElement(UIElement* v) const;
+		bool MatchElement(UIElement* v, StyleSelector** selector) const;
 	private:
 		std::vector<StyleSelector*> container_;
 	};

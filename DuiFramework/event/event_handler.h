@@ -14,6 +14,7 @@ namespace ui
 
 		bool HandleMouseEvent(MouseEvent* evt);
 		bool HandleMouseMoveEvent(MouseEvent* evt);
+		bool HandleMousePressEvent(MouseEvent* evt);
 
 	private:
 		void UpdateElementHoverState(MouseEvent* evt, HitTestResult* result);

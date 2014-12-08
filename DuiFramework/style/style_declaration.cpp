@@ -38,53 +38,58 @@ namespace ui
 	}
 
 
-	void StyleDeclarationList::GetOrderedPropertyList(StylePropertyList& l)
-	{
-		std::set<StyleProperty> s;
-		for (auto iter : container_)
-		{
-			s.insert(iter.first);
-		}
+// 	void StyleDeclarationList::GetOrderedPropertyList(StylePropertyList& l)
+// 	{
+// 		std::set<StyleProperty> s;
+// 		for (auto iter : container_)
+// 		{
+// 			s.insert(iter.first);
+// 		}
+// 
+// 		for (StyleProperty p : s)
+// 		{
+// 			l.push_back(p);
+// 		}
+// 	}
 
-		for (StyleProperty p : s)
-		{
-			l.push_back(p);
-		}
-	}
-
-	void StyleDeclarationList::GetPropertyList(StylePropertyList& l)
-	{
-		for (auto iter : container_)
-		{
-			l.push_back(iter.first);
-		}
-	}
+// 	void StyleDeclarationList::GetPropertyList(StylePropertyList& l)
+// 	{
+// 		for (auto iter : container_)
+// 		{
+// 			l.push_back(iter.first);
+// 		}
+// 	}
 
 	void StyleDeclarationList::Insert(StyleDeclaration* declaration)
 	{
-		StyleProperty p = declaration->GetProperty();
-		if (container_.count(p))
-		{
-			container_.at(p)->Release();
-		}
-		container_[p] = declaration;
-		declaration->AddRef();
+		scoped_refptr<StyleDeclaration> p(declaration);
+		container_.insert(p);
 	}
 
 	StyleValue* StyleDeclarationList::FindValue(StyleProperty p) const
 	{
-		if (container_.count(p))
-			return container_.at(p)->GetValue();
-		else
-			return NULL;
+		for (const scoped_refptr<StyleDeclaration>& t : container_)
+		{
+			if (t->GetProperty() == p)
+				return t->GetValue();
+
+			if (t->GetProperty() > p)
+				return NULL;
+		}
+		return NULL;
 	}
 
 	StyleDeclaration* StyleDeclarationList::Find(StyleProperty p) const
 	{
-		if (container_.count(p))
-			return container_.at(p);
-		else
-			return NULL;
+		for (const scoped_refptr<StyleDeclaration>& t : container_)
+		{
+			if (t->GetProperty() == p)
+				return t.get();
+
+			if (t->GetProperty() > p)
+				return NULL;
+		}
+		return NULL;
 	}
 
 	int StyleDeclarationList::GetCount() const
@@ -94,10 +99,6 @@ namespace ui
 
 	void StyleDeclarationList::Clear()
 	{
-		for (auto item : container_)
-		{
-			item.second->Release();
-		}
 		container_.clear();
 	}
 

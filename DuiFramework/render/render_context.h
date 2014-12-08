@@ -24,6 +24,7 @@ namespace ui
 		HDC GetHDC() { return dc_; }
 
 		void FillRect(const Rect& rect, Color color);
+		void DrawArc(const Rect& rect, int from, int angles, Color color, int width);
 
 		void DrawImage(ImagePart* clip, const Rect& dest_rect);
 		void DrawImage(ImageFile* image, const Rect& src_rect, const Rect& dest_rect);

@@ -29,6 +29,11 @@ namespace ui
 		Style_BorderBottomColor,
 		Style_BorderBottomWidth,
 
+		Style_BorderLeftTopRadius,
+		Style_BorderRightTopRadius,
+		Style_BorderRightBottomRadius,
+		Style_BorderLeftBottomRadius,
+
 		Style_Cursor,
 
 		Style_END,

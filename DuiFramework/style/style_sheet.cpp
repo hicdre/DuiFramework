@@ -35,7 +35,7 @@ namespace ui
 		return rules_.size();
 	}
 
-	void StyleSheet::SelectStyles(UIElement* e, RenderStyles* s)
+	void StyleSheet::SelectStyles(UIElement* e, StyleResultList* s)
 	{
 		for (StyleRule* rule : rules_)
 		{
@@ -64,7 +64,7 @@ namespace ui
 		sheet->AddRef();
 	}
 
-	void StyleSheetList::SelectStyles(UIElement* e, RenderStyles* s)
+	void StyleSheetList::SelectStyles(UIElement* e, StyleResultList* s)
 	{
 		for (StyleSheet* sheet : sheets_)
 		{

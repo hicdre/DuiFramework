@@ -78,7 +78,7 @@ namespace ui
 		//=================================================
 		//styles
 		void UpdateStyles();
-		RenderStyles* styles() const;
+		UIStyles* styles() const;
 		int marginLeft() const;
 		int marginTop() const;
 		int marginRight() const;
@@ -136,7 +136,7 @@ namespace ui
 		std::string id_;
 		std::set<std::string> classes_;
 
-		scoped_ptr<RenderStyles> styles_;
+		scoped_ptr<UIStyles> styles_;
 
 		Rect bounds_; //  µº Œª÷√
 		bool needs_layout_{true};//self needs layout

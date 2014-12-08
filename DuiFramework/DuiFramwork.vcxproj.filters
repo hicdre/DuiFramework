@@ -252,9 +252,6 @@
     <ClCompile Include="base\font.cpp">
       <Filter>base</Filter>
     </ClCompile>
-    <ClCompile Include="render\render_styles.cpp">
-      <Filter>render</Filter>
-    </ClCompile>
     <ClCompile Include="event\event_target.cpp">
       <Filter>event</Filter>
     </ClCompile>
@@ -295,6 +292,12 @@
       <Filter>dom</Filter>
     </ClCompile>
     <ClCompile Include="dom\ui_hbox.cpp">
+      <Filter>dom</Filter>
+    </ClCompile>
+    <ClCompile Include="style\style_result.cpp">
+      <Filter>style</Filter>
+    </ClCompile>
+    <ClCompile Include="dom\ui_styles.cpp">
       <Filter>dom</Filter>
     </ClCompile>
   </ItemGroup>
@@ -528,9 +531,6 @@
     <ClInclude Include="base\font.h">
       <Filter>base</Filter>
     </ClInclude>
-    <ClInclude Include="render\render_styles.h">
-      <Filter>render</Filter>
-    </ClInclude>
     <ClInclude Include="event\event_forward.h">
       <Filter>event</Filter>
     </ClInclude>
@@ -583,6 +583,12 @@
       <Filter>dom</Filter>
     </ClInclude>
     <ClInclude Include="dom\ui_hbox.h">
+      <Filter>dom</Filter>
+    </ClInclude>
+    <ClInclude Include="style\style_result.h">
+      <Filter>style</Filter>
+    </ClInclude>
+    <ClInclude Include="dom\ui_styles.h">
       <Filter>dom</Filter>
     </ClInclude>
   </ItemGroup>

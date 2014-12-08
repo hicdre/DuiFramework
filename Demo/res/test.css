@@ -15,6 +15,10 @@
     background-color: #00FF00;
 }
 
+#ab:hover{
+    background-color: #FF33FF;
+} 
+
 #zz {
     width : 50%;
     height : 60px;
@@ -34,9 +38,14 @@
     margin-left :10px;
     margin-top : 10px;
     margin-bottom : 10px;
-    background-color: #ff4b57;
+    border-left-color: #FF0000;
+    border-left-width: 2px;
+    border-top-color: #FF0000;
+    border-top-width: 2px;
+    border-left-top-radius: 5px;
+    background-color: #004b57;
 }
 
 .block:hover{    
-    background-color: #00FF00;
+    background-color: #00FF11;
 }

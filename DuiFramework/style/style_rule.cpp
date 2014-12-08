@@ -2,7 +2,6 @@
 #include "style_rule.h"
 #include "style_sheet.h"
 
-#include "render/render_styles.h"
 namespace ui
 {
 
@@ -52,11 +51,12 @@ namespace ui
 		sheet_.reset(sheet);
 	}
 
-	void StyleRule::SelectStyles(UIElement* e, RenderStyles* s)
+	void StyleRule::SelectStyles(UIElement* e, StyleResultList* s)
 	{
-		if (selectors_->MatchElement(e))
+		StyleSelector* selector = NULL;
+		if (selectors_->MatchElement(e, &selector))
 		{
-			s->AddStyleRule(this);
+			s->AddResult(new StyleResult(selector, declarations_.get()));
 		}
 	}
 

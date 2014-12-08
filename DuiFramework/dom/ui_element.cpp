@@ -9,6 +9,7 @@ namespace ui
 {
 	UIElement::UIElement(UIDocumentPtr doc)
 		: document_(doc)
+		, styles_(new UIStyles(this))
 	{
 
 	}
@@ -257,9 +258,11 @@ namespace ui
 	void UIElement::UpdateStyles()
 	{
 		if (!styles_.get()) {
-			styles_.reset(new RenderStyles(this));
+			styles_.reset(new UIStyles(this));
 		}
-		document_->SelectStyles(this, styles_.get());
+		StyleResultList new_results;
+		document_->SelectStyles(this, &new_results);
+		styles_->UpdateStyles(&new_results);
 
 		for (UIElementPtr obj = firstChild(); obj; obj = obj->nextSibling())
 		{
@@ -268,7 +271,7 @@ namespace ui
 	}
 
 
-	RenderStyles* UIElement::styles() const
+	UIStyles* UIElement::styles() const
 	{
 		return styles_.get();
 	}
@@ -292,7 +295,8 @@ namespace ui
 
 	Rect UIElement::ConvertRectFromChild(UIElement* child, const Rect& r)
 	{
-		return Rect(r.x() + child->x(), r.y() + child->y(), r.width(), r.height());
+		Rect rect(GetContentBounds());//加上border的偏移
+		return Rect(r.x() + child->x() + rect.x(), r.y() + child->y() + rect.y(), r.width(), r.height());
 	}
 
 	void UIElement::DoPaint(RenderContext* painter, const Rect& r)
@@ -312,6 +316,60 @@ namespace ui
 
 	void UIElement::PaintBorder(RenderContext* painter)
 	{
+		const UIBorder* borders = styles()->borders();
+		Rect rect(GetLocalBounds());
+		int left_length = rect.height() - borders->leftTopRadius() - borders->leftBottomRadius();
+		int top_length = rect.width() - borders->leftTopRadius() - borders->rightTopRadius();
+		int right_length = rect.height() - borders->rightTopRadius() - borders->rightBottomRadius();
+		int bottom_length = rect.width() - borders->leftBottomRadius() - borders->rightBottomRadius();
+
+		if (borders->left().color != Color_Transparent && left_length > 0) {
+			painter->FillRect(Rect(0, borders->leftTopRadius(), borders->left().size, left_length),
+				borders->left().color);
+		}
+
+		//圆角, 先简单处理
+		if (borders->leftTopRadius())
+		{
+			painter->DrawArc(Rect(0, 0, borders->leftTopRadius(), borders->leftTopRadius()),
+				180, 90, borders->left().color, borders->left().size);
+		}
+
+		if (borders->top().color != Color_Transparent && top_length > 0) {
+			painter->FillRect(Rect(borders->leftTopRadius(), 0, top_length, borders->top().size),
+				borders->top().color);
+		}
+
+		if (borders->rightTopRadius())
+		{
+			painter->DrawArc(Rect(0, 0, borders->rightTopRadius(), borders->rightTopRadius()),
+				270, 90, borders->top().color, borders->top().size);
+		}
+
+		if (borders->right().color != Color_Transparent && right_length > 0) {
+			painter->FillRect(Rect(rect.width() - borders->right().size, borders->rightTopRadius(), 
+				borders->right().size, right_length),
+				borders->right().color);
+		}
+
+		if (borders->rightBottomRadius())
+		{
+			painter->DrawArc(Rect(0, 0, borders->rightBottomRadius(), borders->rightBottomRadius()),
+				0, 90, borders->right().color, borders->right().size);
+		}
+
+		if (borders->bottom().color != Color_Transparent && bottom_length > 0) {
+			painter->FillRect(Rect(borders->leftBottomRadius(), rect.height() - borders->bottom().size, 
+				bottom_length, borders->bottom().size),
+				borders->bottom().color);
+		}
+
+		if (borders->leftBottomRadius())
+		{
+			painter->DrawArc(Rect(0, 0, borders->leftBottomRadius(), borders->leftBottomRadius()),
+				90, 90, borders->bottom().color, borders->bottom().size);
+		}
+
 
 	}
 
@@ -332,7 +390,7 @@ namespace ui
 	{
 		//layout之前，位置已经确定
 		//计算宽度, 宽度只与父有关
-		RenderStyles* style = styles();
+		UIStyles* style = styles();
 		if (style->autoWidth()) {
 			UIElementPtr p(parent());
 			Rect rc(p->GetContentBounds());
@@ -346,7 +404,7 @@ namespace ui
 		for (UIElementPtr obj = firstChild(); obj; obj = obj->nextSibling())
 		{
 			//绝对布局
-			RenderStyles* s = obj->styles();
+			UIStyles* s = obj->styles();
 			int x = s->marginLeft();
 			int y = s->marginTop();
 
@@ -428,7 +486,9 @@ namespace ui
 
 	Rect UIElement::GetContentBounds() const
 	{
-		return GetLocalBounds();
+		Rect rc(GetLocalBounds());
+		rc.Inset(styles()->borders()->GetPadding());
+		return rc;
 	}
 
 	int UIElement::marginLeft() const
@@ -516,7 +576,6 @@ namespace ui
 			return;
 		hovered_ = v;
 		UpdateStyles();
-		SchedulePaint();
 	}
 
 

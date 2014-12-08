@@ -53,9 +53,8 @@ namespace ui
 		return widget_;
 	}
 
-	void UIDocument::SelectStyles(UIElement* elem, RenderStyles* styles)
+	void UIDocument::SelectStyles(UIElement* elem, StyleResultList* styles)
 	{
-		styles->Reset();
 		style_sheets_.SelectStyles(elem, styles);
 	}
 

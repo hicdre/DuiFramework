@@ -119,6 +119,7 @@
     <ClCompile Include="dom\ui_element.cpp" />
     <ClCompile Include="dom\ui_hbox.cpp" />
     <ClCompile Include="dom\ui_parser.cpp" />
+    <ClCompile Include="dom\ui_styles.cpp" />
     <ClCompile Include="dom\ui_vbox.cpp" />
     <ClCompile Include="dom\ui_window.cpp" />
     <ClCompile Include="event\event.cpp" />
@@ -144,7 +145,6 @@
     <ClCompile Include="render\render_object.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="render\render_styles.cpp" />
     <ClCompile Include="render\render_widget.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
@@ -157,6 +157,7 @@
     <ClCompile Include="style\style_declaration.cpp" />
     <ClCompile Include="style\style_parser.cpp" />
     <ClCompile Include="style\style_property.cpp" />
+    <ClCompile Include="style\style_result.cpp" />
     <ClCompile Include="style\style_rule.cpp" />
     <ClCompile Include="style\style_scanner.cpp" />
     <ClCompile Include="style\style_selector.cpp" />
@@ -187,11 +188,21 @@
     <ClCompile Include="utils\resource_cache.cpp" />
     <ClCompile Include="utils\resource_loader.cpp" />
     <ClCompile Include="utils\utils.cpp" />
-    <ClCompile Include="view\view_background.cpp" />
-    <ClCompile Include="view\view_border.cpp" />
-    <ClCompile Include="view\view.cpp" />
-    <ClCompile Include="view\view_container.cpp" />
-    <ClCompile Include="view\view_layout.cpp" />
+    <ClCompile Include="view\view_background.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="view\view_border.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="view\view.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="view\view_container.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="view\view_layout.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="base\base_defines.h" />
@@ -236,6 +247,7 @@
     <ClInclude Include="dom\ui_include.h" />
     <ClInclude Include="dom\ui_element.h" />
     <ClInclude Include="dom\ui_parser.h" />
+    <ClInclude Include="dom\ui_styles.h" />
     <ClInclude Include="dom\ui_vbox.h" />
     <ClInclude Include="dom\ui_window.h" />
     <ClInclude Include="duiframework.h" />
@@ -266,7 +278,6 @@
     <ClInclude Include="render\render_object.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClInclude>
-    <ClInclude Include="render\render_styles.h" />
     <ClInclude Include="render\render_widget.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClInclude>
@@ -277,6 +288,7 @@
     <ClInclude Include="style\style_declaration.h" />
     <ClInclude Include="style\style_parser.h" />
     <ClInclude Include="style\style_property.h" />
+    <ClInclude Include="style\style_result.h" />
     <ClInclude Include="style\style_rule.h" />
     <ClInclude Include="style\style_scanner.h" />
     <ClInclude Include="style\style_selector.h" />
@@ -307,11 +319,21 @@
     <ClInclude Include="utils\resource_cache.h" />
     <ClInclude Include="utils\resource_loader.h" />
     <ClInclude Include="utils\utils.h" />
-    <ClInclude Include="view\view_background.h" />
-    <ClInclude Include="view\view_border.h" />
-    <ClInclude Include="view\view.h" />
-    <ClInclude Include="view\view_container.h" />
-    <ClInclude Include="view\view_layout.h" />
+    <ClInclude Include="view\view_background.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="view\view_border.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="view\view.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="view\view_container.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="view\view_layout.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

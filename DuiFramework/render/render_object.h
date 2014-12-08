@@ -15,7 +15,7 @@ namespace ui
 		RenderObject(UIElement* node);
 		virtual ~RenderObject();
 
-		static RenderObject* Create(UIElement* elem, RenderStyles* s);
+		static RenderObject* Create(UIElement* elem, UIStyles* s);
 
 		RenderObject* parent() const;
 		bool isDescendantOf(const RenderObject*) const;
@@ -59,7 +59,7 @@ namespace ui
 		virtual void Layout() = 0;
 		virtual void LayoutIfNeeded() = 0;
 
-		RenderStyles* styles() const;
+		UIStyles* styles() const;
 	protected:
 		RenderObject* Append(RenderObject* child);
 		RenderObject* Remove(RenderObject* child);
@@ -78,7 +78,7 @@ namespace ui
 
 		UIElementPtr node_;
 
-		RenderStyles* styles_;
+		UIStyles* styles_;
 
 		
 	};

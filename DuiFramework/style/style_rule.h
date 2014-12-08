@@ -7,6 +7,7 @@
 namespace ui
 {
 	class StyleSheet;
+	class StyleResultList;
 	class StyleRule : public RefCounted<StyleRule>
 	{
 	public:
@@ -19,7 +20,7 @@ namespace ui
 
 		void AddDeclaction(StyleProperty p, StyleValue* v);
 
-		void SelectStyles(UIElement* e, RenderStyles* s);
+		void SelectStyles(UIElement* e, StyleResultList* s);
 		StyleValue* FindValue(StyleProperty p) const;
 
 		void SetLineNumber(uint32 num);

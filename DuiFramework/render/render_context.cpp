@@ -109,6 +109,18 @@ namespace ui
 		gdi_->FillRectangle(&brush, rect.x(), rect.y(), rect.width(), rect.height());
 	}
 
+
+	void RenderContext::DrawArc(const Rect& rect, int from, int angles, Color color, int width)
+	{
+		if (color == Color_Transparent)
+			return;
+		Gdiplus::SolidBrush  brush(Gdiplus::Color((unsigned int)color));
+		Gdiplus::Pen pen(&brush, width);
+		gdi_->DrawArc(&pen, rect.x(), rect.y(), rect.width(), rect.height(), from, angles);
+
+	}
+
+
 	void RenderContext::Trans(const Matrix& m)
 	{
 		Gdiplus::Matrix mm(m.a, m.b, m.c, m.d, m.tx, m.ty);

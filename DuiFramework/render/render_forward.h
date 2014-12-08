@@ -7,7 +7,6 @@ namespace ui
 	//class RenderObject;
 	//class RenderBox;
 	//class RenderWidget;
-	class RenderStyles;
 	//typedef scoped_refptr<RenderObject> RenderObjectPtr;
 	//typedef scoped_refptr<RenderBox> RenderBoxPtr;
 }

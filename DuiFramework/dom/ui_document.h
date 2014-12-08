@@ -21,7 +21,7 @@ namespace ui
 		const URL& url() const;
 
 		void AddStyleSheet(StyleSheet* s);
-		void SelectStyles(UIElement* elem, RenderStyles* styles);
+		void SelectStyles(UIElement* elem, StyleResultList* styles);
 
 		void UpdateStyles();
 

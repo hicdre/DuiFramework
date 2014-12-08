@@ -13,7 +13,7 @@ namespace ui
 		owned_widget_ = elem->GetDocument()->GetWidget();
 		owned_widget_->SetMessageHanler(this);
 
-		RenderStyles* styles = elem->GetRenderStyles();
+		UIStyles* styles = elem->GetRenderStyles();
 		owned_widget_->SetSize(Size(styles->pixelWidth(), styles->pixelHeight()));
 
 		SetCursor(::LoadCursor(NULL, IDC_ARROW));

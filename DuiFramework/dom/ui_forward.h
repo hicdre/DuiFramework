@@ -3,6 +3,7 @@
 
 namespace ui
 {
+	class UIStyles;
 	class UIDocument;
 	class UIElement;
 	class UIWindow;

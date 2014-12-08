@@ -24,9 +24,20 @@ namespace ui
 		DISALLOW_COPY_AND_ASSIGN(StyleDeclaration);
 	};
 
+	struct StyleDeclarationCompare
+	{
+		bool operator()(const scoped_refptr<StyleDeclaration> a,
+			const scoped_refptr<StyleDeclaration> b) const {
+			return a->GetProperty() < b->GetProperty();
+		}
+	};
+
 	class StyleDeclarationList
 	{
 	public:
+		typedef std::set<scoped_refptr<StyleDeclaration>, StyleDeclarationCompare> ContainerType;
+		typedef ContainerType::iterator iterator;
+		typedef ContainerType::const_iterator const_iterator;
 		StyleDeclarationList();
 		~StyleDeclarationList();
 
@@ -40,11 +51,18 @@ namespace ui
 
 		void Insert(StyleDeclaration* declaration);
 
-		void GetPropertyList(StylePropertyList& l);
+		//void GetPropertyList(StylePropertyList& l);
 
-		void GetOrderedPropertyList(StylePropertyList& l);
+		//void GetOrderedPropertyList(StylePropertyList& l);
+
+		iterator begin() { return container_.begin(); }
+		iterator end() { return container_.end(); }
+
+		const_iterator begin() const { return container_.begin(); }
+		const_iterator end() const { return container_.end(); }
 
 	private:
-		std::unordered_map<StyleProperty, StyleDeclaration*> container_;
+		ContainerType container_;
+		DISALLOW_COPY_AND_ASSIGN(StyleDeclarationList);
 	};
 }

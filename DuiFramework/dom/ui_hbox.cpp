@@ -32,7 +32,7 @@ namespace ui
 
 	void UIHBox::Layout()
 	{
-		RenderStyles* style = styles();
+		UIStyles* style = styles();
 		if (style->autoWidth()) {
 			Rect rc(parent()->GetContentBounds());
 			bounds_.set_width(rc.right() - style->marginRight());
@@ -46,7 +46,7 @@ namespace ui
 		for (UIElementPtr obj = firstChild(); obj; obj = obj->nextSibling())
 		{
 			//水平布局
-			RenderStyles* s = obj->styles();
+			UIStyles* s = obj->styles();
 			int x = s->marginLeft();
 			int y = s->marginTop();
 			if (obj->previousSibling()) {

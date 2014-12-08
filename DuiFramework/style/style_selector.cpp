@@ -123,12 +123,14 @@ namespace ui
 
 	}
 
-	bool StyleSelectorList::MatchElement(UIElement* v) const
+	bool StyleSelectorList::MatchElement(UIElement* v, StyleSelector** selector) const
 	{
 		for (StyleSelector* item : container_)
 		{
-			if (item->MatchElement(v))
+			if (item->MatchElement(v)) {
+				*selector = item;
 				return true;
+			}
 		}
 		return false;
 	}
@@ -154,7 +156,7 @@ namespace ui
 		node->next_ = first_;
 		first_ = node;
 
-		const uint32 mask = 1 << 11 - 1;
+		const uint32 mask = 0x07FF;
 		uint32 id_count = specificity_ & (mask << 20);
 		uint32 class_count = specificity_ & (mask << 10);
 		uint32 tag_count = specificity_ & mask;

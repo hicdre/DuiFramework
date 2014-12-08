@@ -36,7 +36,7 @@ namespace ui
 	{
 		//layout之前，位置已经确定
 		//计算宽度, 宽度只与父有关
-		RenderStyles* style = styles();
+		UIStyles* style = styles();
 		if (style->autoWidth()) {
 			RenderBox* p = dynamic_cast<RenderBox*>(parent());
 			Rect rc(p->GetContentBounds());
@@ -50,7 +50,7 @@ namespace ui
 		for (RenderObjectPtr obj = firstChild(); obj; obj = obj->nextSibling())
 		{
 			//绝对布局
-			RenderStyles* s = obj->styles();
+			UIStyles* s = obj->styles();
 			int x = s->marginLeft();
 			int y = s->marginTop();
 
@@ -177,7 +177,7 @@ namespace ui
 
 	void RenderHBox::Layout()
 	{
-		RenderStyles* style = styles();
+		UIStyles* style = styles();
 		if (style->autoWidth()) {
 			RenderBox* p = dynamic_cast<RenderBox*>(parent());
 			Rect rc(p->GetContentBounds());
@@ -192,7 +192,7 @@ namespace ui
 		for (RenderObjectPtr obj = firstChild(); obj; obj = obj->nextSibling())
 		{
 			//水平布局
-			RenderStyles* s = obj->styles();
+			UIStyles* s = obj->styles();
 			int x = s->marginLeft();
 			int y = s->marginTop();
 			if (obj->previousSibling()) {
@@ -239,7 +239,7 @@ namespace ui
 
 	void RenderVBox::Layout()
 	{
-		RenderStyles* style = styles();
+		UIStyles* style = styles();
 		if (style->autoWidth()) {
 			RenderBox* p = dynamic_cast<RenderBox*>(parent());
 			Rect rc(p->GetContentBounds());
@@ -253,7 +253,7 @@ namespace ui
 		for (RenderObjectPtr obj = firstChild(); obj; obj = obj->nextSibling())
 		{
 			//垂直布局
-			RenderStyles* s = obj->styles();
+			UIStyles* s = obj->styles();
 			int x = s->marginLeft();
 			int y = s->marginTop();
 			if (obj->previousSibling()) {

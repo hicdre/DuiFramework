@@ -1,5 +1,6 @@
 #pragma once
 #include "style/style_rule.h"
+#include "style/style_result.h"
 
 namespace ui
 {
@@ -13,7 +14,7 @@ namespace ui
 
 		void AppendStyleRule(StyleRule* rule);
 
-		void SelectStyles(UIElement* e, RenderStyles* s);
+		void SelectStyles(UIElement* e, StyleResultList* s);
 
 		int32 StyleRuleCount() const;
 	private:
@@ -29,7 +30,7 @@ namespace ui
 		~StyleSheetList();
 
 		void AddStyleSheet(StyleSheet* sheet);
-		void SelectStyles(UIElement* e, RenderStyles* s);
+		void SelectStyles(UIElement* e, StyleResultList* s);
 	private:
 		std::vector<StyleSheet*> sheets_;
 		DISALLOW_COPY_AND_ASSIGN(StyleSheetList);
