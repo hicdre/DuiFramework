@@ -12,6 +12,8 @@ namespace ui
 			int size;
 			Color color;
 		};
+		UIBorder();
+		~UIBorder();
 
 		void Init(UIStyles* styles);
 
@@ -27,6 +29,7 @@ namespace ui
 		uint32 rightBottomRadius() const;
 		uint32 leftBottomRadius() const;
 
+		HRGN CreateClipRgn() const;
 	private:
 		void InitItem(Item* item, 
 			StyleProperty width,
@@ -70,6 +73,8 @@ namespace ui
 		Color backgroundColor() const;
 		
 		StyleValue* FindProperty(StyleProperty p) const;
+
+		UIElement* element() const { return elem_; }
 	private:
 		Rect GetParentContentBounds() const;
 		int GetMarginValue(StyleProperty p) const;

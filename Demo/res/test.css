@@ -27,7 +27,7 @@
 }
 
 .span {
-    background-color: #63995a;
+    background-color: #a64ea6;
     border-left-color: #D3D;
     border-left-width: 15px;
 }
@@ -43,9 +43,9 @@
     border-top-color: #FF0000;
     border-top-width: 2px;
     border-left-top-radius: 5px;
-    background-color: #004b57;
+    background-color: #00FF00;
 }
 
 .block:hover{    
-    background-color: #00FF11;
+    background-color: #1a914a;
 }

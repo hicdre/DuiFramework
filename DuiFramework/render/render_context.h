@@ -18,8 +18,11 @@ namespace ui
 
 		void Trans(const Matrix& m);
 
-		void PushClip(const Rect& rect);
-		void PopClip();
+		uint32 Save();
+		void Restore(uint32 s);
+
+		void SetClip(const Rect& rect);
+		void SetClipRgn(HRGN r);
 
 		HDC GetHDC() { return dc_; }
 
@@ -40,6 +43,7 @@ namespace ui
 		static void CalcStringSizeWithFlags(const wchar_t* text, size_t text_len, const Font& font, const Size& sz, int flags,
 			Size& out, size_t* len = NULL, int* lines = NULL);
 	private:
+		friend class ScopedClipper;
 		Widget* widget_;
 
 		HDC dc_;
@@ -66,8 +70,11 @@ namespace ui
 	{
 	public:
 		ScopedClipper(RenderContext* painter, const Rect& r);
+		ScopedClipper(RenderContext* painter, HRGN r);
 		~ScopedClipper();
 	private:
 		RenderContext* p_;
+		uint32 state_;
+		Gdiplus::Rect clip_rect_;
 	};
 }

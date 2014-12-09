@@ -114,9 +114,32 @@ namespace ui
 	{
 		if (color == Color_Transparent)
 			return;
+#if 1
+		ScopedClipper clipper(this, rect);
 		Gdiplus::SolidBrush  brush(Gdiplus::Color((unsigned int)color));
 		Gdiplus::Pen pen(&brush, width);
+		Gdiplus::SmoothingMode sm = gdi_->GetSmoothingMode();
+		//gdi_->DrawArc(&pen, rect.x(), rect.y(), rect.width(), rect.height(), from, angles);
+		gdi_->SetSmoothingMode(Gdiplus::SmoothingModeAntiAlias);
 		gdi_->DrawArc(&pen, rect.x(), rect.y(), rect.width(), rect.height(), from, angles);
+		gdi_->SetSmoothingMode(sm);
+#else
+		Gdiplus::GraphicsPath path;
+		path.AddArc(rect.x(), rect.y(), rect.width(), rect.height(), from, angles);
+		path.AddLine(rect.x(), rect.y(), rect.right(), rect.y() + width);
+		path.AddArc(rect.x() + width, rect.y() + width , rect.width() - width, rect.height() - width, from, angles);
+		path.AddLine(rect.x(), rect.bottom(), rect.x() + width, rect.bottom());
+		//path.CloseFigure();
+		Gdiplus::SolidBrush  brush(Gdiplus::Color((unsigned int)color));
+		//Gdiplus::SmoothingMode sm = gdi_->GetSmoothingMode();
+		//gdi_->SetSmoothingMode(Gdiplus::SmoothingModeAntiAlias);
+		//gdi_->SetPixelOffsetMode(Gdiplus::PixelOffsetModeHalf);
+		Gdiplus::GraphicsState state = gdi_->Save();
+		gdi_->SetClip(&path, Gdiplus::CombineModeIntersect);
+		gdi_->FillPath(&brush, &path);
+		gdi_->Restore(state);
+		//gdi_->SetSmoothingMode(sm);
+#endif
 
 	}
 
@@ -211,20 +234,26 @@ namespace ui
 		::ReleaseDC(NULL, hdc);
 	}
 
-	void RenderContext::PushClip(const Rect& rect)
+	void RenderContext::SetClip(const Rect& rect)
 	{
-		::SaveDC(dc_);
-		HRGN hRgn = ::CreateRectRgnIndirect(&rect.ToRECT());
-		::ExtSelectClipRgn(dc_, hRgn, RGN_AND);
-		::DeleteObject(hRgn);
+		gdi_->SetClip(Gdiplus::Rect(rect.x(), rect.y(), rect.width(), rect.height()), Gdiplus::CombineModeReplace);
 	}
 
-	void RenderContext::PopClip()
+	void RenderContext::SetClipRgn(HRGN r)
 	{
-		::RestoreDC(dc_, -1);
+		Gdiplus::Region rgn(r);
+		gdi_->SetClip(&rgn, Gdiplus::CombineModeReplace);
 	}
 
+	uint32 RenderContext::Save()
+	{
+		return gdi_->Save();
+	}
 
+	void RenderContext::Restore(uint32 s)
+	{
+		gdi_->Restore(s);
+	}
 
 	ScopedPainter::ScopedPainter(RenderContext* painter, const Matrix& m)
 		: p_(painter), m_(m.Invert())
@@ -241,11 +270,20 @@ namespace ui
 	ScopedClipper::ScopedClipper(RenderContext* painter, const Rect& r)
 		: p_(painter)
 	{
-		p_->PushClip(r);
+		state_ = p_->Save();
+		p_->SetClip(r);
+	}
+
+	ScopedClipper::ScopedClipper(RenderContext* painter, HRGN r)
+		: p_(painter)
+	{
+		state_ = p_->Save();
+		p_->SetClipRgn(r);
+		::DeleteObject(r);
 	}
 
 	ScopedClipper::~ScopedClipper()
 	{
-		p_->PopClip();
+		p_->Restore(state_);
 	}
 }

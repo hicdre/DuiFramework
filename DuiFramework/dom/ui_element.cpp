@@ -310,6 +310,7 @@ namespace ui
 
 	void UIElement::PaintBackground(RenderContext* painter)
 	{
+		ScopedClipper clipper(painter, styles()->borders()->CreateClipRgn());
 		Color color = styles()->backgroundColor();
 		painter->FillRect(GetLocalBounds(), color);
 	}
@@ -331,7 +332,7 @@ namespace ui
 		//圆角, 先简单处理
 		if (borders->leftTopRadius())
 		{
-			painter->DrawArc(Rect(0, 0, borders->leftTopRadius(), borders->leftTopRadius()),
+			painter->DrawArc(Rect(0, 0, borders->leftTopRadius()*2, borders->leftTopRadius()*2),
 				180, 90, borders->left().color, borders->left().size);
 		}
 
@@ -342,7 +343,7 @@ namespace ui
 
 		if (borders->rightTopRadius())
 		{
-			painter->DrawArc(Rect(0, 0, borders->rightTopRadius(), borders->rightTopRadius()),
+			painter->DrawArc(Rect(0, 0, borders->rightTopRadius()*2, borders->rightTopRadius()*2),
 				270, 90, borders->top().color, borders->top().size);
 		}
 
@@ -354,7 +355,7 @@ namespace ui
 
 		if (borders->rightBottomRadius())
 		{
-			painter->DrawArc(Rect(0, 0, borders->rightBottomRadius(), borders->rightBottomRadius()),
+			painter->DrawArc(Rect(0, 0, borders->rightBottomRadius()*2, borders->rightBottomRadius()*2),
 				0, 90, borders->right().color, borders->right().size);
 		}
 
@@ -366,7 +367,7 @@ namespace ui
 
 		if (borders->leftBottomRadius())
 		{
-			painter->DrawArc(Rect(0, 0, borders->leftBottomRadius(), borders->leftBottomRadius()),
+			painter->DrawArc(Rect(0, 0, borders->leftBottomRadius()*2, borders->leftBottomRadius()*2),
 				90, 90, borders->bottom().color, borders->bottom().size);
 		}
 
@@ -529,10 +530,12 @@ namespace ui
 	{
 		if (!bounds().Contains(pt))
 			return false;
-
+		
 		Point location(pt.x() - x(), pt.y() - y());
 		result->Add(this, location);
 
+		Rect rc(GetContentBounds());
+		location.Offset(-rc.x(), -rc.y());
 		for (UIElementPtr obj = lastChild(); obj; obj = obj->previousSibling())
 		{
 			obj->Hittest(result, location);

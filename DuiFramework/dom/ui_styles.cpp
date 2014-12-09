@@ -178,6 +178,7 @@ namespace ui
 		InitRadius(right_top_radius_, Style_BorderRightTopRadius);
 		InitRadius(right_bottom_radius_, Style_BorderRightBottomRadius);
 		InitRadius(left_bottom_radius_, Style_BorderLeftBottomRadius);
+
 	}
 
 	const UIBorder::Item& UIBorder::left() const
@@ -253,6 +254,65 @@ namespace ui
 	uint32 UIBorder::leftBottomRadius() const
 	{
 		return left_bottom_radius_;
+	}
+
+	UIBorder::~UIBorder()
+	{
+	}
+
+	UIBorder::UIBorder()
+	{
+
+	}
+
+	HRGN UIBorder::CreateClipRgn() const
+	{
+		Rect rect(styles_->element()->GetLocalBounds());
+		HRGN rgn = CreateRectRgn(rect.x(), rect.y(), rect.right(), rect.bottom());
+		if (left_top_radius_) {
+			Rect cornerRect(rect.x(), rect.y(), left_top_radius_, left_top_radius_);
+			Rect arcRect(cornerRect.x(), cornerRect.y(), cornerRect.width() * 2, cornerRect.height() * 2);
+			HRGN cornerRgn = CreateRectRgn(cornerRect.x(), cornerRect.y(), cornerRect.right(), cornerRect.bottom());
+			HRGN arcRgn = CreateEllipticRgn(arcRect.x(), arcRect.y(), arcRect.right(), arcRect.bottom());
+			CombineRgn(cornerRgn, cornerRgn, arcRgn, RGN_DIFF);
+			CombineRgn(rgn, rgn, cornerRgn, RGN_DIFF);
+			DeleteObject(cornerRgn);
+			DeleteObject(arcRgn);
+		}
+
+		if (right_top_radius_) {
+			Rect cornerRect(rect.right() - right_top_radius_, rect.y(), right_top_radius_, right_top_radius_);
+			Rect arcRect(cornerRect.x() - cornerRect.width(), cornerRect.y(), cornerRect.width() * 2, cornerRect.height() * 2);
+			HRGN cornerRgn = CreateRectRgn(cornerRect.x(), cornerRect.y(), cornerRect.right(), cornerRect.bottom());
+			HRGN arcRgn = CreateEllipticRgn(arcRect.x(), arcRect.y(), arcRect.right(), arcRect.bottom());
+			CombineRgn(cornerRgn, cornerRgn, arcRgn, RGN_DIFF);
+			CombineRgn(rgn, rgn, cornerRgn, RGN_DIFF);
+			DeleteObject(cornerRgn);
+			DeleteObject(arcRgn);
+		}
+
+		if (right_bottom_radius_) {
+			Rect cornerRect(rect.right() - right_bottom_radius_, rect.y() - right_bottom_radius_, right_bottom_radius_, right_bottom_radius_);
+			Rect arcRect(cornerRect.x() - cornerRect.width(), cornerRect.y() - cornerRect.height(), cornerRect.width() * 2, cornerRect.height() * 2);
+			HRGN cornerRgn = CreateRectRgn(cornerRect.x(), cornerRect.y(), cornerRect.right(), cornerRect.bottom());
+			HRGN arcRgn = CreateEllipticRgn(arcRect.x(), arcRect.y(), arcRect.right(), arcRect.bottom());
+			CombineRgn(cornerRgn, cornerRgn, arcRgn, RGN_DIFF);
+			CombineRgn(rgn, rgn, cornerRgn, RGN_DIFF);
+			DeleteObject(cornerRgn);
+			DeleteObject(arcRgn);
+		}
+
+		if (left_bottom_radius_) {
+			Rect cornerRect(rect.x(), rect.y() - left_bottom_radius_, left_bottom_radius_, left_bottom_radius_);
+			Rect arcRect(cornerRect.x(), cornerRect.y() - cornerRect.height(), cornerRect.width() * 2, cornerRect.height() * 2);
+			HRGN cornerRgn = CreateRectRgn(cornerRect.x(), cornerRect.y(), cornerRect.right(), cornerRect.bottom());
+			HRGN arcRgn = CreateEllipticRgn(arcRect.x(), arcRect.y(), arcRect.right(), arcRect.bottom());
+			CombineRgn(cornerRgn, cornerRgn, arcRgn, RGN_DIFF);
+			CombineRgn(rgn, rgn, cornerRgn, RGN_DIFF);
+			DeleteObject(cornerRgn);
+			DeleteObject(arcRgn);
+		}
+		return rgn;
 	}
 
 }
