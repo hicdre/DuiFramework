@@ -42,7 +42,7 @@ namespace ui
 
 	bool StyleValue::IsIntValue() const
 	{
-		return type_ == StyleValue_Integer;
+		return IsIntType(type_);
 	}
 
 	bool StyleValue::IsAutoValue() const
@@ -74,12 +74,12 @@ namespace ui
 	float StyleValue::GetPercentValue() const
 	{
 		assert(type_ == StyleValue_Percent);
-		return float_value_;
+		return GetFloatValue();
 	}
-
 
 	float StyleValue::GetFloatValue() const
 	{
+		assert(IsFloatValue());
 		return float_value_;
 	}
 
@@ -109,16 +109,32 @@ namespace ui
 		int_value_ = value;
 	}
 
+	void StyleValue::SetIntValue(int32 value)
+	{
+		SetIntValue(value, StyleValue_Integer);
+	}
+
 	void StyleValue::SetPercentValue(float value)
 	{
-		SetFloatValue(value, StyleValue_Percent);
-		
+		SetFloatValueInternal(value, StyleValue_Percent);
+	}
+
+	void StyleValue::SetFloatValueInternal(float value, StyleValueType type)
+	{
+		Reset();
+		type_ = type;
+		float_value_ = value;
+	}
+
+	void StyleValue::SetFloatValue(float value)
+	{
+		SetFloatValueInternal(value, StyleValue_Float);
 	}
 
 	void StyleValue::SetFloatValue(float value, StyleValueType type)
 	{
-		type_ = type;
-		float_value_ = value;
+		assert(IsFloatType(type));
+		SetFloatValueInternal(value, type);
 	}
 
 	void StyleValue::SetColorValue(Color value)
@@ -128,7 +144,7 @@ namespace ui
 	}
 
 
-	void StyleValue::SetStringValue(const std::string& val, StyleValueType type)
+	void StyleValue::SetStringValueInternal(const std::string& val, StyleValueType type)
 	{
 		if (IsStringValue())
 		{
@@ -141,6 +157,17 @@ namespace ui
 			type_ = type;
 			string_value_ = new StyleValueString(val);
 		}
+	}
+
+	void StyleValue::SetStringValue(const std::string& value)
+	{
+		SetStringValueInternal(value, StyleValue_String);
+	}
+
+	void StyleValue::SetStringValue(const std::string& val, StyleValueType type)
+	{
+		assert(IsStringType(type));
+		SetStringValueInternal(val, type);
 	}
 
 
@@ -157,6 +184,12 @@ namespace ui
 			if (array_value_)
 				delete array_value_;
 			array_value_ = NULL;
+		}
+		else if (type_ == StyleValue_URL)
+		{
+			if (url_value_)
+				delete url_value_;
+			url_value_ = NULL;
 		}
 		else
 		{
@@ -175,12 +208,15 @@ namespace ui
 		if (type_ == StyleValue_Array)
 			return array_value_->IsEqual(val->array_value_);
 
+		if (type_ == StyleValue_URL)
+			return url_value_->IsEquals(*val->url_value_);
+
 		return int_value_ == val->int_value_;
 	}
 
 	int32 StyleValue::GetPixel() const
 	{
-		assert(type_ == StyleValue_Pixel);
+		assert(IsPixelValue());
 		return (int32)float_value_;
 	}
 
@@ -200,6 +236,98 @@ namespace ui
 	{
 		assert(type_ == StyleValue_Array);
 		return array_value_;
+	}
+
+	bool StyleValue::IsCursorValue() const
+	{
+		return type_ == StyleValue_Cursor;
+	}
+
+	void StyleValue::SetCursorValue(CursorId id)
+	{
+		SetIntValue(id, StyleValue_Cursor);
+	}
+
+	ui::CursorId StyleValue::GetCursorValue() const
+	{
+		assert(type_ == StyleValue_Cursor);
+		return (CursorId)GetIntValue();
+	}
+
+	bool StyleValue::IsIntType(StyleValueType t)
+	{
+		return t == StyleValue_Integer 
+			|| t == StyleValue_Cursor;
+	}
+
+	bool StyleValue::IsFloatValue() const
+	{
+		return IsFloatType(type_);
+	}
+
+	bool StyleValue::IsFloatType(StyleValueType t)
+	{
+		return t == StyleValue_Float
+			|| t == StyleValue_Pixel
+			|| t == StyleValue_Percent
+			|| t == StyleValue_Number
+			|| t == StyleValue_Degree;
+	}
+
+	bool StyleValue::IsPixelValue() const
+	{
+		return type_ == StyleValue_Pixel;
+	}
+
+	bool StyleValue::IsPercentValue() const
+	{
+		return type_ == StyleValue_Percent;
+	}
+
+	void StyleValue::SetNumberValue(float value)
+	{
+		SetIntValue(value, StyleValue_Number);
+	}
+
+	bool StyleValue::IsStringType(StyleValueType t)
+	{
+		return t == StyleValue_String
+			|| t == StyleValue_ResourceId;
+	}
+
+	bool StyleValue::IsUrlValue() const
+	{
+		return type_ == StyleValue_URL;
+	}
+
+	const URL& StyleValue::GetUrlValue() const
+	{
+		assert(IsUrlValue());
+		return *url_value_;
+	}
+
+	void StyleValue::SetUrlValue(const std::string& str)
+	{
+		SetUrlValue(URL(str));
+	}
+
+
+	void StyleValue::SetUrlValue(const std::wstring& str)
+	{
+		SetUrlValue(URL(str));
+	}
+
+	void StyleValue::SetUrlValue(const URL& url)
+	{
+		if (IsUrlValue())
+		{
+			*url_value_ = url;
+		}
+		else
+		{
+			Reset();
+			url_value_ = new URL(url);
+		}
 	}
 
 

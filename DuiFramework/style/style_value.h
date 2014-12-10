@@ -1,5 +1,6 @@
 #pragma once
 #include "base/basictypes.h"
+#include "core/constants.h"
 
 namespace ui
 {
@@ -10,25 +11,30 @@ namespace ui
 		StyleValue_Inherit,
 		StyleValue_None,
 		
-
+		//基础类型
 		StyleValue_Integer, //int
+		StyleValue_Float, //int
+		StyleValue_Color, //Color
+		StyleValue_String, //string
+		StyleValue_URL,//url
+
+		//扩展类型
+		StyleValue_Pixel, //float
+		StyleValue_Cursor, //unsigned
+
 		StyleValue_Percent, //float
 		StyleValue_Number, //float
-		StyleValue_Pixel, //int
-
-		StyleValue_Color, //unsigned
-
 		StyleValue_Degree, //float
 
+		//组合类型
 		StyleValue_Array, // array
 		StyleValue_Pair, // pair
 		StyleValue_Triplet, //triplet
 		StyleValue_Rect, // rect
 
+		//扩展类型
 		StyleValue_Function, // array
-		StyleValue_String, //string
-
-		StyleValue_ResourceImage, // string id
+		StyleValue_ResourceId, // string id
 		StyleValue_LineGradient,
 
 	};
@@ -43,39 +49,66 @@ namespace ui
 		StyleValue(int32 val, StyleValueType t);
 		StyleValue(float val, StyleValueType t);
 		StyleValue(const std::string& val, StyleValueType t);
-		
 
 		StyleValueType GetType() const;
 
+		//boolean
 		bool IsNull() const;
+		bool IsAutoValue() const;
+
 		bool IsIntValue() const;
+		bool IsColorValue() const;
+		bool IsFloatValue() const;
 		bool IsStringValue() const;
 		bool IsArrayValue() const;
-		bool IsColorValue() const;
+		bool IsUrlValue() const;
+
+		bool IsPercentValue() const;
+		bool IsPixelValue() const;
+		bool IsCursorValue() const;
 		
-		bool IsAutoValue() const;
+		//getter
 		int32 GetIntValue() const;
+		float GetFloatValue() const;
+		Color GetColorValue() const;
+		const std::string& GetStringValue() const;
+		StyleValueArray* GetArrayValue() const;
+		const URL& GetUrlValue() const;
+		
+		CursorId GetCursorValue() const;
 		int32 GetPixel() const;
 		float GetPercentValue() const;
-		float GetFloatValue() const;
-		const std::string& GetStringValue() const;
-		Color GetColorValue() const;
-		StyleValueArray* GetArrayValue() const;
-
+		
+		//setter
 		void SetAutoValue();
-		void SetIntValue(int32 value, StyleValueType type);
-		void SetPercentValue(float value);
-		void SetFloatValue(float value, StyleValueType type);
-		void SetStringValue(const std::string& val, StyleValueType type);
+		
+		void SetIntValue(int32 value);
 		void SetColorValue(Color value);
+		void SetFloatValue(float value);
+		void SetFloatValue(float value, StyleValueType type);
+		void SetNumberValue(float value);
+		void SetStringValue(const std::string& value);
+		void SetStringValue(const std::string& val, StyleValueType type);
 		void SetArrayValue(StyleValueArray* value);
+		void SetUrlValue(const std::string& str);
+		void SetUrlValue(const std::wstring& str);
+		void SetUrlValue(const URL& url);
 
+		void SetPercentValue(float value);
+		void SetCursorValue(CursorId id);
 
 		bool IsEqual(StyleValue* val) const;
 	private:
 		friend class RefCounted < StyleValue > ;
 		~StyleValue();
 		void Reset();
+		void SetIntValue(int32 value, StyleValueType type);
+		void SetUIntValue(uint32 value, StyleValueType type);
+		void SetFloatValueInternal(float value, StyleValueType type);
+		void SetStringValueInternal(const std::string& val, StyleValueType type);
+		static bool IsIntType(StyleValueType t);
+		static bool IsFloatType(StyleValueType t);
+		static bool IsStringType(StyleValueType t);
 		StyleValueType type_;
 		union {
 			int32 int_value_;
@@ -84,6 +117,7 @@ namespace ui
 			Color color_value_;
 			StyleValueString* string_value_;
 			StyleValueArray* array_value_;
+			URL* url_value_;
 			//StyleValuePair* pair_value_;
 			//StyleValueTriplet* triplet_value_;
 		};

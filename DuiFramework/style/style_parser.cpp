@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "style_parser.h"
 #include "style_scanner.h"
+#include "core/constants.h"
 #include <stack>
 
 namespace ui
@@ -22,6 +23,55 @@ namespace ui
 		}
 	}
 
+	static const int kBorderSidePropertySize = 2;
+
+	static const StyleProperty kBorderLeftIDs[] = {
+		Style_BorderLeftWidth,
+		Style_BorderLeftColor,
+	};
+
+	static const StyleProperty kBorderTopIDs[] = {
+		Style_BorderTopWidth,
+		Style_BorderTopColor,
+	};
+
+	static const StyleProperty kBorderRightIDs[] = {
+		Style_BorderRightWidth,
+		Style_BorderRightColor,
+	};
+
+	static const StyleProperty kBorderBottomIDs[] = {
+		Style_BorderBottomWidth,
+		Style_BorderBottomColor,
+	};
+
+	static const StyleProperty kBorderWidthIDs[] = {
+		Style_BorderLeftWidth,
+		Style_BorderTopWidth,
+		Style_BorderRightWidth,
+		Style_BorderBottomWidth,
+	};
+
+	static const StyleProperty kBorderColorIDs[] = {
+		Style_BorderLeftColor,
+		Style_BorderTopColor,
+		Style_BorderRightColor,
+		Style_BorderBottomColor,
+	};
+
+	static const StyleProperty kBorderRadiusIDs[] = {
+		Style_BorderLeftTopRadius,
+		Style_BorderRightTopRadius,
+		Style_BorderRightBottomRadius,
+		Style_BorderLeftBottomRadius,
+	};
+
+	static const StyleProperty kMarginIDs[] = {
+		Style_MarginLeft,
+		Style_MarginTop,
+		Style_MarginRight,
+		Style_MarginBottom,
+	};
 
 	StyleParser::StyleParser()
 	{
@@ -450,6 +500,7 @@ namespace ui
 	{
 		bool checkForBraces = inbraces;
 
+		declaration_list_.Clear();
 		// Get property name
 		StyleToken* tk = &token_;
 		std::string propertyName;
@@ -491,15 +542,14 @@ namespace ui
 		if (Style_UNKNOWN == propID) {
 			return false;
 		}
-		//ParseProperty
-		scoped_refptr<StyleValue> value(NULL);
-		if (!ParseProperty(propID, &value)) {
+		if (!ParseProperty(propID)) {
 			// XXX Much better to put stuff in the value parsers instead...
 			//REPORT_UNEXPECTED_P(PEValueParsingError, propertyName);
 			//REPORT_UNEXPECTED(PEDeclDropped);
 			//OUTPUT_ERROR();
 			//mTempData.ClearProperty(propID);
 			//mTempData.AssertInitialState();
+			declaration_list_.Remove(propID);
 			return false;
 		}
 
@@ -524,45 +574,36 @@ namespace ui
 			return false;
 		}
 
-		aList->Insert(new StyleDeclaration(propID, value.get()));
+		declaration_list_.TransferTo(aList);
 		return true;
 	}
 
 
-	bool StyleParser::ParseProperty(StyleProperty aPropID, StyleValue*& v)
+	bool StyleParser::ParseProperty(StyleProperty aPropID)
 	{
 		bool result = false;
-		scoped_refptr<StyleValue> value(new StyleValue);
 		switch (StyleFindParseType(aPropID)) {
 		case PROPERTY_PARSE_FUNCTION:
-			if (ParsePropertyByFunction(aPropID, value.get())) {
-				v = value.get();
-				v->AddRef();
-				result = true;
-			}
+			result = ParsePropertyByFunction(aPropID);
 			break;
-		case PROPERTY_PARSE_VALUE:
+		
+		case PROPERTY_PARSE_VALUE_LIST: 
+			result = ParseValueList(aPropID);
+			//scoped_refptr<StyleValue> value(new StyleValue);
+ 			break;
+ 			
+		case PROPERTY_PARSE_VALUE: {
+			scoped_refptr<StyleValue> value(new StyleValue);
 			if (ParseSingleValueProperty(aPropID, value.get())) {
 				if (ExpectEndProperty()) {
-					v = value.get();
-					v->AddRef();
+					AppendValue(aPropID, value.get());
 					result = true;
 				}
 				// XXX Report errors?
 			}
 			// XXX Report errors?
 			break;
-		case PROPERTY_PARSE_VALUE_LIST: 
-			value->SetArrayValue(new StyleValueArray);
-			if (ParseValueList(aPropID, value->GetArrayValue()))
-			{
-				v = value.get();
-				v->AddRef();
-				result = true;
-			}
-			//scoped_refptr<StyleValue> value(new StyleValue);
- 			break;
- 			
+		}
 		default: 
 			//NS_ABORT_IF_FALSE(false,
 			//	"Property's flags field in nsCSSPropList.h is missing "
@@ -640,11 +681,12 @@ namespace ui
 	}
 
 
-	bool StyleParser::ParseValueList(StyleProperty p, StyleValueArray* a)
+	bool StyleParser::ParseValueList(StyleProperty p)
 	{
+		scoped_ptr<StyleValueArray> arrayValue;
 		for (;;) {
-			scoped_refptr<StyleValue> value(new StyleValue);
-			if (!ParseSingleValueProperty(p, value.get())) {
+			scoped_refptr<StyleValue> v(new StyleValue);
+			if (!ParseSingleValueProperty(p, v.get())) {
 				return false;
 			}
 			if (CheckEndProperty()) {
@@ -653,8 +695,11 @@ namespace ui
 			if (!ExpectSymbol(',', true)) {
 				return false;
 			}
-			a->Add(value.get());
+			arrayValue->Add(v.get());
 		}
+		scoped_refptr<StyleValue> value(new StyleValue);
+		value->SetArrayValue(arrayValue.release());
+		AppendValue(p, value.get());
 		return true;
 	}
 
@@ -684,12 +729,12 @@ namespace ui
 
 		if (((aVariantMask & VARIANT_NUMBER) != 0) &&
 			(Token_Number == tk->mType)) {
-			aValue->SetFloatValue(tk->mNumber, StyleValue_Number);
+			aValue->SetNumberValue(tk->mNumber);
 			return true;
 		}
 		if (((aVariantMask & VARIANT_INTEGER) != 0) &&
 			(Token_Number == tk->mType) && tk->mIntegerValid) {
-			aValue->SetIntValue(tk->mInteger, StyleValue_Integer);
+			aValue->SetIntValue(tk->mInteger);
 			return true;
 		}
 		if (((aVariantMask & (VARIANT_LENGTH | VARIANT_ANGLE)) != 0 &&
@@ -750,7 +795,7 @@ namespace ui
 
 		if (((aVariantMask & VARIANT_STRING) != 0) &&
 			(Token_String == tk->mType)) {
-			aValue->SetStringValue(tk->mIdent, StyleValue_String);
+			aValue->SetStringValue(tk->mIdent);
 			return true;
 		}
 
@@ -1278,7 +1323,12 @@ namespace ui
 
 	void StyleParser::SetValueToURL(StyleValue* v, const std::string& str)
 	{
-		v->SetStringValue(str, StyleValue_ResourceImage);
+		if (sheet_) {
+			v->SetUrlValue(sheet_->url().Resolve(str));
+		}
+		else {
+			v->SetUrlValue(URL(str));
+		}
 	}
 
 	bool StyleParser::ParseLinearGradient(StyleValue* v)
@@ -1286,22 +1336,199 @@ namespace ui
 		return false;
 	}
 
-	bool StyleParser::ParsePropertyByFunction(StyleProperty p, StyleValue* v)
+	bool StyleParser::ParsePropertyByFunction(StyleProperty p)
 	{
 		switch (p) {
 		case Style_Cursor:
-			return ParseCursor(v);
+			return ParseCursor();
+		case Style_Border:
+			return ParseBorder();
+		case Style_BorderWidth:
+			return ParseBorderWidth();
+		case Style_BorderColor:
+			return ParseBorderColor();
+		case Style_BorderRadius:
+			return ParseBorderRadius();
+		case Style_BorderLeft:
+			return ParseBorderSide(kBorderLeftIDs);
+		case Style_BorderTop:
+			return ParseBorderSide(kBorderTopIDs);
+		case Style_BorderRight:
+			return ParseBorderSide(kBorderRightIDs);
+		case Style_BorderBottom:
+			return ParseBorderSide(kBorderBottomIDs);
+		case Style_Margin:
+			return ParseMargin();
 		default:
 			return false;
 		}
 	}
 
-	bool StyleParser::ParseCursor(StyleValue* v)
+	bool StyleParser::ParseCursor()
 	{
-		scoped_ptr<StyleValueArray> cur(new StyleValueArray);
-		for (;;) {
+		if (!GetToken(true)) {
+			//ÂÔÈ¥:
+			return false;
 		}
-		return false;
+
+		scoped_refptr<StyleValue> v(new StyleValue);
+		StyleToken* tk = &token_;
+		if (tk->mIdent == "hand") {
+			v->SetCursorValue(Cursor_Hand);
+		}
+		else if (tk->mIdent == "arrow") {
+			v->SetCursorValue(Cursor_Arrow);
+		}
+		else {
+			v->SetAutoValue();
+		}
+
+		AppendValue(Style_Cursor, v.get());
+		return true;
+	}
+
+	
+
+	bool StyleParser::ParseBorder()
+	{
+		scoped_refptr<StyleValue> values[kBorderSidePropertySize];
+		for (int i = 0; i < kBorderSidePropertySize; i++) {
+			values[i].reset(new StyleValue);
+		}
+		int found = ParseChoice(kBorderLeftIDs, values, kBorderSidePropertySize);
+		if ((found < 1) || (false == ExpectEndProperty())) {
+			return false;
+		}
+
+		for (int index = 0; index < 4; index++) {
+			AppendValue(kBorderWidthIDs[index], values[0].get());
+			AppendValue(kBorderColorIDs[index], values[1].get());
+		}
+		return true;
+	}
+
+
+	bool StyleParser::ParseBorderSide(const StyleProperty propertys[])
+	{
+		scoped_refptr<StyleValue> values[kBorderSidePropertySize];
+		for (int i = 0; i < kBorderSidePropertySize; i++) {
+			values[i].reset(new StyleValue);
+		}
+		int found = ParseChoice(propertys, values, kBorderSidePropertySize);
+		if ((found < 1) || (false == ExpectEndProperty())) {
+			return false;
+		}
+
+		for (int index = 0; index < kBorderSidePropertySize; index++) {
+			AppendValue(propertys[index], values[index].get());
+		}
+
+		return true;
+	}
+
+
+	int StyleParser::ParseChoice(const StyleProperty aPropIDs[], scoped_refptr<StyleValue> aValues[], int aNumIDs)
+	{
+		int32 found = 0;
+		int32 loop;
+		for (loop = 0; loop < aNumIDs; loop++) {
+			// Try each property parser in order
+			int32 hadFound = found;
+			int32 index;
+			for (index = 0; index < aNumIDs; index++) {
+				int32 bit = 1 << index;
+				if ((found & bit) == 0) {
+					if (ParseSingleValueProperty(aPropIDs[index], aValues[index].get())) {
+						found |= bit;
+						// It's more efficient to break since it will reset |hadFound|
+						// to |found|.  Furthermore, ParseListStyle depends on our going
+						// through the properties in order for each value..
+						break;
+					}
+				}
+			}
+			if (found == hadFound) {  // found nothing new
+				break;
+			}
+		}
+		if (0 < found) {
+			if (1 == found) { // only first property
+				if (aValues[0]->IsAutoValue()) {// one auto, all auto
+					for (loop = 1; loop < aNumIDs; loop++) {
+						aValues[loop]->SetAutoValue();
+					}
+					found = ((1 << aNumIDs) - 1);
+				}
+			}
+			else {  // more than one value, verify no auto
+				for (loop = 0; loop < aNumIDs; loop++) {
+					if (aValues[loop]->IsAutoValue()) {
+						found = -1;
+						break;
+					}
+				}
+			}
+		}
+		return found;
+	}
+
+	void StyleParser::AppendValue(StyleProperty p, StyleValue* v)
+	{
+		declaration_list_.Insert(new StyleDeclaration(p, v));
+	}
+
+	bool StyleParser::ParseBorderWidth()
+	{
+		return ParseBoxProperties(kBorderWidthIDs);
+	}
+
+	bool StyleParser::ParseBorderColor()
+	{
+		return ParseBoxProperties(kBorderColorIDs);
+	}
+
+	//left, top, right, bottom 
+	bool StyleParser::ParseBoxProperties(const StyleProperty propertys[])
+	{
+		int count = 0;
+		scoped_refptr<StyleValue> values[4];
+		for (int i = 0; i < 4; i++) {
+			values[i].reset(new StyleValue);
+			if (!ParseSingleValueProperty(propertys[i], values[i].get())) {
+				break;
+			}
+			count++;
+		}
+
+		if (count == 0)
+			return false;
+
+		switch (count)
+		{
+		case 1: // Make top == left
+			values[1] = values[0];
+		case 2: // Make right == left
+			values[2] = values[0];
+		case 3: // Make bottom == top
+			values[3] = values[1];
+		default:
+			break;
+		}
+
+		for (int i = 0; i < 4; i++) {
+			AppendValue(propertys[i], values[i].get());
+		}
+		return true;
+	}
+
+	bool StyleParser::ParseBorderRadius()
+	{
+		return ParseBoxProperties(kBorderRadiusIDs);
+	}
+
+	bool StyleParser::ParseMargin()
+	{
+		return ParseBoxProperties(kMarginIDs);
 	}
 
 }

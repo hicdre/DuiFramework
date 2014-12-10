@@ -9,6 +9,7 @@ namespace ui
 
 	UIStyles::UIStyles(UIElement* elem)
 		: elem_(elem)
+		, cursor_(Cursor_Inherit)
 	{
 		//elem->GetDocument()->SelectStyles(elem, this);
 	}
@@ -42,12 +43,11 @@ namespace ui
 		StyleValue* v = FindProperty(p);
 		if (!v)
 			return 0;
-		StyleValueType type = v->GetType();
-		if (type == StyleValue_Pixel) {
+		if (v->IsPixelValue()) {
 			return v->GetPixel();
 		}
 
-		if (type == StyleValue_Percent && elem_->HasParent())	{
+		if (v->IsPercentValue() && elem_->HasParent())	{
 			Rect rc(GetParentContentBounds());
 			if (p == Style_MarginLeft || p == Style_MarginRight)
 				return rc.width() * v->GetPercentValue();
@@ -68,13 +68,12 @@ namespace ui
 		if (!v)
 			return 0;
 			
-		StyleValueType type = v->GetType();
-		if (type == StyleValue_Pixel) {
+		if (v->IsPixelValue()) {
 			return v->GetPixel();
 		}
 
 		Rect rc(GetParentContentBounds());
-		if (type == StyleValue_Percent) {
+		if (v->IsPercentValue()) {
 			return rc.width() * v->GetPercentValue();
 		}
 
@@ -88,12 +87,12 @@ namespace ui
 			return 0;
 
 		StyleValueType	type = v->GetType();
-		if (type == StyleValue_Pixel) {
+		if (v->IsPixelValue()) {
 			return v->GetPixel();
 		}
 
 		Rect rc(GetParentContentBounds());
-		if (type == StyleValue_Percent) {
+		if (v->IsPercentValue()) {
 			return rc.height() * v->GetPercentValue();
 		}
 
@@ -151,19 +150,42 @@ namespace ui
 
 		results_.Swap(results);
 
-		borders_.Init(this);
+		InitStyles();
 
 		//onstylechange
 		elem_->SchedulePaint();
 
 	}
 
+
+	void UIStyles::InitStyles()
+	{
+		borders_.Init(this);
+
+		InitCursor();
+	}
+
+
 	const UIBorder* UIStyles::borders() const
 	{
 		return &borders_;
 	}
 
-	
+	ui::CursorId UIStyles::cursor() const
+	{
+		return cursor_;
+	}
+
+	void UIStyles::InitCursor()
+	{
+		StyleValue* v = FindProperty(Style_Cursor);
+		if (v && v->IsCursorValue()) {
+			cursor_ = v->GetCursorValue();
+		}
+		else {
+			cursor_ = Cursor_Inherit;
+		}
+	}
 
 
 	void UIBorder::Init(UIStyles* styles)
@@ -204,7 +226,7 @@ namespace ui
 	void UIBorder::InitItem(Item* item, StyleProperty width, StyleProperty color)
 	{
 		StyleValue* widthValue = styles_->FindProperty(width);
-		if (widthValue && widthValue->GetType() == StyleValue_Pixel) {
+		if (widthValue && widthValue->IsPixelValue()) {
 			item->size = widthValue->GetPixel();
 		}
 		else {
@@ -223,7 +245,7 @@ namespace ui
 	void UIBorder::InitRadius(uint32& radius, StyleProperty p)
 	{
 		StyleValue* pixelValue = styles_->FindProperty(p);
-		if (pixelValue && pixelValue->GetType() == StyleValue_Pixel) {
+		if (pixelValue && pixelValue->IsPixelValue()) {
 			radius = pixelValue->GetPixel();
 		}
 		else {
@@ -292,7 +314,7 @@ namespace ui
 		}
 
 		if (right_bottom_radius_) {
-			Rect cornerRect(rect.right() - right_bottom_radius_, rect.y() - right_bottom_radius_, right_bottom_radius_, right_bottom_radius_);
+			Rect cornerRect(rect.right() - right_bottom_radius_, rect.bottom() - right_bottom_radius_, right_bottom_radius_, right_bottom_radius_);
 			Rect arcRect(cornerRect.x() - cornerRect.width(), cornerRect.y() - cornerRect.height(), cornerRect.width() * 2, cornerRect.height() * 2);
 			HRGN cornerRgn = CreateRectRgn(cornerRect.x(), cornerRect.y(), cornerRect.right(), cornerRect.bottom());
 			HRGN arcRgn = CreateEllipticRgn(arcRect.x(), arcRect.y(), arcRect.right(), arcRect.bottom());

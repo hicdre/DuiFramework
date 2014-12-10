@@ -15,6 +15,8 @@ namespace ui
 
 		void AttatchWidget(Widget* widget);
 
+		void SetCursor(CursorId id);
+
 		virtual void SchedulePaintInRect(const Rect& r) override;
 		virtual BOOL ProcessWindowMessage(HWND window,
 			UINT message,

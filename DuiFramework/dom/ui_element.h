@@ -20,7 +20,7 @@ namespace ui
 		UIElement(UIDocumentPtr);
 		UIDocumentPtr GetDocument();
 
-		UIElementPtr parent();
+		UIElementPtr parent() const;
 		bool HasChildren() const;
 		bool HasParent() const;
 
@@ -79,12 +79,14 @@ namespace ui
 		//styles
 		void UpdateStyles();
 		UIStyles* styles() const;
+
 		int marginLeft() const;
 		int marginTop() const;
 		int marginRight() const;
 		int marginBottom() const;
 		int marginWidth() const { return marginLeft() + marginRight(); }
 		int marginHeight() const { return marginTop() + marginBottom(); }
+		CursorId cursor() const;
 
 		//=================================================
 		//paint

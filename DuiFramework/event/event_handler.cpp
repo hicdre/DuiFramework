@@ -2,6 +2,7 @@
 #include "event_handler.h"
 #include "event_include.h"
 #include "dom/ui_window.h"
+#include "dom/ui_styles.h"
 #include <deque>
 
 namespace ui
@@ -82,6 +83,8 @@ namespace ui
 		}
 
 
+		UpdateCursor();
+
 
 		return true;
 	}
@@ -140,6 +143,19 @@ namespace ui
 				elem->DispatchEvent(mouseEvent.get(), path.release());
 			}
 		}
+	}
+
+	void EventHandler::UpdateCursor()
+	{
+		if (!element_under_mouse_)
+			return;
+
+		CursorId cursor = element_under_mouse_->cursor();
+		if (cursor == last_cursor)
+			return;
+
+		window_->SetCursor(cursor);
+		last_cursor = cursor;
 	}
 
 }

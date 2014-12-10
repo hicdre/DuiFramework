@@ -69,4 +69,11 @@ namespace ui
 		
 	};
 
+	enum CursorId {
+		Cursor_Inherit = 0,
+
+		Cursor_Arrow,
+		Cursor_Hand,
+	};
+
 }

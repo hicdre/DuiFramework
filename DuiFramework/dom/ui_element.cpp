@@ -56,7 +56,7 @@ namespace ui
 	}
 
 
-	UIElementPtr UIElement::parent()
+	UIElementPtr UIElement::parent() const
 	{
 		return parent_;
 	}
@@ -332,8 +332,10 @@ namespace ui
 		//圆角, 先简单处理
 		if (borders->leftTopRadius())
 		{
-			painter->DrawArc(Rect(0, 0, borders->leftTopRadius()*2, borders->leftTopRadius()*2),
-				180, 90, borders->left().color, borders->left().size);
+// 			uint32 size = borders->leftTopRadius() * 2;
+// 			Rect arcRect(rect.x(), rect.y(), size, size);
+// 			painter->DrawArc(arcRect,
+// 				180, 90, borders->left().color, borders->left().size);
 		}
 
 		if (borders->top().color != Color_Transparent && top_length > 0) {
@@ -343,7 +345,9 @@ namespace ui
 
 		if (borders->rightTopRadius())
 		{
-			painter->DrawArc(Rect(0, 0, borders->rightTopRadius()*2, borders->rightTopRadius()*2),
+			uint32 size = borders->rightTopRadius() * 2;
+			Rect arcRect(rect.right() - size, rect.y(), size, size);
+			painter->DrawArc(arcRect,
 				270, 90, borders->top().color, borders->top().size);
 		}
 
@@ -355,7 +359,9 @@ namespace ui
 
 		if (borders->rightBottomRadius())
 		{
-			painter->DrawArc(Rect(0, 0, borders->rightBottomRadius()*2, borders->rightBottomRadius()*2),
+			uint32 size = borders->rightBottomRadius() * 2;
+			Rect arcRect(rect.right() - size, rect.bottom() - size, size, size);
+			painter->DrawArc(arcRect,
 				0, 90, borders->right().color, borders->right().size);
 		}
 
@@ -367,7 +373,9 @@ namespace ui
 
 		if (borders->leftBottomRadius())
 		{
-			painter->DrawArc(Rect(0, 0, borders->leftBottomRadius()*2, borders->leftBottomRadius()*2),
+			uint32 size = borders->leftBottomRadius() * 2;
+			Rect arcRect(rect.x(), rect.bottom() - size, size, size);
+			painter->DrawArc(arcRect,
 				90, 90, borders->bottom().color, borders->bottom().size);
 		}
 
@@ -392,7 +400,7 @@ namespace ui
 		//layout之前，位置已经确定
 		//计算宽度, 宽度只与父有关
 		UIStyles* style = styles();
-		if (style->autoWidth()) {
+		if (style->autoWidth() && HasParent()) {
 			UIElementPtr p(parent());
 			Rect rc(p->GetContentBounds());
 			bounds_.set_width(rc.right() - style->marginRight());
@@ -581,5 +589,15 @@ namespace ui
 		UpdateStyles();
 	}
 
+	ui::CursorId UIElement::cursor() const
+	{
+		CursorId id = styles()->cursor();
+		if (id != Cursor_Inherit)
+			return id;
+
+		if (HasParent())
+			return parent()->cursor();
+		return Cursor_Arrow;
+	}
 
 }

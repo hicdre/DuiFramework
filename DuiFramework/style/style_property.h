@@ -18,7 +18,9 @@ namespace ui
 		Style_MarginBottom,
 
 		Style_BackgroundColor,
-		Style_BackgroundImage,
+		Style_BackgroundImage,//source x y w h
+		//Style_BackgroundPosition,
+		//Style_BackgroundSize,
 
 		Style_BorderLeftColor,
 		Style_BorderLeftWidth,
@@ -35,6 +37,18 @@ namespace ui
 		Style_BorderLeftBottomRadius,
 
 		Style_Cursor,
+
+		//shorthand
+		Style_BorderLeft,
+		Style_BorderTop,
+		Style_BorderRight,
+		Style_BorderBottom,
+		Style_BorderWidth,
+		Style_BorderColor,
+		Style_BorderRadius,
+		Style_Border,
+
+		Style_Margin,
 
 		Style_END,
 	};	

@@ -104,12 +104,24 @@ namespace ui
 		"border-bottom-color",
 		"border-bottom-width",
 
-		"border-left-top-radius",
-		"border-right-top-radius",
-		"border-right-bottom-radius",
-		"border-left-bottom-radius",
+		"border-top-left-radius",
+		"border-top-right-radius",
+		"border-bottom-right-radius",
+		"border-bottom-left-radius",
 
 		"cursor",
+
+		//shorthand
+		"border-left",
+		"border-top",
+		"border-right",
+		"border-bottom",
+		"border-width",
+		"border-color",
+		"border-radius",
+		"border",
+
+		"margin",
 	};
 
 	enum FlagType{
@@ -119,32 +131,44 @@ namespace ui
 	};
 
 	const uint32 kStyleVariant[][FlagCount] = {
-			{ VARIANT_ALP, PROPERTY_PARSE_VALUE | PROPERTY_VALUE_NONNEGATIVE },
-			{ VARIANT_ALP, PROPERTY_PARSE_VALUE | PROPERTY_VALUE_NONNEGATIVE },
+			{ VARIANT_ALP, PROPERTY_PARSE_VALUE | PROPERTY_VALUE_NONNEGATIVE },//width
+			{ VARIANT_ALP, PROPERTY_PARSE_VALUE | PROPERTY_VALUE_NONNEGATIVE },//height
 
-			{ VARIANT_ALP, PROPERTY_PARSE_VALUE },
-			{ VARIANT_ALP, PROPERTY_PARSE_VALUE },
-			{ VARIANT_ALP, PROPERTY_PARSE_VALUE },
-			{ VARIANT_ALP, PROPERTY_PARSE_VALUE },
+			{ VARIANT_ALP, PROPERTY_PARSE_VALUE },//margin-left
+			{ VARIANT_ALP, PROPERTY_PARSE_VALUE },//margin-top
+			{ VARIANT_ALP, PROPERTY_PARSE_VALUE },//margin-right
+			{ VARIANT_ALP, PROPERTY_PARSE_VALUE },//margin-bottom
 
-			{ VARIANT_COLOR, PROPERTY_PARSE_VALUE },
-			{ VARIANT_IMAGE, PROPERTY_PARSE_VALUE_LIST },
+			{ VARIANT_COLOR, PROPERTY_PARSE_VALUE },//background-color
+			{ VARIANT_IMAGE, PROPERTY_PARSE_VALUE_LIST },//background-image
 
-			{ VARIANT_COLOR, PROPERTY_PARSE_VALUE },
-			{ VARIANT_AL, PROPERTY_PARSE_VALUE | PROPERTY_VALUE_NONNEGATIVE },
-			{ VARIANT_COLOR, PROPERTY_PARSE_VALUE },
-			{ VARIANT_AL, PROPERTY_PARSE_VALUE | PROPERTY_VALUE_NONNEGATIVE },
-			{ VARIANT_COLOR, PROPERTY_PARSE_VALUE },
-			{ VARIANT_AL, PROPERTY_PARSE_VALUE | PROPERTY_VALUE_NONNEGATIVE },
-			{ VARIANT_COLOR, PROPERTY_PARSE_VALUE },
-			{ VARIANT_AL, PROPERTY_PARSE_VALUE | PROPERTY_VALUE_NONNEGATIVE },
+			{ VARIANT_COLOR, PROPERTY_PARSE_VALUE },//border-left-color
+			{ VARIANT_AL, PROPERTY_PARSE_VALUE | PROPERTY_VALUE_NONNEGATIVE },//border-left-width
+			{ VARIANT_COLOR, PROPERTY_PARSE_VALUE },//border-top-color
+			{ VARIANT_AL, PROPERTY_PARSE_VALUE | PROPERTY_VALUE_NONNEGATIVE },//border-top-width
+			{ VARIANT_COLOR, PROPERTY_PARSE_VALUE },//border-right-color
+			{ VARIANT_AL, PROPERTY_PARSE_VALUE | PROPERTY_VALUE_NONNEGATIVE },//border-right-width
+			{ VARIANT_COLOR, PROPERTY_PARSE_VALUE },//border-bottom-color
+			{ VARIANT_AL, PROPERTY_PARSE_VALUE | PROPERTY_VALUE_NONNEGATIVE },//border-bottom-width
 
-			{ VARIANT_AL, PROPERTY_PARSE_VALUE | PROPERTY_VALUE_NONNEGATIVE },
-			{ VARIANT_AL, PROPERTY_PARSE_VALUE | PROPERTY_VALUE_NONNEGATIVE },
-			{ VARIANT_AL, PROPERTY_PARSE_VALUE | PROPERTY_VALUE_NONNEGATIVE },
-			{ VARIANT_AL, PROPERTY_PARSE_VALUE | PROPERTY_VALUE_NONNEGATIVE },
+			{ VARIANT_AL, PROPERTY_PARSE_VALUE | PROPERTY_VALUE_NONNEGATIVE },//border-top-left-radius
+			{ VARIANT_AL, PROPERTY_PARSE_VALUE | PROPERTY_VALUE_NONNEGATIVE },//border-top-right-radius
+			{ VARIANT_AL, PROPERTY_PARSE_VALUE | PROPERTY_VALUE_NONNEGATIVE },//border-bottom-right-radius
+			{ VARIANT_AL, PROPERTY_PARSE_VALUE | PROPERTY_VALUE_NONNEGATIVE },//border-bottom-left-radius
 
-			{ 0, PROPERTY_PARSE_VALUE | PROPERTY_PARSE_FUNCTION },
+			{ 0, PROPERTY_PARSE_FUNCTION },//cursor
+
+			//shorthand
+			{ 0, PROPERTY_PARSE_FUNCTION },//border-left
+			{ 0, PROPERTY_PARSE_FUNCTION },//border-top
+			{ 0, PROPERTY_PARSE_FUNCTION },//border-right
+			{ 0, PROPERTY_PARSE_FUNCTION },//border-bottom
+			{ 0, PROPERTY_PARSE_FUNCTION },//border-width
+			{ 0, PROPERTY_PARSE_FUNCTION },//border-color
+			{ 0, PROPERTY_PARSE_FUNCTION },//border-radius
+			{ 0, PROPERTY_PARSE_FUNCTION },//border
+
+			{ 0, PROPERTY_PARSE_FUNCTION },//margin
 	};
 
 	static std::unordered_map<std::string, StyleProperty> kStylePropertyMap;

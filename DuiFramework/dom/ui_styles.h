@@ -70,18 +70,25 @@ namespace ui
 		//border
 		const UIBorder* borders() const;
 
+		CursorId cursor() const;
+
 		Color backgroundColor() const;
 		
-		StyleValue* FindProperty(StyleProperty p) const;
+		
 
 		UIElement* element() const { return elem_; }
 	private:
+		friend class UIBorder;
+		void InitStyles();
+		void InitCursor();
+		StyleValue* FindProperty(StyleProperty p) const;
 		Rect GetParentContentBounds() const;
 		int GetMarginValue(StyleProperty p) const;
 		
+		UIBorder borders_;
+		CursorId cursor_;
 
 		UIElement* elem_;
-		UIBorder borders_;
 		StyleResultList results_;
 	};
 

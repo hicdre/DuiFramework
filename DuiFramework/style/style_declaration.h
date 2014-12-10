@@ -50,7 +50,7 @@ namespace ui
 		StyleValue* FindValue(StyleProperty p) const;
 
 		void Insert(StyleDeclaration* declaration);
-
+		void Remove(StyleProperty p);
 		//void GetPropertyList(StylePropertyList& l);
 
 		//void GetOrderedPropertyList(StylePropertyList& l);
@@ -61,6 +61,8 @@ namespace ui
 		const_iterator begin() const { return container_.begin(); }
 		const_iterator end() const { return container_.end(); }
 
+		void Swap(StyleDeclarationList* other);
+		void TransferTo(StyleDeclarationList* other);
 	private:
 		ContainerType container_;
 		DISALLOW_COPY_AND_ASSIGN(StyleDeclarationList);

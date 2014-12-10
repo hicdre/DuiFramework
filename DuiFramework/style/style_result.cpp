@@ -26,6 +26,7 @@ namespace ui
 	{
 		if (declarations_.count(p))
 			return declarations_.at(p)->GetValue();
+		return NULL;
 	}
 
 

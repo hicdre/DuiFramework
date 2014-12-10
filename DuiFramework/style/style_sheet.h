@@ -17,6 +17,8 @@ namespace ui
 		void SelectStyles(UIElement* e, StyleResultList* s);
 
 		int32 StyleRuleCount() const;
+
+		const URL& url() const { return url_; }
 	private:
 		std::vector<StyleRule*> rules_;
 		URL url_;

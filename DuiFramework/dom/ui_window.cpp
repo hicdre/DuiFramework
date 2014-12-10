@@ -60,7 +60,15 @@ namespace ui
 
 		owned_widget_->SetSize(Size(styles()->pixelWidth(), styles()->pixelHeight()));
 
-		SetCursor(::LoadCursor(NULL, IDC_ARROW));
+		//SetCursor(::LoadCursor(NULL, IDC_ARROW));
+	}
+
+	void UIWindow::SetCursor(CursorId id)
+	{
+		if (id == Cursor_Arrow)
+			::SetCursor(::LoadCursor(NULL, IDC_ARROW));
+		else if (id == Cursor_Hand)
+			::SetCursor(::LoadCursor(NULL, IDC_HAND));
 	}
 
 	

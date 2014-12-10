@@ -79,6 +79,19 @@ namespace ui
 		return NULL;
 	}
 
+
+	void StyleDeclarationList::Remove(StyleProperty p)
+	{
+		for (auto iter = container_.begin(); iter != container_.end(); iter++)
+		{
+			if ((*iter)->GetProperty() == p) {
+				container_.erase(iter);
+				break;
+			}
+		}
+	}
+
+
 	StyleDeclaration* StyleDeclarationList::Find(StyleProperty p) const
 	{
 		for (const scoped_refptr<StyleDeclaration>& t : container_)
@@ -110,6 +123,20 @@ namespace ui
 	StyleDeclarationList::StyleDeclarationList()
 	{
 
+	}
+
+	void StyleDeclarationList::Swap(StyleDeclarationList* other)
+	{
+		container_.swap(other->container_);
+	}
+
+	void StyleDeclarationList::TransferTo(StyleDeclarationList* other)
+	{
+		for (const scoped_refptr<StyleDeclaration>& d : container_)
+		{
+			other->Insert(d.get());
+		}
+		Clear();
 	}
 
 }

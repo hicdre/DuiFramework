@@ -34,10 +34,10 @@ namespace ui
 		bool ParseDeclaration(StyleDeclarationList* aList, bool inbraces,
 			bool aMustCallValueAppended,
 			bool* aChanged);
-		bool ParseProperty(StyleProperty p, StyleValue*& v);
-		bool ParsePropertyByFunction(StyleProperty p, StyleValue* v);
+		bool ParseProperty(StyleProperty p);
+		bool ParsePropertyByFunction(StyleProperty p);
 		bool ParseSingleValueProperty(StyleProperty p, StyleValue* v);
-		bool ParseValueList(StyleProperty p, StyleValueArray* a);
+		bool ParseValueList(StyleProperty p);
 		bool ParseVariant(StyleValue* v, int32 aVariantMask);
 		bool ParseNonNegativeVariant(StyleValue* v, int32 aVariantMask);
 
@@ -47,7 +47,17 @@ namespace ui
 		bool ParseHSLColor(Color& aColor, char aStop);
 
 		bool ParseLinearGradient(StyleValue* v);
-		bool ParseCursor(StyleValue* v);
+		bool ParseCursor();
+
+		bool ParseBorder();
+		bool ParseBorderWidth();
+		bool ParseBorderColor();
+		bool ParseBorderRadius();
+		bool ParseBorderSide(const StyleProperty propertys[]);
+		bool ParseMargin();
+
+		int ParseChoice(const StyleProperty propertys[], scoped_refptr<StyleValue> values[], int nums);
+		bool ParseBoxProperties(const StyleProperty propertys[]);
 
 		void SetValueToURL(StyleValue* v, const std::string& str);
 
@@ -69,10 +79,13 @@ namespace ui
 
 		bool TranslateDimension(StyleValue* aValue, int32 aVariantMask, float aNumber,
 			const std::string& aUnit);
+
+		void AppendValue(StyleProperty p, StyleValue* v);
 	private:
 		StyleToken token_;
 		StyleScanner* scanner_;
 		scoped_refptr<StyleSheet> sheet_;
+		StyleDeclarationList declaration_list_;
 		bool have_bush_back_;
 		DISALLOW_COPY_AND_ASSIGN(StyleParser);
 	};

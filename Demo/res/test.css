@@ -10,8 +10,7 @@
 
 #ab {
     height : 60px;
-    margin-left : 10px;
-    margin-top : 20px;
+    margin : 10px 20px 0 0;
     background-color: #00FF00;
 }
 
@@ -28,24 +27,20 @@
 
 .span {
     background-color: #a64ea6;
-    border-left-color: #D3D;
-    border-left-width: 15px;
+    border-left: 15px #D3D;    
 }
+
 
 .block {
     width : 50px;
     height : 60px;
-    margin-left :10px;
-    margin-top : 10px;
-    margin-bottom : 10px;
-    border-left-color: #FF0000;
-    border-left-width: 2px;
-    border-top-color: #FF0000;
-    border-top-width: 2px;
-    border-left-top-radius: 5px;
+    margin : 10px;   
+    border: 2px #000000;    
+    /*border-radius: 5px;*/
     background-color: #00FF00;
 }
 
 .block:hover{    
     background-color: #1a914a;
+    cursor: hand;
 }

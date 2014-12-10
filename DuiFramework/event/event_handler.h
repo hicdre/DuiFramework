@@ -19,6 +19,7 @@ namespace ui
 	private:
 		void UpdateElementHoverState(MouseEvent* evt, HitTestResult* result);
 		void UpdateMouseEventTarget(UIElement* target, MouseEvent* evt);
+		void UpdateCursor();
 		bool DispatchMouseEvent(EventType type, UIElement* target, int clickCount, MouseEvent* evt, bool setUnder);
 		UIWindow* window_;
 
@@ -26,5 +27,6 @@ namespace ui
 		UIElement* last_element_under_mouse_{NULL};
 
 		scoped_refptr<MouseEvent> last_mouse_event_;
+		CursorId last_cursor{ Cursor_Inherit };
 	};
 }
