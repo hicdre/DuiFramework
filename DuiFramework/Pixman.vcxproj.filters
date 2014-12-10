@@ -61,9 +61,6 @@
     <ClCompile Include="third_party\pixman\pixman\pixman-mips.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="third_party\pixman\pixman\pixman-mips-dspr2.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="third_party\pixman\pixman\pixman-mmx.c">
       <Filter>Source Files</Filter>
     </ClCompile>

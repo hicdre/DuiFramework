@@ -299,8 +299,11 @@ join (struct stroker *stroker,
 	    _cairo_traps_tessellate_triangle_with_edges (stroker->traps,
 							 tri, edges);
 	} else {
-	    cairo_point_t t[] = { in->point, *inpt, *outpt };
-	    cairo_point_t e[] = { in->cw, in->ccw, out->cw, out->ccw };
+		//vs bug
+		//cairo_point_t t[3] = { in->point, *inpt, *outpt };
+		//cairo_point_t e[] = { in->cw, in->ccw, out->cw, out->ccw };
+		cairo_point_t t[3];	t[0] = in->point; t[1] = *inpt; t[2] = *outpt;
+		cairo_point_t e[4];	e[0] = in->cw; e[1] = in->ccw; e[2] = out->cw; e[3] = out->ccw;
 	    _cairo_traps_tessellate_triangle_with_edges (stroker->traps, t, e);
 	}
 	break;
@@ -461,8 +464,11 @@ join (struct stroker *stroker,
     }
 
     case CAIRO_LINE_JOIN_BEVEL: {
-	cairo_point_t t[] = { in->point, *inpt, *outpt };
-	cairo_point_t e[] = { in->cw, in->ccw, out->cw, out->ccw };
+	//vs bug
+	//cairo_point_t t[] = { in->point, *inpt, *outpt };
+	//cairo_point_t e[] = { in->cw, in->ccw, out->cw, out->ccw };
+	cairo_point_t t[3];	t[0] = in->point; t[1] = *inpt; t[2] = *outpt;
+	cairo_point_t e[4];	e[0] = in->cw; e[1] = in->ccw; e[2] = out->cw; e[3] = out->ccw;
 	_cairo_traps_tessellate_triangle_with_edges (stroker->traps, t, e);
 	break;
     }

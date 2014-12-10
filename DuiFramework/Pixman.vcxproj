@@ -29,7 +29,6 @@
     <ClCompile Include="third_party\pixman\pixman\pixman-implementation.c" />
     <ClCompile Include="third_party\pixman\pixman\pixman-linear-gradient.c" />
     <ClCompile Include="third_party\pixman\pixman\pixman-matrix.c" />
-    <ClCompile Include="third_party\pixman\pixman\pixman-mips-dspr2.c" />
     <ClCompile Include="third_party\pixman\pixman\pixman-mips.c" />
     <ClCompile Include="third_party\pixman\pixman\pixman-mmx.c" />
     <ClCompile Include="third_party\pixman\pixman\pixman-noop.c" />

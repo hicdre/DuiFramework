@@ -478,6 +478,14 @@ typedef struct _cairo_rectangle_int {
 } cairo_rectangle_int_t;
 
 
+cairo_public void
+cairo_startup ();
+
+cairo_public void
+cairo_shutdown();
+
+
+
 /* Functions for manipulating state objects */
 cairo_public cairo_t *
 cairo_create (cairo_surface_t *target);

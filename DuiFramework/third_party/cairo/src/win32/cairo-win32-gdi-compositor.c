@@ -260,7 +260,7 @@ upload_boxes (cairo_win32_display_surface_t *dst,
     struct upload_box cb;
     cairo_surface_t *surface;
     cairo_image_surface_t *image;
-    void *image_extra;
+    void *image_extra = 0;
     cairo_status_t status;
 
     TRACE ((stderr, "%s\n", __FUNCTION__));

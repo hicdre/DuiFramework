@@ -4029,3 +4029,19 @@ cairo_status (cairo_t *cr)
     return cr->status;
 }
 slim_hidden_def (cairo_status);
+
+void
+cairo_startup()
+{
+#if CAIRO_WIN32_STATIC_BUILD
+	CAIRO_MUTEX_INITIALIZE();
+#endif
+}
+
+void
+cairo_shutdown()
+{
+#if CAIRO_WIN32_STATIC_BUILD
+	CAIRO_MUTEX_FINALIZE();
+#endif
+}

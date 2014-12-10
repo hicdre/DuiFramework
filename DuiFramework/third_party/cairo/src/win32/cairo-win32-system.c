@@ -84,6 +84,5 @@ DllMain (HINSTANCE hinstDLL,
 
     return TRUE;
 }
-
 #endif
 #endif
