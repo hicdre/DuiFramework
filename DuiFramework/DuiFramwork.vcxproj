@@ -137,14 +137,19 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="event\mouse_event.cpp" />
-    <ClCompile Include="render\image.cpp" />
+    <ClCompile Include="render\image.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="render\render_box.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="render\render_context.cpp" />
+    <ClCompile Include="render\render_context_private.cpp" />
     <ClCompile Include="render\render_object.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="render\render_path.cpp" />
+    <ClCompile Include="render\render_path_private.cpp" />
     <ClCompile Include="render\render_widget.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
@@ -268,16 +273,21 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="event\mouse_event.h" />
-    <ClInclude Include="render\image.h" />
+    <ClInclude Include="render\image.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="render\render_box.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="render\render_context.h" />
+    <ClInclude Include="render\render_context_private.h" />
     <ClInclude Include="render\render_forward.h" />
     <ClInclude Include="render\render_include.h" />
     <ClInclude Include="render\render_object.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="render\render_path.h" />
+    <ClInclude Include="render\render_path_private.h" />
     <ClInclude Include="render\render_widget.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClInclude>

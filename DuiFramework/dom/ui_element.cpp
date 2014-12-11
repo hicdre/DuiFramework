@@ -310,7 +310,7 @@ namespace ui
 
 	void UIElement::PaintBackground(RenderContext* painter)
 	{
-		ScopedClipper clipper(painter, styles()->borders()->CreateClipRgn());
+		//ScopedClipper clipper(painter, styles()->borders()->CreateClipRgn());
 		Color color = styles()->backgroundColor();
 		painter->FillRect(GetLocalBounds(), color);
 	}

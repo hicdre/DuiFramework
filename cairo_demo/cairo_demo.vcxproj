@@ -55,6 +55,7 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;CAIRO_WIN32_STATIC_BUILD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(ProjectDir)..\DuiFramework\third_party\cairo\src;$(ProjectDir)..\DuiFramework\third_party\pixman\pixman;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DisableSpecificWarnings>4056;4756;</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

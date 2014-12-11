@@ -61,9 +61,10 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 }
 
 
-void gradientExample(cairo_t* cr) {
-	cairo_pattern_t *pat;
+void DrawExample(cairo_t* cr) {
 
+#if 0
+	cairo_pattern_t *pat;
 	pat = cairo_pattern_create_linear(0.0, 0.0, 0.0, 256.0);
 	cairo_pattern_add_color_stop_rgba(pat, 1, 0, 0, 0, 1);
 	cairo_pattern_add_color_stop_rgba(pat, 0, 1, 1, 1, 1);
@@ -80,6 +81,40 @@ void gradientExample(cairo_t* cr) {
 	cairo_arc(cr, 128.0, 128.0, 76.8, 0, 2 * 3.1415926);
 	cairo_fill(cr);
 	cairo_pattern_destroy(pat);
+#endif
+
+#if 0
+	cairo_move_to(cr, 10, 10);
+	cairo_line_to(cr, 10, 20);
+	cairo_line_to(cr, 20, 20);
+	cairo_line_to(cr, 20, 10);
+	cairo_line_to(cr, 10, 10);
+#endif
+	/* a custom shape that could be wrapped in a function */
+	double x = 10,        /* parameters like cairo_rectangle */
+		y = 10,
+		width = 300,
+		height = 200,
+		aspect = 1.0,     /* aspect ratio */
+		corner_radius = 5.0;   /* and corner curvature radius */
+
+	double radius = 5.0;
+	double degrees = 3.1415926 / 180.0;
+
+	cairo_new_sub_path(cr);
+	cairo_arc(cr, x + width - radius, y + radius, radius, -90 * degrees, 0 * degrees);
+	cairo_arc(cr, x + width - radius, y + height - radius, radius, 0 * degrees, 90 * degrees);
+	cairo_arc(cr, x + radius, y + height - radius, radius, 90 * degrees, 180 * degrees);
+	cairo_arc(cr, x + radius, y + radius, radius, 180 * degrees, 270 * degrees);
+	cairo_close_path(cr);
+
+	cairo_set_source_rgb(cr, 0.5, 0.5, 1);
+	cairo_fill_preserve(cr);
+	cairo_set_source_rgba(cr, 0.5, 0, 0, 0.5);
+	cairo_set_line_width(cr, 2.0);
+	cairo_stroke(cr);
+
+	
 }
 
 
@@ -184,7 +219,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		cairo_t *cr =
 			cairo_create(surface);
 
-		gradientExample(cr);
+		DrawExample(cr);
 
 		cairo_destroy(cr);
 		cairo_surface_destroy(surface);

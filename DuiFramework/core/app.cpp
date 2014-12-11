@@ -5,6 +5,7 @@
 #include "core/widget.h"
 #include "utils/utils.h"
 #include "style/style_property.h"
+#include "render/render_include.h"
 
 namespace ui
 {
@@ -56,6 +57,7 @@ namespace ui
 	{
 		Gdiplus::GdiplusStartupInput gdiplusStartupInput;
 		GdiplusStartup(&gdiplusToken_, &gdiplusStartupInput, NULL);
+		RenderContext::Init();
 
 		InitStyleProperty();
 
@@ -74,6 +76,7 @@ namespace ui
 	{
 		Font::UnInitFont();
 		Gdiplus::GdiplusShutdown(gdiplusToken_);
+		RenderContext::Uninit();
 	}
 
 

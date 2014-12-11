@@ -300,6 +300,15 @@
     <ClCompile Include="dom\ui_styles.cpp">
       <Filter>dom</Filter>
     </ClCompile>
+    <ClCompile Include="render\render_context_private.cpp">
+      <Filter>render</Filter>
+    </ClCompile>
+    <ClCompile Include="render\render_path.cpp">
+      <Filter>render</Filter>
+    </ClCompile>
+    <ClCompile Include="render\render_path_private.cpp">
+      <Filter>render</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -590,6 +599,15 @@
     </ClInclude>
     <ClInclude Include="dom\ui_styles.h">
       <Filter>dom</Filter>
+    </ClInclude>
+    <ClInclude Include="render\render_context_private.h">
+      <Filter>render</Filter>
+    </ClInclude>
+    <ClInclude Include="render\render_path.h">
+      <Filter>render</Filter>
+    </ClInclude>
+    <ClInclude Include="render\render_path_private.h">
+      <Filter>render</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
