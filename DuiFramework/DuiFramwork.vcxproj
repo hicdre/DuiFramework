@@ -91,6 +91,7 @@
     <ClCompile Include="base\point.cpp" />
     <ClCompile Include="base\range.cpp" />
     <ClCompile Include="base\rect.cpp" />
+    <ClCompile Include="base\round_rect.cpp" />
     <ClCompile Include="base\size.cpp" />
     <ClCompile Include="base\matrix.cpp" />
     <ClCompile Include="base\url.cpp" />
@@ -115,6 +116,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="core\widget.cpp" />
+    <ClCompile Include="dom\ui_border.cpp" />
     <ClCompile Include="dom\ui_document.cpp" />
     <ClCompile Include="dom\ui_element.cpp" />
     <ClCompile Include="dom\ui_hbox.cpp" />
@@ -144,12 +146,13 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="render\render_context.cpp" />
-    <ClCompile Include="render\render_context_private.cpp" />
+    <ClCompile Include="render\render_target_cairo.cpp" />
+    <ClCompile Include="render\render_helper.cpp" />
     <ClCompile Include="render\render_object.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="render\render_path.cpp" />
-    <ClCompile Include="render\render_path_private.cpp" />
+    <ClCompile Include="render\render_path_cairo.cpp" />
+    <ClCompile Include="render\render_engine.cpp" />
     <ClCompile Include="render\render_widget.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
@@ -220,6 +223,7 @@
     <ClInclude Include="base\range.h" />
     <ClInclude Include="base\rect.h" />
     <ClInclude Include="base\ref_counted.h" />
+    <ClInclude Include="base\round_rect.h" />
     <ClInclude Include="base\scoped_ptr.h" />
     <ClInclude Include="base\size.h" />
     <ClInclude Include="base\matrix.h" />
@@ -246,6 +250,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="core\widget.h" />
+    <ClInclude Include="dom\ui_border.h" />
     <ClInclude Include="dom\ui_document.h" />
     <ClInclude Include="dom\ui_forward.h" />
     <ClInclude Include="dom\ui_hbox.h" />
@@ -279,15 +284,17 @@
     <ClInclude Include="render\render_box.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="render\render_cairo_forward.h" />
     <ClInclude Include="render\render_context.h" />
-    <ClInclude Include="render\render_context_private.h" />
+    <ClInclude Include="render\render_target_cairo.h" />
     <ClInclude Include="render\render_forward.h" />
+    <ClInclude Include="render\render_helper.h" />
     <ClInclude Include="render\render_include.h" />
     <ClInclude Include="render\render_object.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClInclude>
-    <ClInclude Include="render\render_path.h" />
-    <ClInclude Include="render\render_path_private.h" />
+    <ClInclude Include="render\render_path_cairo.h" />
+    <ClInclude Include="render\render_engine.h" />
     <ClInclude Include="render\render_widget.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClInclude>

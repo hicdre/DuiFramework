@@ -8,6 +8,7 @@
 #include "base/size.h"
 #include "base/inseting.h"
 #include "base/rect.h"
+#include "base/round_rect.h"
 #include "base/matrix.h"
 #include "base/range.h"
 #include "base/value.h"

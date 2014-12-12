@@ -57,7 +57,8 @@ namespace ui
 	{
 		Gdiplus::GdiplusStartupInput gdiplusStartupInput;
 		GdiplusStartup(&gdiplusToken_, &gdiplusStartupInput, NULL);
-		RenderContext::Init();
+
+		RenderEngine::InitEngine();
 
 		InitStyleProperty();
 
@@ -75,8 +76,9 @@ namespace ui
 	void App::UnInit()
 	{
 		Font::UnInitFont();
+		
+		RenderEngine::UnintEngine();
 		Gdiplus::GdiplusShutdown(gdiplusToken_);
-		RenderContext::Uninit();
 	}
 
 

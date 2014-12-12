@@ -317,69 +317,9 @@ namespace ui
 
 	void UIElement::PaintBorder(RenderContext* painter)
 	{
-		const UIBorder* borders = styles()->borders();
 		Rect rect(GetLocalBounds());
-		int left_length = rect.height() - borders->leftTopRadius() - borders->leftBottomRadius();
-		int top_length = rect.width() - borders->leftTopRadius() - borders->rightTopRadius();
-		int right_length = rect.height() - borders->rightTopRadius() - borders->rightBottomRadius();
-		int bottom_length = rect.width() - borders->leftBottomRadius() - borders->rightBottomRadius();
-
-		if (borders->left().color != Color_Transparent && left_length > 0) {
-			painter->FillRect(Rect(0, borders->leftTopRadius(), borders->left().size, left_length),
-				borders->left().color);
-		}
-
-		//圆角, 先简单处理
-		if (borders->leftTopRadius())
-		{
-// 			uint32 size = borders->leftTopRadius() * 2;
-// 			Rect arcRect(rect.x(), rect.y(), size, size);
-// 			painter->DrawArc(arcRect,
-// 				180, 90, borders->left().color, borders->left().size);
-		}
-
-		if (borders->top().color != Color_Transparent && top_length > 0) {
-			painter->FillRect(Rect(borders->leftTopRadius(), 0, top_length, borders->top().size),
-				borders->top().color);
-		}
-
-		if (borders->rightTopRadius())
-		{
-			uint32 size = borders->rightTopRadius() * 2;
-			Rect arcRect(rect.right() - size, rect.y(), size, size);
-			painter->DrawArc(arcRect,
-				270, 90, borders->top().color, borders->top().size);
-		}
-
-		if (borders->right().color != Color_Transparent && right_length > 0) {
-			painter->FillRect(Rect(rect.width() - borders->right().size, borders->rightTopRadius(), 
-				borders->right().size, right_length),
-				borders->right().color);
-		}
-
-		if (borders->rightBottomRadius())
-		{
-			uint32 size = borders->rightBottomRadius() * 2;
-			Rect arcRect(rect.right() - size, rect.bottom() - size, size, size);
-			painter->DrawArc(arcRect,
-				0, 90, borders->right().color, borders->right().size);
-		}
-
-		if (borders->bottom().color != Color_Transparent && bottom_length > 0) {
-			painter->FillRect(Rect(borders->leftBottomRadius(), rect.height() - borders->bottom().size, 
-				bottom_length, borders->bottom().size),
-				borders->bottom().color);
-		}
-
-		if (borders->leftBottomRadius())
-		{
-			uint32 size = borders->leftBottomRadius() * 2;
-			Rect arcRect(rect.x(), rect.bottom() - size, size, size);
-			painter->DrawArc(arcRect,
-				90, 90, borders->bottom().color, borders->bottom().size);
-		}
-
-
+		UIBorderPainter borderPainter(rect, styles()->borders(), painter);
+		borderPainter.Paint();
 	}
 
 

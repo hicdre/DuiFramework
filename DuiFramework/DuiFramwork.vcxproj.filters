@@ -40,6 +40,9 @@
     <Filter Include="third_party\gurl">
       <UniqueIdentifier>{829d8fb0-5f13-4e66-97e7-2de7c2318ace}</UniqueIdentifier>
     </Filter>
+    <Filter Include="render\cairo">
+      <UniqueIdentifier>{ddd94dce-e4d8-44b6-b351-f0fdae41af32}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -300,14 +303,23 @@
     <ClCompile Include="dom\ui_styles.cpp">
       <Filter>dom</Filter>
     </ClCompile>
-    <ClCompile Include="render\render_context_private.cpp">
+    <ClCompile Include="render\render_helper.cpp">
       <Filter>render</Filter>
     </ClCompile>
-    <ClCompile Include="render\render_path.cpp">
+    <ClCompile Include="render\render_target_cairo.cpp">
+      <Filter>render\cairo</Filter>
+    </ClCompile>
+    <ClCompile Include="render\render_engine.cpp">
       <Filter>render</Filter>
     </ClCompile>
-    <ClCompile Include="render\render_path_private.cpp">
-      <Filter>render</Filter>
+    <ClCompile Include="render\render_path_cairo.cpp">
+      <Filter>render\cairo</Filter>
+    </ClCompile>
+    <ClCompile Include="dom\ui_border.cpp">
+      <Filter>dom</Filter>
+    </ClCompile>
+    <ClCompile Include="base\round_rect.cpp">
+      <Filter>base</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -600,14 +612,26 @@
     <ClInclude Include="dom\ui_styles.h">
       <Filter>dom</Filter>
     </ClInclude>
-    <ClInclude Include="render\render_context_private.h">
+    <ClInclude Include="render\render_helper.h">
       <Filter>render</Filter>
     </ClInclude>
-    <ClInclude Include="render\render_path.h">
+    <ClInclude Include="render\render_target_cairo.h">
+      <Filter>render\cairo</Filter>
+    </ClInclude>
+    <ClInclude Include="render\render_engine.h">
       <Filter>render</Filter>
     </ClInclude>
-    <ClInclude Include="render\render_path_private.h">
-      <Filter>render</Filter>
+    <ClInclude Include="render\render_cairo_forward.h">
+      <Filter>render\cairo</Filter>
+    </ClInclude>
+    <ClInclude Include="render\render_path_cairo.h">
+      <Filter>render\cairo</Filter>
+    </ClInclude>
+    <ClInclude Include="dom\ui_border.h">
+      <Filter>dom</Filter>
+    </ClInclude>
+    <ClInclude Include="base\round_rect.h">
+      <Filter>base</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

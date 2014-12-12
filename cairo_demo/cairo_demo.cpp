@@ -90,29 +90,26 @@ void DrawExample(cairo_t* cr) {
 	cairo_line_to(cr, 20, 10);
 	cairo_line_to(cr, 10, 10);
 #endif
-	/* a custom shape that could be wrapped in a function */
-	double x = 10,        /* parameters like cairo_rectangle */
-		y = 10,
-		width = 300,
-		height = 200,
-		aspect = 1.0,     /* aspect ratio */
-		corner_radius = 5.0;   /* and corner curvature radius */
+	cairo_new_path(cr);
+	cairo_rectangle(cr, 10, 10, 200, 200);
+	//cairo_new_sub_path(cr);
+	cairo_rectangle(cr, 20, 20, 180, 180);
+	cairo_path_t* path = cairo_copy_path(cr);
 
-	double radius = 5.0;
-	double degrees = 3.1415926 / 180.0;
-
-	cairo_new_sub_path(cr);
-	cairo_arc(cr, x + width - radius, y + radius, radius, -90 * degrees, 0 * degrees);
-	cairo_arc(cr, x + width - radius, y + height - radius, radius, 0 * degrees, 90 * degrees);
-	cairo_arc(cr, x + radius, y + height - radius, radius, 90 * degrees, 180 * degrees);
-	cairo_arc(cr, x + radius, y + radius, radius, 180 * degrees, 270 * degrees);
-	cairo_close_path(cr);
+	cairo_new_path(cr);
+	cairo_append_path(cr, path);
 
 	cairo_set_source_rgb(cr, 0.5, 0.5, 1);
+	//cairo_set_fill_rule(cr, CAIRO_FILL_RULE_EVEN_ODD);
 	cairo_fill_preserve(cr);
-	cairo_set_source_rgba(cr, 0.5, 0, 0, 0.5);
+
+	cairo_set_source_rgb(cr, 0, 0, 0);
 	cairo_set_line_width(cr, 2.0);
-	cairo_stroke(cr);
+	//cairo_stroke(cr);
+
+// 	cairo_set_source_rgba(cr, 0.5, 0, 0, 0.5);
+// 	cairo_set_line_width(cr, 2.0);
+// 	cairo_stroke(cr);
 
 	
 }
