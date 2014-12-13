@@ -70,7 +70,72 @@ namespace ui
 
 	void RenderPathCairo::RoundRectangle(const RoundRect& rect, bool negative /*= false*/)
 	{
+		const double alpha = 0.55191497064665766025;
 
+		typedef struct { double a, b; } twoFloats;
+
+		twoFloats cwCornerMults[4] = { 
+			{ -1, 0 },
+			{ 0, -1 },
+			{ +1, 0 },
+			{ 0, +1 } 
+		};
+		twoFloats ccwCornerMults[4] = { 
+			{ +1, 0 },
+			{ 0, -1 },
+			{ -1, 0 },
+			{ 0, +1 } 
+		};
+
+		twoFloats *cornerMults = negative ? ccwCornerMults : cwCornerMults;
+
+		Point pc, p0, p1, p2, p3;
+
+		if (!negative)
+			cairo_move_to(cairo_, rect.x() + rect.GetCornerSize(RoundRect::TopLeft).width(), rect.y());
+		else
+			cairo_move_to(cairo_, rect.x() + rect.width() - rect.GetCornerSize(RoundRect::TopRight).width(), rect.y());
+
+		for(int i=0; i<4; ++i)
+		{
+			// the corner index -- either 1 2 3 0 (cw) or 0 3 2 1 (ccw)
+			RoundRect::Corner c = (RoundRect::Corner)(!negative ? ((i + 1) % 4) : ((4 - i) % 4));
+
+			// i+2 and i+3 respectively.  These are used to index into the corner
+			// multiplier table, and were deduced by calculating out the long form
+			// of each corner and finding a pattern in the signs and values.
+			int i2 = (i + 2) % 4;
+			int i3 = (i + 3) % 4;
+
+			pc = rect.AtCorner(c);
+
+			Size cz = rect.GetCornerSize(c);
+
+			if (cz.width() > 0.0 && cz.height() > 0.0) {
+				p0.set_x(pc.x() + cornerMults[i].a * cz.width());
+				p0.set_y(pc.y() + cornerMults[i].b * cz.height());
+
+				p3.set_x(pc.x() + cornerMults[i3].a * cz.width());
+				p3.set_y(pc.y() + cornerMults[i3].b * cz.height());
+
+				p1.set_x(p0.x() + alpha * cornerMults[i2].a * cz.width());
+				p1.set_y(p0.y() + alpha * cornerMults[i2].b * cz.height());
+				   			 
+				p2.set_x(p3.x() - alpha * cornerMults[i3].a * cz.width());
+				p2.set_y(p3.y() - alpha * cornerMults[i3].b * cz.height());
+
+				cairo_line_to(cairo_, p0.x(), p0.y());
+				cairo_curve_to(cairo_,
+					p2.x(), p2.y(),
+					p1.x(), p1.y(),
+					p3.x(), p3.y());
+			}
+			else {
+				cairo_line_to(cairo_, pc.x(), pc.y());
+			}
+		}
+
+		cairo_close_path(cairo_);
 	}
 
 
@@ -100,7 +165,7 @@ namespace ui
 	void RenderPathCairo::EndPath()
 	{
 		path_ = cairo_copy_path(cairo_);
-		cairo_new_path(cairo_);
+		//cairo_new_path(cairo_);
 	}
 
 }

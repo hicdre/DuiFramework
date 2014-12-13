@@ -51,8 +51,9 @@ namespace ui
 
 
 
-	void RenderContext::SetClip(const Rect& rect)
+	void RenderContext::ClipRect(const Rect& rect)
 	{
+		target_->ClipRect(rect);
 	}
 
 
@@ -74,6 +75,11 @@ namespace ui
 	void RenderContext::FillPath(const RenderPath* path, Color color)
 	{
 		target_->FillPath(path, color);
+	}
+
+	void RenderContext::ClipPath(const RenderPath* path)
+	{
+		target_->ClipPath(path);
 	}
 
 	

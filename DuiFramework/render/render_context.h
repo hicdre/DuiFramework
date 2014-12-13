@@ -25,7 +25,9 @@ namespace ui
 
 		void FillPath(const RenderPath* path, Color color);
 
- 		void SetClip(const Rect& rect);
+ 		void ClipRect(const Rect& rect);
+		void ClipPath(const RenderPath* path);
+
 		void FillRect(const Rect& rect, Color color);
 		void DrawArc(const Rect& rect, int from, int angles, Color color, int width);
 

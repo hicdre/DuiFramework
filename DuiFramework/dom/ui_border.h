@@ -1,6 +1,7 @@
 #pragma once
 #include "dom/ui_forward.h"
 #include "style/style_result.h"
+#include "render/render_engine.h"
 
 namespace ui
 {
@@ -22,7 +23,9 @@ namespace ui
 		const Item& right() const;
 		const Item& bottom() const;
 
-		Inseting GetPadding() const;
+		const Item& side(int index) const { return sides_[index]; }
+
+		Inseting GetInseting() const;
 
 		uint32 leftTopRadius() const;
 		uint32 rightTopRadius() const;
@@ -33,10 +36,16 @@ namespace ui
 			StyleProperty width,
 			StyleProperty color);
 		void InitRadius(uint32& radius, StyleProperty p);
-		Item left_;
-		Item top_;
-		Item right_;
-		Item bottom_;
+		union {
+			struct {
+				Item left_;
+				Item top_;
+				Item right_;
+				Item bottom_;
+			};
+			Item sides_[4];
+		};
+		
 
 		uint32 left_top_radius_;
 		uint32 right_top_radius_;
@@ -53,8 +62,9 @@ namespace ui
 		~UIBorderPainter();
 
 		void Paint();
+		scoped_refptr<RenderPath> ClipPath();
 	private:
-		void Init();
+		void Init(const Rect& bounds);
 
 		void PaintBorderSameColor(Color c);
 
@@ -62,9 +72,10 @@ namespace ui
 		bool AllBorderColorSame();
 		bool AllBorderRadiusSame();
 
-		Rect outBounds_;
-		Rect inBounds_;
+		bool AllBorderExistsColorSame();
 
+		RoundRect outRoundRect_;
+		RoundRect inRoundRect_;
 
 		const UIBorder* border_;
 		RenderContext* context_;

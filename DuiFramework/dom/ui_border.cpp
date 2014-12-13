@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "ui_border.h"
 #include "dom/ui_include.h"
 #include "render/render_include.h"
@@ -70,7 +70,7 @@ namespace ui
 		}
 	}
 
-	ui::Inseting UIBorder::GetPadding() const
+	ui::Inseting UIBorder::GetInseting() const
 	{
 		return Inseting(left_.size, top_.size, right_.size, bottom_.size);
 	}
@@ -105,13 +105,10 @@ namespace ui
 	}
 
 	UIBorderPainter::UIBorderPainter(const Rect& bounds, const UIBorder* border, RenderContext* context)
-		: outBounds_(bounds)
-		, inBounds_(bounds)
-		, border_(border)
+		: border_(border)
 		, context_(context)
 	{
-		inBounds_.Inset(border_->GetPadding());
-		Init();
+		Init(bounds);
 	}
 
 	UIBorderPainter::~UIBorderPainter()
@@ -126,23 +123,12 @@ namespace ui
 			return;
 
 		bool colorSame = AllBorderColorSame();
-		bool radiusSame = AllBorderRadiusSame();
 
-		if (colorSame && radiusSame && border_->leftTopRadius() == 0) {
-			// case 1 ÎŞÔ²½Ç Í¬É«
+		if (colorSame) {
+			// case 1 æ— åœ†è§’ åŒè‰²
 			scoped_refptr<RenderPath> path = context_->CreatePath();
-			path->Rectangle(outBounds_);
-			path->Rectangle(inBounds_, true);
-			path->EndPath();
-			context_->FillPath(path.get(), border_->left().color);
-			return;
-		}
-
-		if (radiusSame && radiusSame == 0) {
-			// case 2 Ô²½Ç Í¬É«
-			scoped_refptr<RenderPath> path = context_->CreatePath();
-			//path->RoundRectangle(outBounds_, );
-			//path->RoundRectangle(inBounds_, true);
+			path->RoundRectangle(outRoundRect_);
+			path->RoundRectangle(inRoundRect_, true);
 			path->EndPath();
 			context_->FillPath(path.get(), border_->left().color);
 			return;
@@ -151,8 +137,18 @@ namespace ui
 		
 	}
 
-	void UIBorderPainter::Init()
+	void UIBorderPainter::Init(const Rect& bounds)
 	{
+		RoundRect roundRect(bounds
+			, border_->leftTopRadius()
+			, border_->rightTopRadius()
+			, border_->rightBottomRadius()
+			, border_->leftBottomRadius());
+
+		outRoundRect_ = roundRect;
+
+		roundRect.Inset(border_->GetInseting());
+		inRoundRect_ = roundRect;
 	}
 
 	bool UIBorderPainter::AllBorderWidthSame()
@@ -165,9 +161,25 @@ namespace ui
 
 	bool UIBorderPainter::AllBorderColorSame()
 	{
-		return (border_->left().color == border_->right().color)
-			&& (border_->top().color == border_->bottom().color)
-			&& (border_->left().color == border_->right().color);
+		bool first_inited = false;
+		Color color = Color_Transparent;
+		for (int i = 0; i < 4; i++)
+		{
+			const UIBorder::Item& item = border_->side(i);
+			if (item.size == 0)
+				continue;
+
+			if (!first_inited) {
+				color = item.color;
+				first_inited = true;
+				continue;
+			}
+
+			if (color != item.color)
+				return false;
+		}
+
+		return true;
 	}
 
 	bool UIBorderPainter::AllBorderRadiusSame()
@@ -180,11 +192,19 @@ namespace ui
 	void UIBorderPainter::PaintBorderSameColor(Color c)
 	{
 		if (AllBorderRadiusSame() && border_->leftTopRadius() == 0) {
-			//no.1 ÎŞÔ²½Ç
+			//no.1 æ— åœ†è§’
 			
 		}
 
 
+	}
+
+	scoped_refptr<RenderPath> UIBorderPainter::ClipPath()
+	{
+		scoped_refptr<RenderPath> path = context_->CreatePath();
+		path->RoundRectangle(inRoundRect_);
+		path->EndPath();
+		return path;
 	}
 
 }

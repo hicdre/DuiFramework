@@ -1,4 +1,5 @@
 #pragma once
+#include "base/base_defines.h"
 
 typedef struct tagSIZE SIZE;
 
@@ -27,6 +28,18 @@ namespace ui
 		void Enlarge(int width, int height) {
 			set_width(width_ + width);
 			set_height(height_ + height);
+		}
+
+		void Reduce(uint32 width, uint32 height) {
+			if (width_ - width > 0)
+				set_width(width_ - width);
+			else
+				set_width(0);
+
+			if (height_ - height > 0)
+				set_height(height_ - height);
+			else
+				set_height(0);
 		}
 
 		void set_width(int width);

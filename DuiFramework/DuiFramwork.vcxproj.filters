@@ -633,5 +633,11 @@
     <ClInclude Include="base\round_rect.h">
       <Filter>base</Filter>
     </ClInclude>
+    <ClInclude Include="render\render_path.h">
+      <Filter>render</Filter>
+    </ClInclude>
+    <ClInclude Include="render\render_target.h">
+      <Filter>render</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

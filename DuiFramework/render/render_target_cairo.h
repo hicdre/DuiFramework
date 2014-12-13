@@ -15,6 +15,9 @@ namespace ui
 
 		virtual scoped_refptr<RenderPath> OpenRenderPath() override;
 
+		virtual void ClipRect(const Rect& rect)  override;
+		virtual void ClipPath(const RenderPath* path)  override;
+
 		virtual void StorkeRect(const Rect& rect, Color color, uint32 size) override;
 		virtual void StorkePath(const RenderPath* path, Color color, uint32 size) override;
 

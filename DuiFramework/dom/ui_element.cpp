@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "ui_element.h"
 #include "ui_include.h"
 
@@ -150,7 +150,7 @@ namespace ui
 
 	void UIElement::Remove(UIElementPtr child)
 	{
-		//Ö»ÔÊĞíÒÆ³ı×Ó½Úµã
+		//åªå…è®¸ç§»é™¤å­èŠ‚ç‚¹
 		if (!child || child->parent_.get() != this)
 		{
 			assert(0); //<< "can only remove child node";
@@ -295,7 +295,7 @@ namespace ui
 
 	Rect UIElement::ConvertRectFromChild(UIElement* child, const Rect& r)
 	{
-		Rect rect(GetContentBounds());//¼ÓÉÏborderµÄÆ«ÒÆ
+		Rect rect(GetContentBounds());//åŠ ä¸Šborderçš„åç§»
 		return Rect(r.x() + child->x() + rect.x(), r.y() + child->y() + rect.y(), r.width(), r.height());
 	}
 
@@ -303,8 +303,15 @@ namespace ui
 	{
 		ScopedPainter helper(painter, Matrix(1.0, 0, 0, 1.0, r.x(), r.y()));
 
-		PaintBackground(painter);
-		PaintBorder(painter);
+		Rect rect(GetLocalBounds());
+		UIBorderPainter borderPainter(rect, styles()->borders(), painter);
+
+		{
+			ScopedClipper clipper(painter, borderPainter.ClipPath().get());
+			PaintBackground(painter);
+		}
+		borderPainter.Paint();
+		
 		PaintContents(painter);
 	}
 
@@ -317,9 +324,9 @@ namespace ui
 
 	void UIElement::PaintBorder(RenderContext* painter)
 	{
-		Rect rect(GetLocalBounds());
-		UIBorderPainter borderPainter(rect, styles()->borders(), painter);
-		borderPainter.Paint();
+		//Rect rect(GetLocalBounds());
+		//UIBorderPainter borderPainter(rect, styles()->borders(), painter);
+		//borderPainter.Paint();
 	}
 
 
@@ -337,8 +344,8 @@ namespace ui
 
 	void UIElement::Layout()
 	{
-		//layoutÖ®Ç°£¬Î»ÖÃÒÑ¾­È·¶¨
-		//¼ÆËã¿í¶È, ¿í¶ÈÖ»Óë¸¸ÓĞ¹Ø
+		//layoutä¹‹å‰ï¼Œä½ç½®å·²ç»ç¡®å®š
+		//è®¡ç®—å®½åº¦, å®½åº¦åªä¸çˆ¶æœ‰å…³
 		UIStyles* style = styles();
 		if (style->autoWidth() && HasParent()) {
 			UIElementPtr p(parent());
@@ -352,7 +359,7 @@ namespace ui
 		UIElement* bottom_obj = NULL;
 		for (UIElementPtr obj = firstChild(); obj; obj = obj->nextSibling())
 		{
-			//¾ø¶Ô²¼¾Ö
+			//ç»å¯¹å¸ƒå±€
 			UIStyles* s = obj->styles();
 			int x = s->marginLeft();
 			int y = s->marginTop();
@@ -436,7 +443,7 @@ namespace ui
 	Rect UIElement::GetContentBounds() const
 	{
 		Rect rc(GetLocalBounds());
-		rc.Inset(styles()->borders()->GetPadding());
+		rc.Inset(styles()->borders()->GetInseting());
 		return rc;
 	}
 

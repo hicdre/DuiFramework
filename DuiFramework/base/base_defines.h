@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <limits.h>         // So we can set the bounds of our types
 #include <stddef.h>         // For size_t
 #include <string.h>         // for memcpy

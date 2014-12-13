@@ -286,6 +286,8 @@
     </ClInclude>
     <ClInclude Include="render\render_cairo_forward.h" />
     <ClInclude Include="render\render_context.h" />
+    <ClInclude Include="render\render_path.h" />
+    <ClInclude Include="render\render_target.h" />
     <ClInclude Include="render\render_target_cairo.h" />
     <ClInclude Include="render\render_forward.h" />
     <ClInclude Include="render\render_helper.h" />

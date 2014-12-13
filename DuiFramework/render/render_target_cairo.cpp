@@ -1,4 +1,4 @@
-#include "stdafx.h"
+Ôªø#include "stdafx.h"
 #include "render_target_cairo.h"
 #include "render_path_cairo.h"
 #include "core/widget.h"
@@ -67,7 +67,7 @@ namespace ui
 
 		set_color(color);
 		cairo_set_line_width(cairo_, size);
-		cairo_stroke(cairo_);
+		cairo_stroke_preserve(cairo_);
 	}
 
 	void RenderTargetCairo::StorkePath(const RenderPath* path, Color color, uint32 size)
@@ -79,7 +79,7 @@ namespace ui
 
 		set_color(color);
 		cairo_set_line_width(cairo_, size);
-		cairo_stroke(cairo_);
+		cairo_stroke_preserve(cairo_);
 	}
 
 	void RenderTargetCairo::FillRect(const Rect& rect, Color color)
@@ -90,7 +90,7 @@ namespace ui
 		cairo_new_path(cairo_);
 		cairo_rectangle(cairo_, rect.x(), rect.y(), rect.width(), rect.height());
 		set_color(color);
-		cairo_fill(cairo_);
+		cairo_fill_preserve(cairo_);
 	}
 
 
@@ -102,7 +102,7 @@ namespace ui
 		PeparePath(path);
 
 		set_color(color);
-		cairo_fill_preserve(cairo_);//±£¡Ùµ±«∞¬∑æ∂
+		cairo_fill_preserve(cairo_);//‰øùÁïôÂΩìÂâçË∑ØÂæÑ
 	}
 
 	void RenderTargetCairo::Trans(const Matrix& m)
@@ -141,9 +141,23 @@ namespace ui
 	{
 		RenderPathCairo* cairo_path = const_cast<RenderPathCairo*>(static_cast<const RenderPathCairo*>(path));
 		cairo_path_t* detach_path = cairo_path->get_path();
-		if (detach_path) {
-			cairo_append_path(cairo_, detach_path);
-		}
+		cairo_new_path(cairo_);
+		cairo_append_path(cairo_, detach_path);
+	}
+
+	void RenderTargetCairo::ClipRect(const Rect& rect)
+	{
+		cairo_new_path(cairo_);
+		cairo_rectangle(cairo_, rect.x(), rect.y(), rect.width(), rect.height());
+
+		cairo_clip_preserve(cairo_);
+	}
+
+	void RenderTargetCairo::ClipPath(const RenderPath* path)
+	{
+		PeparePath(path);
+
+		cairo_clip_preserve(cairo_);
 	}
 
 
