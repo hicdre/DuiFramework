@@ -1,5 +1,6 @@
 #pragma once
 #include "render/render_target.h"
+#include "render/render_image.h"
 
 namespace ui
 {
@@ -12,5 +13,8 @@ namespace ui
 
 		static scoped_refptr<RenderTarget> 
 			CreateRenderTarget(Widget* w);
+
+		static scoped_refptr<RenderImage>
+			CreateRenderImage(const URL& path);
 	};
 }

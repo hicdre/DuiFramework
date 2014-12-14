@@ -1,11 +1,11 @@
-#pragma once
+ï»¿#pragma once
 #include "base/basictypes.h"
 
 namespace ui
 {
 	class RenderContext;
-	//Ä¿Ç°Ö»ÓĞÀ­Éì£¬
-	//ĞèÒªÔö¼ÓÆ½ÆÌµÈ
+	//ç›®å‰åªæœ‰æ‹‰ä¼¸ï¼Œ
+	//éœ€è¦å¢åŠ å¹³é“ºç­‰
 	class Image : public RefCounted<Image>
 	{
 	public:

@@ -181,6 +181,9 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="third_party\cairo\src\cairo-pen.c" />
+    <ClCompile Include="third_party\cairo\src\cairo-png.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="third_party\cairo\src\cairo-polygon-intersect.c" />
     <ClCompile Include="third_party\cairo\src\cairo-polygon-reduce.c" />
     <ClCompile Include="third_party\cairo\src\cairo-polygon.c" />

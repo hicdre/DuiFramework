@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "resource_loader.h"
 #include "core/app.h"
 #include "utils/utils.h"
@@ -51,7 +51,7 @@ namespace ui
 			real_path = MultiByteToWide(url.path());
 		}
 		else {
-			return false;//ÆäËü²»Ö§³Ö
+			return false;//å…¶å®ƒä¸æ”¯æŒ
 		}
 
 		if (!LoadFileToString(real_path, contents))
@@ -99,7 +99,7 @@ namespace ui
 
 	URL ResourceLoader::ResolveId(const ResourceId& id)
 	{
-		//TODO: ÊµÏÖ
+		//TODO: å®ç°
 		assert(0);
 		return URL();
 	}

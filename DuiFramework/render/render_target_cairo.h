@@ -24,6 +24,8 @@ namespace ui
 		virtual void FillRect(const Rect& rect, Color color) override;
 		virtual void FillPath(const RenderPath* path, Color color) override;
 
+		virtual void DrawImage(const RenderImage *image, const Rect& dest) override;
+
 		virtual void Trans(const Matrix& m) override;
 		virtual void PushState() override;
 		virtual void PopState() override;

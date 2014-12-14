@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "base/basictypes.h"
 #include "utils/image_file.h"
 
@@ -16,13 +16,13 @@ namespace ui
 		void AddImageRecord(const std::string& id, const std::wstring& path, const Rect& rect);
 		void AddImageRecord(const std::string& id, const std::wstring& path);
 		
-		//·µ»ØµÄImageRect*ÎŞĞèdelete
+		//è¿”å›çš„ImageRect*æ— éœ€delete
 		ImagePart* GetImageById(const std::string& id);
 		ImagePart* FindImageClipInCache(const std::string& id) const;
 		ImagePart* LoadImageClipToCache(const std::string& id);
 
 		static ImageStore* Default();
-		//·µ»ØµÄImageClip*ĞèÒªdelete
+		//è¿”å›çš„ImageClip*éœ€è¦delete
 		static ImagePart* LoadImageByPath(const std::wstring& path, const Rect& rect);
 		static ImagePart* LoadImageByPath(const std::wstring& path);
 	private:

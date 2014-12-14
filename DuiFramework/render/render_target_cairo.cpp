@@ -1,6 +1,7 @@
 ﻿#include "stdafx.h"
 #include "render_target_cairo.h"
 #include "render_path_cairo.h"
+#include "render_image_cairo.h"
 #include "core/widget.h"
 
 namespace ui
@@ -158,6 +159,15 @@ namespace ui
 		PeparePath(path);
 
 		cairo_clip_preserve(cairo_);
+	}
+
+	void RenderTargetCairo::DrawImage(const RenderImage *image, const Rect& dest)
+	{
+		RenderImageCairo* image_cairo = const_cast<RenderImageCairo*>(static_cast<const RenderImageCairo*>(image));
+
+		//计算矩阵，变换等
+		cairo_set_source_surface(cairo_, image_cairo->GetSurface(), 0, 0);
+		cairo_paint(cairo_);
 	}
 
 

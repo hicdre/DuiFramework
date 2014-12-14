@@ -1,4 +1,4 @@
-#pragma once
+Ôªø#pragma once
 #include "base/basictypes.h"
 #include "style/style_sheet.h"
 #include "dom/ui_document.h"
@@ -6,7 +6,7 @@
 namespace ui
 {
 	typedef std::string ResourceId;
-	//◊ ‘¥¿‡–Õ
+	//ËµÑÊ∫êÁ±ªÂûã
 	// layout xml
 	// resource define xml
 	// style sheet
@@ -27,7 +27,6 @@ namespace ui
 		UIDocumentPtr GetUIDocument(const ResourceId& id);
 		UIDocumentPtr GetUIDocument(const URL& url);
 
-	private:
 		bool LoadFileToString(const URL& url, std::string* contnets);
 		bool LoadFileToString(const std::wstring& relative, std::string* contnets);
 

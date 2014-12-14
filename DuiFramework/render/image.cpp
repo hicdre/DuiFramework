@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "image.h"
 
 #include "render/render_context.h"
@@ -111,7 +111,7 @@ namespace ui
 				return;
 			}
 
-			//½øĞĞ4µã±ä»»
+			//è¿›è¡Œ4ç‚¹å˜æ¢
 			Matrix mi = m.Invert();
 			Point lt(dest.x(), dest.y());
 			Point lb(dest.x(), dest.bottom());

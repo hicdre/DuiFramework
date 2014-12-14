@@ -25,6 +25,9 @@
     <Filter Include="win32">
       <UniqueIdentifier>{3073d711-a39a-42af-bf8e-a9aa34f9ad78}</UniqueIdentifier>
     </Filter>
+    <Filter Include="png">
+      <UniqueIdentifier>{eebdb7fa-d80a-4bde-9bec-733774d4acef}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="third_party\cairo\src\cairo-deprecated.h">
@@ -671,6 +674,9 @@
     </ClCompile>
     <ClCompile Include="third_party\cairo\src\cairo-clip-tor-scan-converter.c">
       <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="third_party\cairo\src\cairo-png.c">
+      <Filter>png</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

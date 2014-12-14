@@ -49,6 +49,11 @@ namespace ui
 		//context_->DrawImage(image, src_rect, dest_rect);
 	}
 
+	void RenderContext::DrawImage(const RenderImage *image, const Rect& dest)
+	{
+		target_->DrawImage(image, dest);
+	}
+
 
 
 	void RenderContext::ClipRect(const Rect& rect)

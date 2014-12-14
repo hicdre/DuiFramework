@@ -146,6 +146,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="render\render_context.cpp" />
+    <ClCompile Include="render\render_image_cairo.cpp" />
     <ClCompile Include="render\render_target_cairo.cpp" />
     <ClCompile Include="render\render_helper.cpp" />
     <ClCompile Include="render\render_object.cpp">
@@ -286,6 +287,8 @@
     </ClInclude>
     <ClInclude Include="render\render_cairo_forward.h" />
     <ClInclude Include="render\render_context.h" />
+    <ClInclude Include="render\render_image.h" />
+    <ClInclude Include="render\render_image_cairo.h" />
     <ClInclude Include="render\render_path.h" />
     <ClInclude Include="render\render_target.h" />
     <ClInclude Include="render\render_target_cairo.h" />

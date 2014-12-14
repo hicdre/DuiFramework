@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "render/render_path.h"
+#include "render/render_image.h"
 
 namespace ui
 {
@@ -21,6 +22,8 @@ namespace ui
 		virtual void FillRect(const Rect& rect, Color color) = 0;
 
 		virtual void FillPath(const RenderPath* path, Color color) = 0;
+
+		virtual void DrawImage(const RenderImage *image, const Rect& dest) = 0;
 
 		virtual void Trans(const Matrix& m) = 0;
 

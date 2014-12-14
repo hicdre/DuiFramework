@@ -321,6 +321,9 @@
     <ClCompile Include="base\round_rect.cpp">
       <Filter>base</Filter>
     </ClCompile>
+    <ClCompile Include="render\render_image_cairo.cpp">
+      <Filter>render\cairo</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -638,6 +641,12 @@
     </ClInclude>
     <ClInclude Include="render\render_target.h">
       <Filter>render</Filter>
+    </ClInclude>
+    <ClInclude Include="render\render_image.h">
+      <Filter>render</Filter>
+    </ClInclude>
+    <ClInclude Include="render\render_image_cairo.h">
+      <Filter>render\cairo</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
