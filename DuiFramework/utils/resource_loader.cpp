@@ -45,7 +45,7 @@ namespace ui
 
 		std::wstring real_path;
 		if (url.SchemeIs("res")) {
-			real_path = pathcombine(base_path_, MultiByteToWide(url.path()));
+			real_path = pathcombine(base_path_, MultiByteToWide(url.path().substr(1)));
 		}
 		else if (url.SchemeIs("file")) {
 			real_path = MultiByteToWide(url.path());

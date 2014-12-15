@@ -315,14 +315,17 @@
     <ClCompile Include="render\render_path_cairo.cpp">
       <Filter>render\cairo</Filter>
     </ClCompile>
-    <ClCompile Include="dom\ui_border.cpp">
-      <Filter>dom</Filter>
-    </ClCompile>
     <ClCompile Include="base\round_rect.cpp">
       <Filter>base</Filter>
     </ClCompile>
     <ClCompile Include="render\render_image_cairo.cpp">
       <Filter>render\cairo</Filter>
+    </ClCompile>
+    <ClCompile Include="dom\ui_style_border.cpp">
+      <Filter>dom</Filter>
+    </ClCompile>
+    <ClCompile Include="dom\ui_style_background.cpp">
+      <Filter>dom</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -630,9 +633,6 @@
     <ClInclude Include="render\render_path_cairo.h">
       <Filter>render\cairo</Filter>
     </ClInclude>
-    <ClInclude Include="dom\ui_border.h">
-      <Filter>dom</Filter>
-    </ClInclude>
     <ClInclude Include="base\round_rect.h">
       <Filter>base</Filter>
     </ClInclude>
@@ -647,6 +647,12 @@
     </ClInclude>
     <ClInclude Include="render\render_image_cairo.h">
       <Filter>render\cairo</Filter>
+    </ClInclude>
+    <ClInclude Include="dom\ui_style_border.h">
+      <Filter>dom</Filter>
+    </ClInclude>
+    <ClInclude Include="dom\ui_style_background.h">
+      <Filter>dom</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

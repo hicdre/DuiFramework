@@ -9,8 +9,9 @@ namespace ui
 	{
 	public:
 		RenderImageCairo(void* data, size_t len);
-		~RenderImageCairo();
+		virtual ~RenderImageCairo() override;
 
+		virtual const Size& GetSize() const override;
 
 		cairo_surface_t* GetSurface() const { return image_surface_; }
 
@@ -18,5 +19,6 @@ namespace ui
 	private:
 		cairo_surface_t *image_surface_;
 		stbi_uc* stbi_buffer_;
+		Size size_;
 	};
 }

@@ -140,7 +140,7 @@ namespace ui
 			{ VARIANT_ALP, PROPERTY_PARSE_VALUE },//margin-bottom
 
 			{ VARIANT_COLOR, PROPERTY_PARSE_VALUE },//background-color
-			{ VARIANT_IMAGE, PROPERTY_PARSE_VALUE_LIST },//background-image
+			{ VARIANT_IMAGE, PROPERTY_PARSE_VALUE },//background-image
 
 			{ VARIANT_COLOR, PROPERTY_PARSE_VALUE },//border-left-color
 			{ VARIANT_AL, PROPERTY_PARSE_VALUE | PROPERTY_VALUE_NONNEGATIVE },//border-left-width

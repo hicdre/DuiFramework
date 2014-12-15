@@ -1,11 +1,11 @@
 ﻿#include "stdafx.h"
-#include "ui_border.h"
+#include "ui_style_border.h"
 #include "dom/ui_include.h"
 #include "render/render_include.h"
 
 namespace ui
 {
-	void UIBorder::Init(UIStyles* styles)
+	void UIStyleBorder::Init(UIStyles* styles)
 	{
 		styles_ = styles;
 		InitItem(&left_, Style_BorderLeftWidth, Style_BorderLeftColor);
@@ -20,27 +20,27 @@ namespace ui
 
 	}
 
-	const UIBorder::Item& UIBorder::left() const
+	const UIStyleBorder::Item& UIStyleBorder::left() const
 	{
 		return left_;
 	}
 
-	const UIBorder::Item& UIBorder::top() const
+	const UIStyleBorder::Item& UIStyleBorder::top() const
 	{
 		return top_;
 	}
 
-	const UIBorder::Item& UIBorder::right() const
+	const UIStyleBorder::Item& UIStyleBorder::right() const
 	{
 		return right_;
 	}
 
-	const UIBorder::Item& UIBorder::bottom() const
+	const UIStyleBorder::Item& UIStyleBorder::bottom() const
 	{
 		return bottom_;
 	}
 
-	void UIBorder::InitItem(Item* item, StyleProperty width, StyleProperty color)
+	void UIStyleBorder::InitItem(Item* item, StyleProperty width, StyleProperty color)
 	{
 		StyleValue* widthValue = styles_->FindProperty(width);
 		if (widthValue && widthValue->IsPixelValue()) {
@@ -59,7 +59,7 @@ namespace ui
 		}
 	}
 
-	void UIBorder::InitRadius(uint32& radius, StyleProperty p)
+	void UIStyleBorder::InitRadius(uint32& radius, StyleProperty p)
 	{
 		StyleValue* pixelValue = styles_->FindProperty(p);
 		if (pixelValue && pixelValue->IsPixelValue()) {
@@ -70,41 +70,41 @@ namespace ui
 		}
 	}
 
-	ui::Inseting UIBorder::GetInseting() const
+	ui::Inseting UIStyleBorder::GetInseting() const
 	{
 		return Inseting(left_.size, top_.size, right_.size, bottom_.size);
 	}
 
-	uint32 UIBorder::leftTopRadius() const
+	uint32 UIStyleBorder::leftTopRadius() const
 	{
 		return left_top_radius_;
 	}
 
-	uint32 UIBorder::rightTopRadius() const
+	uint32 UIStyleBorder::rightTopRadius() const
 	{
 		return right_top_radius_;
 	}
 
-	uint32 UIBorder::rightBottomRadius() const
+	uint32 UIStyleBorder::rightBottomRadius() const
 	{
 		return right_bottom_radius_;
 	}
 
-	uint32 UIBorder::leftBottomRadius() const
+	uint32 UIStyleBorder::leftBottomRadius() const
 	{
 		return left_bottom_radius_;
 	}
 
-	UIBorder::~UIBorder()
+	UIStyleBorder::~UIStyleBorder()
 	{
 	}
 
-	UIBorder::UIBorder()
+	UIStyleBorder::UIStyleBorder()
 	{
 
 	}
 
-	UIBorderPainter::UIBorderPainter(const Rect& bounds, const UIBorder* border, RenderContext* context)
+	UIBorderPainter::UIBorderPainter(const Rect& bounds, const UIStyleBorder* border, RenderContext* context)
 		: border_(border)
 		, context_(context)
 	{
@@ -165,7 +165,7 @@ namespace ui
 		Color color = Color_Transparent;
 		for (int i = 0; i < 4; i++)
 		{
-			const UIBorder::Item& item = border_->side(i);
+			const UIStyleBorder::Item& item = border_->side(i);
 			if (item.size == 0)
 				continue;
 

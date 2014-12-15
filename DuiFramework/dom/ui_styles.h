@@ -1,7 +1,8 @@
 #pragma once
 #include "dom/ui_forward.h"
 #include "style/style_result.h"
-#include "dom/ui_border.h"
+#include "dom/ui_style_border.h"
+#include "dom/ui_style_background.h"
 
 namespace ui
 {
@@ -24,24 +25,23 @@ namespace ui
 		bool autoHeight() const;
 
 		//border
-		const UIBorder* borders() const;
+		const UIStyleBorder* borders() const;
+		const UIStyleBackground* background() const;
 
 		CursorId cursor() const;
 
-		Color backgroundColor() const;
-		
-		
-
 		UIElement* element() const { return elem_; }
 	private:
-		friend class UIBorder;
+		friend class UIStyleBorder;
+		friend class UIStyleBackground;
 		void InitStyles();
 		void InitCursor();
 		StyleValue* FindProperty(StyleProperty p) const;
 		Rect GetParentContentBounds() const;
 		int GetMarginValue(StyleProperty p) const;
 		
-		UIBorder borders_;
+		UIStyleBorder borders_;
+		UIStyleBackground background_;
 		CursorId cursor_;
 
 		UIElement* elem_;

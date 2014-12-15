@@ -2,11 +2,13 @@
 <Window>
   <StyleSheet src="test.css"/>
   <VBox id="content">
+	<Box id="close">
+    </Box>
     <Box id="ab" class="hh h-t">
     </Box>
     <Box id="zz">
     </Box>
-    <HBox class="span">
+    <HBox class="span" id="test">
       <Box class="block">
       </Box>
       <Box class="block">

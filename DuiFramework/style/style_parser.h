@@ -47,6 +47,7 @@ namespace ui
 		bool ParseHSLColor(Color& aColor, char aStop);
 
 		bool ParseLinearGradient(StyleValue* v);
+		bool ParseImageRect(StyleValue* v);
 		bool ParseCursor();
 
 		bool ParseBorder();
@@ -56,10 +57,12 @@ namespace ui
 		bool ParseBorderSide(const StyleProperty propertys[]);
 		bool ParseMargin();
 
+		bool ParseURLOrString(std::string& aURL);
+
 		int ParseChoice(const StyleProperty propertys[], scoped_refptr<StyleValue> values[], int nums);
 		bool ParseBoxProperties(const StyleProperty propertys[]);
 
-		void SetValueToURL(StyleValue* v, const std::string& str);
+		bool SetValueToURL(StyleValue* v, const std::string& str);
 
 		void AppendRule(StyleRule* rule);
 

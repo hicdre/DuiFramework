@@ -124,17 +124,6 @@ namespace ui
 		return elem_->parent()->GetContentBounds();
 	}
 
-	Color UIStyles::backgroundColor() const
-	{
-		StyleValue* color = FindProperty(Style_BackgroundColor);
-		if (color && color->IsColorValue())
-		{
-			return color->GetColorValue();
-		}
-
-		return Color_Transparent;
-	}
-
 
 	void UIStyles::UpdateStyles(StyleResultList* results)
 	{
@@ -161,15 +150,23 @@ namespace ui
 	void UIStyles::InitStyles()
 	{
 		borders_.Init(this);
+		background_.Init(this);
 
 		InitCursor();
 	}
 
 
-	const UIBorder* UIStyles::borders() const
+	const UIStyleBorder* UIStyles::borders() const
 	{
 		return &borders_;
 	}
+
+
+	const UIStyleBackground* UIStyles::background() const
+	{
+		return &background_;
+	}
+
 
 	ui::CursorId UIStyles::cursor() const
 	{

@@ -89,11 +89,10 @@ namespace ui
 	}
 
 	URL::URL(const URL& other)
+		: url_(other.url_)
 	{
 		if (url_)
-			url_->Release();
-		url_ = other.url_;
-		url_->AddRef();
+			url_->AddRef();
 	}
 
 	URL::URL(const std::string& url_string)

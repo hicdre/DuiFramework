@@ -179,4 +179,10 @@ namespace ui
 	Point Rect::CenterPoint() const {
 		return Point(x() + (width() + 1) / 2, y() + (height() + 1) / 2);
 	}
+
+	void Rect::SetSize(int width, int height)
+	{
+		size_.SetSize(width, height);
+	}
+
 }

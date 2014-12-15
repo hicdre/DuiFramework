@@ -7,6 +7,8 @@ namespace ui
 	{
 	public:
 		virtual ~RenderImage() {}
+
+		virtual const Size& GetSize() const = 0;
 	};
 
 }

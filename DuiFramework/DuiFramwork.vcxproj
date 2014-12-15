@@ -116,7 +116,8 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="core\widget.cpp" />
-    <ClCompile Include="dom\ui_border.cpp" />
+    <ClCompile Include="dom\ui_style_background.cpp" />
+    <ClCompile Include="dom\ui_style_border.cpp" />
     <ClCompile Include="dom\ui_document.cpp" />
     <ClCompile Include="dom\ui_element.cpp" />
     <ClCompile Include="dom\ui_hbox.cpp" />
@@ -251,7 +252,8 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="core\widget.h" />
-    <ClInclude Include="dom\ui_border.h" />
+    <ClInclude Include="dom\ui_style_background.h" />
+    <ClInclude Include="dom\ui_style_border.h" />
     <ClInclude Include="dom\ui_document.h" />
     <ClInclude Include="dom\ui_forward.h" />
     <ClInclude Include="dom\ui_hbox.h" />

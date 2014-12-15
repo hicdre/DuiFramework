@@ -334,14 +334,20 @@ namespace ui
 
 	std::wstring pathcombine(const std::wstring& dir, const wchar_t* file)
 	{
-		wchar_t buffer[MAX_PATH] = { 0 };
-		PathCombineW(buffer, dir.c_str(), file);
-		return std::wstring(buffer);
+		return pathcombine(dir, std::wstring(file));
 	}
 
 	std::wstring pathcombine(const std::wstring& dir, const std::wstring& file)
 	{
-		return pathcombine(dir, file.c_str());
+		std::wstring part = file;
+		for (size_t i = 0; i < part.size(); i++)
+		{
+			if (part[i] == '/')
+				part[i] = '\\';
+		}
+		wchar_t buffer[MAX_PATH] = { 0 };
+		PathCombineW(buffer, dir.c_str(), part.c_str());
+		return std::wstring(buffer);
 	}
 
 

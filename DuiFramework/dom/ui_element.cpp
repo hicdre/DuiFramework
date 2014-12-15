@@ -318,8 +318,18 @@ namespace ui
 	void UIElement::PaintBackground(RenderContext* painter)
 	{
 		//ScopedClipper clipper(painter, styles()->borders()->CreateClipRgn());
-		Color color = styles()->backgroundColor();
-		painter->FillRect(GetLocalBounds(), color);
+		//Color color = styles()->backgroundColor();
+		//painter->FillRect(GetLocalBounds(), color);
+		const UIStyleBackground* background = styles()->background();
+		painter->FillRect(GetLocalBounds(), background->color());
+
+		{
+			const RenderImage* image = background->image();
+			if (image) {
+				const Rect& rc = background->source_rect();
+				painter->DrawImage(image, rc, GetLocalBounds());
+			}
+		}
 	}
 
 	void UIElement::PaintBorder(RenderContext* painter)

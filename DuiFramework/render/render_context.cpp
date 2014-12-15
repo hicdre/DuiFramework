@@ -39,19 +39,14 @@ namespace ui
 		target_->Trans(m);
 	}
 
-	void RenderContext::DrawImage(ImagePart* clip, const Rect& dest_rect)
-	{
-		//context_->DrawImage(clip, dest_rect);
-	}
-
-	void RenderContext::DrawImage(ImageFile* image, const Rect& src_rect, const Rect& dest_rect)
-	{
-		//context_->DrawImage(image, src_rect, dest_rect);
-	}
-
 	void RenderContext::DrawImage(const RenderImage *image, const Rect& dest)
 	{
 		target_->DrawImage(image, dest);
+	}
+
+	void RenderContext::DrawImage(const RenderImage *image, const Rect& src, const Rect& dest)
+	{
+		target_->DrawImage(image, src, dest);
 	}
 
 

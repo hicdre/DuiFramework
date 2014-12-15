@@ -25,6 +25,8 @@ namespace ui
 
 		virtual void DrawImage(const RenderImage *image, const Rect& dest) = 0;
 
+		virtual void DrawImage(const RenderImage *image, const Rect& src, const Rect& dest) = 0;
+
 		virtual void Trans(const Matrix& m) = 0;
 
 		virtual void PushState() = 0;

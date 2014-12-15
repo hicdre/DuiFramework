@@ -119,7 +119,8 @@ namespace ui
 		if (!file)
 			return;
 
-		URL url = document_->url().Resolve(file);
+		//URL url = document_->url().Resolve(file);
+		URL url(document_->url().Resolve(file));
 		scoped_refptr<StyleSheet>  sheet = 
 			ResourceLoader::Get()->GetStyleSheet(url);
 		document_->AddStyleSheet(sheet.get());

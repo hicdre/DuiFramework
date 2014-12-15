@@ -185,7 +185,7 @@ namespace ui
 		while (selector && v)
 		{
 			if (selector->MatchElement(v))
-				selector = first_->next_;
+				selector = selector->next_;
 
 			v = v->parent().get();
 		}

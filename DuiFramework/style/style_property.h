@@ -67,9 +67,10 @@ namespace ui
 	const uint32 VARIANT_GRADIENT = 1 << 10;
 	const uint32 VARIANT_NONE     = 1 << 11;
 	const uint32 VARIANT_ZERO_ANGLE = 1 << 12;
+	const uint32 VARIANT_IMAGE_RECT = 1 << 13;
 
-	const uint32 VARIANT_IMAGE = VARIANT_URL | VARIANT_NONE | VARIANT_GRADIENT;
-		//VARIANT_IMAGE_RECT | VARIANT_ELEMENT
+	const uint32 VARIANT_IMAGE = VARIANT_URL | VARIANT_NONE | VARIANT_GRADIENT
+		| VARIANT_IMAGE_RECT;
 
 	const uint32 VARIANT_POSITIVE_DIMENSION = 0x10000000; // Only lengths greater than 0.0
 	const uint32 VARIANT_NONNEGATIVE_DIMENSION = 0x20000000; // Only lengths greater than or equal to 0.0

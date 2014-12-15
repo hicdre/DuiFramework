@@ -191,6 +191,12 @@ namespace ui
 				delete url_value_;
 			url_value_ = NULL;
 		}
+		else if (type_ == StyleValue_Function)
+		{
+			if (function_value_)
+				delete function_value_;
+			function_value_ = NULL;
+		}
 		else
 		{
 			int_value_ = 0;
@@ -210,6 +216,9 @@ namespace ui
 
 		if (type_ == StyleValue_URL)
 			return url_value_->IsEquals(*val->url_value_);
+
+		if (type_ == StyleValue_Function)
+			return function_value_->IsEqual(val->function_value_);
 
 		return int_value_ == val->int_value_;
 	}
@@ -319,15 +328,34 @@ namespace ui
 
 	void StyleValue::SetUrlValue(const URL& url)
 	{
-		if (IsUrlValue())
-		{
-			*url_value_ = url;
-		}
-		else
-		{
-			Reset();
-			url_value_ = new URL(url);
-		}
+		Reset();
+		type_ = StyleValue_URL;
+		url_value_ = new URL(url);
+	}
+
+	bool StyleValue::IsFunctionValue() const
+	{
+		return type_ == StyleValue_Function;
+	}
+
+	StyleValueFunction* StyleValue::GetFunctionValue() const
+	{
+		assert(IsFunctionValue());
+		return function_value_;
+	}
+
+	void StyleValue::SetFunctionValue(const std::string& name)
+	{
+		Reset();
+		type_ = StyleValue_Function;
+		function_value_ = new StyleValueFunction(name);
+	}
+
+	void StyleValue::SetFunctionValue(StyleValueFunction* value)
+	{
+		Reset();
+		type_ = StyleValue_Function;
+		function_value_ = value;
 	}
 
 
@@ -423,5 +451,52 @@ namespace ui
 	{
 
 	}
+
+
+
+
+	StyleValueFunction::StyleValueFunction(const std::string& name)
+		: name_(name)
+	{
+
+	}
+
+	StyleValueFunction::~StyleValueFunction()
+	{
+		for (StyleValue* v : params_)
+		{
+			v->Release();
+		}
+		params_.clear();
+	}
+
+	StyleValue* StyleValueFunction::GetParam(size_t index) const
+	{
+		if (index < params_.size())
+			return params_[index];
+		return NULL;
+	}
+
+	void StyleValueFunction::AddParam(StyleValue* val)
+	{
+		params_.push_back(val);
+		val->AddRef();
+	}
+
+	bool StyleValueFunction::IsEqual(StyleValueFunction* val) const
+	{
+		if (val->name_ != name_)
+			return false;
+		if (val->GetParamsCount() != GetParamsCount())
+			return false;
+		int count = GetParamsCount();
+		for (int i = 0; i < count; i++)
+		{
+			if (!GetParam(i)->IsEqual(val->GetParam(i)))
+				return false;
+		}
+		return true;
+	}
+
 
 }

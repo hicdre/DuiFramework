@@ -42,6 +42,7 @@ namespace ui
 	class StyleValueArray;
 	class StyleValuePair;
 	class StyleValueTriplet;
+	class StyleValueFunction;
 	class StyleValue : public RefCounted<StyleValue>
 	{
 	public:
@@ -66,6 +67,7 @@ namespace ui
 		bool IsPercentValue() const;
 		bool IsPixelValue() const;
 		bool IsCursorValue() const;
+		bool IsFunctionValue() const;
 		
 		//getter
 		int32 GetIntValue() const;
@@ -74,6 +76,7 @@ namespace ui
 		const std::string& GetStringValue() const;
 		StyleValueArray* GetArrayValue() const;
 		const URL& GetUrlValue() const;
+		StyleValueFunction* GetFunctionValue() const;
 		
 		CursorId GetCursorValue() const;
 		int32 GetPixel() const;
@@ -93,6 +96,8 @@ namespace ui
 		void SetUrlValue(const std::string& str);
 		void SetUrlValue(const std::wstring& str);
 		void SetUrlValue(const URL& url);
+		void SetFunctionValue(const std::string& name);
+		void SetFunctionValue(StyleValueFunction* value);
 
 		void SetPercentValue(float value);
 		void SetCursorValue(CursorId id);
@@ -118,6 +123,7 @@ namespace ui
 			StyleValueString* string_value_;
 			StyleValueArray* array_value_;
 			URL* url_value_;
+			StyleValueFunction* function_value_;
 			//StyleValuePair* pair_value_;
 			//StyleValueTriplet* triplet_value_;
 		};
@@ -160,6 +166,26 @@ namespace ui
 	private:
 		std::vector<StyleValue*> array_;
 		DISALLOW_COPY_AND_ASSIGN(StyleValueArray);
+	};
+
+	class StyleValueFunction
+	{
+	public:
+		StyleValueFunction(const std::string& name);
+		~StyleValueFunction();
+
+		const std::string& GetFunctionName() const { return name_; }
+
+		size_t GetParamsCount() const { return params_.size(); }
+
+		StyleValue* GetParam(size_t index) const;
+		void AddParam(StyleValue* val);
+		
+		bool IsEqual(StyleValueFunction* val) const;
+	private:
+		std::string name_;
+		std::vector<StyleValue*> params_;
+		DISALLOW_COPY_AND_ASSIGN(StyleValueFunction);
 	};
 
 }

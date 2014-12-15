@@ -5,16 +5,15 @@
 
 namespace ui
 {
-	class UIStyles;
-	class UIBorder
+	class UIStyleBorder
 	{
 	public:
 		struct Item{
 			int size;
 			Color color;
 		};
-		UIBorder();
-		~UIBorder();
+		UIStyleBorder();
+		~UIStyleBorder();
 
 		void Init(UIStyles* styles);
 
@@ -58,7 +57,7 @@ namespace ui
 	class UIBorderPainter
 	{
 	public:
-		UIBorderPainter(const Rect& bounds, const UIBorder* border, RenderContext* context);
+		UIBorderPainter(const Rect& bounds, const UIStyleBorder* border, RenderContext* context);
 		~UIBorderPainter();
 
 		void Paint();
@@ -77,7 +76,7 @@ namespace ui
 		RoundRect outRoundRect_;
 		RoundRect inRoundRect_;
 
-		const UIBorder* border_;
+		const UIStyleBorder* border_;
 		RenderContext* context_;
 	};
 }

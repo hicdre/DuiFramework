@@ -164,10 +164,38 @@ namespace ui
 	void RenderTargetCairo::DrawImage(const RenderImage *image, const Rect& dest)
 	{
 		RenderImageCairo* image_cairo = const_cast<RenderImageCairo*>(static_cast<const RenderImageCairo*>(image));
+		
+		Size src = image_cairo->GetSize();
 
 		//计算矩阵，变换等
-		cairo_set_source_surface(cairo_, image_cairo->GetSurface(), 0, 0);
-		cairo_paint(cairo_);
+		cairo_save(cairo_);
+		{
+			cairo_translate(cairo_, dest.x(), dest.y());
+			cairo_scale(cairo_
+				, (float)dest.width() / (float)src.width()
+				, (float)dest.height() / (float)src.height());
+
+			cairo_set_source_surface(cairo_, image_cairo->GetSurface(), 0, 0);
+			cairo_paint(cairo_);
+		}
+		cairo_restore(cairo_);
+	}
+
+	void RenderTargetCairo::DrawImage(const RenderImage *image, const Rect& src, const Rect& dest)
+	{
+		RenderImageCairo* image_cairo = const_cast<RenderImageCairo*>(static_cast<const RenderImageCairo*>(image));
+		//计算矩阵，变换等
+		cairo_save(cairo_);
+		{
+ 			cairo_translate(cairo_, dest.x(), dest.y());
+ 			cairo_scale(cairo_
+ 				, (float)dest.width() / (float)src.width()
+ 				, (float)dest.height() / (float)src.height());
+
+			cairo_set_source_surface(cairo_, image_cairo->GetSurface(), -src.x(), -src.y());
+			cairo_paint(cairo_);
+		}
+		cairo_restore(cairo_);
 	}
 
 

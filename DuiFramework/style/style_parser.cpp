@@ -769,9 +769,16 @@ namespace ui
 		}
 
 		if ((aVariantMask & VARIANT_GRADIENT) != 0 &&
-			Token_Function == tk->mType) {
+			Token_Function == tk->mType &&
+			tk->mIdent == "linear-gradient") {
 			ParseLinearGradient(aValue);
 			return false;
+		}
+
+		if ((aVariantMask & VARIANT_IMAGE_RECT) != 0 &&
+			Token_Function == tk->mType &&
+			tk->mIdent == "image-rect") {
+			return ParseImageRect(aValue);
 		}
 
 		if ((aVariantMask & VARIANT_COLOR) != 0) {
@@ -834,6 +841,12 @@ namespace ui
 			}
 			else if (aValue->GetType() == StyleValue_Integer) {
 				if (aValue->GetIntValue() < 0) {
+					UngetToken();
+					return false;
+				}
+			}
+			else if (aValue->IsPixelValue()) {
+				if (aValue->GetPixel() < 0) {
 					UngetToken();
 					return false;
 				}
@@ -1321,18 +1334,64 @@ namespace ui
 		return false;
 	}
 
-	void StyleParser::SetValueToURL(StyleValue* v, const std::string& str)
+	bool StyleParser::SetValueToURL(StyleValue* v, const std::string& str)
 	{
 		if (sheet_) {
 			v->SetUrlValue(sheet_->url().Resolve(str));
 		}
 		else {
+			assert(0);
 			v->SetUrlValue(URL(str));
 		}
+		return true;
 	}
 
 	bool StyleParser::ParseLinearGradient(StyleValue* v)
 	{
+		return false;
+	}
+
+	bool StyleParser::ParseImageRect(StyleValue* v)
+	{
+		for (;;) {
+			scoped_ptr<StyleValueFunction> newFunction(new StyleValueFunction("image-rect"));
+
+			// func->Item(0) is reserved for the function name.
+			scoped_refptr<StyleValue> url(new StyleValue);
+			scoped_refptr<StyleValue> x(new StyleValue);
+			scoped_refptr<StyleValue> y(new StyleValue);
+			scoped_refptr<StyleValue> width(new StyleValue);
+			scoped_refptr<StyleValue> height(new StyleValue);
+
+			std::string urlString;
+			if (!ParseURLOrString(urlString) ||
+				!SetValueToURL(url.get(), urlString) ||
+				!ExpectSymbol(',', true)) {
+				break;
+			}
+
+			static const int32 VARIANT_SIDE = VARIANT_LENGTH | VARIANT_PERCENT;
+			if (!ParseNonNegativeVariant(x.get(), VARIANT_SIDE) ||
+				!ExpectSymbol(',', true) ||
+				!ParseNonNegativeVariant(y.get(), VARIANT_SIDE) ||
+				!ExpectSymbol(',', true) ||
+				!ParseNonNegativeVariant(width.get(), VARIANT_SIDE) ||
+				!ExpectSymbol(',', true) ||
+				!ParseNonNegativeVariant(height.get(), VARIANT_SIDE) ||
+				!ExpectSymbol(')', true))
+				break;
+
+			newFunction->AddParam(url.get());
+			newFunction->AddParam(x.get());
+			newFunction->AddParam(y.get());
+			newFunction->AddParam(width.get());
+			newFunction->AddParam(height.get());
+
+			v->SetFunctionValue(newFunction.release());
+			return true;
+		}
+
+		SkipUntil(')');
 		return false;
 	}
 
@@ -1359,6 +1418,7 @@ namespace ui
 			return ParseBorderSide(kBorderBottomIDs);
 		case Style_Margin:
 			return ParseMargin();
+
 		default:
 			return false;
 		}
@@ -1530,6 +1590,35 @@ namespace ui
 	{
 		return ParseBoxProperties(kMarginIDs);
 	}
+
+	bool StyleParser::ParseURLOrString(std::string& aURL)
+	{
+		if (!GetToken(true)) {
+			return false;
+		}
+		if (Token_String == token_.mType || Token_URL == token_.mType) {
+			aURL = token_.mIdent;
+			return true;
+		}
+		UngetToken();
+		return false;
+	}
+
+	
+
+// 	bool StyleParser::ParseBackgroundImage()
+// 	{
+// 		// null
+// 		// url(xx)
+// 		// res(id)
+// 		// image-rect(xx, x, y, w, h)
+// 		// gradient(a, b, c, d)
+// 		StyleProperty p = Style_BackgroundImage;
+// 		scoped_refptr<StyleValue> value(new StyleValue);
+// 		if (!ParseSingleValueProperty(p, value.get())) {
+//			return false;
+//		}
+// 	}
 
 }
 

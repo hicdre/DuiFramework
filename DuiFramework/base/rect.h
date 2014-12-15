@@ -40,6 +40,7 @@ namespace ui
 		int bottom() const { return y() + height(); }
 
 		void SetRect(int x, int y, int width, int height);
+		void SetSize(int width, int height);
 
 		// Shrink the rectangle by a horizontal and vertical distance on all sides.
 		void Inset(int horizontal, int vertical) {
