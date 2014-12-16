@@ -1,9 +1,11 @@
 ﻿#include "stdafx.h"
 #include "resource_loader.h"
-#include "core/app.h"
+#include "ui_parser.h"
+
+#include "framework/app.h"
 #include "utils/utils.h"
 #include "style/style_parser.h"
-#include "dom/ui_parser.h"
+
 
 namespace ui
 {

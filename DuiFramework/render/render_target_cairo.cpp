@@ -2,7 +2,7 @@
 #include "render_target_cairo.h"
 #include "render_path_cairo.h"
 #include "render_image_cairo.h"
-#include "core/widget.h"
+#include "framework/widget.h"
 
 namespace ui
 {

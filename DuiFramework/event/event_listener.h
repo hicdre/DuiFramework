@@ -2,6 +2,7 @@
 #include "event/event_forward.h"
 #include <vector>
 #include <unordered_map>
+#include <functional>
 
 namespace ui
 {
@@ -49,5 +50,25 @@ namespace ui
 	private:
 
 		std::unordered_map<EventType, EventListenerVector> entries_;
+	};
+
+	class CPPEventListener : public EventListener
+	{
+	public:
+		static CPPEventListener* Create(std::function<void(Event* event)> func) {
+			return new CPPEventListener(func);
+		}
+		CPPEventListener(std::function<void(Event* event)> func)
+			: EventListener(CPPEventListenerType)
+			, func_(func) {
+
+		}
+
+		virtual ~CPPEventListener() { }
+		virtual void HandleEvent(Event* e) override {
+			func_(e);
+		}
+	private:
+		std::function<void(Event* event)> func_;
 	};
 }

@@ -1,5 +1,5 @@
 #pragma once
-#include "dom/ui_element.h"
+#include "ui/ui_element.h"
 
 namespace ui
 {

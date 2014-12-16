@@ -10,9 +10,6 @@
     <Filter Include="build">
       <UniqueIdentifier>{0c7100c1-6198-40d3-8d4a-d670e580e3dd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="core">
-      <UniqueIdentifier>{af679ec0-ee8a-4b9b-9adb-b09139e5c9fb}</UniqueIdentifier>
-    </Filter>
     <Filter Include="utils">
       <UniqueIdentifier>{2f70c853-ad50-4153-8016-e947fb8fc271}</UniqueIdentifier>
     </Filter>
@@ -25,14 +22,8 @@
     <Filter Include="control">
       <UniqueIdentifier>{ae402361-0d1b-48b8-8b0e-98caf1de9803}</UniqueIdentifier>
     </Filter>
-    <Filter Include="view">
-      <UniqueIdentifier>{aa15fc41-6e24-49e8-967e-876d1fb7037b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="graphics">
       <UniqueIdentifier>{3f4eb8fd-4673-4267-bc25-00d5b46631c3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="dom">
-      <UniqueIdentifier>{966e277f-09e0-4027-922a-b8db1577697e}</UniqueIdentifier>
     </Filter>
     <Filter Include="style">
       <UniqueIdentifier>{aa7fb73c-905b-45ea-b9e1-a46578b5eaa4}</UniqueIdentifier>
@@ -43,6 +34,24 @@
     <Filter Include="render\cairo">
       <UniqueIdentifier>{ddd94dce-e4d8-44b6-b351-f0fdae41af32}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ui">
+      <UniqueIdentifier>{966e277f-09e0-4027-922a-b8db1577697e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ui\style">
+      <UniqueIdentifier>{f9b0d052-e0ff-47e0-89af-cbf3ff3a3b28}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ui\common">
+      <UniqueIdentifier>{b61a7639-b4fa-415a-9d47-d3d4ccf4d4b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="framework">
+      <UniqueIdentifier>{af679ec0-ee8a-4b9b-9adb-b09139e5c9fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="departed">
+      <UniqueIdentifier>{f1a78f09-c6ce-46ed-a73b-3761ede2ab20}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="resource">
+      <UniqueIdentifier>{629afdeb-f50f-44f5-80ed-f6f9e1ce604b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -51,23 +60,11 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>build</Filter>
     </ClCompile>
-    <ClCompile Include="core\app.cpp">
-      <Filter>core</Filter>
-    </ClCompile>
-    <ClCompile Include="utils\app_init_helper.cpp">
-      <Filter>utils</Filter>
-    </ClCompile>
     <ClCompile Include="utils\utils.cpp">
       <Filter>utils</Filter>
     </ClCompile>
-    <ClCompile Include="core\widget.cpp">
-      <Filter>core</Filter>
-    </ClCompile>
     <ClCompile Include="third_party\stb_image.cpp">
       <Filter>third_party</Filter>
-    </ClCompile>
-    <ClCompile Include="utils\image_store.cpp">
-      <Filter>utils</Filter>
     </ClCompile>
     <ClCompile Include="event\event.cpp">
       <Filter>event</Filter>
@@ -102,9 +99,6 @@
     <ClCompile Include="third_party\tinyxml2.cpp">
       <Filter>third_party</Filter>
     </ClCompile>
-    <ClCompile Include="core\view_factory.cpp">
-      <Filter>core</Filter>
-    </ClCompile>
     <ClCompile Include="base\point.cpp">
       <Filter>base</Filter>
     </ClCompile>
@@ -120,18 +114,6 @@
     <ClCompile Include="base\matrix.cpp">
       <Filter>base</Filter>
     </ClCompile>
-    <ClCompile Include="view\view.cpp">
-      <Filter>view</Filter>
-    </ClCompile>
-    <ClCompile Include="view\view_background.cpp">
-      <Filter>view</Filter>
-    </ClCompile>
-    <ClCompile Include="view\view_border.cpp">
-      <Filter>view</Filter>
-    </ClCompile>
-    <ClCompile Include="view\view_container.cpp">
-      <Filter>view</Filter>
-    </ClCompile>
     <ClCompile Include="render\render_context.cpp">
       <Filter>render</Filter>
     </ClCompile>
@@ -141,20 +123,11 @@
     <ClCompile Include="render\image.cpp">
       <Filter>render</Filter>
     </ClCompile>
-    <ClCompile Include="utils\image_file.cpp">
-      <Filter>utils</Filter>
-    </ClCompile>
-    <ClCompile Include="view\view_layout.cpp">
-      <Filter>view</Filter>
-    </ClCompile>
     <ClCompile Include="render\render_object.cpp">
       <Filter>render</Filter>
     </ClCompile>
     <ClCompile Include="control\window_builder.cpp">
       <Filter>control</Filter>
-    </ClCompile>
-    <ClCompile Include="utils\lex_parser.cpp">
-      <Filter>utils</Filter>
     </ClCompile>
     <ClCompile Include="base\length.cpp">
       <Filter>base</Filter>
@@ -240,12 +213,6 @@
     <ClCompile Include="base\url.cpp">
       <Filter>base</Filter>
     </ClCompile>
-    <ClCompile Include="utils\resource_loader.cpp">
-      <Filter>utils</Filter>
-    </ClCompile>
-    <ClCompile Include="utils\resource_cache.cpp">
-      <Filter>utils</Filter>
-    </ClCompile>
     <ClCompile Include="utils\icu_utf.cpp">
       <Filter>utils</Filter>
     </ClCompile>
@@ -273,35 +240,8 @@
     <ClCompile Include="event\input_event_builder.cpp">
       <Filter>event</Filter>
     </ClCompile>
-    <ClCompile Include="event\event_handler.cpp">
-      <Filter>event</Filter>
-    </ClCompile>
-    <ClCompile Include="dom\ui_document.cpp">
-      <Filter>dom</Filter>
-    </ClCompile>
-    <ClCompile Include="dom\ui_window.cpp">
-      <Filter>dom</Filter>
-    </ClCompile>
-    <ClCompile Include="dom\ui_element.cpp">
-      <Filter>dom</Filter>
-    </ClCompile>
-    <ClCompile Include="dom\ui_parser.cpp">
-      <Filter>dom</Filter>
-    </ClCompile>
-    <ClCompile Include="core\hittest_result.cpp">
-      <Filter>core</Filter>
-    </ClCompile>
-    <ClCompile Include="dom\ui_vbox.cpp">
-      <Filter>dom</Filter>
-    </ClCompile>
-    <ClCompile Include="dom\ui_hbox.cpp">
-      <Filter>dom</Filter>
-    </ClCompile>
     <ClCompile Include="style\style_result.cpp">
       <Filter>style</Filter>
-    </ClCompile>
-    <ClCompile Include="dom\ui_styles.cpp">
-      <Filter>dom</Filter>
     </ClCompile>
     <ClCompile Include="render\render_helper.cpp">
       <Filter>render</Filter>
@@ -321,11 +261,71 @@
     <ClCompile Include="render\render_image_cairo.cpp">
       <Filter>render\cairo</Filter>
     </ClCompile>
-    <ClCompile Include="dom\ui_style_border.cpp">
-      <Filter>dom</Filter>
+    <ClCompile Include="ui\ui_document.cpp">
+      <Filter>ui</Filter>
     </ClCompile>
-    <ClCompile Include="dom\ui_style_background.cpp">
-      <Filter>dom</Filter>
+    <ClCompile Include="ui\ui_element.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\ui_hbox.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\ui_styles.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\ui_vbox.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\ui_window.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\ui_style_background.cpp">
+      <Filter>ui\style</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\ui_style_border.cpp">
+      <Filter>ui\style</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\hittest_result.cpp">
+      <Filter>ui\common</Filter>
+    </ClCompile>
+    <ClCompile Include="framework\app.cpp">
+      <Filter>framework</Filter>
+    </ClCompile>
+    <ClCompile Include="framework\widget.cpp">
+      <Filter>framework</Filter>
+    </ClCompile>
+    <ClCompile Include="resource\resource_loader.cpp">
+      <Filter>resource</Filter>
+    </ClCompile>
+    <ClCompile Include="resource\ui_parser.cpp">
+      <Filter>resource</Filter>
+    </ClCompile>
+    <ClCompile Include="departed\image_file.cpp">
+      <Filter>departed</Filter>
+    </ClCompile>
+    <ClCompile Include="departed\image_store.cpp">
+      <Filter>departed</Filter>
+    </ClCompile>
+    <ClCompile Include="departed\lex_parser.cpp">
+      <Filter>departed</Filter>
+    </ClCompile>
+    <ClCompile Include="departed\view.cpp">
+      <Filter>departed</Filter>
+    </ClCompile>
+    <ClCompile Include="departed\view_background.cpp">
+      <Filter>departed</Filter>
+    </ClCompile>
+    <ClCompile Include="departed\view_border.cpp">
+      <Filter>departed</Filter>
+    </ClCompile>
+    <ClCompile Include="departed\view_container.cpp">
+      <Filter>departed</Filter>
+    </ClCompile>
+    <ClCompile Include="departed\view_layout.cpp">
+      <Filter>departed</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\ui_event_handler.cpp">
+      <Filter>ui\common</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -341,29 +341,14 @@
     <ClInclude Include="base\scoped_ptr.h">
       <Filter>base</Filter>
     </ClInclude>
-    <ClInclude Include="core\app.h">
-      <Filter>core</Filter>
-    </ClInclude>
-    <ClInclude Include="utils\app_init_helper.h">
-      <Filter>utils</Filter>
-    </ClInclude>
     <ClInclude Include="utils\utils.h">
       <Filter>utils</Filter>
-    </ClInclude>
-    <ClInclude Include="core\widget.h">
-      <Filter>core</Filter>
     </ClInclude>
     <ClInclude Include="third_party\stb_image.h">
       <Filter>third_party</Filter>
     </ClInclude>
     <ClInclude Include="base\ref_counted.h">
       <Filter>base</Filter>
-    </ClInclude>
-    <ClInclude Include="utils\image_store.h">
-      <Filter>utils</Filter>
-    </ClInclude>
-    <ClInclude Include="core\constants.h">
-      <Filter>core</Filter>
     </ClInclude>
     <ClInclude Include="event\event.h">
       <Filter>event</Filter>
@@ -399,9 +384,6 @@
     <ClInclude Include="third_party\tinyxml2.h">
       <Filter>third_party</Filter>
     </ClInclude>
-    <ClInclude Include="core\view_factory.h">
-      <Filter>core</Filter>
-    </ClInclude>
     <ClInclude Include="base\color.h">
       <Filter>base</Filter>
     </ClInclude>
@@ -423,18 +405,6 @@
     <ClInclude Include="base\matrix.h">
       <Filter>base</Filter>
     </ClInclude>
-    <ClInclude Include="view\view.h">
-      <Filter>view</Filter>
-    </ClInclude>
-    <ClInclude Include="view\view_background.h">
-      <Filter>view</Filter>
-    </ClInclude>
-    <ClInclude Include="view\view_border.h">
-      <Filter>view</Filter>
-    </ClInclude>
-    <ClInclude Include="view\view_container.h">
-      <Filter>view</Filter>
-    </ClInclude>
     <ClInclude Include="render\render_context.h">
       <Filter>render</Filter>
     </ClInclude>
@@ -444,20 +414,11 @@
     <ClInclude Include="render\image.h">
       <Filter>render</Filter>
     </ClInclude>
-    <ClInclude Include="utils\image_file.h">
-      <Filter>utils</Filter>
-    </ClInclude>
-    <ClInclude Include="view\view_layout.h">
-      <Filter>view</Filter>
-    </ClInclude>
     <ClInclude Include="render\render_object.h">
       <Filter>render</Filter>
     </ClInclude>
     <ClInclude Include="control\window_builder.h">
       <Filter>control</Filter>
-    </ClInclude>
-    <ClInclude Include="utils\lex_parser.h">
-      <Filter>utils</Filter>
     </ClInclude>
     <ClInclude Include="base\length.h">
       <Filter>base</Filter>
@@ -534,12 +495,6 @@
     <ClInclude Include="third_party\gurl\url_common.h">
       <Filter>third_party\gurl</Filter>
     </ClInclude>
-    <ClInclude Include="utils\resource_loader.h">
-      <Filter>utils</Filter>
-    </ClInclude>
-    <ClInclude Include="utils\resource_cache.h">
-      <Filter>utils</Filter>
-    </ClInclude>
     <ClInclude Include="utils\icu_utf.h">
       <Filter>utils</Filter>
     </ClInclude>
@@ -582,41 +537,8 @@
     <ClInclude Include="event\input_event_builder.h">
       <Filter>event</Filter>
     </ClInclude>
-    <ClInclude Include="event\event_handler.h">
-      <Filter>event</Filter>
-    </ClInclude>
-    <ClInclude Include="dom\ui_document.h">
-      <Filter>dom</Filter>
-    </ClInclude>
-    <ClInclude Include="dom\ui_window.h">
-      <Filter>dom</Filter>
-    </ClInclude>
-    <ClInclude Include="dom\ui_element.h">
-      <Filter>dom</Filter>
-    </ClInclude>
-    <ClInclude Include="dom\ui_parser.h">
-      <Filter>dom</Filter>
-    </ClInclude>
-    <ClInclude Include="dom\ui_include.h">
-      <Filter>dom</Filter>
-    </ClInclude>
-    <ClInclude Include="dom\ui_forward.h">
-      <Filter>dom</Filter>
-    </ClInclude>
-    <ClInclude Include="core\hittest_result.h">
-      <Filter>core</Filter>
-    </ClInclude>
-    <ClInclude Include="dom\ui_vbox.h">
-      <Filter>dom</Filter>
-    </ClInclude>
-    <ClInclude Include="dom\ui_hbox.h">
-      <Filter>dom</Filter>
-    </ClInclude>
     <ClInclude Include="style\style_result.h">
       <Filter>style</Filter>
-    </ClInclude>
-    <ClInclude Include="dom\ui_styles.h">
-      <Filter>dom</Filter>
     </ClInclude>
     <ClInclude Include="render\render_helper.h">
       <Filter>render</Filter>
@@ -648,11 +570,80 @@
     <ClInclude Include="render\render_image_cairo.h">
       <Filter>render\cairo</Filter>
     </ClInclude>
-    <ClInclude Include="dom\ui_style_border.h">
-      <Filter>dom</Filter>
+    <ClInclude Include="ui\ui_document.h">
+      <Filter>ui</Filter>
     </ClInclude>
-    <ClInclude Include="dom\ui_style_background.h">
-      <Filter>dom</Filter>
+    <ClInclude Include="ui\ui_element.h">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\ui_hbox.h">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\ui_styles.h">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\ui_vbox.h">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\ui_window.h">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\ui_style_border.h">
+      <Filter>ui\style</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\ui_style_background.h">
+      <Filter>ui\style</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\ui_constants.h">
+      <Filter>ui\common</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\hittest_result.h">
+      <Filter>ui\common</Filter>
+    </ClInclude>
+    <ClInclude Include="framework\app.h">
+      <Filter>framework</Filter>
+    </ClInclude>
+    <ClInclude Include="framework\widget.h">
+      <Filter>framework</Filter>
+    </ClInclude>
+    <ClInclude Include="resource\resource_loader.h">
+      <Filter>resource</Filter>
+    </ClInclude>
+    <ClInclude Include="resource\ui_parser.h">
+      <Filter>resource</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\ui_include.h">
+      <Filter>ui\common</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\ui_forward.h">
+      <Filter>ui\common</Filter>
+    </ClInclude>
+    <ClInclude Include="departed\image_file.h">
+      <Filter>departed</Filter>
+    </ClInclude>
+    <ClInclude Include="departed\image_store.h">
+      <Filter>departed</Filter>
+    </ClInclude>
+    <ClInclude Include="departed\lex_parser.h">
+      <Filter>departed</Filter>
+    </ClInclude>
+    <ClInclude Include="departed\view.h">
+      <Filter>departed</Filter>
+    </ClInclude>
+    <ClInclude Include="departed\view_background.h">
+      <Filter>departed</Filter>
+    </ClInclude>
+    <ClInclude Include="departed\view_border.h">
+      <Filter>departed</Filter>
+    </ClInclude>
+    <ClInclude Include="departed\view_container.h">
+      <Filter>departed</Filter>
+    </ClInclude>
+    <ClInclude Include="departed\view_layout.h">
+      <Filter>departed</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\ui_event_handler.h">
+      <Filter>ui\common</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

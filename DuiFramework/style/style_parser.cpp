@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "style_parser.h"
 #include "style_scanner.h"
-#include "core/constants.h"
+#include "ui/ui_constants.h"
 #include <stack>
 
 namespace ui

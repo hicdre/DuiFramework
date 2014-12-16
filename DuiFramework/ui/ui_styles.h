@@ -1,8 +1,8 @@
 #pragma once
-#include "dom/ui_forward.h"
+#include "ui/ui_forward.h"
 #include "style/style_result.h"
-#include "dom/ui_style_border.h"
-#include "dom/ui_style_background.h"
+#include "ui/ui_style_border.h"
+#include "ui/ui_style_background.h"
 
 namespace ui
 {

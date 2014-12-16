@@ -1,16 +1,12 @@
 #pragma once
-#include "base/basictypes.h"
-#include "dom/ui_forward.h"
+#include "ui/ui_forward.h"
 #include "render/render_forward.h"
-#include "core/hittest_result.h"
 #include "event/event_target.h"
 
 #include <set>
 
 namespace ui
 {
-
-	class RenderObject;
 	class UIElement 
 		: public EventTarget
 	{
@@ -109,13 +105,17 @@ namespace ui
 		void HandleLocalEvents(Event* event);
 		bool DispatchEvent(Event* event, EventPath* path = NULL);
 
+		bool IsHandleMouseEvent() const { return handle_mouse_event_; }
+		bool IsHandleKeybordEvent() const { return handle_keybord_event_; }
 		//=================================================
 		//state
 		bool hovered() const { return hovered_; }
-		bool actived() const { return actived_; }
-		bool focused() const { return focused_; }
+		bool actived() const { return !handle_keybord_event_ && actived_or_focused_; }
+		bool focused() const { return handle_keybord_event_ && actived_or_focused_; }
 
 		void SetHovered(bool v);
+		void SetActiveOrFocused(bool v);
+
 
 	protected:
 		virtual ~UIElement();
@@ -145,8 +145,10 @@ namespace ui
 		bool child_needs_layout_{true};
 
 		bool hovered_{ false };
-		bool actived_{ false };
-		bool focused_{ false };
+		bool actived_or_focused_{ false };
+
+		bool handle_mouse_event_{ true };
+		bool handle_keybord_event_{ false };
 
 		DISALLOW_COPY_AND_ASSIGN(UIElement);
 	};

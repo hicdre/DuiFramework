@@ -5,6 +5,7 @@
 #include "Demo.h"
 
 #include "duiframework.h"
+#include "utils/utils.h"
 
 //#include "DemoWidget.h"
 //#include "TestMouseEventWidget.h"
@@ -25,6 +26,15 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 
 	ui::UIDocumentPtr document =
 		app->GetResourceLoader()->GetUIDocument(ui::URL("res://local/test.xml"));
+
+	document->RootElement()->AddEventListener(ui::EVENT_MOUSE_DOWN, ui::CPPEventListener::Create(
+		[app](ui::Event* event)
+	{
+		ui::UIElement* element = dynamic_cast<ui::UIElement*>(event->target());
+		if (element && element->getId() == "close") {
+			app->Quit();
+		}
+	}));
 	document->CreateWidget()->Show(SW_SHOWNORMAL);
 	//ui::ImageStore::Default()->AddImageRecord("test", LR"(E:\work\xinyi\RomasterPC\bin\skin\avatar.png)");
 // 	ui::Window* window = new ui::Window;

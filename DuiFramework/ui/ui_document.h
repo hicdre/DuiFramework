@@ -1,6 +1,6 @@
 #pragma once
 #include "base/basictypes.h"
-#include "dom/ui_forward.h"
+#include "ui/ui_forward.h"
 #include "render/render_forward.h"
 #include "style/style_sheet.h"
 #include <string>

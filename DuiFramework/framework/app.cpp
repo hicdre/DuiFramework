@@ -2,7 +2,7 @@
 #include "app.h"
 
 #include <cassert>
-#include "core/widget.h"
+#include "framework/widget.h"
 #include "utils/utils.h"
 #include "style/style_property.h"
 #include "render/render_include.h"
@@ -198,15 +198,6 @@ namespace ui
 			return;
 		}
 	}
-
-	ImageStore* App::DefaultImageStore()
-	{
-		if (!image_store_.get()) {
-			image_store_.reset(new ImageStore);
-		}
-		return image_store_.get();
-	}
-
 
 	ResourceLoader* App::GetResourceLoader()
 	{

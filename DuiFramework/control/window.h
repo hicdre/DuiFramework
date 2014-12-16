@@ -1,6 +1,6 @@
 #pragma once
 #include "base/basictypes.h"
-#include "core/widget.h"
+#include "framework/widget.h"
 #include "view/view.h"
 
 #include "style/style_sheet.h"

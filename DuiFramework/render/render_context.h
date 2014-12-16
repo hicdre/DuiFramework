@@ -1,7 +1,4 @@
 #pragma once
-
-#include "base/basictypes.h"
-#include "utils/image_file.h"
 #include "render/render_engine.h"
 #include <string>
 

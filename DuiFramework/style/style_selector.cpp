@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "style_selector.h"
 #include <stack>
-#include "dom/ui_include.h"
+#include "ui/ui_include.h"
 
 namespace ui
 {

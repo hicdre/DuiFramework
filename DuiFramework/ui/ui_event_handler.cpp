@@ -1,26 +1,25 @@
 #include "stdafx.h"
-#include "event_handler.h"
-#include "event_include.h"
-#include "dom/ui_window.h"
-#include "dom/ui_styles.h"
+#include "ui_event_handler.h"
+#include "ui_include.h"
+#include "event/event_include.h"
 #include <deque>
 
 namespace ui
 {
 
 
-	EventHandler::EventHandler(UIWindow* window)
+	UIEventHandler::UIEventHandler(UIWindow* window)
 		: window_(window)
 	{
 
 	}
 
-	EventHandler::~EventHandler()
+	UIEventHandler::~UIEventHandler()
 	{
 
 	}
 
-	bool EventHandler::HandleMouseMoveEvent(MouseEvent* evt)
+	bool UIEventHandler::HandleMouseMoveEvent(MouseEvent* evt)
 	{
 		HitTestResult hitResult;
 		if (!window_->Hittest(&hitResult, evt->clientLocation())) {
@@ -37,13 +36,13 @@ namespace ui
 		return false;
 	}
 
-	bool EventHandler::DispatchMouseEvent(EventType type, UIElement* target, int clickCount, MouseEvent* evt, bool setUnder)
+	bool UIEventHandler::DispatchMouseEvent(EventType type, UIElement* target, int clickCount, MouseEvent* evt, bool setUnder)
 	{
-		scoped_refptr<MouseEvent> mouseEvent(MouseEvent::Create(EVENT_MOUSE_MOVE, evt, clickCount, target));
+		scoped_refptr<MouseEvent> mouseEvent(MouseEvent::Create(type, evt, clickCount, target));
 		return !element_under_mouse_ || element_under_mouse_->DispatchEvent(mouseEvent.get());
 	}
 
-	void EventHandler::UpdateMouseEventTarget(UIElement* target, MouseEvent* evt)
+	void UIEventHandler::UpdateMouseEventTarget(UIElement* target, MouseEvent* evt)
 	{
 		UIElement* result = target;
 
@@ -66,8 +65,9 @@ namespace ui
 		}
 	}
 
-	bool EventHandler::HandleMouseEvent(MouseEvent* evt)
+	bool UIEventHandler::HandleMouseEvent(MouseEvent* evt)
 	{
+		//mouse move
 		Point last_position; 
 		if (last_mouse_event_) {
 			last_position = last_mouse_event_->clientLocation();
@@ -82,6 +82,13 @@ namespace ui
 			last_mouse_event_ = evt;
 		}
 
+		//mouse press
+		if (evt->type() == EVENT_MOUSE_DOWN) {
+			HandleMousePressEvent(evt);
+		}
+		else if (evt->type() == EVENT_MOUSE_UP) {
+			HandleMouseReleaseEvent(evt);
+		}
 
 		UpdateCursor();
 
@@ -89,7 +96,7 @@ namespace ui
 		return true;
 	}
 
-	void EventHandler::UpdateElementHoverState(MouseEvent* evt, HitTestResult* result)
+	void UIEventHandler::UpdateElementHoverState(MouseEvent* evt, HitTestResult* result)
 	{
 		if (last_element_under_mouse_ == element_under_mouse_)
 			return;
@@ -145,7 +152,7 @@ namespace ui
 		}
 	}
 
-	void EventHandler::UpdateCursor()
+	void UIEventHandler::UpdateCursor()
 	{
 		if (!element_under_mouse_)
 			return;
@@ -156,6 +163,35 @@ namespace ui
 
 		window_->SetCursor(cursor);
 		last_cursor = cursor;
+	}
+
+	bool UIEventHandler::HandleMousePressEvent(MouseEvent* evt)
+	{
+		element_pressed_ = element_under_mouse_;
+		UpdateElementActiveFocusState();
+		may_start_drag_ = true;
+		DispatchMouseEvent(EVENT_MOUSE_DOWN, element_pressed_, evt->clickCount(), evt, true);
+		return true;
+	}
+
+	void UIEventHandler::UpdateElementActiveFocusState()
+	{
+		if (!element_pressed_->IsHandleKeybordEvent()) {
+			element_pressed_->SetActiveOrFocused(true);
+			return;
+		}
+		UIElement* last_element_focused = element_focused_;
+		element_focused_ = element_pressed_;
+		element_pressed_->SetActiveOrFocused(true);//dispatch get focus
+		last_element_focused->SetActiveOrFocused(false);//dispatch lose focus
+	}
+
+	bool UIEventHandler::HandleMouseReleaseEvent(MouseEvent* evt)
+	{
+		UIElement* last_element_pressed = element_pressed_;
+		may_start_drag_ = false;
+		DispatchMouseEvent(EVENT_MOUSE_UP, last_element_pressed, 0, evt, true);
+		return true;
 	}
 
 }

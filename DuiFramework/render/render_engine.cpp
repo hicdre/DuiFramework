@@ -3,7 +3,7 @@
 #include "render_target_cairo.h"
 #include "render_image_cairo.h"
 
-#include "utils/resource_loader.h"
+#include "resource/resource_loader.h"
 
 namespace ui
 {

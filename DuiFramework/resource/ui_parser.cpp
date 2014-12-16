@@ -1,8 +1,10 @@
 #include "stdafx.h"
 #include "ui_parser.h"
-#include "ui_include.h"
+#include "resource_loader.h"
+
+#include "ui/ui_include.h"
 #include "third_party/tinyxml2.h"
-#include "utils/resource_loader.h"
+
 #include <functional>
 
 namespace ui

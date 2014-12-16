@@ -1,8 +1,10 @@
 #pragma once
 #include "base/basictypes.h"
+#include "ui/ui_constants.h"
 
 namespace ui
 {
+	class HitTestResult;
 	class UIStyles;
 	class UIDocument;
 	class UIElement;

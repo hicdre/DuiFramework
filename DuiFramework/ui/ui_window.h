@@ -1,7 +1,8 @@
 #pragma once
-#include "dom/ui_element.h"
-#include "core/widget.h"
-#include "event/event_handler.h"
+#include "ui/ui_element.h"
+#include "ui/ui_event_handler.h"
+#include "framework/widget.h"
+
 
 namespace ui
 {
@@ -27,6 +28,6 @@ namespace ui
 	private:
 		Widget* owned_widget_{ NULL };
 
-		EventHandler event_handler_;
+		UIEventHandler event_handler_;
 	};
 }

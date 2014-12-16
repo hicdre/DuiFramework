@@ -2,7 +2,7 @@
 #include "style/style_declaration.h"
 #include "style/style_selector.h"
 #include "render/render_forward.h"
-#include "dom/ui_forward.h"
+#include "ui/ui_forward.h"
 
 namespace ui
 {

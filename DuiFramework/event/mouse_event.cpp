@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "mouse_event.h"
 #include "event_include.h"
-#include "dom/ui_include.h"
+#include "ui/ui_include.h"
 #include <cassert>
 
 namespace ui

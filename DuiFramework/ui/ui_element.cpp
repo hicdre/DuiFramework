@@ -540,9 +540,17 @@ namespace ui
 
 	void UIElement::SetHovered(bool v)
 	{
-		if (v == hovered_)
+		if (!handle_mouse_event_ || v == hovered_)
 			return;
 		hovered_ = v;
+		UpdateStyles();
+	}
+
+	void UIElement::SetActiveOrFocused(bool v)
+	{
+		if (v == actived_or_focused_)
+			return;
+		actived_or_focused_ = v;
 		UpdateStyles();
 	}
 
@@ -556,5 +564,7 @@ namespace ui
 			return parent()->cursor();
 		return Cursor_Arrow;
 	}
+
+	
 
 }

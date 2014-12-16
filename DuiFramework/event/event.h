@@ -1,6 +1,6 @@
 #pragma once
 #include "base/basictypes.h"
-#include "core/constants.h"
+#include "ui/ui_constants.h"
 #include "event/event_path.h"
 
 namespace ui

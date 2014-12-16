@@ -1,9 +1,8 @@
 #include "stdafx.h"
 #include "render_context.h"
 
-#include "base/scoped_ptr.h"
-#include "core/widget.h"
-#include "core/constants.h"
+#include "framework/widget.h"
+#include "ui/ui_constants.h"
 #include "utils/utils.h"
 
 

@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "style_sheet.h"
 #include "utils/utils.h"
-#include "utils/resource_loader.h"
+#include "resource/resource_loader.h"
 #include "style_parser.h"
 
 namespace ui
