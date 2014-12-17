@@ -327,6 +327,9 @@
     <ClCompile Include="ui\ui_event_handler.cpp">
       <Filter>ui\common</Filter>
     </ClCompile>
+    <ClCompile Include="ui\ui_text.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -644,6 +647,12 @@
     </ClInclude>
     <ClInclude Include="ui\ui_event_handler.h">
       <Filter>ui\common</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\ui_text.h">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="render\render_types.h">
+      <Filter>render</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

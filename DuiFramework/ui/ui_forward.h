@@ -6,6 +6,8 @@ namespace ui
 {
 	class HitTestResult;
 	class UIStyles;
+	class UIText;
+
 	class UIDocument;
 	class UIElement;
 	class UIWindow;

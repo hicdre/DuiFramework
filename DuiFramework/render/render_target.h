@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "render/render_types.h"
 #include "render/render_path.h"
 #include "render/render_image.h"
 
@@ -26,6 +27,8 @@ namespace ui
 		virtual void DrawImage(const RenderImage *image, const Rect& dest) = 0;
 
 		virtual void DrawImage(const RenderImage *image, const Rect& src, const Rect& dest) = 0;
+
+		virtual void ShowGlyphs(const GlyphBuffer& buffer, const Font& font, Color color) = 0;
 
 		virtual void Trans(const Matrix& m) = 0;
 

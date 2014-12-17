@@ -11,7 +11,6 @@ namespace ui
 		: public EventTarget
 	{
 		friend class UIDocument;
-		friend class UIElement;
 	public:
 		UIElement(UIDocumentPtr);
 		UIDocumentPtr GetDocument();
@@ -89,7 +88,8 @@ namespace ui
 		virtual void SchedulePaint();
 		virtual void SchedulePaintInRect(const Rect& r);
 		virtual void OnChildSchedulePaintInRect(UIElement* child, const Rect& r);
-		virtual void DoPaint(RenderContext* painter, const Rect& r);
+		void DoPaint(RenderContext* painter, const Rect& r);
+		virtual void OnPaint(RenderContext* painter);
 
 		//=================================================
 		//layout
@@ -116,6 +116,9 @@ namespace ui
 		void SetHovered(bool v);
 		void SetActiveOrFocused(bool v);
 
+		//text
+		//void SetText(UIText* text);
+
 
 	protected:
 		virtual ~UIElement();
@@ -123,8 +126,7 @@ namespace ui
 
 		Rect ConvertRectFromChild(UIElement* child, const Rect& r);
 		void PaintBackground(RenderContext* painter);
-		void PaintBorder(RenderContext* painter);
-		void PaintContents(RenderContext* painter);
+		virtual void PaintContents(RenderContext* painter);
 
 		UIDocumentPtr document_;
 		
@@ -139,6 +141,7 @@ namespace ui
 		std::set<std::string> classes_;
 
 		scoped_ptr<UIStyles> styles_;
+		//scoped_ptr<UIText> text_;
 
 		Rect bounds_; //  µº Œª÷√
 		bool needs_layout_{true};//self needs layout

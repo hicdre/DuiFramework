@@ -31,6 +31,7 @@ namespace ui
 		void DrawImage(const RenderImage *image, const Rect& dest);
 		void DrawImage(const RenderImage *image, const Rect& src, const Rect& dest);
 
+		void DrawText(const std::wstring& text, const Font& font, Color color);
 	private:
 		scoped_refptr<RenderTarget> target_;
 	};

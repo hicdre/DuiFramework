@@ -214,6 +214,7 @@
     <ClCompile Include="ui\ui_styles.cpp" />
     <ClCompile Include="ui\ui_style_background.cpp" />
     <ClCompile Include="ui\ui_style_border.cpp" />
+    <ClCompile Include="ui\ui_text.cpp" />
     <ClCompile Include="ui\ui_vbox.cpp" />
     <ClCompile Include="ui\ui_window.cpp" />
     <ClCompile Include="utils\icu_utf.cpp" />
@@ -318,6 +319,7 @@
     </ClInclude>
     <ClInclude Include="render\render_path_cairo.h" />
     <ClInclude Include="render\render_engine.h" />
+    <ClInclude Include="render\render_types.h" />
     <ClInclude Include="render\render_widget.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClInclude>
@@ -364,6 +366,7 @@
     <ClInclude Include="ui\ui_styles.h" />
     <ClInclude Include="ui\ui_style_background.h" />
     <ClInclude Include="ui\ui_style_border.h" />
+    <ClInclude Include="ui\ui_text.h" />
     <ClInclude Include="ui\ui_vbox.h" />
     <ClInclude Include="ui\ui_window.h" />
     <ClInclude Include="utils\icu_utf.h" />

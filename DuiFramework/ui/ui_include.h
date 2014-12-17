@@ -2,6 +2,7 @@
 
 #include "ui/ui_constants.h"
 #include "ui/ui_document.h"
+#include "ui/ui_text.h"
 #include "ui/ui_element.h"
 #include "ui/ui_hbox.h"
 #include "ui/ui_vbox.h"

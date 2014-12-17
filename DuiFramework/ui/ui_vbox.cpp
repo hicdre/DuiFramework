@@ -23,7 +23,7 @@ namespace ui
 	UIVBox::UIVBox(UIDocumentPtr doc)
 		: UIElement(doc)
 	{
-
+		tag_ = "VBox";
 	}
 
 	UIVBox::~UIVBox()

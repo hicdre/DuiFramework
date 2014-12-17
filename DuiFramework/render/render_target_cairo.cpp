@@ -198,6 +198,25 @@ namespace ui
 		cairo_restore(cairo_);
 	}
 
+	void RenderTargetCairo::ShowGlyphs(const GlyphBuffer& buffer, const Font& font, Color color)
+	{
+		std::vector<cairo_glyph_t> glyphs(buffer.count);
+		for (uint32 i = 0; i < buffer.count; ++i) {
+			glyphs[i].index = buffer.glyphs[i].index;
+			glyphs[i].x = buffer.glyphs[i].pos.x();
+			glyphs[i].y = buffer.glyphs[i].pos.y();
+		}
+		set_color(color);
+
+		cairo_font_face_t* f = cairo_win32_font_face_create_for_hfont(font.ToHFONT());
+
+		cairo_set_font_face(cairo_, f);
+		cairo_set_font_size(cairo_, font.GetFontSize());
+		cairo_show_glyphs(cairo_, &glyphs[0], buffer.count);
+
+		cairo_font_face_destroy(f);
+	}
+
 
 	
 

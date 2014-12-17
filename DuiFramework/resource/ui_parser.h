@@ -13,11 +13,14 @@ namespace ui
 
 		bool ParseXmlDocument(const std::string& buffer);
 	private:
-		UIElementPtr ParseXmlElement(void* elem);
+		void ParseXmlElement(void* elem);
 		UIElementPtr ParseUIElement(void* elem, const char* tag);
-		void ParseStyleSheet(void* elem);
+		UIElementPtr ParseUITextElement(void* elem);
 
-		UIElement* CreateUIElement(const char* tag);
+		void InitUIElementAttributes(UIElement* current, void* elem);
+		void InitUIElementChild(UIElement* current, void* elem);
+		void ParseUIElementChild(UIElement* current, void* child);
+		void ParseStyleSheet(void* elem);
 
 		bool ParseElementClasses(UIElementPtr elem, const char* val);
 		UIDocumentPtr document_;

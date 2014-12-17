@@ -12,7 +12,7 @@ namespace ui
 		: UIElement(doc)
 		, event_handler_(this)
 	{
-		
+		tag_ = "Window";
 	}
 
 	UIWindow::~UIWindow()

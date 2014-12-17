@@ -302,7 +302,12 @@ namespace ui
 	void UIElement::DoPaint(RenderContext* painter, const Rect& r)
 	{
 		ScopedPainter helper(painter, Matrix(1.0, 0, 0, 1.0, r.x(), r.y()));
+		OnPaint(painter);
+	}
 
+
+	void UIElement::OnPaint(RenderContext* painter)
+	{
 		Rect rect(GetLocalBounds());
 		UIBorderPainter borderPainter(rect, styles()->borders(), painter);
 
@@ -311,9 +316,14 @@ namespace ui
 			PaintBackground(painter);
 		}
 		borderPainter.Paint();
-		
-		PaintContents(painter);
+
+		{
+			Rect rc(GetContentBounds());
+			ScopedPainter helper(painter, Matrix(1.0, 0, 0, 1.0, rc.x(), rc.y()));
+			PaintContents(painter);
+		}
 	}
+
 
 	void UIElement::PaintBackground(RenderContext* painter)
 	{
@@ -332,19 +342,8 @@ namespace ui
 		}
 	}
 
-	void UIElement::PaintBorder(RenderContext* painter)
-	{
-		//Rect rect(GetLocalBounds());
-		//UIBorderPainter borderPainter(rect, styles()->borders(), painter);
-		//borderPainter.Paint();
-	}
-
-
 	void UIElement::PaintContents(RenderContext* painter)
 	{
-		Rect rc(GetContentBounds());
-		ScopedPainter helper(painter, Matrix(1.0, 0, 0, 1.0, rc.x(), rc.y()));
-
 		for (UIElementPtr obj = firstChild(); obj; obj = obj->nextSibling())
 		{
 			obj->DoPaint(painter, obj->bounds());
@@ -564,6 +563,10 @@ namespace ui
 			return parent()->cursor();
 		return Cursor_Arrow;
 	}
+// 	void UIElement::SetText(UIText* text)
+// 	{
+// 		text_.reset(text);
+// 	}
 
 	
 

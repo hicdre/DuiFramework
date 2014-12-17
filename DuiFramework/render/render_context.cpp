@@ -81,6 +81,20 @@ namespace ui
 		target_->ClipPath(path);
 	}
 
+	void RenderContext::DrawText(const std::wstring& text, const Font& font, Color color)
+	{
+		if (text.empty())
+			return;
+// 
+// 		Glyph* glyps = new Glyph[text.size()];
+// 		for (size_t i = 0; i < text.size(); i++)
+// 		{
+// 			glyps[i] = ;
+// 		}
+// 
+// 		GetGlyphIndices(::GetDC(NULL), text.c_str(), text.size(), );
+	}
+
 	
 
 	

@@ -22,7 +22,7 @@ namespace ui
 	UIHBox::UIHBox(UIDocumentPtr doc)
 		: UIElement(doc)
 	{
-
+		tag_ = "HBox";
 	}
 
 	UIHBox::~UIHBox()
