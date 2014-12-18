@@ -62,8 +62,8 @@ namespace ui
 
 	ui::UIElementPtr UIParser::ParseUIElement(void* p, const char* tag)
 	{
-		//if (!_strcmpi(tag, "Text"))
-		//	return ParseUITextElement(p);
+		if (!_strcmpi(tag, "Text"))
+			return ParseUITextElement(p);
 
 		UIElementPtr elem;
 		if (!_strcmpi(tag, "Window"))

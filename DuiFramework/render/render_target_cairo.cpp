@@ -222,10 +222,16 @@ namespace ui
 	{
 		cairo_font_face_t* f = cairo_win32_font_face_create_for_hfont(font.ToHFONT());
 
+		cairo_save(cairo_);
+		cairo_new_path(cairo_);
+
+		cairo_move_to(cairo_, 10, 10);
+
 		cairo_set_font_face(cairo_, f);
 		cairo_set_font_size(cairo_, font.GetFontSize());
 		cairo_show_text(cairo_, WideToMultiByte(buffer).c_str());
 
+		cairo_restore(cairo_);
 		cairo_font_face_destroy(f);
 	}
 

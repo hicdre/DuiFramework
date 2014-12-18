@@ -10,7 +10,7 @@
     </Box>
     <HBox class="span" id="test">
       <Box class="block">
-		<Text value-raw="Hello world!" />
+		<Text text-raw="Hello world!" />
       </Box>
       <Box class="block">
       </Box>

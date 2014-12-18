@@ -27,7 +27,7 @@ namespace ui
 	void UIText::PaintContents(RenderContext* painter)
 	{
 		//TextLayout layout(text_)
-		//painter->DrawText(text_, Font(L"Consolas", 14), Color_Black);
+		painter->DrawText(text_, Font(L"Consolas", 14), Color_Black);
 	}
 
 }
