@@ -59,21 +59,21 @@ namespace ui
 		return true;
 	}
 
-	
-
 
 	ui::UIElementPtr UIParser::ParseUIElement(void* p, const char* tag)
 	{
-		if (!_strcmpi(tag, "Text"))
-			return ParseUITextElement(p);
+		//if (!_strcmpi(tag, "Text"))
+		//	return ParseUITextElement(p);
 
 		UIElementPtr elem;
 		if (!_strcmpi(tag, "Window"))
 			elem = new UIWindow(document_);
-		if (!_strcmpi(tag, "HBox"))
+		else if(!_strcmpi(tag, "HBox"))
 			elem = new UIHBox(document_);
-		if (!_strcmpi(tag, "VBox"))
+		else if(!_strcmpi(tag, "VBox"))
 			elem = new UIVBox(document_);
+		else
+			elem = new UIElement(document_);
 
 		InitUIElementAttributes(elem.get(), p);
 		InitUIElementChild(elem.get(), p);
@@ -119,8 +119,10 @@ namespace ui
 		scoped_refptr<UIText> text(new UIText(document_));
 
 		InitUIElementAttributes(text.get(), elem);
+
 		{
 			const char* val = xml_element->Attribute("text-raw");
+
 			if (val){
 				text->SetText(MultiByteToWide(val));
 			}

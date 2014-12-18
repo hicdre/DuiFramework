@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Copyright © 2004 Carl Worth
  * Copyright © 2006 Red Hat, Inc.
  * Copyright © 2007 David Turner

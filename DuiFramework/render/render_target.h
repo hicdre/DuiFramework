@@ -30,6 +30,8 @@ namespace ui
 
 		virtual void ShowGlyphs(const GlyphBuffer& buffer, const Font& font, Color color) = 0;
 
+		virtual void DrawText(const std::wstring& buffer, const Font& font, Color color) = 0;
+
 		virtual void Trans(const Matrix& m) = 0;
 
 		virtual void PushState() = 0;

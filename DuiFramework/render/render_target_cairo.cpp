@@ -3,6 +3,7 @@
 #include "render_path_cairo.h"
 #include "render_image_cairo.h"
 #include "framework/widget.h"
+#include "utils/utils.h"
 
 namespace ui
 {
@@ -213,6 +214,17 @@ namespace ui
 		cairo_set_font_face(cairo_, f);
 		cairo_set_font_size(cairo_, font.GetFontSize());
 		cairo_show_glyphs(cairo_, &glyphs[0], buffer.count);
+
+		cairo_font_face_destroy(f);
+	}
+
+	void RenderTargetCairo::DrawText(const std::wstring& buffer, const Font& font, Color color)
+	{
+		cairo_font_face_t* f = cairo_win32_font_face_create_for_hfont(font.ToHFONT());
+
+		cairo_set_font_face(cairo_, f);
+		cairo_set_font_size(cairo_, font.GetFontSize());
+		cairo_show_text(cairo_, WideToMultiByte(buffer).c_str());
 
 		cairo_font_face_destroy(f);
 	}

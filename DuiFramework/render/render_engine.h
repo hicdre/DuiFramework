@@ -1,6 +1,7 @@
 #pragma once
 #include "render/render_target.h"
 #include "render/render_image.h"
+#include "render/render_font.h"
 
 namespace ui
 {
@@ -16,5 +17,8 @@ namespace ui
 
 		static scoped_refptr<RenderImage>
 			CreateRenderImage(const URL& path);
+
+		static scoped_refptr<RenderFont>
+			CreateRenderFont(const Font& font);
 	};
 }

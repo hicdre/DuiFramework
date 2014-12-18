@@ -1,5 +1,5 @@
 #pragma once
-#include "ui/ui_forward.h"
+#include "ui/ui_document.h"
 #include "render/render_forward.h"
 #include "event/event_target.h"
 

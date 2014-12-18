@@ -91,8 +91,9 @@ namespace ui
 // 		{
 // 			glyps[i] = ;
 // 		}
-// 
-// 		GetGlyphIndices(::GetDC(NULL), text.c_str(), text.size(), );
+
+		target_->DrawText(text, font, color);
+//
 	}
 
 	

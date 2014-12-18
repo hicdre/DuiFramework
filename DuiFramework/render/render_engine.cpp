@@ -2,6 +2,7 @@
 #include "render_engine.h"
 #include "render_target_cairo.h"
 #include "render_image_cairo.h"
+#include "render_font_cairo.h"
 
 #include "resource/resource_loader.h"
 
@@ -31,6 +32,11 @@ namespace ui
 			return NULL;
 
 		return new RenderImageCairo((void*)contents.c_str(), contents.size());
+	}
+
+	scoped_refptr<RenderFont> RenderEngine::CreateRenderFont(const Font& font)
+	{
+		return RenderFontCairo::Create(font);
 	}
 
 }

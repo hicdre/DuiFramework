@@ -52,6 +52,9 @@
     <Filter Include="resource">
       <UniqueIdentifier>{629afdeb-f50f-44f5-80ed-f6f9e1ce604b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="render\text">
+      <UniqueIdentifier>{e9f693f8-81ad-4165-b818-0438847edc61}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -329,6 +332,12 @@
     </ClCompile>
     <ClCompile Include="ui\ui_text.cpp">
       <Filter>ui</Filter>
+    </ClCompile>
+    <ClCompile Include="render\render_text_run.cpp">
+      <Filter>render\text</Filter>
+    </ClCompile>
+    <ClCompile Include="render\render_font_cairo.cpp">
+      <Filter>render\cairo</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -652,6 +661,15 @@
       <Filter>ui</Filter>
     </ClInclude>
     <ClInclude Include="render\render_types.h">
+      <Filter>render</Filter>
+    </ClInclude>
+    <ClInclude Include="render\render_text_run.h">
+      <Filter>render\text</Filter>
+    </ClInclude>
+    <ClInclude Include="render\render_font_cairo.h">
+      <Filter>render\cairo</Filter>
+    </ClInclude>
+    <ClInclude Include="render\render_font.h">
       <Filter>render</Filter>
     </ClInclude>
   </ItemGroup>

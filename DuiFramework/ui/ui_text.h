@@ -9,7 +9,7 @@ namespace ui
 		friend class UIElement;
 	public:
 		UIText(UIDocumentPtr doc);
-		~UIText();
+		virtual ~UIText() override;
 
 		void SetText(const std::wstring& text);
 

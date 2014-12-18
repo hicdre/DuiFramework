@@ -1,5 +1,4 @@
 #pragma once
-#include "base/basictypes.h"
 #include "ui/ui_forward.h"
 #include "render/render_forward.h"
 #include "style/style_sheet.h"
@@ -11,7 +10,6 @@ namespace ui
 	class UIDocument : public RefCounted<UIDocument>
 	{
 		friend class UIElement;
-		friend class DOMDocumentBuilder;
 	public:
 		UIDocument(const URL& url);
 		~UIDocument();

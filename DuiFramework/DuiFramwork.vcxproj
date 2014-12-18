@@ -161,6 +161,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="render\render_context.cpp" />
+    <ClCompile Include="render\render_font_cairo.cpp" />
     <ClCompile Include="render\render_image_cairo.cpp" />
     <ClCompile Include="render\render_target_cairo.cpp" />
     <ClCompile Include="render\render_helper.cpp" />
@@ -169,6 +170,7 @@
     </ClCompile>
     <ClCompile Include="render\render_path_cairo.cpp" />
     <ClCompile Include="render\render_engine.cpp" />
+    <ClCompile Include="render\render_text_run.cpp" />
     <ClCompile Include="render\render_widget.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
@@ -306,6 +308,8 @@
     </ClInclude>
     <ClInclude Include="render\render_cairo_forward.h" />
     <ClInclude Include="render\render_context.h" />
+    <ClInclude Include="render\render_font.h" />
+    <ClInclude Include="render\render_font_cairo.h" />
     <ClInclude Include="render\render_image.h" />
     <ClInclude Include="render\render_image_cairo.h" />
     <ClInclude Include="render\render_path.h" />
@@ -319,6 +323,7 @@
     </ClInclude>
     <ClInclude Include="render\render_path_cairo.h" />
     <ClInclude Include="render\render_engine.h" />
+    <ClInclude Include="render\render_text_run.h" />
     <ClInclude Include="render\render_types.h" />
     <ClInclude Include="render\render_widget.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
