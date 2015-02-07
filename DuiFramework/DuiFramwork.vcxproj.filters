@@ -1,59 +1,108 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="base">
-      <UniqueIdentifier>{d9ba4507-132b-4cf2-ae0f-41496cd8b2e8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="render">
-      <UniqueIdentifier>{ba8da845-2d24-478f-aab4-19e0d2274e47}</UniqueIdentifier>
-    </Filter>
     <Filter Include="build">
       <UniqueIdentifier>{0c7100c1-6198-40d3-8d4a-d670e580e3dd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="utils">
+    <Filter Include="foundation">
+      <UniqueIdentifier>{9c288640-5ecd-4beb-b7f5-77f9e9a8b29a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="uikit">
+      <UniqueIdentifier>{6dbd71ee-fab8-4e44-97a7-893b684d4253}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="old">
+      <UniqueIdentifier>{4793bac6-16a7-40ae-bec4-efb491226ac7}</UniqueIdentifier>
+      <ParseFiles>false</ParseFiles>
+    </Filter>
+    <Filter Include="old\control">
+      <UniqueIdentifier>{ae402361-0d1b-48b8-8b0e-98caf1de9803}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="old\departed">
+      <UniqueIdentifier>{f1a78f09-c6ce-46ed-a73b-3761ede2ab20}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="old\event">
+      <UniqueIdentifier>{a58917d1-4790-4a79-bd8e-8730d572f302}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="old\framework">
+      <UniqueIdentifier>{af679ec0-ee8a-4b9b-9adb-b09139e5c9fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="old\graphics">
+      <UniqueIdentifier>{3f4eb8fd-4673-4267-bc25-00d5b46631c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="old\render">
+      <UniqueIdentifier>{ba8da845-2d24-478f-aab4-19e0d2274e47}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="old\render\cairo">
+      <UniqueIdentifier>{ddd94dce-e4d8-44b6-b351-f0fdae41af32}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="old\render\text">
+      <UniqueIdentifier>{e9f693f8-81ad-4165-b818-0438847edc61}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="old\resource">
+      <UniqueIdentifier>{629afdeb-f50f-44f5-80ed-f6f9e1ce604b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="old\style">
+      <UniqueIdentifier>{aa7fb73c-905b-45ea-b9e1-a46578b5eaa4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="old\ui">
+      <UniqueIdentifier>{966e277f-09e0-4027-922a-b8db1577697e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="old\ui\style">
+      <UniqueIdentifier>{f9b0d052-e0ff-47e0-89af-cbf3ff3a3b28}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="old\ui\common">
+      <UniqueIdentifier>{b61a7639-b4fa-415a-9d47-d3d4ccf4d4b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="old\utils">
       <UniqueIdentifier>{2f70c853-ad50-4153-8016-e947fb8fc271}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="foundation\2D">
+      <UniqueIdentifier>{6c3800e6-e879-4238-8178-45d460357343}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="uikit\common">
+      <UniqueIdentifier>{dd6bb598-98b8-4e16-8680-dc94224e5e0c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="uikit\style">
+      <UniqueIdentifier>{7e43663b-3f19-4f90-90ae-fe81eeb27764}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="foundation\base">
+      <UniqueIdentifier>{15776df0-4e49-4a1f-a150-e9416d5f02bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="foundation\value">
+      <UniqueIdentifier>{8b8b6de7-e7d7-4f3e-9724-23d98c5815ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="uikit\2D">
+      <UniqueIdentifier>{1a16f108-59a7-47ed-83f6-0303248dd4ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="foundation\string">
+      <UniqueIdentifier>{b3ef3628-7eca-438a-ae10-302a6d13b188}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="foundation\string\private">
+      <UniqueIdentifier>{1b874219-eb26-4803-ac58-7e00b2788f4e}</UniqueIdentifier>
     </Filter>
     <Filter Include="third_party">
       <UniqueIdentifier>{a73f685d-3e44-4e0b-aef3-1e041f5d6ccb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="event">
-      <UniqueIdentifier>{a58917d1-4790-4a79-bd8e-8730d572f302}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="control">
-      <UniqueIdentifier>{ae402361-0d1b-48b8-8b0e-98caf1de9803}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="graphics">
-      <UniqueIdentifier>{3f4eb8fd-4673-4267-bc25-00d5b46631c3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="style">
-      <UniqueIdentifier>{aa7fb73c-905b-45ea-b9e1-a46578b5eaa4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="third_party\gurl">
       <UniqueIdentifier>{829d8fb0-5f13-4e66-97e7-2de7c2318ace}</UniqueIdentifier>
     </Filter>
-    <Filter Include="render\cairo">
-      <UniqueIdentifier>{ddd94dce-e4d8-44b6-b351-f0fdae41af32}</UniqueIdentifier>
+    <Filter Include="uikit\render">
+      <UniqueIdentifier>{5b6c2e20-c534-4aa4-a0d0-73b3294c3c22}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ui">
-      <UniqueIdentifier>{966e277f-09e0-4027-922a-b8db1577697e}</UniqueIdentifier>
+    <Filter Include="uikit\render\cairo">
+      <UniqueIdentifier>{3051a746-183a-4401-a143-9e25fc6e85db}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ui\style">
-      <UniqueIdentifier>{f9b0d052-e0ff-47e0-89af-cbf3ff3a3b28}</UniqueIdentifier>
+    <Filter Include="uikit\render\d2d">
+      <UniqueIdentifier>{5104b0a0-2a31-4afd-a7a6-e97b0a3b5e61}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ui\common">
-      <UniqueIdentifier>{b61a7639-b4fa-415a-9d47-d3d4ccf4d4b5}</UniqueIdentifier>
+    <Filter Include="uikit\widget">
+      <UniqueIdentifier>{387f9b3b-2dcf-4133-ae07-acc81f5e2d91}</UniqueIdentifier>
     </Filter>
-    <Filter Include="framework">
-      <UniqueIdentifier>{af679ec0-ee8a-4b9b-9adb-b09139e5c9fb}</UniqueIdentifier>
+    <Filter Include="uikit\widget\private">
+      <UniqueIdentifier>{b02c7580-cf75-42d8-9edc-60235f6c59c1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="departed">
-      <UniqueIdentifier>{f1a78f09-c6ce-46ed-a73b-3761ede2ab20}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="resource">
-      <UniqueIdentifier>{629afdeb-f50f-44f5-80ed-f6f9e1ce604b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="render\text">
-      <UniqueIdentifier>{e9f693f8-81ad-4165-b818-0438847edc61}</UniqueIdentifier>
+    <Filter Include="uikit\event">
+      <UniqueIdentifier>{4669fad7-f055-4e67-8947-dcb2bc23f746}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -64,109 +113,82 @@
       <Filter>build</Filter>
     </ClCompile>
     <ClCompile Include="utils\utils.cpp">
-      <Filter>utils</Filter>
+      <Filter>old\utils</Filter>
     </ClCompile>
     <ClCompile Include="third_party\stb_image.cpp">
       <Filter>third_party</Filter>
     </ClCompile>
     <ClCompile Include="event\event.cpp">
-      <Filter>event</Filter>
+      <Filter>old\event</Filter>
     </ClCompile>
     <ClCompile Include="event\mouse_event.cpp">
-      <Filter>event</Filter>
+      <Filter>old\event</Filter>
     </ClCompile>
     <ClCompile Include="control\button.cpp">
-      <Filter>control</Filter>
+      <Filter>old\control</Filter>
     </ClCompile>
     <ClCompile Include="event\key_event.cpp">
-      <Filter>event</Filter>
+      <Filter>old\event</Filter>
     </ClCompile>
     <ClCompile Include="render\uniscribe.cpp">
-      <Filter>render</Filter>
+      <Filter>old\render</Filter>
     </ClCompile>
     <ClCompile Include="control\window.cpp">
-      <Filter>control</Filter>
+      <Filter>old\control</Filter>
     </ClCompile>
     <ClCompile Include="event\focus_evnet.cpp">
-      <Filter>event</Filter>
+      <Filter>old\event</Filter>
     </ClCompile>
     <ClCompile Include="core\text.cpp">
-      <Filter>graphics</Filter>
+      <Filter>old\graphics</Filter>
     </ClCompile>
     <ClCompile Include="control\text_view.cpp">
-      <Filter>control</Filter>
+      <Filter>old\control</Filter>
     </ClCompile>
     <ClCompile Include="control\control_factory.cpp">
-      <Filter>control</Filter>
+      <Filter>old\control</Filter>
     </ClCompile>
     <ClCompile Include="third_party\tinyxml2.cpp">
       <Filter>third_party</Filter>
     </ClCompile>
-    <ClCompile Include="base\point.cpp">
-      <Filter>base</Filter>
-    </ClCompile>
-    <ClCompile Include="base\range.cpp">
-      <Filter>base</Filter>
-    </ClCompile>
-    <ClCompile Include="base\rect.cpp">
-      <Filter>base</Filter>
-    </ClCompile>
-    <ClCompile Include="base\size.cpp">
-      <Filter>base</Filter>
-    </ClCompile>
-    <ClCompile Include="base\matrix.cpp">
-      <Filter>base</Filter>
-    </ClCompile>
     <ClCompile Include="render\render_context.cpp">
-      <Filter>render</Filter>
-    </ClCompile>
-    <ClCompile Include="base\value.cpp">
-      <Filter>base</Filter>
+      <Filter>old\render</Filter>
     </ClCompile>
     <ClCompile Include="render\image.cpp">
-      <Filter>render</Filter>
+      <Filter>old\render</Filter>
     </ClCompile>
     <ClCompile Include="render\render_object.cpp">
-      <Filter>render</Filter>
+      <Filter>old\render</Filter>
     </ClCompile>
     <ClCompile Include="control\window_builder.cpp">
-      <Filter>control</Filter>
-    </ClCompile>
-    <ClCompile Include="base\length.cpp">
-      <Filter>base</Filter>
+      <Filter>old\control</Filter>
     </ClCompile>
     <ClCompile Include="style\style_scanner.cpp">
-      <Filter>style</Filter>
+      <Filter>old\style</Filter>
     </ClCompile>
     <ClCompile Include="style\style_property.cpp">
-      <Filter>style</Filter>
+      <Filter>old\style</Filter>
     </ClCompile>
     <ClCompile Include="style\style_value.cpp">
-      <Filter>style</Filter>
+      <Filter>old\style</Filter>
     </ClCompile>
     <ClCompile Include="style\style_declaration.cpp">
-      <Filter>style</Filter>
+      <Filter>old\style</Filter>
     </ClCompile>
     <ClCompile Include="style\style_rule.cpp">
-      <Filter>style</Filter>
+      <Filter>old\style</Filter>
     </ClCompile>
     <ClCompile Include="style\style_selector.cpp">
-      <Filter>style</Filter>
+      <Filter>old\style</Filter>
     </ClCompile>
     <ClCompile Include="style\style_parser.cpp">
-      <Filter>style</Filter>
-    </ClCompile>
-    <ClCompile Include="base\color.cpp">
-      <Filter>base</Filter>
+      <Filter>old\style</Filter>
     </ClCompile>
     <ClCompile Include="style\style_sheet.cpp">
-      <Filter>style</Filter>
-    </ClCompile>
-    <ClCompile Include="base\inseting.cpp">
-      <Filter>base</Filter>
+      <Filter>old\style</Filter>
     </ClCompile>
     <ClCompile Include="render\render_box.cpp">
-      <Filter>render</Filter>
+      <Filter>old\render</Filter>
     </ClCompile>
     <ClCompile Include="third_party\gurl\gurl.cc">
       <Filter>third_party\gurl</Filter>
@@ -213,131 +235,224 @@
     <ClCompile Include="third_party\gurl\url_util.cc">
       <Filter>third_party\gurl</Filter>
     </ClCompile>
-    <ClCompile Include="base\url.cpp">
-      <Filter>base</Filter>
-    </ClCompile>
-    <ClCompile Include="utils\icu_utf.cpp">
-      <Filter>utils</Filter>
-    </ClCompile>
     <ClCompile Include="render\render_widget.cpp">
-      <Filter>render</Filter>
-    </ClCompile>
-    <ClCompile Include="base\font.cpp">
-      <Filter>base</Filter>
+      <Filter>old\render</Filter>
     </ClCompile>
     <ClCompile Include="event\event_target.cpp">
-      <Filter>event</Filter>
+      <Filter>old\event</Filter>
     </ClCompile>
     <ClCompile Include="event\event_listener.cpp">
-      <Filter>event</Filter>
+      <Filter>old\event</Filter>
     </ClCompile>
     <ClCompile Include="event\event_dispatcher.cpp">
-      <Filter>event</Filter>
+      <Filter>old\event</Filter>
     </ClCompile>
     <ClCompile Include="event\event_path.cpp">
-      <Filter>event</Filter>
+      <Filter>old\event</Filter>
     </ClCompile>
     <ClCompile Include="event\input_event.cpp">
-      <Filter>event</Filter>
+      <Filter>old\event</Filter>
     </ClCompile>
     <ClCompile Include="event\input_event_builder.cpp">
-      <Filter>event</Filter>
+      <Filter>old\event</Filter>
     </ClCompile>
     <ClCompile Include="style\style_result.cpp">
-      <Filter>style</Filter>
+      <Filter>old\style</Filter>
     </ClCompile>
     <ClCompile Include="render\render_helper.cpp">
-      <Filter>render</Filter>
+      <Filter>old\render</Filter>
     </ClCompile>
     <ClCompile Include="render\render_target_cairo.cpp">
-      <Filter>render\cairo</Filter>
+      <Filter>old\render\cairo</Filter>
     </ClCompile>
     <ClCompile Include="render\render_engine.cpp">
-      <Filter>render</Filter>
+      <Filter>old\render</Filter>
     </ClCompile>
     <ClCompile Include="render\render_path_cairo.cpp">
-      <Filter>render\cairo</Filter>
-    </ClCompile>
-    <ClCompile Include="base\round_rect.cpp">
-      <Filter>base</Filter>
+      <Filter>old\render\cairo</Filter>
     </ClCompile>
     <ClCompile Include="render\render_image_cairo.cpp">
-      <Filter>render\cairo</Filter>
+      <Filter>old\render\cairo</Filter>
     </ClCompile>
     <ClCompile Include="ui\ui_document.cpp">
-      <Filter>ui</Filter>
+      <Filter>old\ui</Filter>
     </ClCompile>
     <ClCompile Include="ui\ui_element.cpp">
-      <Filter>ui</Filter>
+      <Filter>old\ui</Filter>
     </ClCompile>
     <ClCompile Include="ui\ui_hbox.cpp">
-      <Filter>ui</Filter>
+      <Filter>old\ui</Filter>
     </ClCompile>
     <ClCompile Include="ui\ui_styles.cpp">
-      <Filter>ui</Filter>
+      <Filter>old\ui</Filter>
     </ClCompile>
     <ClCompile Include="ui\ui_vbox.cpp">
-      <Filter>ui</Filter>
+      <Filter>old\ui</Filter>
     </ClCompile>
     <ClCompile Include="ui\ui_window.cpp">
-      <Filter>ui</Filter>
+      <Filter>old\ui</Filter>
     </ClCompile>
     <ClCompile Include="ui\ui_style_background.cpp">
-      <Filter>ui\style</Filter>
+      <Filter>old\ui\style</Filter>
     </ClCompile>
     <ClCompile Include="ui\ui_style_border.cpp">
-      <Filter>ui\style</Filter>
+      <Filter>old\ui\style</Filter>
     </ClCompile>
     <ClCompile Include="ui\hittest_result.cpp">
-      <Filter>ui\common</Filter>
+      <Filter>old\ui\common</Filter>
     </ClCompile>
     <ClCompile Include="framework\app.cpp">
-      <Filter>framework</Filter>
+      <Filter>old\framework</Filter>
     </ClCompile>
     <ClCompile Include="framework\widget.cpp">
-      <Filter>framework</Filter>
+      <Filter>old\framework</Filter>
     </ClCompile>
     <ClCompile Include="resource\resource_loader.cpp">
-      <Filter>resource</Filter>
+      <Filter>old\resource</Filter>
     </ClCompile>
     <ClCompile Include="resource\ui_parser.cpp">
-      <Filter>resource</Filter>
+      <Filter>old\resource</Filter>
     </ClCompile>
     <ClCompile Include="departed\image_file.cpp">
-      <Filter>departed</Filter>
+      <Filter>old\departed</Filter>
     </ClCompile>
     <ClCompile Include="departed\image_store.cpp">
-      <Filter>departed</Filter>
+      <Filter>old\departed</Filter>
     </ClCompile>
     <ClCompile Include="departed\lex_parser.cpp">
-      <Filter>departed</Filter>
+      <Filter>old\departed</Filter>
     </ClCompile>
     <ClCompile Include="departed\view.cpp">
-      <Filter>departed</Filter>
+      <Filter>old\departed</Filter>
     </ClCompile>
     <ClCompile Include="departed\view_background.cpp">
-      <Filter>departed</Filter>
+      <Filter>old\departed</Filter>
     </ClCompile>
     <ClCompile Include="departed\view_border.cpp">
-      <Filter>departed</Filter>
+      <Filter>old\departed</Filter>
     </ClCompile>
     <ClCompile Include="departed\view_container.cpp">
-      <Filter>departed</Filter>
+      <Filter>old\departed</Filter>
     </ClCompile>
     <ClCompile Include="departed\view_layout.cpp">
-      <Filter>departed</Filter>
+      <Filter>old\departed</Filter>
     </ClCompile>
     <ClCompile Include="ui\ui_event_handler.cpp">
-      <Filter>ui\common</Filter>
+      <Filter>old\ui\common</Filter>
     </ClCompile>
     <ClCompile Include="ui\ui_text.cpp">
-      <Filter>ui</Filter>
+      <Filter>old\ui</Filter>
     </ClCompile>
     <ClCompile Include="render\render_text_run.cpp">
-      <Filter>render\text</Filter>
+      <Filter>old\render\text</Filter>
     </ClCompile>
     <ClCompile Include="render\render_font_cairo.cpp">
-      <Filter>render\cairo</Filter>
+      <Filter>old\render\cairo</Filter>
+    </ClCompile>
+    <ClCompile Include="foundation\2D\color.cpp">
+      <Filter>foundation\2D</Filter>
+    </ClCompile>
+    <ClCompile Include="foundation\2D\inseting.cpp">
+      <Filter>foundation\2D</Filter>
+    </ClCompile>
+    <ClCompile Include="foundation\2D\matrix.cpp">
+      <Filter>foundation\2D</Filter>
+    </ClCompile>
+    <ClCompile Include="foundation\2D\point.cpp">
+      <Filter>foundation\2D</Filter>
+    </ClCompile>
+    <ClCompile Include="foundation\2D\rect.cpp">
+      <Filter>foundation\2D</Filter>
+    </ClCompile>
+    <ClCompile Include="foundation\2D\round_rect.cpp">
+      <Filter>foundation\2D</Filter>
+    </ClCompile>
+    <ClCompile Include="foundation\2D\size.cpp">
+      <Filter>foundation\2D</Filter>
+    </ClCompile>
+    <ClCompile Include="foundation\range.cpp">
+      <Filter>foundation</Filter>
+    </ClCompile>
+    <ClCompile Include="foundation\url.cpp">
+      <Filter>foundation</Filter>
+    </ClCompile>
+    <ClCompile Include="foundation\value\value.cpp">
+      <Filter>foundation\value</Filter>
+    </ClCompile>
+    <ClCompile Include="uikit\2D\win32_port.cpp">
+      <Filter>uikit\2D</Filter>
+    </ClCompile>
+    <ClCompile Include="foundation\string\string.cpp">
+      <Filter>foundation\string</Filter>
+    </ClCompile>
+    <ClCompile Include="foundation\string\icu_utf.cpp">
+      <Filter>foundation\string\private</Filter>
+    </ClCompile>
+    <ClCompile Include="uikit\css\css_length.cpp">
+      <Filter>uikit\style</Filter>
+    </ClCompile>
+    <ClCompile Include="uikit\common\ui_font.cpp">
+      <Filter>uikit\common</Filter>
+    </ClCompile>
+    <ClCompile Include="uikit\common\ui_attribute_string.cpp">
+      <Filter>uikit\common</Filter>
+    </ClCompile>
+    <ClCompile Include="uikit\render\cairo\render_font_cairo.cpp">
+      <Filter>uikit\render\cairo</Filter>
+    </ClCompile>
+    <ClCompile Include="uikit\render\cairo\render_path_cairo.cpp">
+      <Filter>uikit\render\cairo</Filter>
+    </ClCompile>
+    <ClCompile Include="uikit\widget\ui_view.cpp">
+      <Filter>uikit\widget</Filter>
+    </ClCompile>
+    <ClCompile Include="uikit\widget\ui_window.cpp">
+      <Filter>uikit\widget</Filter>
+    </ClCompile>
+    <ClCompile Include="uikit\widget\ui_platform_window.cpp">
+      <Filter>uikit\widget\private</Filter>
+    </ClCompile>
+    <ClCompile Include="uikit\render\ui_render_engine.cpp">
+      <Filter>uikit\render</Filter>
+    </ClCompile>
+    <ClCompile Include="uikit\ui_application.cpp">
+      <Filter>uikit</Filter>
+    </ClCompile>
+    <ClCompile Include="uikit\ui_responder.cpp">
+      <Filter>uikit</Filter>
+    </ClCompile>
+    <ClCompile Include="uikit\widget\ui_view_controller.cpp">
+      <Filter>uikit\widget</Filter>
+    </ClCompile>
+    <ClCompile Include="uikit\event\ui_event.cpp">
+      <Filter>uikit\event</Filter>
+    </ClCompile>
+    <ClCompile Include="uikit\event\ui_event_manager.cpp">
+      <Filter>uikit\event</Filter>
+    </ClCompile>
+    <ClCompile Include="uikit\event\ui_mouse.cpp">
+      <Filter>uikit\event</Filter>
+    </ClCompile>
+    <ClCompile Include="uikit\render\cairo\cairo_font_manager.cpp">
+      <Filter>uikit\render\cairo</Filter>
+    </ClCompile>
+    <ClCompile Include="uikit\render\cairo\cairo_render_engine.cpp">
+      <Filter>uikit\render\cairo</Filter>
+    </ClCompile>
+    <ClCompile Include="uikit\render\cairo\cairo_render_context.cpp">
+      <Filter>uikit\render\cairo</Filter>
+    </ClCompile>
+    <ClCompile Include="uikit\render\cairo\cairo_text_layout.cpp">
+      <Filter>uikit\render\cairo</Filter>
+    </ClCompile>
+    <ClCompile Include="uikit\widget\ui_label.cpp">
+      <Filter>uikit\widget</Filter>
+    </ClCompile>
+    <ClCompile Include="foundation\string\string_printf.cpp">
+      <Filter>foundation\string</Filter>
+    </ClCompile>
+    <ClCompile Include="uikit\common\ui_range.cpp">
+      <Filter>uikit\common</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -347,126 +462,84 @@
     <ClInclude Include="targetver.h">
       <Filter>build</Filter>
     </ClInclude>
-    <ClInclude Include="base\basictypes.h">
-      <Filter>base</Filter>
-    </ClInclude>
-    <ClInclude Include="base\scoped_ptr.h">
-      <Filter>base</Filter>
-    </ClInclude>
     <ClInclude Include="utils\utils.h">
-      <Filter>utils</Filter>
+      <Filter>old\utils</Filter>
     </ClInclude>
     <ClInclude Include="third_party\stb_image.h">
       <Filter>third_party</Filter>
     </ClInclude>
-    <ClInclude Include="base\ref_counted.h">
-      <Filter>base</Filter>
-    </ClInclude>
     <ClInclude Include="event\event.h">
-      <Filter>event</Filter>
+      <Filter>old\event</Filter>
     </ClInclude>
     <ClInclude Include="event\mouse_event.h">
-      <Filter>event</Filter>
+      <Filter>old\event</Filter>
     </ClInclude>
     <ClInclude Include="control\button.h">
-      <Filter>control</Filter>
+      <Filter>old\control</Filter>
     </ClInclude>
     <ClInclude Include="duiframework.h" />
     <ClInclude Include="event\key_event.h">
-      <Filter>event</Filter>
+      <Filter>old\event</Filter>
     </ClInclude>
     <ClInclude Include="render\uniscribe.h">
-      <Filter>render</Filter>
+      <Filter>old\render</Filter>
     </ClInclude>
     <ClInclude Include="control\window.h">
-      <Filter>control</Filter>
+      <Filter>old\control</Filter>
     </ClInclude>
     <ClInclude Include="event\focus_evnet.h">
-      <Filter>event</Filter>
+      <Filter>old\event</Filter>
     </ClInclude>
     <ClInclude Include="core\text.h">
-      <Filter>graphics</Filter>
+      <Filter>old\graphics</Filter>
     </ClInclude>
     <ClInclude Include="control\text_view.h">
-      <Filter>control</Filter>
+      <Filter>old\control</Filter>
     </ClInclude>
     <ClInclude Include="control\control_factory.h">
-      <Filter>control</Filter>
+      <Filter>old\control</Filter>
     </ClInclude>
     <ClInclude Include="third_party\tinyxml2.h">
       <Filter>third_party</Filter>
     </ClInclude>
-    <ClInclude Include="base\color.h">
-      <Filter>base</Filter>
-    </ClInclude>
-    <ClInclude Include="base\point.h">
-      <Filter>base</Filter>
-    </ClInclude>
-    <ClInclude Include="base\range.h">
-      <Filter>base</Filter>
-    </ClInclude>
-    <ClInclude Include="base\rect.h">
-      <Filter>base</Filter>
-    </ClInclude>
-    <ClInclude Include="base\size.h">
-      <Filter>base</Filter>
-    </ClInclude>
-    <ClInclude Include="base\base_defines.h">
-      <Filter>base</Filter>
-    </ClInclude>
-    <ClInclude Include="base\matrix.h">
-      <Filter>base</Filter>
-    </ClInclude>
     <ClInclude Include="render\render_context.h">
-      <Filter>render</Filter>
-    </ClInclude>
-    <ClInclude Include="base\value.h">
-      <Filter>base</Filter>
+      <Filter>old\render</Filter>
     </ClInclude>
     <ClInclude Include="render\image.h">
-      <Filter>render</Filter>
+      <Filter>old\render</Filter>
     </ClInclude>
     <ClInclude Include="render\render_object.h">
-      <Filter>render</Filter>
+      <Filter>old\render</Filter>
     </ClInclude>
     <ClInclude Include="control\window_builder.h">
-      <Filter>control</Filter>
-    </ClInclude>
-    <ClInclude Include="base\length.h">
-      <Filter>base</Filter>
+      <Filter>old\control</Filter>
     </ClInclude>
     <ClInclude Include="style\style_scanner.h">
-      <Filter>style</Filter>
+      <Filter>old\style</Filter>
     </ClInclude>
     <ClInclude Include="style\style_property.h">
-      <Filter>style</Filter>
+      <Filter>old\style</Filter>
     </ClInclude>
     <ClInclude Include="style\style_value.h">
-      <Filter>style</Filter>
+      <Filter>old\style</Filter>
     </ClInclude>
     <ClInclude Include="style\style_declaration.h">
-      <Filter>style</Filter>
+      <Filter>old\style</Filter>
     </ClInclude>
     <ClInclude Include="style\style_rule.h">
-      <Filter>style</Filter>
+      <Filter>old\style</Filter>
     </ClInclude>
     <ClInclude Include="style\style_selector.h">
-      <Filter>style</Filter>
+      <Filter>old\style</Filter>
     </ClInclude>
     <ClInclude Include="style\style_parser.h">
-      <Filter>style</Filter>
+      <Filter>old\style</Filter>
     </ClInclude>
     <ClInclude Include="style\style_sheet.h">
-      <Filter>style</Filter>
-    </ClInclude>
-    <ClInclude Include="base\inseting.h">
-      <Filter>base</Filter>
+      <Filter>old\style</Filter>
     </ClInclude>
     <ClInclude Include="render\render_box.h">
-      <Filter>render</Filter>
-    </ClInclude>
-    <ClInclude Include="base\url.h">
-      <Filter>base</Filter>
+      <Filter>old\render</Filter>
     </ClInclude>
     <ClInclude Include="third_party\gurl\gurl.h">
       <Filter>third_party\gurl</Filter>
@@ -507,170 +580,296 @@
     <ClInclude Include="third_party\gurl\url_common.h">
       <Filter>third_party\gurl</Filter>
     </ClInclude>
-    <ClInclude Include="utils\icu_utf.h">
-      <Filter>utils</Filter>
-    </ClInclude>
     <ClInclude Include="third_party\gurl\url_canon_internal_res.h">
       <Filter>third_party\gurl</Filter>
     </ClInclude>
     <ClInclude Include="render\render_widget.h">
-      <Filter>render</Filter>
+      <Filter>old\render</Filter>
     </ClInclude>
     <ClInclude Include="render\render_forward.h">
-      <Filter>render</Filter>
+      <Filter>old\render</Filter>
     </ClInclude>
     <ClInclude Include="render\render_include.h">
-      <Filter>render</Filter>
-    </ClInclude>
-    <ClInclude Include="base\font.h">
-      <Filter>base</Filter>
+      <Filter>old\render</Filter>
     </ClInclude>
     <ClInclude Include="event\event_forward.h">
-      <Filter>event</Filter>
+      <Filter>old\event</Filter>
     </ClInclude>
     <ClInclude Include="event\event_include.h">
-      <Filter>event</Filter>
+      <Filter>old\event</Filter>
     </ClInclude>
     <ClInclude Include="event\event_target.h">
-      <Filter>event</Filter>
+      <Filter>old\event</Filter>
     </ClInclude>
     <ClInclude Include="event\event_listener.h">
-      <Filter>event</Filter>
+      <Filter>old\event</Filter>
     </ClInclude>
     <ClInclude Include="event\event_dispatcher.h">
-      <Filter>event</Filter>
+      <Filter>old\event</Filter>
     </ClInclude>
     <ClInclude Include="event\event_path.h">
-      <Filter>event</Filter>
+      <Filter>old\event</Filter>
     </ClInclude>
     <ClInclude Include="event\input_event.h">
-      <Filter>event</Filter>
+      <Filter>old\event</Filter>
     </ClInclude>
     <ClInclude Include="event\input_event_builder.h">
-      <Filter>event</Filter>
+      <Filter>old\event</Filter>
     </ClInclude>
     <ClInclude Include="style\style_result.h">
-      <Filter>style</Filter>
+      <Filter>old\style</Filter>
     </ClInclude>
     <ClInclude Include="render\render_helper.h">
-      <Filter>render</Filter>
+      <Filter>old\render</Filter>
     </ClInclude>
     <ClInclude Include="render\render_target_cairo.h">
-      <Filter>render\cairo</Filter>
+      <Filter>old\render\cairo</Filter>
     </ClInclude>
     <ClInclude Include="render\render_engine.h">
-      <Filter>render</Filter>
+      <Filter>old\render</Filter>
     </ClInclude>
     <ClInclude Include="render\render_cairo_forward.h">
-      <Filter>render\cairo</Filter>
+      <Filter>old\render\cairo</Filter>
     </ClInclude>
     <ClInclude Include="render\render_path_cairo.h">
-      <Filter>render\cairo</Filter>
-    </ClInclude>
-    <ClInclude Include="base\round_rect.h">
-      <Filter>base</Filter>
-    </ClInclude>
-    <ClInclude Include="render\render_path.h">
-      <Filter>render</Filter>
-    </ClInclude>
-    <ClInclude Include="render\render_target.h">
-      <Filter>render</Filter>
+      <Filter>old\render\cairo</Filter>
     </ClInclude>
     <ClInclude Include="render\render_image.h">
-      <Filter>render</Filter>
+      <Filter>old\render</Filter>
     </ClInclude>
     <ClInclude Include="render\render_image_cairo.h">
-      <Filter>render\cairo</Filter>
+      <Filter>old\render\cairo</Filter>
     </ClInclude>
     <ClInclude Include="ui\ui_document.h">
-      <Filter>ui</Filter>
+      <Filter>old\ui</Filter>
     </ClInclude>
     <ClInclude Include="ui\ui_element.h">
-      <Filter>ui</Filter>
+      <Filter>old\ui</Filter>
     </ClInclude>
     <ClInclude Include="ui\ui_hbox.h">
-      <Filter>ui</Filter>
+      <Filter>old\ui</Filter>
     </ClInclude>
     <ClInclude Include="ui\ui_styles.h">
-      <Filter>ui</Filter>
+      <Filter>old\ui</Filter>
     </ClInclude>
     <ClInclude Include="ui\ui_vbox.h">
-      <Filter>ui</Filter>
+      <Filter>old\ui</Filter>
     </ClInclude>
     <ClInclude Include="ui\ui_window.h">
-      <Filter>ui</Filter>
+      <Filter>old\ui</Filter>
     </ClInclude>
     <ClInclude Include="ui\ui_style_border.h">
-      <Filter>ui\style</Filter>
+      <Filter>old\ui\style</Filter>
     </ClInclude>
     <ClInclude Include="ui\ui_style_background.h">
-      <Filter>ui\style</Filter>
+      <Filter>old\ui\style</Filter>
     </ClInclude>
     <ClInclude Include="ui\ui_constants.h">
-      <Filter>ui\common</Filter>
+      <Filter>old\ui\common</Filter>
     </ClInclude>
     <ClInclude Include="ui\hittest_result.h">
-      <Filter>ui\common</Filter>
+      <Filter>old\ui\common</Filter>
     </ClInclude>
     <ClInclude Include="framework\app.h">
-      <Filter>framework</Filter>
+      <Filter>old\framework</Filter>
     </ClInclude>
     <ClInclude Include="framework\widget.h">
-      <Filter>framework</Filter>
+      <Filter>old\framework</Filter>
     </ClInclude>
     <ClInclude Include="resource\resource_loader.h">
-      <Filter>resource</Filter>
+      <Filter>old\resource</Filter>
     </ClInclude>
     <ClInclude Include="resource\ui_parser.h">
-      <Filter>resource</Filter>
+      <Filter>old\resource</Filter>
     </ClInclude>
     <ClInclude Include="ui\ui_include.h">
-      <Filter>ui\common</Filter>
+      <Filter>old\ui\common</Filter>
     </ClInclude>
     <ClInclude Include="ui\ui_forward.h">
-      <Filter>ui\common</Filter>
+      <Filter>old\ui\common</Filter>
     </ClInclude>
     <ClInclude Include="departed\image_file.h">
-      <Filter>departed</Filter>
+      <Filter>old\departed</Filter>
     </ClInclude>
     <ClInclude Include="departed\image_store.h">
-      <Filter>departed</Filter>
+      <Filter>old\departed</Filter>
     </ClInclude>
     <ClInclude Include="departed\lex_parser.h">
-      <Filter>departed</Filter>
+      <Filter>old\departed</Filter>
     </ClInclude>
     <ClInclude Include="departed\view.h">
-      <Filter>departed</Filter>
+      <Filter>old\departed</Filter>
     </ClInclude>
     <ClInclude Include="departed\view_background.h">
-      <Filter>departed</Filter>
+      <Filter>old\departed</Filter>
     </ClInclude>
     <ClInclude Include="departed\view_border.h">
-      <Filter>departed</Filter>
+      <Filter>old\departed</Filter>
     </ClInclude>
     <ClInclude Include="departed\view_container.h">
-      <Filter>departed</Filter>
+      <Filter>old\departed</Filter>
     </ClInclude>
     <ClInclude Include="departed\view_layout.h">
-      <Filter>departed</Filter>
+      <Filter>old\departed</Filter>
     </ClInclude>
     <ClInclude Include="ui\ui_event_handler.h">
-      <Filter>ui\common</Filter>
+      <Filter>old\ui\common</Filter>
     </ClInclude>
     <ClInclude Include="ui\ui_text.h">
-      <Filter>ui</Filter>
+      <Filter>old\ui</Filter>
     </ClInclude>
     <ClInclude Include="render\render_types.h">
-      <Filter>render</Filter>
+      <Filter>old\render</Filter>
     </ClInclude>
     <ClInclude Include="render\render_text_run.h">
-      <Filter>render\text</Filter>
+      <Filter>old\render\text</Filter>
     </ClInclude>
     <ClInclude Include="render\render_font_cairo.h">
-      <Filter>render\cairo</Filter>
+      <Filter>old\render\cairo</Filter>
     </ClInclude>
     <ClInclude Include="render\render_font.h">
-      <Filter>render</Filter>
+      <Filter>old\render</Filter>
+    </ClInclude>
+    <ClInclude Include="foundation\foundation.h">
+      <Filter>foundation</Filter>
+    </ClInclude>
+    <ClInclude Include="foundation\base\ref_counted.h">
+      <Filter>foundation\base</Filter>
+    </ClInclude>
+    <ClInclude Include="foundation\base\scoped_ptr.h">
+      <Filter>foundation\base</Filter>
+    </ClInclude>
+    <ClInclude Include="foundation\2D\color.h">
+      <Filter>foundation\2D</Filter>
+    </ClInclude>
+    <ClInclude Include="foundation\2D\inseting.h">
+      <Filter>foundation\2D</Filter>
+    </ClInclude>
+    <ClInclude Include="foundation\2D\matrix.h">
+      <Filter>foundation\2D</Filter>
+    </ClInclude>
+    <ClInclude Include="foundation\2D\point.h">
+      <Filter>foundation\2D</Filter>
+    </ClInclude>
+    <ClInclude Include="foundation\2D\rect.h">
+      <Filter>foundation\2D</Filter>
+    </ClInclude>
+    <ClInclude Include="foundation\2D\round_rect.h">
+      <Filter>foundation\2D</Filter>
+    </ClInclude>
+    <ClInclude Include="foundation\2D\size.h">
+      <Filter>foundation\2D</Filter>
+    </ClInclude>
+    <ClInclude Include="foundation\range.h">
+      <Filter>foundation</Filter>
+    </ClInclude>
+    <ClInclude Include="foundation\url.h">
+      <Filter>foundation</Filter>
+    </ClInclude>
+    <ClInclude Include="foundation\value\value.h">
+      <Filter>foundation\value</Filter>
+    </ClInclude>
+    <ClInclude Include="foundation\basictypes.h">
+      <Filter>foundation</Filter>
+    </ClInclude>
+    <ClInclude Include="uikit\2D\win32_port.h">
+      <Filter>uikit\2D</Filter>
+    </ClInclude>
+    <ClInclude Include="uikit\2D\2D.h">
+      <Filter>uikit\2D</Filter>
+    </ClInclude>
+    <ClInclude Include="foundation\string\string.h">
+      <Filter>foundation\string</Filter>
+    </ClInclude>
+    <ClInclude Include="foundation\string\icu_utf.h">
+      <Filter>foundation\string\private</Filter>
+    </ClInclude>
+    <ClInclude Include="uikit\css\css_length.h">
+      <Filter>uikit\style</Filter>
+    </ClInclude>
+    <ClInclude Include="uikit\common\ui_font.h">
+      <Filter>uikit\common</Filter>
+    </ClInclude>
+    <ClInclude Include="uikit\common\ui_attribute_string.h">
+      <Filter>uikit\common</Filter>
+    </ClInclude>
+    <ClInclude Include="uikit\render\ui_render_path.h">
+      <Filter>uikit\render</Filter>
+    </ClInclude>
+    <ClInclude Include="uikit\render\cairo\render_font_cairo.h">
+      <Filter>uikit\render\cairo</Filter>
+    </ClInclude>
+    <ClInclude Include="uikit\render\cairo\render_path_cairo.h">
+      <Filter>uikit\render\cairo</Filter>
+    </ClInclude>
+    <ClInclude Include="uikit\widget\ui_view.h">
+      <Filter>uikit\widget</Filter>
+    </ClInclude>
+    <ClInclude Include="uikit\common\ui_constants.h">
+      <Filter>uikit\common</Filter>
+    </ClInclude>
+    <ClInclude Include="uikit\widget\ui_window.h">
+      <Filter>uikit\widget</Filter>
+    </ClInclude>
+    <ClInclude Include="uikit\widget\ui_platform_window.h">
+      <Filter>uikit\widget\private</Filter>
+    </ClInclude>
+    <ClInclude Include="uikit\render\ui_render_engine.h">
+      <Filter>uikit\render</Filter>
+    </ClInclude>
+    <ClInclude Include="uikit\ui_application.h">
+      <Filter>uikit</Filter>
+    </ClInclude>
+    <ClInclude Include="uikit\uikit.h">
+      <Filter>uikit</Filter>
+    </ClInclude>
+    <ClInclude Include="uikit\ui_applictaion_delegate.h">
+      <Filter>uikit</Filter>
+    </ClInclude>
+    <ClInclude Include="uikit\ui_responder.h">
+      <Filter>uikit</Filter>
+    </ClInclude>
+    <ClInclude Include="uikit\widget\ui_view_controller.h">
+      <Filter>uikit\widget</Filter>
+    </ClInclude>
+    <ClInclude Include="uikit\event\ui_event.h">
+      <Filter>uikit\event</Filter>
+    </ClInclude>
+    <ClInclude Include="uikit\event\ui_event_manager.h">
+      <Filter>uikit\event</Filter>
+    </ClInclude>
+    <ClInclude Include="uikit\event\ui_mouse.h">
+      <Filter>uikit\event</Filter>
+    </ClInclude>
+    <ClInclude Include="uikit\render\cairo\cairo_font_manager.h">
+      <Filter>uikit\render\cairo</Filter>
+    </ClInclude>
+    <ClInclude Include="uikit\render\cairo\cairo_render_engine.h">
+      <Filter>uikit\render\cairo</Filter>
+    </ClInclude>
+    <ClInclude Include="uikit\render\ui_render_context.h">
+      <Filter>uikit\render</Filter>
+    </ClInclude>
+    <ClInclude Include="uikit\render\cairo\cairo_forward.h">
+      <Filter>uikit\render\cairo</Filter>
+    </ClInclude>
+    <ClInclude Include="uikit\render\cairo\cairo_render_context.h">
+      <Filter>uikit\render\cairo</Filter>
+    </ClInclude>
+    <ClInclude Include="uikit\render\cairo\cairo_text_layout.h">
+      <Filter>uikit\render\cairo</Filter>
+    </ClInclude>
+    <ClInclude Include="uikit\render\ui_text_layout.h">
+      <Filter>uikit\render</Filter>
+    </ClInclude>
+    <ClInclude Include="uikit\widget\ui_label.h">
+      <Filter>uikit\widget</Filter>
+    </ClInclude>
+    <ClInclude Include="foundation\string\string_printf.h">
+      <Filter>foundation\string</Filter>
+    </ClInclude>
+    <ClInclude Include="uikit\common\ui_rang.h">
+      <Filter>uikit\common</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -27,8 +27,8 @@ namespace ui
 		virtual void DrawImage(const RenderImage *image, const Rect& dest) override;
 		virtual void DrawImage(const RenderImage *image, const Rect& src, const Rect& dest) override;
 
-		virtual void ShowGlyphs(const GlyphBuffer& buffer, const Font& font, Color color) override;
-		virtual void DrawText(const std::wstring& buffer, const Font& font, Color color) override;
+		virtual void ShowGlyphs(const GlyphBuffer& buffer, const UIFont& font, Color color) override;
+		virtual void DrawText(const std::wstring& buffer, const UIFont& font, Color color) override;
 
 		virtual void Trans(const Matrix& m) override;
 		virtual void PushState() override;

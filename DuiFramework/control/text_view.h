@@ -17,7 +17,7 @@ namespace ui
 		void SetEndEllipsis(bool v);
 		bool GetEndEllipsis();
 
-		void SetFont(const Font& font);
+		void SetFont(const UIFont& font);
 		void SetFont(const std::wstring& name, int size);
 
 		void SetTextColor(Color color);
@@ -41,7 +41,7 @@ namespace ui
 		TextFragment text_fragment_;
 		Rect text_rect_;
 
-		Font font_;
+		UIFont font_;
 		Color text_color_{ 0 };
 		HorizontalAlignment horizontal_alignment_{ ALIGN_LEFT };
 		VerticalAlignment vertical_alignment_{ ALIGN_TOP };

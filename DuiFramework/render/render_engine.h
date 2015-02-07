@@ -19,6 +19,6 @@ namespace ui
 			CreateRenderImage(const URL& path);
 
 		static scoped_refptr<RenderFont>
-			CreateRenderFont(const Font& font);
+			CreateRenderFont(const UIFont& font);
 	};
 }

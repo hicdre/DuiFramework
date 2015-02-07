@@ -34,7 +34,7 @@ namespace ui
 		return new RenderImageCairo((void*)contents.c_str(), contents.size());
 	}
 
-	scoped_refptr<RenderFont> RenderEngine::CreateRenderFont(const Font& font)
+	scoped_refptr<RenderFont> RenderEngine::CreateRenderFont(const UIFont& font)
 	{
 		return RenderFontCairo::Create(font);
 	}

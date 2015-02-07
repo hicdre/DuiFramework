@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Class">
+      <UniqueIdentifier>{05889788-5620-4f66-82c9-2221d4cd902e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -39,6 +42,15 @@
     <ClInclude Include="TestWidget.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="AppViewController.h">
+      <Filter>Class</Filter>
+    </ClInclude>
+    <ClInclude Include="AppView.h">
+      <Filter>Class</Filter>
+    </ClInclude>
+    <ClInclude Include="AppDelegate.h">
+      <Filter>Class</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -55,6 +67,15 @@
     </ClCompile>
     <ClCompile Include="TestWidget.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AppViewController.cpp">
+      <Filter>Class</Filter>
+    </ClCompile>
+    <ClCompile Include="AppView.cpp">
+      <Filter>Class</Filter>
+    </ClCompile>
+    <ClCompile Include="AppDelegate.cpp">
+      <Filter>Class</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

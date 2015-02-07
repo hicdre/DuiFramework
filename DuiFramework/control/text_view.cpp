@@ -44,7 +44,7 @@ namespace ui
 		return is_end_ellipsis_;
 	}
 
-	void TextView::SetFont(const Font& font)
+	void TextView::SetFont(const UIFont& font)
 	{
 		text_fragment_.SetFont(font);
 	}

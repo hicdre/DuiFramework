@@ -75,7 +75,7 @@ namespace ui
 
 	void App::UnInit()
 	{
-		Font::UnInitFont();
+		UIFont::UnInitFont();
 		
 		RenderEngine::UnintEngine();
 		Gdiplus::GdiplusShutdown(gdiplusToken_);

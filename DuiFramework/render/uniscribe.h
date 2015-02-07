@@ -51,7 +51,7 @@ namespace ui
 		struct UFragment
 		{
 			UColorRangeList colors;
-			Font font;
+			UIFont font;
 			std::wstring text;
 
 			UFragment(const std::wstring& t);
