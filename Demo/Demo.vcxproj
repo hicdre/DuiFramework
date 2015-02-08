@@ -93,6 +93,7 @@
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TestMouseEventWidget.h" />
     <ClInclude Include="TestWidget.h" />
+    <ClInclude Include="UIRangeTest.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AppDelegate.cpp" />
@@ -112,6 +113,7 @@
     <ClCompile Include="TestWidget.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="UIRangeTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Demo.rc" />

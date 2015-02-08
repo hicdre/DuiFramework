@@ -5,6 +5,7 @@
 #include "Demo.h"
 
 #include "AppDelegate.h"
+#include "UIRangeTest.h"
 //#include "utils/utils.h"
 
 //#include "DemoWidget.h"
@@ -47,6 +48,7 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 // 
 // //	delete window;
 
+	RunUikitRangeTest();
 	ui::UIApplication::Main(new AppDelegate);
 
 	return 0;

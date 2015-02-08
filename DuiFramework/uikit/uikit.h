@@ -5,3 +5,5 @@
 #include "uikit/widget/ui_view.h"
 #include "uikit/widget/ui_view_controller.h"
 #include "uikit/widget/ui_window.h"
+
+#include "uikit/common/ui_range.h"

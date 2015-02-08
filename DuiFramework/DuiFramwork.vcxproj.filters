@@ -868,7 +868,7 @@
     <ClInclude Include="foundation\string\string_printf.h">
       <Filter>foundation\string</Filter>
     </ClInclude>
-    <ClInclude Include="uikit\common\ui_rang.h">
+    <ClInclude Include="uikit\common\ui_range.h">
       <Filter>uikit\common</Filter>
     </ClInclude>
   </ItemGroup>

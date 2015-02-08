@@ -545,7 +545,7 @@
     <ClInclude Include="third_party\tinyxml2.h" />
     <ClInclude Include="uikit\2D\2D.h" />
     <ClInclude Include="uikit\2D\win32_port.h" />
-    <ClInclude Include="uikit\common\ui_rang.h" />
+    <ClInclude Include="uikit\common\ui_range.h" />
     <ClInclude Include="uikit\common\ui_attribute_string.h" />
     <ClInclude Include="uikit\common\ui_constants.h" />
     <ClInclude Include="uikit\common\ui_font.h" />

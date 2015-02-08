@@ -17,5 +17,6 @@ void AppView::InitWithBounds(const ui::Rect& rect)
 		Append(label);
 	}
 
+
 	
 }
