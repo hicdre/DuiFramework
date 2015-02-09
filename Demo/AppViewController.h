@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "AppView.h"
+#include "duiframework.h"
 
 class AppViewController : public ui::UIViewController
 {
@@ -7,7 +7,7 @@ public:
 	AppViewController();
 	~AppViewController();
 
-	virtual ui::UIView* view() override;
+	virtual void loadView() override;
 
 	virtual void viewWillAppear() override;
 

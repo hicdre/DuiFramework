@@ -42,6 +42,8 @@ namespace ui
 	void UIEventManager::HandleMouseEvent(UIWindow* window, UINT message, WPARAM w_param, LPARAM l_param)
 	{
 		UIEvent* event = BuildMouseEvent(window, message, w_param, l_param);
+		if (!event)
+			return;
 		UIView* view = window->HitTestWithEvent(mouse_->positionInWindow(), event);
 		mouse_->setView(view);
 		if (view)
@@ -124,6 +126,9 @@ namespace ui
 			event->setSubType(EVENT_MOUSE_UP);
 			mouse_->releaseButton(UIMouse::ButtonRight);
 			break;
+		case WM_MOUSEWHEEL:
+			//暂未实现
+			return NULL;
 		default:
 			assert(0);
 		}

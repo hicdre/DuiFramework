@@ -14,8 +14,10 @@ namespace ui
 
 		virtual UIResponder* NextResponder() const override;
 
-		virtual UIView* view() { return view_; }
+		virtual UIView* view();
 		virtual void setView(UIView* view) { view_ = view; }
+
+		virtual void loadView();
 
 		virtual void viewWillAppear();
 		virtual void viewDidAppear();

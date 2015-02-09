@@ -4,15 +4,20 @@
 namespace ui
 {
 	class UIWindowPrivate;
+	class UIViewController;
 	class UIWindow : public UIView
 	{
 	public:
 		UIWindow();
 		~UIWindow();
 
-		virtual void InitWithBounds(const Rect& rect) override;
+		UIViewController* rootViewController() const { return controller_; }
+		//@privte
+		void setRootViewController(UIViewController* controller) {
+			controller_ = controller;
+		}
 
-		virtual void InitSubViews();
+		virtual void InitWithBounds(const Rect& rect) override;
 
 		virtual UIResponder* NextResponder() const override;
 
@@ -23,6 +28,7 @@ namespace ui
 
 		virtual bool PointInsideWithEvent(const Point& pt, UIEvent* event) override;
 		void Close();
+		void AddToScreen();
 
 		Point ConvertFromScreen(const Point& pt);
 		Point ConvertToScreen(const Point& pt);
@@ -34,7 +40,12 @@ namespace ui
 		virtual void mouseRelease(UIMouse* mouse, UIEvent* event) override;
 	private:
 		void PrivateInit();
+		void willAppear();
+		void didAppear();
+		void willDisappear();
+		void didDisappear();
 		UIWindowPrivate* private_;
+		UIViewController* controller_;
 
 		bool may_start_drag_{ false };
 		Point last_position_;

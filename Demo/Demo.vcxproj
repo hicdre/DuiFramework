@@ -84,7 +84,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AppDelegate.h" />
-    <ClInclude Include="AppView.h" />
     <ClInclude Include="AppViewController.h" />
     <ClInclude Include="Demo.h" />
     <ClInclude Include="DemoWidget.h" />
@@ -97,7 +96,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AppDelegate.cpp" />
-    <ClCompile Include="AppView.cpp" />
     <ClCompile Include="AppViewController.cpp" />
     <ClCompile Include="Demo.cpp" />
     <ClCompile Include="DemoWidget.cpp">

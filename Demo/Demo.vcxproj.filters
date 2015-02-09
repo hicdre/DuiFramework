@@ -45,9 +45,6 @@
     <ClInclude Include="AppViewController.h">
       <Filter>Class</Filter>
     </ClInclude>
-    <ClInclude Include="AppView.h">
-      <Filter>Class</Filter>
-    </ClInclude>
     <ClInclude Include="AppDelegate.h">
       <Filter>Class</Filter>
     </ClInclude>
@@ -72,9 +69,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="AppViewController.cpp">
-      <Filter>Class</Filter>
-    </ClCompile>
-    <ClCompile Include="AppView.cpp">
       <Filter>Class</Filter>
     </ClCompile>
     <ClCompile Include="AppDelegate.cpp">

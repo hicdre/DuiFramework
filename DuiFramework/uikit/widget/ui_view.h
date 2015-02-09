@@ -125,10 +125,6 @@ namespace ui
 		void SetVisible(bool v);
 		bool isVisible() const { return visible_; }
 		virtual void OnVisibleChanged();
-	public:
-		//use internal
-		void setViewController(UIViewController* c) { controller_ = c; }
-
 
 
 	protected:
@@ -156,10 +152,12 @@ namespace ui
 		void RemoveChildren();
 		void RemoveChild(UIView* n);
 
-		void willAppear();
-		void didAppear();
-		void willDisappear();
-		void didDisappear();
+		void doWillMoveToWindow(UIWindow* window);
+		void doDidMoveToWindow(UIWindow* window);
+
+		virtual void willMoveToWindow(UIWindow* window);
+		virtual void didMoveToWindow(UIWindow* window);
+		
 		void setWindow(UIWindow* window);
 
 		//======================================
@@ -168,7 +166,6 @@ namespace ui
 // 		virtual void PaintContents(RenderContext* painter);
 
 		//UIDocumentPtr document_;
-		UIViewController* viewController() const { return controller_; }
 
 		UIWindow* window_{ NULL };
 		

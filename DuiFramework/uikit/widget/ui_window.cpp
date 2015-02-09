@@ -1,6 +1,7 @@
 ﻿#include "stdafx.h"
 #include "ui_window.h"
 #include "ui_platform_window.h"
+#include "ui_view_controller.h"
 
 #include "uikit/render/ui_render_engine.h"
 #include "uikit/render/ui_render_context.h"
@@ -89,24 +90,13 @@ namespace ui
 	void UIWindow::InitWithBounds(const Rect& rect)
 	{
 		UIView::InitWithBounds(rect);
-		InitSubViews();
-		PrivateInit();
+		window_ = this;
+
+		UIApplication::Get()->AddWindow(this);
 	}
 
 	void UIWindow::PrivateInit()
 	{
-		willAppear();
-		private_ = new UIWindowPrivate(this);
-		private_->Init(NULL, bounds_);
-		window_ = this;
-
-		UIApplication::Get()->AddWindow(this);
-
-		if (visible_)
-			private_->Show(SW_SHOWNORMAL);
-		private_->SetBounds(bounds_);
-
-		didAppear();
 	}
 
 
@@ -177,11 +167,6 @@ namespace ui
 			int dx = last_position_.x() - prev_position.x();
 			int dy = last_position_.y() - prev_position.y();
 			SetPosition(x() + dx, y() + dy);
-			std::cout << "drag move" << std::endl;
-		}
-		else
-		{
-			std::cout << "mouse move" << std::endl;
 		}
 	}
 
@@ -194,7 +179,6 @@ namespace ui
 		{
 			may_start_drag_ = true;
 			last_position_ = ConvertToScreen(mouse->positionInWindow());
-			std::cout << "drag may start" << std::endl;
 		}
 	}
 
@@ -206,9 +190,7 @@ namespace ui
 		{
 			may_start_drag_ = false;
 			private_->ReleaseCaptured();
-			std::cout << "release capture" << std::endl;
 		}
-		std::cout << "release mouse" << std::endl;
 	}
 
 	void UIWindow::OnPositionChanged()
@@ -218,9 +200,29 @@ namespace ui
 		private_->SetWindowPos(x(), y());
 	}
 
-	void UIWindow::InitSubViews()
+	void UIWindow::AddToScreen()
 	{
+		willAppear();
+		private_ = new UIWindowPrivate(this);
+		private_->Init(NULL, bounds_);
 
+		if (visible_)
+			private_->Show(SW_SHOWNORMAL);
+		private_->SetBounds(bounds_);
+
+		didAppear();
+	}
+
+	void UIWindow::willAppear()
+	{
+		if (controller_)
+			controller_->viewWillAppear();
+	}
+
+	void UIWindow::didAppear()
+	{
+		if (controller_)
+			controller_->viewDidAppear();
 	}
 
 }

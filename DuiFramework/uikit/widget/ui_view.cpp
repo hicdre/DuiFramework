@@ -643,95 +643,60 @@ namespace ui
 	void UIView::addSubView(UIView *view)
 	{
 		UIWindow* w = window();
-		if (w)
-			view->willAppear();
+		view->doWillMoveToWindow(w);
 
 		Append(view);
 		view->setWindow(w);
 
-		if (w)
-			view->didAppear();
-		
+		view->doDidMoveToWindow(w);
 	}
 
 	void UIView::removeFromParent()
 	{
 		UIWindow* w = window();
-		if (w)
-			willDisappear();
+		doWillMoveToWindow(NULL);
 
 		Detach();
 		setWindow(NULL);
-		didDisappear();
+		doDidMoveToWindow(NULL);
 	}
 
 	void UIView::insertSubViewAfter(UIView* view, UIView* viewAfter)
 	{
 		UIWindow* w = window();
-		if (w)
-			view->willAppear();
+		view->doWillMoveToWindow(w);
 
 		InsertAfterChild(viewAfter, view);
 		view->setWindow(w);
 
-		if (w)
-			view->didAppear();
+		view->doDidMoveToWindow(w);
 	}
 
 	void UIView::insertSubViewBefore(UIView* view, UIView* viewBefore)
 	{
 		UIWindow* w = window();
-		if (w)
-			view->willAppear();
+		view->doWillMoveToWindow(w);
 
 		InsertBeforeChild(viewBefore, view);
 		view->setWindow(w);
 
-		if (w)
-			view->didAppear();
+		view->doDidMoveToWindow(w);
 	}
 
-	void UIView::willAppear()
-	{
-		if (controller_)
-			controller_->viewWillAppear();
 
+	void UIView::doWillMoveToWindow(UIWindow* w)
+	{
 		for (UIView* obj = firstChild(); obj; obj = obj->nextSibling())
 		{
-			obj->willAppear();
+			obj->doWillMoveToWindow(w);
 		}
 	}
 
-	void UIView::didAppear()
+	void UIView::doDidMoveToWindow(UIWindow* w)
 	{
-		if (controller_)
-			controller_->viewDidAppear();
-
 		for (UIView* obj = firstChild(); obj; obj = obj->nextSibling())
 		{
-			obj->didAppear();
-		}
-	}
-
-	void UIView::willDisappear()
-	{
-		if (controller_)
-			controller_->viewWillDisappear();
-
-		for (UIView* obj = firstChild(); obj; obj = obj->nextSibling())
-		{
-			obj->willDisappear();
-		}
-	}
-
-	void UIView::didDisappear()
-	{
-		if (controller_)
-			controller_->viewDidDisappear();
-
-		for (UIView* obj = firstChild(); obj; obj = obj->nextSibling())
-		{
-			obj->didDisappear();
+			obj->doDidMoveToWindow(w);
 		}
 	}
 
@@ -742,6 +707,16 @@ namespace ui
 		{
 			obj->setWindow(window_);
 		}
+	}
+
+	void UIView::willMoveToWindow(UIWindow* window)
+	{
+
+	}
+
+	void UIView::didMoveToWindow(UIWindow* window)
+	{
+
 	}
 
 	// 	void UIView::SetText(UIText* text)

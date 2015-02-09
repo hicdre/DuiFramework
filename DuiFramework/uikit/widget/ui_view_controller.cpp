@@ -13,10 +13,6 @@ namespace ui
 
 	UIViewController::~UIViewController()
 	{
-		if (view_)
-		{
-			view_->setViewController(NULL);
-		}
 	}
 
 	UIResponder* UIViewController::NextResponder() const
@@ -29,11 +25,6 @@ namespace ui
 	{
 		UIResponder::Init();
 
-		UIView* v = view();
-		if (v)
-		{
-			v->setViewController(this);
-		}
 	}
 
 	void UIViewController::viewWillAppear()
@@ -54,6 +45,19 @@ namespace ui
 	void UIViewController::viewDidDisappear()
 	{
 
+	}
+
+	void UIViewController::loadView()
+	{
+
+	}
+
+	UIView* UIViewController::view()
+	{
+		if (view_ == NULL) {
+			loadView();
+		}
+		return view_;
 	}
 
 }
