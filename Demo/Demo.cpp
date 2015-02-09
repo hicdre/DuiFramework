@@ -48,7 +48,7 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 // 
 // //	delete window;
 
-	RunUikitRangeTest();
+//	RunUikitRangeTest();
 	ui::UIApplication::Main(new AppDelegate);
 
 	return 0;

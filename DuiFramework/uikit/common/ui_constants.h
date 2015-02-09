@@ -62,4 +62,50 @@ namespace ui
 		VerticalAlignmentBottom,
 	};
 
+	enum UIControlEvent {
+		UIControlEventMouseDown = 1 << 0,
+		UIControlEventTouchDownRepeat = 1 << 1,
+		UIControlEventTouchDragInside = 1 << 2,
+		UIControlEventTouchDragOutside = 1 << 3,
+		UIControlEventTouchDragEnter = 1 << 4,
+		UIControlEventTouchDragExit = 1 << 5,
+		UIControlEventClick = 1 << 6,
+		UIControlEventTouchUpOutside = 1 << 7,
+		UIControlEventTouchCancel = 1 << 8,
+
+		UIControlEventValueChanged = 1 << 12,
+
+		UIControlEventEditingDidBegin = 1 << 16,
+		UIControlEventEditingChanged = 1 << 17,
+		UIControlEventEditingDidEnd = 1 << 18,
+		UIControlEventEditingDidEndOnExit = 1 << 19,
+
+		UIControlEventAllTouchEvents = 0x00000FFF,
+		UIControlEventAllEditingEvents = 0x000F0000,
+		UIControlEventApplicationReserved = 0x0F000000,
+		UIControlEventSystemReserved = 0xF0000000,
+		UIControlEventAllEvents = 0xFFFFFFFF
+	};
+
+	enum UIControlContentHorizontalAlignment {
+		UIControlContentHorizontalAlignmentCenter = 0,
+		UIControlContentHorizontalAlignmentLeft = 1,
+		UIControlContentHorizontalAlignmentRight = 2,
+		UIControlContentHorizontalAlignmentFill = 3,
+	};
+
+	enum UIControlContentVerticalAlignment {
+		UIControlContentVerticalAlignmentCenter = 0,
+		UIControlContentVerticalAlignmentTop = 1,
+		UIControlContentVerticalAlignmentBottom = 2,
+		UIControlContentVerticalAlignmentFill = 3,
+	};
+
+	enum UIControlState{
+		UIControlStateNormal = 0,
+		UIControlStateHovered = 1 << 0, //鼠标进入控件
+		UIControlStatePressed = 1 << 1, //鼠标按下
+		UIControlStateDisabled = 1 << 2,
+		UIControlStateSelected = 1 << 3,
+	};
 }

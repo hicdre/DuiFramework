@@ -286,7 +286,7 @@ namespace ui
 
 	void UIView::SchedulePaintInRect(const Rect& r)
 	{
-		if (parent_) {
+		if (window_ && parent_) {
 			parent_->OnChildSchedulePaintInRect(this, r);
 		}
 	}
@@ -633,6 +633,115 @@ namespace ui
 
 
 		return true;
+	}
+
+	UIWindow* UIView::window() const
+	{
+		return window_;
+	}
+
+	void UIView::addSubView(UIView *view)
+	{
+		UIWindow* w = window();
+		if (w)
+			view->willAppear();
+
+		Append(view);
+		view->setWindow(w);
+
+		if (w)
+			view->didAppear();
+		
+	}
+
+	void UIView::removeFromParent()
+	{
+		UIWindow* w = window();
+		if (w)
+			willDisappear();
+
+		Detach();
+		setWindow(NULL);
+		didDisappear();
+	}
+
+	void UIView::insertSubViewAfter(UIView* view, UIView* viewAfter)
+	{
+		UIWindow* w = window();
+		if (w)
+			view->willAppear();
+
+		InsertAfterChild(viewAfter, view);
+		view->setWindow(w);
+
+		if (w)
+			view->didAppear();
+	}
+
+	void UIView::insertSubViewBefore(UIView* view, UIView* viewBefore)
+	{
+		UIWindow* w = window();
+		if (w)
+			view->willAppear();
+
+		InsertBeforeChild(viewBefore, view);
+		view->setWindow(w);
+
+		if (w)
+			view->didAppear();
+	}
+
+	void UIView::willAppear()
+	{
+		if (controller_)
+			controller_->viewWillAppear();
+
+		for (UIView* obj = firstChild(); obj; obj = obj->nextSibling())
+		{
+			obj->willAppear();
+		}
+	}
+
+	void UIView::didAppear()
+	{
+		if (controller_)
+			controller_->viewDidAppear();
+
+		for (UIView* obj = firstChild(); obj; obj = obj->nextSibling())
+		{
+			obj->didAppear();
+		}
+	}
+
+	void UIView::willDisappear()
+	{
+		if (controller_)
+			controller_->viewWillDisappear();
+
+		for (UIView* obj = firstChild(); obj; obj = obj->nextSibling())
+		{
+			obj->willDisappear();
+		}
+	}
+
+	void UIView::didDisappear()
+	{
+		if (controller_)
+			controller_->viewDidDisappear();
+
+		for (UIView* obj = firstChild(); obj; obj = obj->nextSibling())
+		{
+			obj->didDisappear();
+		}
+	}
+
+	void UIView::setWindow(UIWindow* window)
+	{
+		window_ = window;
+		for (UIView* obj = firstChild(); obj; obj = obj->nextSibling())
+		{
+			obj->setWindow(window_);
+		}
 	}
 
 	// 	void UIView::SetText(UIText* text)

@@ -12,6 +12,8 @@ namespace ui
 
 		virtual void InitWithBounds(const Rect& rect) override;
 
+		virtual void InitSubViews();
+
 		virtual UIResponder* NextResponder() const override;
 
 		virtual void SchedulePaintInRect(const Rect& r) override;
@@ -32,7 +34,7 @@ namespace ui
 		virtual void mouseRelease(UIMouse* mouse, UIEvent* event) override;
 	private:
 		void PrivateInit();
-		UIWindowPrivate* window_;
+		UIWindowPrivate* private_;
 
 		bool may_start_drag_{ false };
 		Point last_position_;

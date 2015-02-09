@@ -36,4 +36,24 @@ namespace ui
 		}
 	}
 
+	void UIViewController::viewWillAppear()
+	{
+
+	}
+
+	void UIViewController::viewDidAppear()
+	{
+
+	}
+
+	void UIViewController::viewWillDisappear()
+	{
+
+	}
+
+	void UIViewController::viewDidDisappear()
+	{
+
+	}
+
 }

@@ -25,7 +25,7 @@ namespace ui
 
 		//@property TextAlignment textAlignment;
 		TextAlignment textAlignment() const { return textAlignment_; }
-		void setVerticalAlignment(TextAlignment v);
+		void setTextAlignment(TextAlignment v);
 
 		//@property VerticalAlignment verticalAlignment;
 		VerticalAlignment verticalAlignment() const { return verticalAligment_; }
@@ -40,7 +40,7 @@ namespace ui
 		void layoutText();
 		std::wstring text_;
 		scoped_refptr<UIFont> font_;
-		Color textColor_;
+		Color textColor_{ Color_Black };
 		TextAlignment textAlignment_{ TextAlignmentLeft };
 		VerticalAlignment verticalAligment_{ VerticalAlignmentMiddle };
 		scoped_refptr<UITextLayout> textLayout_;

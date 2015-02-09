@@ -2,21 +2,33 @@
 #include "AppView.h"
 
 using namespace ui;
-void AppView::InitWithBounds(const ui::Rect& rect)
+void AppView::InitSubViews()
 {
-	UIWindow::InitWithBounds(rect);
-	SetBackgroundColor(ui::Color_Red);
+	UIWindow::InitSubViews();
+	SetBackgroundColor(ui::Color_Green);
+	const wchar_t* text = L"Label 测试";
+	//𪚥
+	for (int i = 0; i < 9; ++i)
 	{
 		UILabel* label = new UILabel;
-		label->InitWithBounds(Rect(20,50,100,12));
+		int row = i / 3;
+		int col = i % 3;
+		label->InitWithBounds(Rect(20 + col * 120, 20 + row * 50, 100, 40));
+		label->setText(text);
 		label->SetBackgroundColor(Color_White);
-		label->setTextColor(Color_Black);
-		label->setText(L"H我 𪚥天天");
 
+		label->setTextAlignment((TextAlignment)col);
+		label->setVerticalAlignment((VerticalAlignment)row);
 
-		Append(label);
+		addSubView(label);
 	}
 
+	{
+		UIButton* button = new UIButton;
+		button->InitWithBounds(Rect(20, 200, 100 , 40));
+		button->setTitleforState(L"Button 测试", UIControlStateNormal);
 
-	
+		addSubView(button);
+		
+	}
 }

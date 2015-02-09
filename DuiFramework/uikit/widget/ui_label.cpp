@@ -51,7 +51,7 @@ namespace ui
 		drawTextInRect(painter, textRectCached_);
 	}
 
-	void UILabel::setVerticalAlignment(TextAlignment v)
+	void UILabel::setTextAlignment(TextAlignment v)
 	{
 		if (textAlignment_ == v)
 			return;

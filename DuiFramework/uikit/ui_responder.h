@@ -1,10 +1,11 @@
 ﻿#pragma once
 #include "uikit/event/ui_event.h"
 #include "uikit/event/ui_mouse.h"
+#include "uikit/ui_object.h"
 
 namespace ui
 {
-	class UIResponder
+	class UIResponder : public UIObject
 	{
 	public:
 		UIResponder();

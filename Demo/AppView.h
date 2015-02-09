@@ -4,5 +4,6 @@
 class AppView : public ui::UIWindow
 {
 public:
-	virtual void InitWithBounds(const ui::Rect& rect) override;
+	virtual void InitSubViews() override;
+
 };

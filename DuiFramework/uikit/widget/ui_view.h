@@ -25,26 +25,16 @@ namespace ui
 
 		virtual UIResponder* NextResponder() const override;
 
+		//================================================
+		//Hierarchy
+		UIWindow* window() const;
 		UIView* parent() const;
 		bool HasChildren() const;
 		bool HasParent() const;
-
-		UIView* previousSibling() const;
-		UIView* nextSibling() const;
-		UIView* firstChild() const;
-		UIView* lastChild() const;
-
-		void AppendTo(UIView* parent);
-		void Detach();
-
-		void Append(UIView* child);
-		void Prepend(UIView* child);
-		void Remove(UIView* child);
-		void InsertAfterChild(UIView* ref, UIView* child);
-		void InsertBeforeChild(UIView* ref, UIView* child);
-
-		void RemoveChildren();
-		void RemoveChild(UIView* n);
+		virtual void addSubView(UIView *view);
+		virtual void removeFromParent();
+		virtual void insertSubViewAfter(UIView* view, UIView* viewAfter);
+		virtual void insertSubViewBefore(UIView* view, UIView* viewBefore);
 
 		//=================================================
 		//position
@@ -145,11 +135,40 @@ namespace ui
 		virtual ~UIView();
 		void Unlink(UIView* child);
 
+		//======================================
+		//view hierarchy
+		
+
+		UIView* previousSibling() const;
+		UIView* nextSibling() const;
+		UIView* firstChild() const;
+		UIView* lastChild() const;
+
+		void AppendTo(UIView* parent);
+		void Detach();
+
+		void Append(UIView* child);
+		void Prepend(UIView* child);
+		void Remove(UIView* child);
+		void InsertAfterChild(UIView* ref, UIView* child);
+		void InsertBeforeChild(UIView* ref, UIView* child);
+
+		void RemoveChildren();
+		void RemoveChild(UIView* n);
+
+		void willAppear();
+		void didAppear();
+		void willDisappear();
+		void didDisappear();
+		void setWindow(UIWindow* window);
+
+		//======================================
 		Rect ConvertRectFromChild(UIView* child, const Rect& r);
 // 		void PaintBackground(RenderContext* painter);
 // 		virtual void PaintContents(RenderContext* painter);
 
 		//UIDocumentPtr document_;
+		UIViewController* viewController() const { return controller_; }
 
 		UIWindow* window_{ NULL };
 		

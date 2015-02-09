@@ -289,7 +289,10 @@
     <ClCompile Include="uikit\render\cairo\cairo_font_manager.cpp" />
     <ClCompile Include="uikit\render\ui_render_engine.cpp" />
     <ClCompile Include="uikit\ui_application.cpp" />
+    <ClCompile Include="uikit\ui_object.cpp" />
     <ClCompile Include="uikit\ui_responder.cpp" />
+    <ClCompile Include="uikit\widget\ui_button.cpp" />
+    <ClCompile Include="uikit\widget\ui_control.cpp" />
     <ClCompile Include="uikit\widget\ui_label.cpp" />
     <ClCompile Include="uikit\widget\ui_platform_window.cpp" />
     <ClCompile Include="uikit\widget\ui_view.cpp" />
@@ -573,7 +576,10 @@
     <ClInclude Include="uikit\uikit.h" />
     <ClInclude Include="uikit\ui_application.h" />
     <ClInclude Include="uikit\ui_applictaion_delegate.h" />
+    <ClInclude Include="uikit\ui_object.h" />
     <ClInclude Include="uikit\ui_responder.h" />
+    <ClInclude Include="uikit\widget\ui_button.h" />
+    <ClInclude Include="uikit\widget\ui_control.h" />
     <ClInclude Include="uikit\widget\ui_label.h" />
     <ClInclude Include="uikit\widget\ui_platform_window.h" />
     <ClInclude Include="uikit\widget\ui_view.h" />

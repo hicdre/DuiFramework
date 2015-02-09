@@ -16,6 +16,11 @@ namespace ui
 
 		virtual UIView* view() { return view_; }
 		virtual void setView(UIView* view) { view_ = view; }
+
+		virtual void viewWillAppear();
+		virtual void viewDidAppear();
+		virtual void viewWillDisappear();
+		virtual void viewDidDisappear();
 	protected:
 		UIView* view_;
 	};

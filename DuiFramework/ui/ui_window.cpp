@@ -13,6 +13,7 @@ namespace ui
 		, event_handler_(this)
 	{
 		tag_ = "Window";
+		window_ = this;
 	}
 
 	UIWindow::~UIWindow()

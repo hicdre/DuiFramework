@@ -108,7 +108,7 @@ namespace ui
 
 		//utf8 => utf16
 
-		textBounds_.SetSize(extents.width, extents.height);
+		textBounds_.SetSize(extents.width, font_->font_size());
 	}
 
 	cairo_scaled_font_t* UICairoTextLayout::InitCairoFont()

@@ -454,6 +454,15 @@
     <ClCompile Include="uikit\common\ui_range.cpp">
       <Filter>uikit\common</Filter>
     </ClCompile>
+    <ClCompile Include="uikit\widget\ui_control.cpp">
+      <Filter>uikit\widget</Filter>
+    </ClCompile>
+    <ClCompile Include="uikit\ui_object.cpp">
+      <Filter>uikit</Filter>
+    </ClCompile>
+    <ClCompile Include="uikit\widget\ui_button.cpp">
+      <Filter>uikit\widget</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -870,6 +879,15 @@
     </ClInclude>
     <ClInclude Include="uikit\common\ui_range.h">
       <Filter>uikit\common</Filter>
+    </ClInclude>
+    <ClInclude Include="uikit\widget\ui_control.h">
+      <Filter>uikit\widget</Filter>
+    </ClInclude>
+    <ClInclude Include="uikit\ui_object.h">
+      <Filter>uikit</Filter>
+    </ClInclude>
+    <ClInclude Include="uikit\widget\ui_button.h">
+      <Filter>uikit\widget</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

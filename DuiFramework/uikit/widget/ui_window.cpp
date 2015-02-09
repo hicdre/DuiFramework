@@ -70,51 +70,56 @@ namespace ui
 	};
 
 	UIWindow::UIWindow()
-		: window_(NULL)
+		: private_(NULL)
 	{
-
+		
 	}
 
 	UIWindow::~UIWindow()
 	{
 		UIApplication::Get()->RemoveWindow(this);
 
-		if (window_)
+		if (private_)
 		{
-			delete window_;
-			window_ = NULL;
+			delete private_;
+			private_ = NULL;
 		}
 	}
 
 	void UIWindow::InitWithBounds(const Rect& rect)
 	{
 		UIView::InitWithBounds(rect);
+		InitSubViews();
 		PrivateInit();
 	}
 
 	void UIWindow::PrivateInit()
 	{
-		window_ = new UIWindowPrivate(this);
-		window_->Init(NULL, bounds_);
+		willAppear();
+		private_ = new UIWindowPrivate(this);
+		private_->Init(NULL, bounds_);
+		window_ = this;
 
 		UIApplication::Get()->AddWindow(this);
 
 		if (visible_)
-			window_->Show(SW_SHOWNORMAL);
-		window_->SetBounds(bounds_);
+			private_->Show(SW_SHOWNORMAL);
+		private_->SetBounds(bounds_);
+
+		didAppear();
 	}
 
 
 
 	void UIWindow::SchedulePaintInRect(const Rect& r)
 	{
-		if (!r.IsEmpty())
-			window_->InvalidateRect(r);
+		if (!r.IsEmpty() && private_)
+			private_->InvalidateRect(r);
 	}
 
 	void UIWindow::Close()
 	{
-		window_->Close();
+		private_->Close();
 	}
 
 	UIResponder* UIWindow::NextResponder() const
@@ -125,9 +130,9 @@ namespace ui
 	void UIWindow::OnVisibleChanged()
 	{
 		if (visible_)
-			window_->Show(SW_SHOWNORMAL);
+			private_->Show(SW_SHOWNORMAL);
 		else
-			window_->Hide();
+			private_->Hide();
 	}
 
 	Point UIWindow::ConvertFromScreen(const Point& pt)
@@ -143,9 +148,9 @@ namespace ui
 	void UIWindow::SetCursor(CursorId id)
 	{
 		if (id == Cursor_Arrow)
-			window_->SetCursor(::LoadCursor(NULL, IDC_ARROW));
+			private_->SetCursor(::LoadCursor(NULL, IDC_ARROW));
 		else if (id == Cursor_Hand)
-			window_->SetCursor(::LoadCursor(NULL, IDC_HAND));
+			private_->SetCursor(::LoadCursor(NULL, IDC_HAND));
 	}
 
 
@@ -166,7 +171,7 @@ namespace ui
 
 		if (may_start_drag_)
 		{
-			window_->SetCaptured();
+			private_->SetCaptured();
 			Point prev_position = last_position_;
 			last_position_ = ConvertToScreen(mouse->positionInWindow());
 			int dx = last_position_.x() - prev_position.x();
@@ -200,7 +205,7 @@ namespace ui
 		if (mouse->changedButton() == UIMouse::ButtonLeft)
 		{
 			may_start_drag_ = false;
-			window_->ReleaseCaptured();
+			private_->ReleaseCaptured();
 			std::cout << "release capture" << std::endl;
 		}
 		std::cout << "release mouse" << std::endl;
@@ -210,7 +215,12 @@ namespace ui
 	{
 		UIView::OnPositionChanged();
 
-		window_->SetWindowPos(x(), y());
+		private_->SetWindowPos(x(), y());
+	}
+
+	void UIWindow::InitSubViews()
+	{
+
 	}
 
 }

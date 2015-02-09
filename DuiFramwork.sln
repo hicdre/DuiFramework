@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30110.0
+VisualStudioVersion = 12.0.30501.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DuiFramwork", "DuiFramework\DuiFramwork.vcxproj", "{9CDD229B-DBBF-469A-A98E-7C1B01044E2B}"
 EndProject
@@ -12,6 +12,8 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cairo", "DuiFramework\cairo.vcxproj", "{8C850CD6-6F64-4693-9906-A01C664ABB6C}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cairo_demo", "cairo_demo\cairo_demo.vcxproj", "{390C8FE9-80BE-4128-AB39-97977A08B5E9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3rdParty", "3rdParty", "{2AEFC8D3-9FA4-4BB4-8518-1C031AF55A7A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -42,5 +44,10 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{80CA82AA-44A1-4773-8844-3DFDCD356468} = {2AEFC8D3-9FA4-4BB4-8518-1C031AF55A7A}
+		{8C850CD6-6F64-4693-9906-A01C664ABB6C} = {2AEFC8D3-9FA4-4BB4-8518-1C031AF55A7A}
+		{390C8FE9-80BE-4128-AB39-97977A08B5E9} = {2AEFC8D3-9FA4-4BB4-8518-1C031AF55A7A}
 	EndGlobalSection
 EndGlobal

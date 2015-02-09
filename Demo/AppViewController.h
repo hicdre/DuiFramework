@@ -8,4 +8,12 @@ public:
 	~AppViewController();
 
 	virtual ui::UIView* view() override;
+
+	virtual void viewWillAppear() override;
+
+	void buttonClicked();
+
+
+protected:
+
 };
