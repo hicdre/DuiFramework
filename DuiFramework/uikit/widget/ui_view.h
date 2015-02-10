@@ -126,20 +126,17 @@ namespace ui
 		bool isVisible() const { return visible_; }
 		virtual void OnVisibleChanged();
 
-
+		//@private
+		UIView* previousSibling() const;
+		UIView* nextSibling() const;
+		UIView* firstChild() const;
+		UIView* lastChild() const;
 	protected:
 		virtual ~UIView();
 		void Unlink(UIView* child);
 
 		//======================================
 		//view hierarchy
-		
-
-		UIView* previousSibling() const;
-		UIView* nextSibling() const;
-		UIView* firstChild() const;
-		UIView* lastChild() const;
-
 		void AppendTo(UIView* parent);
 		void Detach();
 

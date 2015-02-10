@@ -35,6 +35,8 @@ namespace ui
 
 		void SetCursor(CursorId id);
 
+		virtual void OnPaint(UIRenderContext* painter) override;
+
 		virtual void mouseMove(UIMouse* mouse, UIEvent* event) override;
 		virtual void mousePress(UIMouse* mouse, UIEvent* event) override;
 		virtual void mouseRelease(UIMouse* mouse, UIEvent* event) override;

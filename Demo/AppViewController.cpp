@@ -50,6 +50,10 @@ void AppViewController::loadView()
 		UIButton* button = new UIButton;
 		button->InitWithBounds(Rect(20, 200, 100, 40));
 		button->setTitleforState(L"Button 测试", UIControlStateNormal);
+		button->setTitleforState(L"Button Hovered", UIControlStateHovered);
+		button->setTitleforState(L"Button Pressed", UIControlStatePressed);
+		button->setTitleColorForState(Color_Black, UIControlStateNormal);
+		button->SetBackgroundColor(Color_White);
 		button->addTargetForControlEvents(this, "buttonClicked", UIControlEventClick);
 
 		window->addSubView(button);

@@ -306,20 +306,14 @@ namespace ui
 	{
 		UIScopedPainter helper(painter, Matrix(1.0, 0, 0, 1.0, r.x(), r.y()));
 		OnPaint(painter);
-
-		for (UIView* obj = firstChild(); obj; obj = obj->nextSibling())
-		{
-			if (obj->isVisible())
-				obj->DoPaint(painter, obj->bounds());
-		}
 	}
 
 
 	void UIView::OnPaint(UIRenderContext* painter)
 	{
-		if (background_color_ == Color_Transparent)
-			return;
-		painter->FillRect(GetLocalBounds(), background_color_);
+// 		if (background_color_ == Color_Transparent)
+// 			return;
+// 		painter->FillRect(GetLocalBounds(), background_color_);
 // 		Rect rect(GetLocalBounds());
 // 		UIBorderPainter borderPainter(rect, styles()->borders(), painter);
 // 
@@ -334,6 +328,7 @@ namespace ui
 // 			ScopedPainter helper(painter, Matrix(1.0, 0, 0, 1.0, rc.x(), rc.y()));
 // 			PaintContents(painter);
 // 		}
+		
 	}
 
 
@@ -686,6 +681,7 @@ namespace ui
 
 	void UIView::doWillMoveToWindow(UIWindow* w)
 	{
+		willMoveToWindow(w);
 		for (UIView* obj = firstChild(); obj; obj = obj->nextSibling())
 		{
 			obj->doWillMoveToWindow(w);
@@ -694,6 +690,7 @@ namespace ui
 
 	void UIView::doDidMoveToWindow(UIWindow* w)
 	{
+		didMoveToWindow(w);
 		for (UIView* obj = firstChild(); obj; obj = obj->nextSibling())
 		{
 			obj->doDidMoveToWindow(w);

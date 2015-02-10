@@ -58,11 +58,11 @@ namespace ui
 		State s = UIControlStateNormal;
 		if (!isEnabled())
 			s |= UIControlStateDisabled;
-		if (!isSelected())
+		if (isSelected())
 			s |= UIControlStateSelected;
-		if (!isHovered())
+		if (isHovered())
 			s |= UIControlStateHovered;
-		if (!isPressed())
+		if (isPressed())
 			s |= UIControlStatePressed;
 		return s;
 	}
@@ -128,6 +128,21 @@ namespace ui
 	void UIControl::OnPressedChanged()
 	{
 
+	}
+
+	bool UIControl::beginTrackingMouse(UIMouse* mouse, UIEvent* event)
+	{
+		return true;
+	}
+
+	void UIControl::endTrackingMouse(UIMouse* mouse, UIEvent* event)
+	{
+
+	}
+
+	bool UIControl::continuTrackingMouse(UIMouse* mouse, UIEvent* event)
+	{
+		return true;
 	}
 
 }

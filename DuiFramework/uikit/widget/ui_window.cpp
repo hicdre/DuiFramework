@@ -225,4 +225,14 @@ namespace ui
 			controller_->viewDidAppear();
 	}
 
+	void UIWindow::OnPaint(UIRenderContext* painter)
+	{
+		painter->FillRect(GetLocalBounds(), background_color_);
+		for (UIView* obj = firstChild(); obj; obj = obj->nextSibling())
+		{
+			if (obj->isVisible())
+				obj->DoPaint(painter, obj->bounds());
+		}
+	}
+
 }

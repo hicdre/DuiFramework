@@ -2,9 +2,11 @@
 #include "foundation/foundation.h"
 #include "uikit/event/ui_event.h"
 #include "uikit/event/ui_mouse.h"
+#include <unordered_set>
 namespace ui
 {
 	class UIWindow;
+	class UIControl;
 	class UIEventManager
 	{
 	public:
@@ -37,5 +39,7 @@ namespace ui
 
 		Point last_mouse_position_;
 		scoped_ptr<UIMouse> mouse_;
+
+		std::unordered_set<UIControl*> tracking_controls_;
 	};
 }

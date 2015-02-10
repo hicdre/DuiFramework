@@ -1,6 +1,7 @@
 ﻿#include "stdafx.h"
 #include "ui_event_manager.h"
 #include "uikit/widget/ui_window.h"
+#include "uikit/widget/ui_control.h"
 
 namespace ui
 {
@@ -46,10 +47,27 @@ namespace ui
 			return;
 		UIView* view = window->HitTestWithEvent(mouse_->positionInWindow(), event);
 		mouse_->setView(view);
+		std::unordered_set<UIControl*> newTrackingControls;
 		if (view)
 		{
 			for (UIResponder* responder = view; responder; responder = responder->NextResponder())
 			{
+				UIControl* control = dynamic_cast<UIControl*>(responder);
+				if (control)
+				{
+					bool tracking = false;
+					if (!control->isHovered()) {
+						tracking = control->beginTrackingMouse(mouse_.get(), event);
+					}
+					else {
+						tracking = control->continuTrackingMouse(mouse_.get(), event);
+					}
+					if (tracking) {
+						control->setHovered(tracking);
+						newTrackingControls.insert(control);
+					}
+				}
+
 				switch (event->subType())
 				{
 				case EVENT_MOUSE_MOVE:
@@ -67,7 +85,29 @@ namespace ui
 			}
 			window->SetCursor(mouse_->cursor());
 		}
-		
+
+		for (UIControl* oldTrackingControl : tracking_controls_)
+		{
+			if (newTrackingControls.count(oldTrackingControl))
+				continue;
+
+			
+			if (oldTrackingControl->isPressed()) {
+				if (mouse_->isLeftPressed()
+					&& oldTrackingControl->continuTrackingMouse(mouse_.get(), event)) {
+						newTrackingControls.insert(oldTrackingControl);
+				} else {
+					oldTrackingControl->setPressed(false);
+					oldTrackingControl->setHovered(false);
+					oldTrackingControl->endTrackingMouse(mouse_.get(), event);
+				}
+			}
+			else {
+				oldTrackingControl->setHovered(false);
+				oldTrackingControl->endTrackingMouse(mouse_.get(), event);
+			}
+		}
+		tracking_controls_.swap(newTrackingControls);
 	}
 
 	UIEvent* UIEventManager::BuildMouseEvent(UIWindow* window,

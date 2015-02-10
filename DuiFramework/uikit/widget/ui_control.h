@@ -36,6 +36,10 @@ namespace ui
 			return contentHorizontalAlignment_;
 		}
 		void setContentHorizontalAlignment(UIControlContentHorizontalAlignment v);
+
+		virtual bool beginTrackingMouse(UIMouse* mouse, UIEvent* event);
+		virtual bool continuTrackingMouse(UIMouse* mouse, UIEvent* event);
+		virtual void endTrackingMouse(UIMouse* mouse, UIEvent* event);
 	protected:
 		virtual void OnEnabledChanged();
 		virtual void OnSelectedChanged();

@@ -45,7 +45,8 @@ namespace ui
 
 	void UILabel::OnPaint(UIRenderContext* painter)
 	{
-		UIView::OnPaint(painter);
+		if (background_color_ != Color_Transparent)
+			painter->FillRect(GetLocalBounds(), background_color_);
 
 		layoutText();
 		drawTextInRect(painter, textRectCached_);
