@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="dependency">
+      <UniqueIdentifier>{39b52bb0-6cf7-4e10-9237-16021e2f86f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="class">
+      <UniqueIdentifier>{45317c55-ad78-4bcd-842c-68b94bc680a9}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>dependency</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>dependency</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="Unittest.cpp">
+      <Filter>dependency</Filter>
+    </ClCompile>
+    <ClCompile Include="UIRangeTest.cpp">
+      <Filter>class</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

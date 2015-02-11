@@ -41,11 +41,13 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IntDir>$(ProjectDir)..\Build\$(Configuration)\$(ProjectName)\Obj\</IntDir>
-    <OutDir>$(ProjectDir)..\Build\$(Configuration)\Bin\</OutDir>
+    <IntDir>$(SolutionDir)Build\$(Configuration)\Obj\$(ProjectName)\</IntDir>
+    <OutDir>$(SolutionDir)Build\$(Configuration)\Bin\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
+    <IntDir>$(SolutionDir)Build\$(Configuration)\Obj\$(ProjectName)\</IntDir>
+    <OutDir>$(SolutionDir)Build\$(Configuration)\Bin\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -92,7 +94,6 @@
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TestMouseEventWidget.h" />
     <ClInclude Include="TestWidget.h" />
-    <ClInclude Include="UIRangeTest.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AppDelegate.cpp" />
@@ -111,7 +112,6 @@
     <ClCompile Include="TestWidget.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="UIRangeTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Demo.rc" />
@@ -121,14 +121,8 @@
     <Image Include="small.ico" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DuiFramework\cairo.vcxproj">
-      <Project>{8c850cd6-6f64-4693-9906-a01c664abb6c}</Project>
-    </ProjectReference>
     <ProjectReference Include="..\DuiFramework\DuiFramwork.vcxproj">
       <Project>{9cdd229b-dbbf-469a-a98e-7c1b01044e2b}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\DuiFramework\Pixman.vcxproj">
-      <Project>{80ca82aa-44a1-4773-8844-3dfdcd356468}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

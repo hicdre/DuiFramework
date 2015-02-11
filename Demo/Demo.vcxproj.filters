@@ -48,9 +48,6 @@
     <ClInclude Include="AppDelegate.h">
       <Filter>Class</Filter>
     </ClInclude>
-    <ClInclude Include="UIRangeTest.h">
-      <Filter>Class</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -72,9 +69,6 @@
       <Filter>Class</Filter>
     </ClCompile>
     <ClCompile Include="AppDelegate.cpp">
-      <Filter>Class</Filter>
-    </ClCompile>
-    <ClCompile Include="UIRangeTest.cpp">
       <Filter>Class</Filter>
     </ClCompile>
   </ItemGroup>

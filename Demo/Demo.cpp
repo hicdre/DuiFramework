@@ -5,7 +5,6 @@
 #include "Demo.h"
 
 #include "AppDelegate.h"
-#include "UIRangeTest.h"
 //#include "utils/utils.h"
 
 //#include "DemoWidget.h"

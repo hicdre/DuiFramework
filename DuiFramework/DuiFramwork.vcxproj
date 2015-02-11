@@ -41,13 +41,13 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>$(ProjectDir)..\Build\$(Configuration)\Lib\</OutDir>
-    <IntDir>$(ProjectDir)..\Build\$(Configuration)\$(ProjectName)\Obj\</IntDir>
+    <OutDir>$(SolutionDir)Build\$(Configuration)\Lib\</OutDir>
+    <IntDir>$(SolutionDir)Build\$(Configuration)\Obj\$(ProjectName)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>$(ProjectDir)..\Build\$(Configuration)\Lib\</OutDir>
-    <IntDir>$(ProjectDir)..\Build\$(Configuration)\$(ProjectName)\Obj\</IntDir>
+    <OutDir>$(SolutionDir)Build\$(Configuration)\Lib\</OutDir>
+    <IntDir>$(SolutionDir)Build\$(Configuration)\Obj\$(ProjectName)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -630,6 +630,19 @@
     <ClInclude Include="utils\utils.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="cairo.vcxproj">
+      <Project>{8c850cd6-6f64-4693-9906-a01c664abb6c}</Project>
+      <Private>false</Private>
+      <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
+      <CopyLocalSatelliteAssemblies>false</CopyLocalSatelliteAssemblies>
+      <LinkLibraryDependencies>true</LinkLibraryDependencies>
+      <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
+    </ProjectReference>
+    <ProjectReference Include="Pixman.vcxproj">
+      <Project>{80ca82aa-44a1-4773-8844-3dfdcd356468}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
