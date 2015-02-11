@@ -58,7 +58,7 @@ namespace ui
 	scoped_refptr<UIString> UIString::str(const char* str)
 	{
 		scoped_refptr<UIString> ret(new UIString);
-		ret->init(MultiByteToWide(str));
+		ret->init(str);
 		return ret;
 	}
 
@@ -67,10 +67,9 @@ namespace ui
 		scoped_refptr<UIString> ret(new UIString);
 		va_list ap;
 		va_start(ap, format);
-		std::string utf8;
-		StringAppendV(&utf8, format, ap);
+		ret->initWithFormatV(format, ap);
 		va_end(ap);
-		ret->init(MultiByteToWide(utf8));
+		
 		return ret;
 	}
 
@@ -79,7 +78,7 @@ namespace ui
 		scoped_refptr<UIString> ret(new UIString);
 		va_list ap;
 		va_start(ap, format);
-		StringAppendV(&ret->utf16_, format, ap);
+		ret->initWithFormatV(format, ap);
 		va_end(ap);
 		return ret;
 	}
@@ -91,7 +90,6 @@ namespace ui
 		ret->init(str->utf16_);
 		return ret;
 	}
-
 
 	UIString::UIString()
 	{
@@ -106,6 +104,58 @@ namespace ui
 	void UIString::init(const std::wstring& s)
 	{
 		utf16_ = s;
+	}
+
+	void UIString::init(const wchar_t* str)
+	{
+		if (str == NULL) {
+			assert(0);
+			return;
+		}
+		utf16_ = str;
+	}
+
+	void UIString::init(const char* str)
+	{
+		if (str == NULL) {
+			assert(0);
+			return;
+		}
+		utf16_ = MultiByteToWide(str);
+	}
+
+	void UIString::initWithFormat(const char* format, ...)
+	{
+		va_list ap;
+		va_start(ap, format);
+		initWithFormatV(format, ap);
+		va_end(ap);
+	}
+
+	void UIString::initWithFormat(const wchar_t* format, ...)
+	{
+		va_list ap;
+		va_start(ap, format);
+		initWithFormatV(format, ap);
+		va_end(ap);
+	}
+
+	void UIString::initWithFormatV(const char* format, va_list ap)
+	{
+		std::string utf8;
+		StringAppendV(&utf8, format, ap);
+		utf16_ = MultiByteToWide(utf8);
+	}
+
+	void UIString::initWithFormatV(const wchar_t* format, va_list ap)
+	{
+		utf16_.clear();
+		StringAppendV(&utf16_, format, ap);
+	}
+
+	void UIString::initWithString(UIString* str)
+	{
+		utf16_ = str->utf16_;
 	}
 
 }
