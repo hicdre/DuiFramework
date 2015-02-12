@@ -72,7 +72,11 @@ namespace ui
 		cairo_scaled_font_t* sf = InitCairoFont();
 		cairoContext->InitColor(color);
 		cairo_set_scaled_font(cr, sf);
+
+		cairo_save(cr);
+		cairo_translate(cr, 0, -offset_);
 		cairo_show_glyphs(cr, layoutGlyphs_, layoutGlyphsNum_);
+		cairo_restore(cr);
 	}
 
 	void UICairoTextLayout::CleanLayoutResult()
@@ -94,21 +98,70 @@ namespace ui
 		std::string utf8_contents = WideToMultiByte(contents_);
 
 		//获取整体布局大小
-		cairo_text_extents_t extents;
-		cairo_scaled_font_text_extents(sf, utf8_contents.c_str(), &extents);
+// 		cairo_text_extents_t extents;
+// 		cairo_scaled_font_text_extents(sf, utf8_contents.c_str(), &extents);
 
 		//获取字形
 		cairo_text_cluster_t *clusters = NULL;
 		int numClusters;
+		cairo_glyph_t *layoutGlyphs = NULL;
+		int layoutGlyphsNum;
 		cairo_text_cluster_flags_t cluster_flags;
-		cairo_scaled_font_text_to_glyphs(sf, 0, extents.height,
+		cairo_scaled_font_text_to_glyphs(sf, 0, 0,
 			utf8_contents.c_str(), utf8_contents.size(),
-			&layoutGlyphs_, &layoutGlyphsNum_,
+			&layoutGlyphs, &layoutGlyphsNum,
 			&clusters, &numClusters, &cluster_flags);
 
+		size_t begin_pos = 0;
+		size_t line_delta = 0;
+
+		while (begin_pos < layoutGlyphsNum)
+		{
+			cairo_text_extents_t extents;
+			size_t delta = layoutGlyphsNum - begin_pos;
+			size_t end_pos = layoutGlyphsNum;
+
+			cairo_scaled_font_glyph_extents(sf, layoutGlyphs + begin_pos, delta, &extents);
+			if (extents.x_bearing + extents.width > layoutBounds_.width())
+			{
+				end_pos = begin_pos;
+				while (delta > 0)
+				{
+					size_t delta2 = delta / 2;
+					size_t mid = end_pos + delta2;
+					cairo_scaled_font_glyph_extents(sf, layoutGlyphs + begin_pos, mid - begin_pos, &extents);
+					if (extents.x_bearing + extents.width <= layoutBounds_.width()) {
+						end_pos = mid + 1;
+						delta -= delta2 + 1;
+					}
+					else {
+						delta = delta2;
+					}
+				}
+			}
+			//获得一行
+			if (line_delta)
+			{
+				size_t delta_x = layoutGlyphs[begin_pos].x;
+				for (size_t i = begin_pos; i < end_pos; i++)
+				{
+					layoutGlyphs[i].y += line_delta;
+					layoutGlyphs[i].x -= delta_x;
+				}
+			}
+			line_delta += extents.height;
+			begin_pos = end_pos;
+		}
+
+		cairo_text_extents_t extents;
+		cairo_scaled_font_glyph_extents(sf, layoutGlyphs, layoutGlyphsNum, &extents);
 		//utf8 => utf16
 
-		textBounds_.SetSize(extents.width, font_->font_size());
+		layoutGlyphs_ = layoutGlyphs;
+		layoutGlyphsNum_ = layoutGlyphsNum;
+
+		textBounds_.SetSize(extents.width, extents.height);
+		offset_ = extents.y_bearing;
 	}
 
 	cairo_scaled_font_t* UICairoTextLayout::InitCairoFont()

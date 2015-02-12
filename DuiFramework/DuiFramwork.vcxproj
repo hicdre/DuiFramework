@@ -288,6 +288,8 @@
     <ClCompile Include="uikit\render\cairo\cairo_render_context.cpp" />
     <ClCompile Include="uikit\render\cairo\cairo_font_manager.cpp" />
     <ClCompile Include="uikit\render\ui_render_engine.cpp" />
+    <ClCompile Include="uikit\text\text_attribute_dictionary.cpp" />
+    <ClCompile Include="uikit\text\text_attribute_tree.cpp" />
     <ClCompile Include="uikit\ui_application.cpp" />
     <ClCompile Include="uikit\ui_object.cpp" />
     <ClCompile Include="uikit\ui_responder.cpp" />
@@ -570,9 +572,12 @@
     <ClInclude Include="uikit\render\cairo\cairo_render_context.h" />
     <ClInclude Include="uikit\render\cairo\cairo_font_manager.h" />
     <ClInclude Include="uikit\render\ui_render_engine.h" />
+    <ClInclude Include="uikit\render\ui_render_glyphs.h" />
     <ClInclude Include="uikit\render\ui_render_path.h" />
     <ClInclude Include="uikit\render\ui_render_context.h" />
     <ClInclude Include="uikit\render\ui_text_layout.h" />
+    <ClInclude Include="uikit\text\text_attribute_dictionary.h" />
+    <ClInclude Include="uikit\text\text_attribute_tree.h" />
     <ClInclude Include="uikit\uikit.h" />
     <ClInclude Include="uikit\ui_application.h" />
     <ClInclude Include="uikit\ui_applictaion_delegate.h" />

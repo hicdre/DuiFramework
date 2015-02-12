@@ -104,6 +104,9 @@
     <Filter Include="uikit\event">
       <UniqueIdentifier>{4669fad7-f055-4e67-8947-dcb2bc23f746}</UniqueIdentifier>
     </Filter>
+    <Filter Include="uikit\text">
+      <UniqueIdentifier>{5f006c1f-b131-48fc-b991-54413accf93a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -462,6 +465,12 @@
     </ClCompile>
     <ClCompile Include="uikit\widget\ui_button.cpp">
       <Filter>uikit\widget</Filter>
+    </ClCompile>
+    <ClCompile Include="uikit\text\text_attribute_dictionary.cpp">
+      <Filter>uikit\text</Filter>
+    </ClCompile>
+    <ClCompile Include="uikit\text\text_attribute_tree.cpp">
+      <Filter>uikit\text</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -888,6 +897,15 @@
     </ClInclude>
     <ClInclude Include="uikit\widget\ui_button.h">
       <Filter>uikit\widget</Filter>
+    </ClInclude>
+    <ClInclude Include="uikit\text\text_attribute_dictionary.h">
+      <Filter>uikit\text</Filter>
+    </ClInclude>
+    <ClInclude Include="uikit\text\text_attribute_tree.h">
+      <Filter>uikit\text</Filter>
+    </ClInclude>
+    <ClInclude Include="uikit\render\ui_render_glyphs.h">
+      <Filter>uikit\render</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

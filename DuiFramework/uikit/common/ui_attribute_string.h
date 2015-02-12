@@ -22,6 +22,7 @@ namespace ui
 		void setBackgroundColorInRange(Color color, const Range& range);
 		void setTextColorInRange(Color color, const Range& range);
 		void setFontInRange(UIFont* font, const Range& range);
+
 	private:
 		UIColorRange* backgroundColorRange();
 		UIColorRange* textColorRange();

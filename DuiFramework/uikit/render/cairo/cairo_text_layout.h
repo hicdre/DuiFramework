@@ -7,6 +7,7 @@ namespace ui
 {
 	class UIRenderContext;
 	class UICairoRenderEngine;
+	class UICairoTextRun;
 	class UICairoTextLayout : public UITextLayout
 	{
 	public:
@@ -33,13 +34,39 @@ namespace ui
 		Rect layoutBounds_;
 		Rect textBounds_;
 		std::wstring contents_;
+		int offset_{ 0 };
 
 		//result
 		cairo_glyph_t *layoutGlyphs_;
 		int layoutGlyphsNum_;
 		cairo_utf16_cluster* textClusters_;
 		int textClustersNum_;
+		UICairoTextRun* textRun_;
 
 		bool needLayout_;
+	};
+
+	class UICairoTextRun
+	{
+	public:
+		struct Item {
+			uint32 index;
+			size_t w;
+			size_t h;
+		};
+		UICairoTextRun() : width_(0), height_(0) {}
+		~UICairoTextRun() {}
+
+		size_t width() const { return width_; }
+		size_t height() const { return height_; }
+
+
+		UICairoTextRun* next_;
+		UICairoTextRun* prev_;
+	private:
+		size_t width_;
+		size_t height_;
+		cairo_glyph_t *layoutGlyphs_;
+		int layoutGlyphsNum_;
 	};
 }

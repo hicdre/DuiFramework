@@ -2,6 +2,7 @@
 #include "uikit/widget/ui_view.h"
 #include "uikit/common/ui_font.h"
 #include "uikit/render/ui_text_layout.h"
+#include "uikit/common/ui_attribute_string.h"
 
 namespace ui
 {
@@ -12,8 +13,9 @@ namespace ui
 		~UILabel();
 
 		//@property std::wstring text;
-		const std::wstring& text() const { return text_; }
+		const std::wstring& text() const;
 		void setText(const std::wstring& text);
+		void setAttributeString(UIAttributeString* attributeString);
 
 		//@property UIFont* font;
 		UIFont* font() const { return font_; }
@@ -39,6 +41,8 @@ namespace ui
 		UITextLayout* textLayout();
 		void layoutText();
 		std::wstring text_;
+
+		scoped_ptr<UIAttributeString> attributeString_;
 		scoped_refptr<UIFont> font_;
 		Color textColor_{ Color_Black };
 		TextAlignment textAlignment_{ TextAlignmentLeft };

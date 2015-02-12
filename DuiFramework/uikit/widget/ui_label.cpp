@@ -6,6 +6,7 @@ namespace ui
 {
 	UILabel::UILabel()
 		: font_(UIFont::CreateDefault())
+		, attributeString_(new UIAttributeString)
 	{
 
 	}
@@ -17,12 +18,21 @@ namespace ui
 
 	void UILabel::setText(const std::wstring& text)
 	{
-		if (text_ == text)
+		if (attributeString_->string() == text)
 			return;
-		text_ = text;
+		attributeString_.reset(new UIAttributeString(text));
 		needsTextLayout_ = true;
 		SchedulePaint();
 	}
+
+
+	void UILabel::setAttributeString(UIAttributeString* attributeString)
+	{
+		attributeString_.reset(attributeString);
+		needsTextLayout_ = true;
+		SchedulePaint();
+	}
+
 
 	void UILabel::setFont(UIFont* font)
 	{
@@ -117,12 +127,17 @@ namespace ui
 			return;
 
 		needsTextLayout_ = false;
-		textLayout()->SetText(text_);
+		textLayout()->SetText(text());
 		Rect rect = textRectForBounds(GetLocalBounds());
 		if (rect == textRectCached_)
 			return;
 		textRectCached_ = rect;
 		SchedulePaint();
+	}
+
+	const std::wstring& UILabel::text() const
+	{
+		return attributeString_->string();
 	}
 
 }
