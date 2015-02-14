@@ -1,9 +1,11 @@
 ﻿#pragma once
 #include "uikit/common/ui_font.h"
-#include "uikit/render/ui_render_glyphs.h"
+#include "uikit/common/ui_constants.h"
 
 namespace ui
 {
+	
+
 	class UIRenderContext;
 	class UITextLayout : public RefCounted < UITextLayout >
 	{
@@ -11,6 +13,8 @@ namespace ui
 		virtual ~UITextLayout() {}
 
 		virtual void SetText(const std::wstring& str) = 0;
+
+		virtual void SetLineBreakMode(UILineBreakMode mode) = 0;
 
 		virtual void SetFont(const UIFont* font) = 0;
 
@@ -20,4 +24,6 @@ namespace ui
 
 		virtual void Render(UIRenderContext* context, Color color) = 0;
 	};
+
+
 }

@@ -400,9 +400,6 @@
     <ClCompile Include="uikit\common\ui_attribute_string.cpp">
       <Filter>uikit\common</Filter>
     </ClCompile>
-    <ClCompile Include="uikit\render\cairo\render_font_cairo.cpp">
-      <Filter>uikit\render\cairo</Filter>
-    </ClCompile>
     <ClCompile Include="uikit\render\cairo\render_path_cairo.cpp">
       <Filter>uikit\render\cairo</Filter>
     </ClCompile>
@@ -470,6 +467,21 @@
       <Filter>uikit\text</Filter>
     </ClCompile>
     <ClCompile Include="uikit\text\text_attribute_tree.cpp">
+      <Filter>uikit\text</Filter>
+    </ClCompile>
+    <ClCompile Include="uikit\render\cairo\cairo_render_font.cpp">
+      <Filter>uikit\render\cairo</Filter>
+    </ClCompile>
+    <ClCompile Include="uikit\text\glyph_fragment.cpp">
+      <Filter>uikit\text</Filter>
+    </ClCompile>
+    <ClCompile Include="uikit\text\glyph_line.cpp">
+      <Filter>uikit\text</Filter>
+    </ClCompile>
+    <ClCompile Include="uikit\text\text_pagraph.cpp">
+      <Filter>uikit\text</Filter>
+    </ClCompile>
+    <ClCompile Include="uikit\text\text_storage.cpp">
       <Filter>uikit\text</Filter>
     </ClCompile>
   </ItemGroup>
@@ -814,9 +826,6 @@
     <ClInclude Include="uikit\render\ui_render_path.h">
       <Filter>uikit\render</Filter>
     </ClInclude>
-    <ClInclude Include="uikit\render\cairo\render_font_cairo.h">
-      <Filter>uikit\render\cairo</Filter>
-    </ClInclude>
     <ClInclude Include="uikit\render\cairo\render_path_cairo.h">
       <Filter>uikit\render\cairo</Filter>
     </ClInclude>
@@ -904,8 +913,26 @@
     <ClInclude Include="uikit\text\text_attribute_tree.h">
       <Filter>uikit\text</Filter>
     </ClInclude>
-    <ClInclude Include="uikit\render\ui_render_glyphs.h">
+    <ClInclude Include="uikit\render\cairo\cairo_render_font.h">
+      <Filter>uikit\render\cairo</Filter>
+    </ClInclude>
+    <ClInclude Include="uikit\render\ui_render_font.h">
       <Filter>uikit\render</Filter>
+    </ClInclude>
+    <ClInclude Include="uikit\common\ui_glyphs.h">
+      <Filter>uikit\common</Filter>
+    </ClInclude>
+    <ClInclude Include="uikit\text\glyph_fragment.h">
+      <Filter>uikit\text</Filter>
+    </ClInclude>
+    <ClInclude Include="uikit\text\glyph_line.h">
+      <Filter>uikit\text</Filter>
+    </ClInclude>
+    <ClInclude Include="uikit\text\text_pagraph.h">
+      <Filter>uikit\text</Filter>
+    </ClInclude>
+    <ClInclude Include="uikit\text\text_storage.h">
+      <Filter>uikit\text</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

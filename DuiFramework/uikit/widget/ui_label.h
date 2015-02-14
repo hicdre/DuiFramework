@@ -33,6 +33,10 @@ namespace ui
 		VerticalAlignment verticalAlignment() const { return verticalAligment_; }
 		void setVerticalAlignment(VerticalAlignment v);
 
+		//@property UILineBreakMode lineBreakMode;
+		UILineBreakMode lineBreakMode() const { return lineBreakMode_; }
+		void setLineBreakMode(UILineBreakMode v);
+
 		virtual void OnPaint(UIRenderContext* painter) override;
 
 		virtual Rect textRectForBounds(const Rect& rect);
@@ -50,5 +54,6 @@ namespace ui
 		scoped_refptr<UITextLayout> textLayout_;
 		Rect textRectCached_;
 		bool needsTextLayout_{ true };
+		UILineBreakMode lineBreakMode_{ UILineBreakByWordWrapping };
 	};
 }

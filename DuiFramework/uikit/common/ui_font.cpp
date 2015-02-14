@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "ui_font.h"
+#include "uikit/render/ui_render_engine.h"
 
 namespace ui
 {
@@ -156,4 +157,14 @@ namespace ui
 	{
 		return new UIFont(font_name, font_size, style);
 	}
+
+	scoped_refptr<UIRenderFont> UIFont::renderFont()
+	{
+		if (!render_font_)
+		{
+			render_font_.reset(UIRenderEngine::current()->CreateRenderFont(this));
+		}
+		return render_font_;
+	}
+
 }

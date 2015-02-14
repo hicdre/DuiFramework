@@ -2,6 +2,7 @@
 #include "cairo_render_context.h"
 #include "render_path_cairo.h"
 #include "cairo_render_engine.h"
+#include "cairo_render_font.h"
 
 //#include "render_image_cairo.h"
 // #include "framework/widget.h"
@@ -173,44 +174,48 @@ namespace ui
 // 		cairo_restore(cairo_);
 // 	}
 
-	void UICairoRenderContext::ShowGlyph(const UIGlyph* glyph, const UIFont* font, Color color)
+	void UICairoRenderContext::ShowGlyphs(const UIGlyph* glyphs, size_t glyphsCount, UIRenderFont* font, Color color)
 	{
-		cairo_glyph_t cglyph;
-		cglyph.index = glyph->index;
-		cglyph.x = glyph->pos.x();
-		cglyph.y = glyph->pos.y();
 		InitColor(color);
 
-//		cairo_font_face_t* f;//create cairo font
-		//cairo_font_face_t* f = cairo_win32_font_face_create_for_hfont(font.ToHFONT());
+		UICairoRenderFont* cairoFont = static_cast<UICairoRenderFont*>(font);
+		cairo_set_scaled_font(cairo_, cairoFont->cairoScaledFont());
 
-// 		cairo_set_font_face(cairo_, f);
-// 		cairo_set_font_size(cairo_, font->font_size());
-// 		cairo_show_glyphs(cairo_, &cglyph, 1);
-// 
-// 		cairo_font_face_destroy(f);
-	}
+		double x_advance = -glyphs[0].x_bearing;
+		double y_advance = font->GetAscent();
 
-
-	void UICairoRenderContext::ShowGlyphs(const UIGlyphBuffer& buffer, const UIFont* font, Color color)
-	{
-		std::vector<cairo_glyph_t> glyphs(buffer.count);
-		for (uint32 i = 0; i < buffer.count; ++i) {
-			glyphs[i].index = buffer.glyphs[i].index;
-			glyphs[i].x = buffer.glyphs[i].pos.x();
-			glyphs[i].y = buffer.glyphs[i].pos.y();
+		cairo_glyph_t glyph;
+		for (int i = 0; i < glyphsCount; ++i)
+		{
+			glyph.index = glyphs[i].index;
+			glyph.x = x_advance;
+			glyph.y = y_advance;
+			x_advance += glyphs[i].x_advance;
+			y_advance += glyphs[i].y_advance;
+			cairo_show_glyphs(cairo_, &glyph, 1);
 		}
-		InitColor(color);
-
-//		cairo_font_face_t* f;//create cairo font
-		//cairo_font_face_t* f = cairo_win32_font_face_create_for_hfont(font.ToHFONT());
-
-// 		cairo_set_font_face(cairo_, f);
-// 		cairo_set_font_size(cairo_, font->font_size());
-// 		cairo_show_glyphs(cairo_, &glyphs[0], buffer.count);
-// 
-// 		cairo_font_face_destroy(f);
 	}
+
+
+// 	void UICairoRenderContext::ShowGlyphs(const UIGlyphBuffer& buffer, const UIFont* font, Color color)
+// 	{
+// 		std::vector<cairo_glyph_t> glyphs(buffer.count);
+// 		for (uint32 i = 0; i < buffer.count; ++i) {
+// 			glyphs[i].index = buffer.glyphs[i].index;
+// 			glyphs[i].x = buffer.glyphs[i].pos.x();
+// 			glyphs[i].y = buffer.glyphs[i].pos.y();
+// 		}
+// 		InitColor(color);
+// 
+// //		cairo_font_face_t* f;//create cairo font
+// 		//cairo_font_face_t* f = cairo_win32_font_face_create_for_hfont(font.ToHFONT());
+// 
+// // 		cairo_set_font_face(cairo_, f);
+// // 		cairo_set_font_size(cairo_, font->font_size());
+// // 		cairo_show_glyphs(cairo_, &glyphs[0], buffer.count);
+// // 
+// // 		cairo_font_face_destroy(f);
+// 	}
 
 	void UICairoRenderContext::BeginPaint()
 	{
@@ -298,6 +303,11 @@ namespace ui
 
 		cairo_glyph_free(glyphs);
 		cairo_text_cluster_free(clusters);
+	}
+
+	void UICairoRenderContext::Translate(double dx, double dy)
+	{
+		cairo_translate(cairo_, dx, dy);
 	}
 
 // 	void RenderTargetCairo::DrawText(const std::wstring& buffer, const UIFont& font, Color color)

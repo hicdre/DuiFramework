@@ -19,6 +19,8 @@ namespace ui
 			CreateRenderTextLayout(const UIFont* font,
 			const Rect& bounds) override;
 
+		virtual scoped_refptr<UIRenderFont> CreateRenderFont(UIFont* font) override;
+
 		virtual scoped_refptr<UITextLayout>
 			CreateRenderTextLayout(const UIFont* font,
 			const Rect& bounds, 

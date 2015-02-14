@@ -279,17 +279,19 @@
     <ClCompile Include="uikit\event\ui_mouse.cpp" />
     <ClCompile Include="uikit\render\cairo\cairo_render_engine.cpp" />
     <ClCompile Include="uikit\render\cairo\cairo_text_layout.cpp" />
-    <ClCompile Include="uikit\render\cairo\render_font_cairo.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
+    <ClCompile Include="uikit\render\cairo\cairo_render_font.cpp" />
     <ClCompile Include="uikit\render\cairo\render_path_cairo.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="uikit\render\cairo\cairo_render_context.cpp" />
     <ClCompile Include="uikit\render\cairo\cairo_font_manager.cpp" />
     <ClCompile Include="uikit\render\ui_render_engine.cpp" />
+    <ClCompile Include="uikit\text\glyph_line.cpp" />
     <ClCompile Include="uikit\text\text_attribute_dictionary.cpp" />
     <ClCompile Include="uikit\text\text_attribute_tree.cpp" />
+    <ClCompile Include="uikit\text\glyph_fragment.cpp" />
+    <ClCompile Include="uikit\text\text_pagraph.cpp" />
+    <ClCompile Include="uikit\text\text_storage.cpp" />
     <ClCompile Include="uikit\ui_application.cpp" />
     <ClCompile Include="uikit\ui_object.cpp" />
     <ClCompile Include="uikit\ui_responder.cpp" />
@@ -550,6 +552,7 @@
     <ClInclude Include="third_party\tinyxml2.h" />
     <ClInclude Include="uikit\2D\2D.h" />
     <ClInclude Include="uikit\2D\win32_port.h" />
+    <ClInclude Include="uikit\common\ui_glyphs.h" />
     <ClInclude Include="uikit\common\ui_range.h" />
     <ClInclude Include="uikit\common\ui_attribute_string.h" />
     <ClInclude Include="uikit\common\ui_constants.h" />
@@ -563,21 +566,23 @@
     <ClInclude Include="uikit\render\cairo\cairo_render_engine.h" />
     <ClInclude Include="uikit\render\cairo\cairo_forward.h" />
     <ClInclude Include="uikit\render\cairo\cairo_text_layout.h" />
-    <ClInclude Include="uikit\render\cairo\render_font_cairo.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </ClInclude>
+    <ClInclude Include="uikit\render\cairo\cairo_render_font.h" />
     <ClInclude Include="uikit\render\cairo\render_path_cairo.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="uikit\render\cairo\cairo_render_context.h" />
     <ClInclude Include="uikit\render\cairo\cairo_font_manager.h" />
     <ClInclude Include="uikit\render\ui_render_engine.h" />
-    <ClInclude Include="uikit\render\ui_render_glyphs.h" />
+    <ClInclude Include="uikit\render\ui_render_font.h" />
     <ClInclude Include="uikit\render\ui_render_path.h" />
     <ClInclude Include="uikit\render\ui_render_context.h" />
     <ClInclude Include="uikit\render\ui_text_layout.h" />
+    <ClInclude Include="uikit\text\glyph_line.h" />
     <ClInclude Include="uikit\text\text_attribute_dictionary.h" />
     <ClInclude Include="uikit\text\text_attribute_tree.h" />
+    <ClInclude Include="uikit\text\glyph_fragment.h" />
+    <ClInclude Include="uikit\text\text_pagraph.h" />
+    <ClInclude Include="uikit\text\text_storage.h" />
     <ClInclude Include="uikit\uikit.h" />
     <ClInclude Include="uikit\ui_application.h" />
     <ClInclude Include="uikit\ui_applictaion_delegate.h" />

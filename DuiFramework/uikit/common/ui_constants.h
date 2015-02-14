@@ -108,4 +108,13 @@ namespace ui
 		UIControlStateDisabled = 1 << 2,
 		UIControlStateSelected = 1 << 3,
 	};
+
+	enum UILineBreakMode {
+		UILineBreakByWordWrapping = 0,
+		UILineBreakByCharWrapping,
+		UILineBreakByClipping,
+		UILineBreakByTruncatingHead,
+		UILineBreakByTruncatingTail,
+		UILineBreakByTruncatingMiddle
+	};
 }

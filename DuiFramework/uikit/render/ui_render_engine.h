@@ -1,6 +1,7 @@
 #pragma once
 #include "uikit/render/ui_render_context.h"
 #include "uikit/render/ui_text_layout.h"
+#include "uikit/render/ui_render_font.h"
 #include <windows.h>
 
 namespace ui
@@ -21,6 +22,8 @@ namespace ui
 		virtual scoped_refptr<UIRenderContext> 
 			CreateRenderContextForHWND(HWND hwnd) = 0;
 
+		virtual scoped_refptr<UIRenderFont>
+			CreateRenderFont(UIFont* font) = 0;
 
 		virtual scoped_refptr<UITextLayout>
 			CreateRenderTextLayout(const UIFont* font,

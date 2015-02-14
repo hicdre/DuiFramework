@@ -24,6 +24,8 @@ namespace ui
 		return UIApplication::Get()->DefaultRenderEngine();
 	}
 
+
+
 // 	scoped_refptr<RenderImage> RenderEngine::CreateRenderImage(const URL& path)
 // 	{
 // 		std::string contents;

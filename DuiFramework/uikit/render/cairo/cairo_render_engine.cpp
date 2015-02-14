@@ -2,6 +2,7 @@
 #include "cairo_render_engine.h"
 #include "cairo_render_context.h"
 #include "cairo_text_layout.h"
+#include "cairo_render_font.h"
 
 namespace ui
 {
@@ -43,6 +44,11 @@ namespace ui
 			font_manager_.reset(new UICairoFontManager);
 		}
 		return font_manager_.get();
+	}
+
+	scoped_refptr<UIRenderFont> UICairoRenderEngine::CreateRenderFont(UIFont* font)
+	{
+		return new UICairoRenderFont(font, this);
 	}
 
 }

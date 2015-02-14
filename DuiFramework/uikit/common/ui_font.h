@@ -10,6 +10,7 @@ namespace ui
 	//   |        |-------------------+------------------+
 	//   |        | descent (height - baseline)          |
 	//   +--------+--------------------------------------+
+	class UIRenderFont;
 	class UIFont : public RefCounted<UIFont>
 	{
 	public:
@@ -37,6 +38,8 @@ namespace ui
 
 		bool IsEqual(UIFont* other) const;
 
+		scoped_refptr<UIRenderFont> renderFont();
+
 		std::wstring description() const;
 	private:
 		friend class UIFontFactory;
@@ -48,6 +51,7 @@ namespace ui
 		const int font_size_;
 		const int style_;
 		const std::wstring font_name_;
+		scoped_refptr<UIRenderFont> render_font_;
 		DISALLOW_COPY_AND_ASSIGN(UIFont);
 	};
 }

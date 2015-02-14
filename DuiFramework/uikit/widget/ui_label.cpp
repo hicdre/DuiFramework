@@ -76,6 +76,16 @@ namespace ui
 		verticalAligment_ = v;
 	}
 
+
+	void UILabel::setLineBreakMode(UILineBreakMode v)
+	{
+		if (lineBreakMode_ == v)
+			return;
+		lineBreakMode_ = v;
+		needsTextLayout_ = true;
+	}
+
+
 	Rect UILabel::textRectForBounds(const Rect& boundsRect)
 	{
 		UITextLayout* layout = textLayout();

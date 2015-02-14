@@ -1,7 +1,7 @@
 ﻿#pragma once
-#include "uikit/common/ui_font.h"
 #include "uikit/render/ui_render_path.h"
-#include "uikit/render/ui_render_glyphs.h"
+#include "uikit/render/ui_render_font.h"
+//#include "uikit/render/ui_render_glyphs.h"
 //#include "render/render_image.h"
 
 namespace ui
@@ -26,12 +26,13 @@ namespace ui
 // 		virtual void DrawImage(const RenderImage *image, const Rect& dest) = 0;
 // 		virtual void DrawImage(const RenderImage *image, const Rect& src, const Rect& dest) = 0;
 
-		virtual void ShowGlyph(const UIGlyph* glyph, const UIFont* font, Color color) = 0;
-		virtual void ShowGlyphs(const UIGlyphBuffer& buffer, const UIFont* font, Color color) = 0;
+		virtual void ShowGlyphs(const UIGlyph* glyph, size_t len, UIRenderFont* font, Color color) = 0;
+//		virtual void ShowGlyphs(const UIGlyphBuffer& buffer, const UIFont* font, Color color) = 0;
 
 		virtual void DrawText(const std::wstring& text, const UIFont* font, Color color) = 0;
 
 		virtual void Trans(const Matrix& m) = 0;
+		virtual void Translate(double dx, double dy) = 0;
 
 		virtual void PushState() = 0;
 		virtual void PopState() = 0;

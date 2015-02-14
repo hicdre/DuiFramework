@@ -61,8 +61,8 @@ void AppViewController::loadView()
 
 	{
 		UILabel* label = new UILabel;
-		label->InitWithBounds(Rect(150, 200, 100, 40));
-		label->setText(L"a long Text for test, etc.");
+		label->InitWithBounds(Rect(150, 200, 200, 200));
+		label->setText(L"a long Text for test, etc.\ntt hh");
 		label->SetBackgroundColor(Color_White);
 
 		window->addSubView(label);
