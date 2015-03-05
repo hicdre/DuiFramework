@@ -27,20 +27,25 @@ namespace ui
 		Color backgroundColor() const { return backgroundColor_; }
 		void setBackgroundColor(Color color);
 
+		size_t glyphsCount();
 		bool propertyEquals(UITextFragment* fragment);
 
 		//布局信息
 		Size textSize();
 		int textHeight();
 		int textWidth();
+		int textWidthWithRange(size_t begin, size_t end);
+
+		
 		//绘制
 		void Render(UIRenderContext* context);
+		void RenderWithRange(UIRenderContext* context, size_t begin, size_t end);
 	private:
 		friend class UITextPagraph;
 		void clearGlyphs();
 		void updateGlyphs();
 		const wchar_t* str() const { return text_ + begin_; }
-		size_t strLength() const { end_ - begin_; }
+		size_t strLength() const { return end_ - begin_; }
 		const wchar_t* text_;
 		size_t begin_;
 		size_t end_;
@@ -53,8 +58,8 @@ namespace ui
 		UITextFragment* prev_{ NULL };
 
 		//字形信息
-		UIGlyph* glyphs_;
-		size_t glyphsCount_;
+		UIGlyph* glyphs_{ NULL };
+		size_t glyphsCount_{ 0 };
 		bool need_update_glyphs_{ true };
 	};
 }

@@ -80,9 +80,14 @@ namespace ui
 
 	int UITextFragment::textWidth()
 	{
+		return textWidthWithRange(0, glyphsCount_);
+	}
+
+	int UITextFragment::textWidthWithRange(size_t begin, size_t end)
+	{
 		updateGlyphs();
 		int w = 0;
-		for (size_t i = 0; i < glyphsCount_; ++i)
+		for (size_t i = begin; i < end && i < glyphsCount_; ++i)
 		{
 			w += glyphs_[i].x_advance;
 		}
@@ -96,6 +101,25 @@ namespace ui
 			context->FillRect(Rect(textWidth(), textHeight()), backgroundColor_);
 		}
 		context->ShowGlyphs(glyphs_, glyphsCount_, font_->renderFont(), textColor_);
+	}
+
+	void UITextFragment::RenderWithRange(UIRenderContext* context, size_t begin, size_t end)
+	{
+		if (!(begin < end && end <= glyphsCount_)) {
+			assert(0);
+			return;
+		}
+		updateGlyphs();
+		if (backgroundColor_ != Color_Transparent) {
+			context->FillRect(Rect(textWidthWithRange(begin, end), textHeight()), backgroundColor_);
+		}
+		context->ShowGlyphs(glyphs_ + begin, end - begin, font_->renderFont(), textColor_);
+	}
+
+	size_t UITextFragment::glyphsCount()
+	{
+		updateGlyphs();
+		return glyphsCount_;
 	}
 
 }

@@ -6,12 +6,13 @@ namespace ui
 {
 
 
-	UIGlyphFragment::UIGlyphFragment(UIGlyph* glyphs, const wchar_t* buffer, size_t size, UIFont* font) : glyphs_(glyphs)
-		, glyphsCount_(size)
-		, font_(font)
-		, string_(buffer)
+	UIGlyphFragment::UIGlyphFragment(UITextFragment* text,
+		size_t begin, size_t end) 
+		: textFragment_(text)
+		, begin_(begin)
+		, end_(end)
 	{
-
+		assert(begin < end);
 	}
 
 	UIGlyphFragment::~UIGlyphFragment()
@@ -31,32 +32,28 @@ namespace ui
 
 	size_t UIGlyphFragment::glyphsCount() const
 	{
-		return glyphsCount_;
+		return end_ - begin_;
 	}
 
-	void UIGlyphFragment::setGlyphsCount(int s)
+	int UIGlyphFragment::width() const
 	{
-		glyphsCount_ = s;
+		if (!textFragment_)
+			return 0;
+		return textFragment_->textWidthWithRange(begin_, end_);
 	}
 
-	size_t UIGlyphFragment::calcTextWidth() const
+	void UIGlyphFragment::Render(UIRenderContext* context)
 	{
-		size_t w = 0;
-		for (size_t i = 0; i < glyphsCount_; ++i)
-		{
-			w += glyphs_[i].x_advance;
-		}
-		return w;
+		if (!textFragment_)
+			return;
+		textFragment_->RenderWithRange(context, begin_, end_);
 	}
 
-	Size UIGlyphFragment::calcTextSize() const
+	int UIGlyphFragment::height() const
 	{
-		return Size(calcTextWidth(), font_->renderFont()->GetHeight());
-	}
-
-	void UIGlyphFragment::Render(UIRenderContext* context, Color color)
-	{
-		context->ShowGlyphs(glyphs_, glyphsCount_, font_->renderFont(), color);
+		if (!textFragment_)
+			return 0;
+		return textFragment_->textHeight();
 	}
 
 }

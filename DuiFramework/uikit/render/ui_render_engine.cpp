@@ -73,4 +73,15 @@ namespace ui
 	{
 		p_->PopState();
 	}
+
+	UIScopedRender::UIScopedRender(UIRenderContext* p)
+		: p_(p)
+	{
+		p_->PushState();
+	}
+
+	UIScopedRender::~UIScopedRender()
+	{
+		p_->PopState();
+	}
 }

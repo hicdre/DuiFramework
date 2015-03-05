@@ -39,6 +39,17 @@ namespace ui
 
 	};
 
+	class UIScopedRender
+	{
+	public:
+		UIScopedRender(UIRenderContext* p);
+		~UIScopedRender();
+	private:
+		UIRenderContext* p_;
+	};
+
+	
+
 	class UIScopedPainter
 	{
 	public:

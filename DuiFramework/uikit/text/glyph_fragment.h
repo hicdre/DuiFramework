@@ -2,33 +2,32 @@
 #include "uikit/common/ui_font.h"
 #include "uikit/common/ui_glyphs.h"
 #include "uikit/render/ui_render_context.h"
+#include "uikit/text/text_fragment.h"
 
 namespace ui
 {
 	class UIGlyphFragment
 	{
 	public:
-		UIGlyphFragment(UIGlyph* glyphs,
-			const wchar_t* buffer,
-			size_t size, UIFont* font);
+		UIGlyphFragment(UITextFragment* text,
+			size_t begin, size_t end);
 		~UIGlyphFragment();
 
-		void setGlyphsCount(int s);
 		size_t glyphsCount() const;
 
-		size_t calcTextWidth() const;
-		Size calcTextSize() const;
+		int width() const;
+		int height() const;
 
 		UIGlyphFragment* nextFragment() const;
 		UIGlyphFragment* prevFragment() const;
 
-		void Render(UIRenderContext* context, Color color);
+		void Render(UIRenderContext* context);
 	private:
 		friend class UITextPagraph;
-		UIGlyph *glyphs_;
-		const wchar_t* string_;
-		size_t glyphsCount_;
-		scoped_refptr<UIFont> font_;
+		friend class UIGlyphLine;
+		UITextFragment* textFragment_;
+		size_t begin_;
+		size_t end_;
 
 		UIGlyphFragment* nextFragment_{ NULL };
 		UIGlyphFragment* prevFragment_{ NULL };

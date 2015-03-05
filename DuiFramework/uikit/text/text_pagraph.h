@@ -11,8 +11,8 @@ namespace ui
 		UITextPagraph(const wchar_t* text, size_t begin, size_t end);
 		~UITextPagraph();
 
-		const wchar_t* buffer() const { return text_ + begin_; }
-		size_t length() const { return end_ - begin_; }
+		const wchar_t* str() const { return firstTextFragment_ ? firstTextFragment_->str() : NULL; }
+		size_t strLength() const;
 
 		void SetWidth(size_t width);
 		void SetPosition(int x, int y);
@@ -26,23 +26,26 @@ namespace ui
 		bool isMutilLine() const { return lineCount_ > 1; }
 
 		Rect GetBoundsRect() const;
-		void Render(UIRenderContext* context, Color color);
+		void Render(UIRenderContext* context);
 	private:
 		friend class UITextStorage;
 
-		scoped_refptr<UIFont> GetFontAtIndex(size_t index);
+		UIGlyphFragment* glyphFragmentForWidth(
+			UITextFragment* textFragment,
+			int &remain, size_t &pos);
 
 		void addGlyphLine(UIGlyphLine* line);
-		void Layout(const UIGlyph* glyphs, const wchar_t* str, size_t glyphCount,
-			UIRenderFont* font, size_t width, UILineBreakMode mode);
+		void addTextFragment(UITextFragment* fragment);
+		void clearTextFragment();
+		void Layout(size_t width, UILineBreakMode mode);
 		void CalcBoundsRect();
-		void destroy();
+		void clearGlyphLine();
 		UITextPagraph* nextPagraph_{ NULL };
 		UITextPagraph* prevPagraph_{ NULL };
 
-		const wchar_t* text_;
-		size_t begin_;
-		size_t end_;
+// 		const wchar_t* text_;
+// 		size_t begin_;
+// 		size_t end_;
 
 		UITextFragment* firstTextFragment_{ NULL };
 		UITextFragment* lastTextFragment_{ NULL };

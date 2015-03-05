@@ -286,12 +286,10 @@
     <ClCompile Include="uikit\render\cairo\cairo_render_context.cpp" />
     <ClCompile Include="uikit\render\cairo\cairo_font_manager.cpp" />
     <ClCompile Include="uikit\render\ui_render_engine.cpp" />
-    <ClCompile Include="uikit\text\attribute_text.cpp" />
     <ClCompile Include="uikit\text\glyph_line.cpp" />
     <ClCompile Include="uikit\text\text_attribute_dictionary.cpp" />
     <ClCompile Include="uikit\text\text_attribute_element.cpp" />
     <ClCompile Include="uikit\text\glyph_fragment.cpp" />
-    <ClCompile Include="uikit\text\text_element.cpp" />
     <ClCompile Include="uikit\text\text_fragment.cpp" />
     <ClCompile Include="uikit\text\text_pagraph.cpp" />
     <ClCompile Include="uikit\text\text_storage.cpp" />
@@ -580,12 +578,10 @@
     <ClInclude Include="uikit\render\ui_render_path.h" />
     <ClInclude Include="uikit\render\ui_render_context.h" />
     <ClInclude Include="uikit\render\ui_text_layout.h" />
-    <ClInclude Include="uikit\text\attribute_text.h" />
     <ClInclude Include="uikit\text\glyph_line.h" />
     <ClInclude Include="uikit\text\text_attribute_dictionary.h" />
     <ClInclude Include="uikit\text\text_attribute_element.h" />
     <ClInclude Include="uikit\text\glyph_fragment.h" />
-    <ClInclude Include="uikit\text\text_element.h" />
     <ClInclude Include="uikit\text\text_fragment.h" />
     <ClInclude Include="uikit\text\text_pagraph.h" />
     <ClInclude Include="uikit\text\text_storage.h" />

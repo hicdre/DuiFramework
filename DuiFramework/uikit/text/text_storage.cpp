@@ -103,7 +103,7 @@ namespace ui
 		{
 			context->PushState();
 			context->Translate(pagraph->x(), pagraph->y());
-			pagraph->Render(context, color);
+			pagraph->Render(context);
 			context->PopState();
 		}
 	}
