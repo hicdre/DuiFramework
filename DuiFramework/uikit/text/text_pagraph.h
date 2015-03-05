@@ -1,5 +1,5 @@
 ﻿#pragma once
-
+#include "uikit/text/text_fragment.h"
 #include "uikit/text/glyph_line.h"
 #include "uikit/common/ui_constants.h"
 
@@ -43,6 +43,9 @@ namespace ui
 		const wchar_t* text_;
 		size_t begin_;
 		size_t end_;
+
+		UITextFragment* firstTextFragment_{ NULL };
+		UITextFragment* lastTextFragment_{ NULL };
 
 		UIGlyph* glyphs_;
 		size_t glyphsCount_;

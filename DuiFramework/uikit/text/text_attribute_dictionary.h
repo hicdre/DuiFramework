@@ -64,13 +64,13 @@ namespace ui
 	};
 
 
-	class UITextAttributeDictionary
+	class UITextAttributes
 	{
 	public:
-		UITextAttributeDictionary();
-		~UITextAttributeDictionary();
+		UITextAttributes();
+		~UITextAttributes();
 
-		bool isEqual(UITextAttributeDictionary* dict);
+		bool isEqual(UITextAttributes* dict);
 
 		void allKeys(std::vector<UITextAttributeKey>& keys);
 		void allKeysForValue(std::vector<UITextAttributeKey>& keys, UITextAttributeValue* val);

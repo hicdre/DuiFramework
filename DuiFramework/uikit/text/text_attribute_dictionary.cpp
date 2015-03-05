@@ -72,17 +72,17 @@ namespace ui
 	}
 
 
-	UITextAttributeDictionary::UITextAttributeDictionary()
+	UITextAttributes::UITextAttributes()
 	{
 
 	}
 
-	UITextAttributeDictionary::~UITextAttributeDictionary()
+	UITextAttributes::~UITextAttributes()
 	{
 		clear();
 	}
 
-	void UITextAttributeDictionary::allKeys(std::vector<UITextAttributeKey>& keys)
+	void UITextAttributes::allKeys(std::vector<UITextAttributeKey>& keys)
 	{
 		for (auto pair : container_)
 		{
@@ -90,7 +90,7 @@ namespace ui
 		}
 	}
 
-	void UITextAttributeDictionary::allKeysForValue(std::vector<UITextAttributeKey>& keys, UITextAttributeValue* val)
+	void UITextAttributes::allKeysForValue(std::vector<UITextAttributeKey>& keys, UITextAttributeValue* val)
 	{
 		for (auto pair : container_)
 		{
@@ -99,7 +99,7 @@ namespace ui
 		}
 	}
 
-	UITextAttributeValue* UITextAttributeDictionary::valueForKey(UITextAttributeKey key)
+	UITextAttributeValue* UITextAttributes::valueForKey(UITextAttributeKey key)
 	{
 		auto iter = container_.find(key);
 		if (iter == container_.end())
@@ -107,7 +107,7 @@ namespace ui
 		return iter->second;
 	}
 
-	void UITextAttributeDictionary::setValueForKey(UITextAttributeKey key, UITextAttributeValue* val)
+	void UITextAttributes::setValueForKey(UITextAttributeKey key, UITextAttributeValue* val)
 	{
 		auto iter = container_.find(key);
 		if (iter != container_.end()) {
@@ -116,7 +116,7 @@ namespace ui
 		iter->second = val;
 	}
 
-	void UITextAttributeDictionary::clear()
+	void UITextAttributes::clear()
 	{
 		for (auto pair : container_)
 		{
@@ -125,7 +125,7 @@ namespace ui
 		container_.clear();
 	}
 
-	bool UITextAttributeDictionary::isEqual(UITextAttributeDictionary* dict)
+	bool UITextAttributes::isEqual(UITextAttributes* dict)
 	{
 		if (container_.size() != dict->container_.size())
 			return false;
