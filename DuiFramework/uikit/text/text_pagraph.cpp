@@ -1,147 +1,73 @@
 ﻿#include "stdafx.h"
 #include "text_pagraph.h"
+#include "glyph_pagraph.h"
 
 namespace ui
 {
-	static bool isSpace(wchar_t ch) {
-		return ch == ' ' || ch == '\t';
-	}
 
-	static bool isEnd(wchar_t ch) {
-		return ch == '\r' || ch == '\n';
-	}
-
-	static size_t nextWord(const wchar_t* buffer, size_t from, size_t end, bool& isSpaceWord, bool& isEndLine)
-	{
-		isSpaceWord = isSpace(buffer[from]);
-		isEndLine = isEnd(buffer[from]);
-		for (size_t pos = from + 1; pos < end; ++pos)
-		{
-			bool b = isSpace(buffer[pos]);
-			bool be = isEnd(buffer[pos]);
-			if (b != isSpaceWord || be != isEndLine)
-			{
-				return pos - from;
-			}
-		}
-		return end - from;
-	}
-
-	UITextPagraph::UITextPagraph(const wchar_t* text, size_t begin, size_t end) 
+	TextPagraph::TextPagraph(const wchar_t* text, size_t begin, size_t end) 
 		//: text_(text), begin_(begin), end_(end)
 	{
 		if (begin < end)
-			addTextFragment(new UITextFragment(text, begin, end));
+			addTextFragment(new TextFragment(text, begin, end));
 	}
 
-	UITextPagraph::~UITextPagraph()
+	TextPagraph::~TextPagraph()
 	{
-		clearGlyphLine();
 		clearTextFragment();
 	}
 
-	void UITextPagraph::addGlyphLine(UIGlyphLine* line)
-	{
-		if (lastLine_) {
-			lastLine_->nextGlyphLine_ = line;
-			line->prevGlyphLine_ = lastLine_;
-			line->nextGlyphLine_ = NULL;
-			lastLine_ = line;
-		}
-		else {
-			assert(firstLine_ == NULL);
-			firstLine_ = lastLine_ = line;
-			line->prevGlyphLine_ = line->nextGlyphLine_ = NULL;
-		}
-		lineCount_++;
-	}
 
-	void UITextPagraph::clearGlyphLine()
-	{
-		UIGlyphLine* line = firstLine_;
-		while (line)
-		{
-			UIGlyphLine* currentLine = line;
-			line = line->nextGlyphLine_;
-			delete currentLine;
-		}
-		firstLine_ = lastLine_ = NULL;
-		lineCount_ = 0;
-	}
+// 	Rect TextPagraph::GetBoundsRect() const
+// 	{
+// 		return bounds_;
+// 	}
 
-	void UITextPagraph::Render(UIRenderContext* context)
-	{
-		UIScopedRender r(context);
-		for (UIGlyphLine* line = firstLine_; line; line = line->nextGlyphLine_)
-		{
-			line->Render(context);
-			context->Translate(0, line->lineHeight());
-		}
-	}
+// 	void TextPagraph::Layout(size_t width, UILineBreakMode lineBreakMode)
+// 	{
+// 		int remainWidth = width;
+// 		size_t fragmentOffset = 0;
+// 		UIGlyphLine* newLine = new UIGlyphLine;
+// 		TextFragment* fragment = firstTextFragment_;
+// 		while (fragment)
+// 		{
+// 			UIGlyphFragment* glyphFragment = glyphFragmentForWidth(fragment, remainWidth, fragmentOffset);
+// 			if (glyphFragment)
+// 				newLine->addGlyphFragment(glyphFragment);
+// 			if (fragmentOffset >= fragment->glyphsCount()) // fragment用完，下一个
+// 				fragment = fragment->next_;
+// 			if (remainWidth == 0) { //width用完，下一行
+// 				addGlyphLine(newLine);
+// 				newLine = new UIGlyphLine;
+// 			}
+// 		}
+// 		if (newLine->isEmpty())
+// 			delete newLine;
+// 		else
+// 			addGlyphLine(newLine);
+// 	}
 
-	Rect UITextPagraph::GetBoundsRect() const
-	{
-		return bounds_;
-	}
+// 	void TextPagraph::SetWidth(size_t width)
+// 	{
+// 		if (firstTextFragment_ == NULL)
+// 			return;
+// 
+// 		if (bounds_.width() == width)
+// 			return;
+// 
+// 		Layout(width, lineBreakMode_);
+// 		CalcBoundsRect();
+// 		if (isMutilLine())
+// 			bounds_.set_width(width);
+// 	}
 
-	void UITextPagraph::Layout(size_t width, UILineBreakMode lineBreakMode)
-	{
-		int remainWidth = width;
-		size_t fragmentOffset = 0;
-		UIGlyphLine* newLine = new UIGlyphLine;
-		UITextFragment* fragment = firstTextFragment_;
-		while (fragment)
-		{
-			UIGlyphFragment* glyphFragment = glyphFragmentForWidth(fragment, remainWidth, fragmentOffset);
-			if (glyphFragment)
-				newLine->addGlyphFragment(glyphFragment);
-			if (fragmentOffset >= fragment->glyphsCount()) // fragment用完，下一个
-				fragment = fragment->next_;
-			if (remainWidth == 0) { //width用完，下一行
-				addGlyphLine(newLine);
-				newLine = new UIGlyphLine;
-			}
-		}
-		if (newLine->isEmpty())
-			delete newLine;
-		else
-			addGlyphLine(newLine);
-	}
 
-	void UITextPagraph::SetWidth(size_t width)
-	{
-		if (firstTextFragment_ == NULL)
-			return;
+// 	void TextPagraph::SetPosition(int x, int y)
+// 	{
+// 		bounds_.set_origin(Point(x,y));
+// 	}
 
-		if (bounds_.width() == width)
-			return;
-
-		Layout(width, lineBreakMode_);
-		CalcBoundsRect();
-		if (isMutilLine())
-			bounds_.set_width(width);
-	}
-
-	void UITextPagraph::CalcBoundsRect()
-	{
-		int width = 0;
-		int height = 0;
-		for (UIGlyphLine* line = firstLine_; line; line = line->nextGlyphLine_)
-		{
-			Size sz(line->lineSize());
-			if (sz.width() > width)
-				width = sz.width();
-			height += sz.height();
-		}
-		bounds_.SetSize(width, height);
-	}
-
-	void UITextPagraph::SetPosition(int x, int y)
-	{
-		bounds_.set_origin(Point(x,y));
-	}
-
-	void UITextPagraph::addTextFragment(UITextFragment* fragment)
+	void TextPagraph::addTextFragment(TextFragment* fragment)
 	{
 		if (lastTextFragment_) {
 			lastTextFragment_->next_ = fragment;
@@ -156,71 +82,42 @@ namespace ui
 		}
 	}
 
-	void UITextPagraph::clearTextFragment()
+	void TextPagraph::clearTextFragment()
 	{
-		UITextFragment* a = firstTextFragment_;
+		TextFragment* a = firstTextFragment_;
 		while (a)
 		{
-			UITextFragment* b = a;
+			TextFragment* b = a;
 			a = a->next_;
 			delete b;
 		}
 		firstTextFragment_ = lastTextFragment_ = NULL;
 	}
 
-	size_t UITextPagraph::strLength() const
+	size_t TextPagraph::strLength() const
 	{
 		size_t length = 0;
-		for (UITextFragment* fragment = firstTextFragment_; fragment; fragment = fragment->next_)
+		for (TextFragment* fragment = firstTextFragment_; fragment; fragment = fragment->next_)
 		{
 			length += fragment->strLength();
 		}
 		return length;
 	}
 
-	UIGlyphFragment* UITextPagraph::glyphFragmentForWidth(UITextFragment* textFragment, int& width, size_t& offset)
+	UIGlyphPagraph* TextPagraph::buildGlyphPagraph()
 	{
-		int w = 0;
-		size_t i = offset;
-		while (i < textFragment->glyphsCount())
+		UIGlyphPagraph* pagraph = new UIGlyphPagraph;
+		for (TextFragment* fragment = firstTextFragment_; fragment; fragment = fragment->nextTextFragment())
 		{
-			if (lineBreakMode_ == UILineBreakByCharWrapping)
-			{
-				w += glyphs_[i].x_advance;
-				if (w > width)
-					break;
-				++i;
+			UIGlyphFragment* p = fragment->buildGlyphFragment();
+			while (p) {
+				UIGlyphFragment* n = p->nextFragment();
+				pagraph->addGlyphFragment(p);
+				p = n;
 			}
-			else if (lineBreakMode_ == UILineBreakByWordWrapping)
-			{
-				bool isSpaceWord = false;
-				bool isEndLine = false;
-				size_t wordCount = nextWord(textFragment->str(), i, textFragment->glyphsCount_,
-					isSpaceWord, isEndLine);
-				
-				size_t wordWidth = 0;
-				for (size_t j = 0; j < wordCount; ++j)
-				{
-					wordWidth += textFragment->glyphs_[j].x_advance;
-				}
-				if (w + wordWidth > width) {
-					if (isSpaceWord)
-						i += wordCount;
-					break;
-				}
-				i += wordCount;
-				w += wordWidth;
-			}
+			
 		}
-		
-		UIGlyphFragment* f = new UIGlyphFragment(textFragment, offset, offset + i);
-		if (i != textFragment->glyphsCount_)
-			width = 0;
-		else
-			width -= w;
-
-		offset += i;
-		return f;
+		return pagraph;
 	}
 
 }

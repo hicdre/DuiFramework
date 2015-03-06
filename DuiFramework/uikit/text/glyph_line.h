@@ -3,6 +3,7 @@
 
 namespace ui
 {
+	class UIGlyphPagraph;
 	class UIGlyphLine
 	{
 	public:
@@ -10,12 +11,6 @@ namespace ui
 		~UIGlyphLine();
 
 		bool isEmpty() const { return fisrtGlyphFragment_ == NULL; }
-// 		void setGlyphsCount(int s);
-// 		size_t glyphsCount() const;
-// 
-// 		size_t calcTextWidth() const;
-// 		size_t calcTextHeight() const;
-// 		Size calcTextSize() const;
 		int lineHeight() const;
 		int lineWidth() const;
 		Size lineSize() const;
@@ -26,16 +21,11 @@ namespace ui
 		void clearGlyphFragment();
 		void addGlyphFragment(UIGlyphFragment* fragment);
 
-// 		size_t layoutGlyphSizeForWidth(size_t width);
-// 		size_t layoutWordSizeForWidth(size_t width);
- 		void Render(UIRenderContext* context);
+		void Render(UIRenderContext* context);
 		
+		void adjustForWidth(UIGlyphPagraph* pagraph, int width);
 	private:
-		friend class UITextPagraph;
-// 		const UIGlyph *glyphs_;
-// 		const wchar_t* buffer_;
-// 		size_t glyphsCount_;
-// 		scoped_refptr<UIRenderFont> font_;
+		friend class UIGlyphPagraph;
 
 		UIGlyphLine* nextGlyphLine_{ NULL };
 		UIGlyphLine* prevGlyphLine_{ NULL };

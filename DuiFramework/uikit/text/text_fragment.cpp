@@ -1,11 +1,12 @@
 ﻿#include "stdafx.h"
 #include "text_fragment.h"
 #include "uikit/render/ui_render_font.h"
+#include "glyph_fragment.h"
 
 namespace ui
 {
 
-	UITextFragment::UITextFragment(const wchar_t* text, size_t begin, size_t end)
+	TextFragment::TextFragment(const wchar_t* text, size_t begin, size_t end)
 		: text_(text)
 		, begin_(begin)
 		, end_(end)
@@ -14,12 +15,12 @@ namespace ui
 		assert(begin < end);
 	}
 
-	UITextFragment::~UITextFragment()
+	TextFragment::~TextFragment()
 	{
 
 	}
 
-	void UITextFragment::setFont(UIFont* font)
+	void TextFragment::setFont(UIFont* font)
 	{
 		if (font->IsEqual(font))
 			return;
@@ -27,29 +28,29 @@ namespace ui
 		need_update_glyphs_ = true;
 	}
 
-	void UITextFragment::setTextColor(Color color)
+	void TextFragment::setTextColor(Color color)
 	{
 		textColor_ = color;
 	}
 
-	void UITextFragment::setBackgroundColor(Color color)
+	void TextFragment::setBackgroundColor(Color color)
 	{
 		backgroundColor_ = color;
 	}
 
-	bool UITextFragment::propertyEquals(UITextFragment* fragment)
+	bool TextFragment::propertyEquals(TextFragment* fragment)
 	{
 		return textColor_ == fragment->textColor_
 			&& backgroundColor_ == fragment->backgroundColor_
 			&& font_->IsEqual(fragment->font_);
 	}
 
-	Size UITextFragment::textSize()
+	Size TextFragment::textSize()
 	{
 		return Size(textWidth(), textHeight());
 	}
 
-	void UITextFragment::updateGlyphs()
+	void TextFragment::updateGlyphs()
 	{
 		if (!need_update_glyphs_)
 			return;
@@ -62,7 +63,7 @@ namespace ui
 		need_update_glyphs_ = true;
 	}
 
-	void UITextFragment::clearGlyphs()
+	void TextFragment::clearGlyphs()
 	{
 		if (glyphs_)
 		{
@@ -73,17 +74,17 @@ namespace ui
 		
 	}
 
-	int UITextFragment::textHeight()
+	int TextFragment::textHeight()
 	{
 		return font_->renderFont()->GetHeight();
 	}
 
-	int UITextFragment::textWidth()
+	int TextFragment::textWidth()
 	{
 		return textWidthWithRange(0, glyphsCount_);
 	}
 
-	int UITextFragment::textWidthWithRange(size_t begin, size_t end)
+	int TextFragment::textWidthWithRange(size_t begin, size_t end)
 	{
 		updateGlyphs();
 		int w = 0;
@@ -94,7 +95,7 @@ namespace ui
 		return w;
 	}
 
-	void UITextFragment::Render(UIRenderContext* context)
+	void TextFragment::Render(UIRenderContext* context)
 	{
 		updateGlyphs();
 		if (backgroundColor_ != Color_Transparent) {
@@ -103,7 +104,7 @@ namespace ui
 		context->ShowGlyphs(glyphs_, glyphsCount_, font_->renderFont(), textColor_);
 	}
 
-	void UITextFragment::RenderWithRange(UIRenderContext* context, size_t begin, size_t end)
+	void TextFragment::RenderWithRange(UIRenderContext* context, size_t begin, size_t end)
 	{
 		if (!(begin < end && end <= glyphsCount_)) {
 			assert(0);
@@ -116,10 +117,22 @@ namespace ui
 		context->ShowGlyphs(glyphs_ + begin, end - begin, font_->renderFont(), textColor_);
 	}
 
-	size_t UITextFragment::glyphsCount()
+	size_t TextFragment::glyphsCount()
 	{
 		updateGlyphs();
 		return glyphsCount_;
+	}
+
+	UIGlyph* TextFragment::glyphs()
+	{
+		updateGlyphs();
+		return glyphs_;
+	}
+
+	UIGlyphFragment* TextFragment::buildGlyphFragment()
+	{
+		updateGlyphs();
+		return new UIGlyphFragment(this, 0, glyphsCount_);
 	}
 
 }

@@ -1,32 +1,46 @@
 ﻿#pragma once
-#include "uikit/text/text_pagraph.h"
+#include "uikit/text/text_document.h"
+#include "uikit/text/glyph_layout.h"
 
 namespace ui
 {
-	class UITextStorage
+	//根据内容变换不同的数据储存结构
+	class TextStorage
 	{
 	public:
-		UITextStorage();
-		~UITextStorage();
+		TextStorage();
+		~TextStorage();
 
 		void setText(const std::wstring& text);
 
-		void addTextPagraph(UITextPagraph* pagraph);
+		void addTextPagraph(TextPagraph* pagraph);
 		void clearTextPagraph();
 
-		
-		void Layout(const Size& size);
-		Size GetLayoutSize() const;
-
-		void Render(UIRenderContext* context, Color color);
+ 		void Layout(const Size& size);
+// 		Size GetLayoutSize() const;
+// 
+ 		void Render(UIRenderContext* context);
 	private:
-		void buildTextPagraph();
-		UITextPagraph* firstPagraph_{ NULL };
-		UITextPagraph* lastPagraph_{ NULL };
-		size_t pagraphCount_{ 0 };
+		enum InternalStorageType{
+			Type_Null = 0,
+			Type_Pagraph,
+			Type_Document,
+		};
+		void clear();
+		void build();
+		void clearLayout();
+
 
 		std::wstring text_;
+
+		union {
+			TextPagraph* pagraph_;//样式不一致，一段
+			TextDocument* document_;//多段
+		};
+		InternalStorageType storageType_{ Type_Null };
 		bool needBuild_{ true };
-		Size layoutSize_;
+
+		UIGlyphLayout* layout_{ NULL };
+		bool needLayout_{ true };
 	};
 }

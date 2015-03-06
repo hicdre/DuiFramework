@@ -3,29 +3,6 @@
 
 namespace ui
 {
-	static bool isSpace(wchar_t ch) {
-		return ch == ' ' || ch == '\t';
-	}
-
-	static bool isEnd(wchar_t ch) {
-		return ch == '\r' || ch == '\n';
-	}
-
-	static size_t nextWord(const wchar_t* buffer, size_t from, size_t end, bool& isSpaceWord, bool& isEndLine)
-	{
-		isSpaceWord = isSpace(buffer[from]);
-		isEndLine = isEnd(buffer[from]);
-		for (size_t pos = from + 1; pos < end; ++pos)
-		{
-			bool b = isSpace(buffer[pos]);
-			bool be = isEnd(buffer[pos]);
-			if (b != isSpaceWord || be != isEndLine)
-			{
-				return pos - from;
-			}
-		}
-		return end - from;
-	}
 
 	UIGlyphLine::UIGlyphLine() 
 	{
@@ -34,7 +11,7 @@ namespace ui
 
 	UIGlyphLine::~UIGlyphLine()
 	{
-		clearGlyphFragment();
+		//clearGlyphFragment();
 	}
 
 	UIGlyphLine* UIGlyphLine::prevGlyphLine() const

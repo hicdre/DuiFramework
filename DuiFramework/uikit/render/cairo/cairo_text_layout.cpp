@@ -78,7 +78,7 @@ namespace ui
 			return;
 
 		
-		textStorage_->Render(context, color);
+//		textStorage_->Render(context, color);
 // 		cairo_t* cr = cairoContext->get_context();
 // 		cairo_scaled_font_t* sf = InitCairoFont();
 // 		cairoContext->InitColor(color);
@@ -101,21 +101,21 @@ namespace ui
 
 	void UICairoTextLayout::RealLayout()
 	{
-		CleanLayoutResult();
-
-
-		textStorage_ = new UITextStorage;
-		textStorage_->setText(contents_);
-		textStorage_->Layout(layoutBounds_.size());
-
-		//utf8 => utf16
-		Size layoutSize = textStorage_->GetLayoutSize();
-
-		if (layoutSize.height() > layoutBounds_.height()) {
-			textBounds_.SetSize(layoutBounds_.width(), layoutSize.height());
-		}
-		else {
-			textBounds_.SetSize(layoutSize.width(), layoutSize.height());
-		}
+// 		CleanLayoutResult();
+// 
+// 
+// 		textStorage_ = new TextStorage;
+// 		textStorage_->setText(contents_);
+// 		textStorage_->Layout(layoutBounds_.size());
+// 
+// 		//utf8 => utf16
+// 		Size layoutSize = textStorage_->GetLayoutSize();
+// 
+// 		if (layoutSize.height() > layoutBounds_.height()) {
+// 			textBounds_.SetSize(layoutBounds_.width(), layoutSize.height());
+// 		}
+// 		else {
+// 			textBounds_.SetSize(layoutSize.width(), layoutSize.height());
+// 		}
 	}
 }

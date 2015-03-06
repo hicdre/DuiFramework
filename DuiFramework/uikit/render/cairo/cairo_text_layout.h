@@ -38,7 +38,7 @@ namespace ui
 		std::wstring contents_;
 
 		//result
-		UITextStorage* textStorage_;
+		TextStorage* textStorage_;
 
 		bool needLayout_;
 	};

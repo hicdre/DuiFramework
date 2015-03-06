@@ -472,9 +472,6 @@
     <ClCompile Include="uikit\render\cairo\cairo_render_font.cpp">
       <Filter>uikit\render\cairo</Filter>
     </ClCompile>
-    <ClCompile Include="uikit\text\text_storage.cpp">
-      <Filter>uikit\text</Filter>
-    </ClCompile>
     <ClCompile Include="uikit\text\text_attribute_element.cpp">
       <Filter>uikit\text</Filter>
     </ClCompile>
@@ -488,6 +485,18 @@
       <Filter>uikit\text\new</Filter>
     </ClCompile>
     <ClCompile Include="uikit\text\text_pagraph.cpp">
+      <Filter>uikit\text\new</Filter>
+    </ClCompile>
+    <ClCompile Include="uikit\text\text_document.cpp">
+      <Filter>uikit\text\new</Filter>
+    </ClCompile>
+    <ClCompile Include="uikit\text\glyph_pagraph.cpp">
+      <Filter>uikit\text\new</Filter>
+    </ClCompile>
+    <ClCompile Include="uikit\text\text_storage.cpp">
+      <Filter>uikit\text\new</Filter>
+    </ClCompile>
+    <ClCompile Include="uikit\text\glyph_layout.cpp">
       <Filter>uikit\text\new</Filter>
     </ClCompile>
   </ItemGroup>
@@ -925,9 +934,6 @@
     <ClInclude Include="uikit\common\ui_glyphs.h">
       <Filter>uikit\common</Filter>
     </ClInclude>
-    <ClInclude Include="uikit\text\text_storage.h">
-      <Filter>uikit\text</Filter>
-    </ClInclude>
     <ClInclude Include="uikit\text\text_attribute_element.h">
       <Filter>uikit\text</Filter>
     </ClInclude>
@@ -941,6 +947,18 @@
       <Filter>uikit\text\new</Filter>
     </ClInclude>
     <ClInclude Include="uikit\text\text_pagraph.h">
+      <Filter>uikit\text\new</Filter>
+    </ClInclude>
+    <ClInclude Include="uikit\text\text_document.h">
+      <Filter>uikit\text\new</Filter>
+    </ClInclude>
+    <ClInclude Include="uikit\text\glyph_pagraph.h">
+      <Filter>uikit\text\new</Filter>
+    </ClInclude>
+    <ClInclude Include="uikit\text\text_storage.h">
+      <Filter>uikit\text\new</Filter>
+    </ClInclude>
+    <ClInclude Include="uikit\text\glyph_layout.h">
       <Filter>uikit\text\new</Filter>
     </ClInclude>
   </ItemGroup>

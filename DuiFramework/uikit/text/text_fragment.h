@@ -5,15 +5,16 @@
 
 namespace ui
 {
+	class UIGlyphFragment;
 	//表示一段属性完全相同的文字
-	class UITextFragment
+	class TextFragment
 	{
 	public:
-		UITextFragment(const wchar_t* text, size_t begin, size_t end);
-		~UITextFragment();
+		TextFragment(const wchar_t* text, size_t begin, size_t end);
+		~TextFragment();
 
-		UITextFragment* prevTextFragment() const { return prev_; }
-		UITextFragment* nextTextFragment() const { return next_; }
+		TextFragment* prevTextFragment() const { return prev_; }
+		TextFragment* nextTextFragment() const { return next_; }
 
 		//@property UIFont* font;
 		UIFont* font() const { return font_; }
@@ -27,8 +28,9 @@ namespace ui
 		Color backgroundColor() const { return backgroundColor_; }
 		void setBackgroundColor(Color color);
 
+		UIGlyph* glyphs();
 		size_t glyphsCount();
-		bool propertyEquals(UITextFragment* fragment);
+		bool propertyEquals(TextFragment* fragment);
 
 		//布局信息
 		Size textSize();
@@ -36,14 +38,17 @@ namespace ui
 		int textWidth();
 		int textWidthWithRange(size_t begin, size_t end);
 
-		
+		//产生多个
+		UIGlyphFragment* buildGlyphFragment();
 		//绘制
 		void Render(UIRenderContext* context);
 		void RenderWithRange(UIRenderContext* context, size_t begin, size_t end);
 	private:
-		friend class UITextPagraph;
+		friend class TextPagraph;
+		friend class UIGlyphFragment;
 		void clearGlyphs();
 		void updateGlyphs();
+		
 		const wchar_t* str() const { return text_ + begin_; }
 		size_t strLength() const { return end_ - begin_; }
 		const wchar_t* text_;
@@ -54,8 +59,8 @@ namespace ui
 		Color textColor_{ Color_Black };
 		Color backgroundColor_{ Color_Transparent };
 
-		UITextFragment* next_{ NULL };
-		UITextFragment* prev_{ NULL };
+		TextFragment* next_{ NULL };
+		TextFragment* prev_{ NULL };
 
 		//字形信息
 		UIGlyph* glyphs_{ NULL };

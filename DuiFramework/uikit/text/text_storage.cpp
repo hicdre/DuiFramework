@@ -3,109 +3,142 @@
 
 namespace ui
 {
+	class TextPagraphBuilder
+	{
+	public:
+		TextPagraphBuilder(const wchar_t* begin, size_t len)
+		{
+			begin_ = begin;
+			len_ = len;
+			offset_ = 0;
+		}
 
-	UITextStorage::UITextStorage()
+		TextPagraph* nextPagraph()
+		{
+			TextPagraph* p = NULL;
+			while (!p && offset_ < len_)
+			{
+				if (begin_[offset_] == '\r' && begin_[offset_ + 1] == '\n') {
+					offset_ += 2;
+					p = buildTextPagraph(offset_);
+				}
+				else if (begin_[offset_] == '\r' || begin_[offset_] == '\n') {
+					offset_++;
+					p = buildTextPagraph(offset_);
+				}
+				else {
+					offset_++;
+				}
+			}
+			return p;
+		}
+	private:
+		TextPagraph* buildTextPagraph(size_t pos)
+		{
+			TextPagraph* p = NULL;
+			if (pagraph_begin_ < pos)
+				p = new TextPagraph(begin_, pagraph_begin_, pos);
+			pagraph_begin_ = pos;
+			return p;
+		}
+		const wchar_t* begin_;
+		size_t len_;
+		size_t offset_;
+		size_t pagraph_begin_;
+	};
+
+	TextStorage::TextStorage()
+		: pagraph_(NULL)
 	{
 
 	}
 
-	UITextStorage::~UITextStorage()
+	TextStorage::~TextStorage()
 	{
-
+		clearLayout();
+		clear();
 	}
 
-	void UITextStorage::setText(const std::wstring& text)
+	void TextStorage::setText(const std::wstring& text)
 	{
+		clear();
 		text_ = text;
 		needBuild_ = true;
 	}
 
-	void UITextStorage::addTextPagraph(UITextPagraph* pagraph)
+
+	void TextStorage::Render(UIRenderContext* context)
 	{
-		if (lastPagraph_) {
-			lastPagraph_->nextPagraph_ = pagraph;
-			pagraph->prevPagraph_ = lastPagraph_;
-			pagraph->nextPagraph_ = NULL;
-			lastPagraph_ = pagraph;
-		}
-		else {
-			assert(firstPagraph_ == NULL);
-			firstPagraph_ = lastPagraph_ = pagraph;
-			pagraph->prevPagraph_ = pagraph->nextPagraph_ = NULL;
-		}
-		pagraphCount_++;
+// 		for (TextPagraph* pagraph = firstPagraph_; pagraph; pagraph = pagraph->nextPagraph_)
+// 		{
+// 			context->PushState();
+// 			context->Translate(pagraph->x(), pagraph->y());
+// 			pagraph->Render(context);
+// 			context->PopState();
+// 		}
 	}
 
-	void UITextStorage::clearTextPagraph()
+	void TextStorage::clear()
 	{
-		UITextPagraph* pagraph = firstPagraph_;
-		while (pagraph)
+		if (storageType_ != Type_Null && pagraph_)
 		{
-			UITextPagraph* deletePagraph = pagraph;
-			pagraph = pagraph->nextPagraph_;
-			delete deletePagraph;
+			if (storageType_ == Type_Pagraph)
+				delete pagraph_;
+			else
+				delete document_;
+			pagraph_ = NULL;
+			storageType_ = Type_Null;
 		}
-		firstPagraph_ = lastPagraph_ = NULL;
-		pagraphCount_ = 0;
 	}
 
-	void UITextStorage::buildTextPagraph()
+	void TextStorage::build()
 	{
 		if (!needBuild_)
 			return;
+
+		TextPagraphBuilder builder(text_.c_str(), text_.size());
+		while (TextPagraph* p = builder.nextPagraph())
+		{
+			if (storageType_ == Type_Pagraph || storageType_ == Type_Null) {
+				TextDocument* document = new TextDocument(text_.c_str(), text_.size());
+				if (storageType_ == Type_Pagraph)
+					document->addTextPagraph(pagraph_);
+				document_ = document;
+				storageType_ = Type_Document;
+			}
+			document_->addTextPagraph(p);
+		}
+
 		needBuild_ = false;
-		size_t count = 0;
-		size_t begin_pos = 0;
-		while (count < text_.size())
-		{
-			if (text_[count] == '\r' && text_[count + 1] == '\n') {
-				addTextPagraph(new UITextPagraph(text_.c_str(), begin_pos, count));
-				begin_pos = count + 2;
-				count++;
-			}
-			else if (text_[count] == '\r' || text_[count] == '\n') {
-				addTextPagraph(new UITextPagraph(text_.c_str(), begin_pos, count));
-				begin_pos = count + 1;
-			}
-
-			count++;
-		}
-		if (begin_pos < count)
-			addTextPagraph(new UITextPagraph(text_.c_str(), begin_pos, count));
 	}
 
-	void UITextStorage::Layout(const Size& size)
+	void TextStorage::Layout(const Size& size)
 	{
-		buildTextPagraph();
-		int y = 0;
-		int max_width = 0;
-		for (UITextPagraph* pagraph = firstPagraph_; pagraph; pagraph = pagraph->nextPagraph_)
+		if (!needLayout_)
+			return;
+
+		clearLayout();
+		if (storageType_ == Type_Pagraph)
 		{
-			pagraph->SetWidth(size.width());
-			pagraph->SetPosition(0, y);
-			Rect rc(pagraph->GetBoundsRect());
-			y += rc.height();
-			if (rc.width() > max_width)
-				max_width = rc.width();
+			layout_ = new UIGlyphLayout;
+			layout_->addGlyphPagraph(pagraph_->buildGlyphPagraph());
+		}
+		else if (storageType_ == Type_Document)
+		{
+			layout_ = document_->buildGlyphLayout();
 		}
 
-		layoutSize_.SetSize(max_width, y);
+		needLayout_ = false;
 	}
 
-	Size UITextStorage::GetLayoutSize() const
+	void TextStorage::clearLayout()
 	{
-		return layoutSize_;
-	}
-
-	void UITextStorage::Render(UIRenderContext* context, Color color)
-	{
-		for (UITextPagraph* pagraph = firstPagraph_; pagraph; pagraph = pagraph->nextPagraph_)
+		if (layout_)
 		{
-			context->PushState();
-			context->Translate(pagraph->x(), pagraph->y());
-			pagraph->Render(context);
-			context->PopState();
+			delete layout_;
+			layout_ = NULL;
 		}
 	}
+
 
 }
