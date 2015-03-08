@@ -106,7 +106,7 @@ namespace ui
 
 	UIGlyphPagraph* TextPagraph::buildGlyphPagraph()
 	{
-		UIGlyphPagraph* pagraph = new UIGlyphPagraph;
+		UIGlyphPagraph* pagraph = new UIGlyphPagraph(this);
 		for (TextFragment* fragment = firstTextFragment_; fragment; fragment = fragment->nextTextFragment())
 		{
 			UIGlyphFragment* p = fragment->buildGlyphFragment();
@@ -118,6 +118,20 @@ namespace ui
 			
 		}
 		return pagraph;
+	}
+
+	void TextPagraph::setTextAlignment(TextAlignment v)
+	{
+		if (textAlignment_ == v)
+			return;
+		textAlignment_ = v;
+	}
+
+	void TextPagraph::setLineBreakMode(UILineBreakMode v)
+	{
+		if (lineBreakMode_ == v)
+			return;
+		lineBreakMode_ = v;
 	}
 
 }

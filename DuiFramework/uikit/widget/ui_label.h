@@ -15,7 +15,6 @@ namespace ui
 		//@property std::wstring text;
 		const std::wstring& text() const;
 		void setText(const std::wstring& text);
-		void setAttributeString(UIAttributeString* attributeString);
 
 		//@property UIFont* font;
 		UIFont* font() const { return font_; }
@@ -42,7 +41,7 @@ namespace ui
 		virtual Rect textRectForBounds(const Rect& rect);
 		virtual void drawTextInRect(UIRenderContext* painter, const Rect& rect);
 	private:
-		UITextLayout* textLayout();
+		//UITextLayout* textLayout();
 		void layoutText();
 		std::wstring text_;
 
@@ -51,7 +50,7 @@ namespace ui
 		Color textColor_{ Color_Black };
 		TextAlignment textAlignment_{ TextAlignmentLeft };
 		VerticalAlignment verticalAligment_{ VerticalAlignmentMiddle };
-		scoped_refptr<UITextLayout> textLayout_;
+		//scoped_refptr<UITextLayout> textLayout_;
 		Rect textRectCached_;
 		bool needsTextLayout_{ true };
 		UILineBreakMode lineBreakMode_{ UILineBreakByWordWrapping };

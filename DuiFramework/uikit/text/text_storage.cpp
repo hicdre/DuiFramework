@@ -69,13 +69,12 @@ namespace ui
 
 	void TextStorage::Render(UIRenderContext* context)
 	{
-// 		for (TextPagraph* pagraph = firstPagraph_; pagraph; pagraph = pagraph->nextPagraph_)
-// 		{
-// 			context->PushState();
-// 			context->Translate(pagraph->x(), pagraph->y());
-// 			pagraph->Render(context);
-// 			context->PopState();
-// 		}
+		layout();
+		if (layout_ == NULL) {
+			assert(0);
+			return;
+		}
+		layout_->Render(context);
 	}
 
 	void TextStorage::clear()
@@ -112,10 +111,12 @@ namespace ui
 		needBuild_ = false;
 	}
 
-	void TextStorage::Layout(const Size& size)
+	void TextStorage::layout()
 	{
 		if (!needLayout_)
 			return;
+
+		build();
 
 		clearLayout();
 		if (storageType_ == Type_Pagraph)
@@ -128,6 +129,8 @@ namespace ui
 			layout_ = document_->buildGlyphLayout();
 		}
 
+		layout_->setLayoutWidth(layoutWidth_);
+
 		needLayout_ = false;
 	}
 
@@ -138,6 +141,25 @@ namespace ui
 			delete layout_;
 			layout_ = NULL;
 		}
+	}
+
+	void TextStorage::setLayoutWidth(int width)
+	{
+		if (layoutWidth_ == width)
+			return;
+		layoutWidth_ = width;
+		needLayout_ = true;
+
+	}
+
+	Size TextStorage::layoutSize()
+	{
+		layout();
+		if (layout_ == NULL) {
+			assert(0);
+			return Size();
+		}
+		return layout_->layoutSize();
 	}
 
 

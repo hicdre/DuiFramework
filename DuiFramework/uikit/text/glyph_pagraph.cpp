@@ -1,11 +1,13 @@
 ﻿#include "stdafx.h"
 #include "glyph_pagraph.h"
+#include "text_pagraph.h"
 
 namespace ui
 {
 
 
-	UIGlyphPagraph::UIGlyphPagraph()
+	UIGlyphPagraph::UIGlyphPagraph(TextPagraph* textPagraph)
+		: textPagraph_(textPagraph)
 	{
 
 	}
@@ -29,7 +31,7 @@ namespace ui
 			firstGlyphLine_ = lastGlyphLine_ = line;
 			line->prevGlyphLine_ = line->nextGlyphLine_ = NULL;
 		}
-
+		glyphLineCount_++;
 	}
 
 	void UIGlyphPagraph::clearGlyphLine()
@@ -42,15 +44,28 @@ namespace ui
 			delete currentLine;
 		}
 		firstGlyphLine_ = lastGlyphLine_ = NULL;
+		glyphLineCount_ = 0;
 	}
 
 	void UIGlyphPagraph::Render(UIRenderContext* context)
 	{
+		int width = layoutWidth();
 		UIScopedRender r(context);
+		int prev_x = 0;
 		for (UIGlyphLine* line = firstGlyphLine_; line; line = line->nextGlyphLine_)
 		{
+			Size size = line->lineSize();
+			TextAlignment alignment = textPagraph_->textAlignment();
+			int x = 0;
+			if (alignment == TextAlignmentLeft)
+				x = 0;
+			else if (alignment == TextAlignmentCenter)
+				x = width - size.width();
+			else
+				x = (width - size.width()) / 2;
+			context->Translate(x - prev_x, 0);
 			line->Render(context);
-			context->Translate(0, line->lineHeight());
+			context->Translate(0, size.height());
 		}
 	}
 
@@ -62,14 +77,6 @@ namespace ui
 		needLayout_ = true;
 	}
 
-
-	void UIGlyphPagraph::setLineBreakMode(UILineBreakMode mode)
-	{
-		if (lineBreakMode_ == mode)
-			return;
-		lineBreakMode_ = mode;
-		needLayout_ = true;
-	}
 
 
 	void UIGlyphPagraph::Layout()
@@ -84,7 +91,7 @@ namespace ui
 		int remainWidth = layoutWidth_;
 		while (fragment)
 		{
-			if (fragment->adjustForWidth(remainWidth, lineBreakMode_)) {
+			if (fragment->adjustForWidth(remainWidth, textPagraph_->lineBreakMode())) {
 				line->addGlyphFragment(fragment);
 				addGlyphLine(line);
 				line = new UIGlyphLine;
@@ -126,6 +133,30 @@ namespace ui
 			fragment->prevFragment_ = fragment->nextFragment_ = NULL;
 		}
 		needLayout_ = true;
+	}
+
+	int UIGlyphPagraph::layoutHeight()
+	{
+		Layout();
+		int h = 0;
+		for (UIGlyphLine* line = firstGlyphLine_; line; line = line->nextGlyphLine_)
+		{
+			h += line->lineHeight();
+		}
+		return h;
+	}
+
+	int UIGlyphPagraph::layoutWidth()
+	{
+		Layout();
+		if (glyphLineCount_ == 1)
+			return firstGlyphLine_->lineWidth();
+		return layoutWidth_;
+	}
+
+	Size UIGlyphPagraph::layoutSize()
+	{
+		return Size(layoutWidth(), layoutHeight());
 	}
 
 }

@@ -46,4 +46,64 @@ namespace ui
 		pagraphCount_ = 0;
 	}
 
+	void UIGlyphLayout::setLayoutWidth(int width)
+	{
+		if (layoutWidth_ == width)
+			return;
+		layoutWidth_ = width;
+		needLayout_ = true;
+	}
+
+	void UIGlyphLayout::Layout()
+	{
+		if (!needLayout_)
+			return;
+		for (UIGlyphPagraph* pagraph = firstPagraph_; pagraph; pagraph = pagraph->nextGlyphPagraph_)
+		{
+			pagraph->setLayoutWidth(layoutWidth_);
+		}
+		needLayout_ = false;
+	}
+
+	Size UIGlyphLayout::layoutSize()
+	{
+		return Size(layoutWidth(), layoutHeight());
+	}
+
+	int UIGlyphLayout::layoutHeight()
+	{
+		Layout();
+		int h = 0;
+		for (UIGlyphPagraph* pagraph = firstPagraph_; pagraph; pagraph = pagraph->nextGlyphPagraph_)
+		{
+			h += pagraph->layoutHeight();
+		}
+		return h;
+	}
+
+	int UIGlyphLayout::layoutWidth()
+	{
+		Layout();
+		int w = 0;
+		for (UIGlyphPagraph* pagraph = firstPagraph_; pagraph; pagraph = pagraph->nextGlyphPagraph_)
+		{
+			int width = pagraph->layoutWidth();
+			if (width > w)
+				w = width;
+		}
+		return w;
+	}
+
+	void UIGlyphLayout::Render(UIRenderContext* context)
+	{
+		Layout();
+		UIScopedRender r(context);
+		for (UIGlyphPagraph* pagraph = firstPagraph_; pagraph; pagraph = pagraph->nextGlyphPagraph_)
+		{
+			int height = pagraph->layoutHeight();
+			pagraph->Render(context);
+			context->Translate(0, height);
+		}
+	}
+
 }

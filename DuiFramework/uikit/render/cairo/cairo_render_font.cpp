@@ -113,6 +113,18 @@ namespace ui
 		return cairoFontExtent_;
 	}
 
+	int UICairoRenderFont::MeasureWidth(const wchar_t* text, size_t len)
+	{
+		std::string utf8_contents = WideToMultiByte(std::wstring(text, len));
+
+		cairo_scaled_font_t* scaledFont = cairoScaledFont();
+
+		cairo_text_extents_t extents;
+		cairo_scaled_font_text_extents(scaledFont, utf8_contents.c_str(), &extents);
+
+		return extents.width;
+	}
+
 	
 
 }

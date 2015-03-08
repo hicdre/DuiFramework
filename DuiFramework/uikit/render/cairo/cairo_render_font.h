@@ -14,6 +14,8 @@ namespace ui
 		virtual void GetGlyphs(const wchar_t* text, size_t len, 
 			UIGlyph** glyphs, size_t& glyphsCount) override;
 
+		virtual int MeasureWidth(const wchar_t* text, size_t len) override;
+
 		virtual double GetHeight() override;
 		virtual double GetAscent() override;
 		virtual double GetDescent() override;

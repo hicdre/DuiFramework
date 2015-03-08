@@ -12,13 +12,11 @@ namespace ui
 		~TextStorage();
 
 		void setText(const std::wstring& text);
+		void setLayoutWidth(int width);
 
-		void addTextPagraph(TextPagraph* pagraph);
-		void clearTextPagraph();
-
- 		void Layout(const Size& size);
-// 		Size GetLayoutSize() const;
-// 
+ 		
+ 		Size layoutSize();
+ 
  		void Render(UIRenderContext* context);
 	private:
 		enum InternalStorageType{
@@ -29,6 +27,7 @@ namespace ui
 		void clear();
 		void build();
 		void clearLayout();
+		void layout();
 
 
 		std::wstring text_;
@@ -40,6 +39,7 @@ namespace ui
 		InternalStorageType storageType_{ Type_Null };
 		bool needBuild_{ true };
 
+		int layoutWidth_{ 0 };
 		UIGlyphLayout* layout_{ NULL };
 		bool needLayout_{ true };
 	};

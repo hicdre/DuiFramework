@@ -4,16 +4,20 @@
 
 namespace ui
 {
+	class TextPagraph;
 	class UIGlyphPagraph
 	{
 	public:
-		UIGlyphPagraph();
+		UIGlyphPagraph(TextPagraph* textPagraph);
 		~UIGlyphPagraph();
 
 		void addGlyphFragment(UIGlyphFragment* fragment);
 
 		void setLayoutWidth(int width);
-		void setLineBreakMode(UILineBreakMode mode);
+
+		int layoutHeight();
+		int layoutWidth();
+		Size layoutSize();
 
 		void Render(UIRenderContext* context);
 	private:
@@ -21,18 +25,19 @@ namespace ui
 		void Layout();
 		void addGlyphLine(UIGlyphLine* line);
 		void clearGlyphLine();
+		void clearGlyphFragment();
 		UIGlyphPagraph* prevGlyphPagraph_{ NULL };
 		UIGlyphPagraph* nextGlyphPagraph_{ NULL };
 
 		UIGlyphLine* firstGlyphLine_{ NULL };
 		UIGlyphLine* lastGlyphLine_{ NULL };
-
-		void clearGlyphFragment();
+		int glyphLineCount_{ 0 };
+		
 
 		UIGlyphFragment* fisrtGlyphFragment_{ NULL };
 		UIGlyphFragment* lastGlyphFragment_{ NULL };
 
-		UILineBreakMode lineBreakMode_{ UILineBreakByWordWrapping };
+		TextPagraph* textPagraph_;
 		int layoutWidth_{ -1 };
 
 		Size size_;
