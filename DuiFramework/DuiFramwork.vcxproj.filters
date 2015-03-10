@@ -499,6 +499,9 @@
     <ClCompile Include="uikit\text\glyph_layout.cpp">
       <Filter>uikit\text\new</Filter>
     </ClCompile>
+    <ClCompile Include="uikit\text\text_line.cpp">
+      <Filter>uikit\text\new</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -959,6 +962,9 @@
       <Filter>uikit\text\new</Filter>
     </ClInclude>
     <ClInclude Include="uikit\text\glyph_layout.h">
+      <Filter>uikit\text\new</Filter>
+    </ClInclude>
+    <ClInclude Include="uikit\text\text_line.h">
       <Filter>uikit\text\new</Filter>
     </ClInclude>
   </ItemGroup>

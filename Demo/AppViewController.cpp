@@ -14,14 +14,12 @@ AppViewController::~AppViewController()
 }
 
 
-void AppViewController::buttonClicked()
-{
-
-}
 
 void AppViewController::viewWillAppear()
 {
-	registerSelector("buttonClicked", std::bind(&AppViewController::buttonClicked, this));
+	registerSelector("closeClicked", std::bind(&AppViewController::closeClicked, this));
+	registerSelector("textAlignmentButtonClicked", std::bind(&AppViewController::textAlignmentButtonClicked, this, std::placeholders::_1));
+	registerSelector("verticalAlignmentButtonClicked", std::bind(&AppViewController::verticalAlignmentButtonClicked, this, std::placeholders::_1));
 }
 
 void AppViewController::loadView()
@@ -31,44 +29,159 @@ void AppViewController::loadView()
 	window->SetBackgroundColor(ui::Color_Green);
 	const wchar_t* text = L"Label 测试";
 	//𪚥
-	for (int i = 0; i < 9; ++i)
-	{
-		UILabel* label = new UILabel;
-		int row = i / 3;
-		int col = i % 3;
-		label->InitWithBounds(Rect(20 + col * 120, 20 + row * 50, 100, 40));
-		label->setText(text);
-		label->SetBackgroundColor(Color_White);
-
-		label->setTextAlignment((TextAlignment)col);
-		label->setVerticalAlignment((VerticalAlignment)row);
-
-		window->addSubView(label);
-	}
-
 	{
 		UIButton* button = new UIButton;
-		button->InitWithBounds(Rect(20, 200, 100, 40));
-		button->setTitleforState(L"Button 测试", UIControlStateNormal);
-		button->setTitleforState(L"Button Hovered", UIControlStateHovered);
-		button->setTitleforState(L"Button Pressed", UIControlStatePressed);
+		button->InitWithBounds(Rect(480, 0, 20, 20));
+		button->setTitleforState(L"X", UIControlStateNormal);
 		button->setTitleColorForState(Color_Black, UIControlStateNormal);
-		button->SetBackgroundColor(Color_White);
-		button->addTargetForControlEvents(this, "buttonClicked", UIControlEventClick);
+		button->setTitleColorForState(Color_Red, UIControlStateHovered);
+		button->addTargetForControlEvents(this, "closeClicked", UIControlEventClick);
 
 		window->addSubView(button);
 	}
 
 	{
 		UILabel* label = new UILabel;
-		label->InitWithBounds(Rect(150, 200, 200, 200));
-		label->setText(L"a long Text for test, etc.\ntt hh");
-		label->SetBackgroundColor(Color_White);
-
+		label->InitWithBounds(Rect(20, 20, 80, 20));
+		label->setText(L"水平对齐：");
+		label->setTextAlignment(TextAlignmentRight);
 		window->addSubView(label);
+	}
+	{
+		UIButton* button = new UIButton;
+		button->InitWithBounds(Rect(110, 20, 80, 20));
+		button->setTitleforState(L"Left", UIControlStateNormal);
+		button->setTitleColorForState(Color_Black, UIControlStateNormal);
+		button->setTitleColorForState(Color_Green, UIControlStateHovered);
+		button->SetBackgroundColor(Color_White);
+		button->addTargetForControlEvents(this, "textAlignmentButtonClicked", UIControlEventClick);
+
+		window->addSubView(button);
+
+		textAlignmentButtons_[TextAlignmentLeft] = button;
+	}
+
+	{
+		UIButton* button = new UIButton;
+		button->InitWithBounds(Rect(200, 20, 80, 20));
+		button->setTitleforState(L"Center", UIControlStateNormal);
+		button->setTitleColorForState(Color_Black, UIControlStateNormal);
+		button->setTitleColorForState(Color_Green, UIControlStateHovered);
+		button->SetBackgroundColor(Color_White);
+		button->addTargetForControlEvents(this, "textAlignmentButtonClicked", UIControlEventClick);
+
+		window->addSubView(button);
+		textAlignmentButtons_[TextAlignmentCenter] = button;
+	}
+
+	{
+		UIButton* button = new UIButton;
+		button->InitWithBounds(Rect(290, 20, 80, 20));
+		button->setTitleforState(L"Right", UIControlStateNormal);
+		button->setTitleColorForState(Color_Black, UIControlStateNormal);
+		button->setTitleColorForState(Color_Green, UIControlStateHovered);
+		button->SetBackgroundColor(Color_White);
+		button->addTargetForControlEvents(this, "textAlignmentButtonClicked", UIControlEventClick);
+
+		window->addSubView(button);
+		textAlignmentButtons_[TextAlignmentRight] = button;
+	}
+
+	{
+		UILabel* label = new UILabel;
+		label->InitWithBounds(Rect(20, 50, 80, 20));
+		label->setText(L"垂直对齐：");
+		label->setTextAlignment(TextAlignmentRight);
+		window->addSubView(label);
+	}
+	{
+		UIButton* button = new UIButton;
+		button->InitWithBounds(Rect(110, 50, 80, 20));
+		button->setTitleforState(L"Top", UIControlStateNormal);
+		button->setTitleColorForState(Color_Black, UIControlStateNormal);
+		button->setTitleColorForState(Color_Green, UIControlStateHovered);
+		button->SetBackgroundColor(Color_White);
+		button->addTargetForControlEvents(this, "verticalAlignmentButtonClicked", UIControlEventClick);
+
+		window->addSubView(button);
+		verticalAlignmentButtons_[VerticalAlignmentTop] = button;
+	}
+
+	{
+		UIButton* button = new UIButton;
+		button->InitWithBounds(Rect(200, 50, 80, 20));
+		button->setTitleforState(L"Middle", UIControlStateNormal);
+		button->setTitleColorForState(Color_Black, UIControlStateNormal);
+		button->setTitleColorForState(Color_Green, UIControlStateHovered);
+		button->SetBackgroundColor(Color_White);
+		button->addTargetForControlEvents(this, "verticalAlignmentButtonClicked", UIControlEventClick);
+
+		window->addSubView(button);
+		verticalAlignmentButtons_[VerticalAlignmentMiddle] = button;
+	}
+
+	{
+		UIButton* button = new UIButton;
+		button->InitWithBounds(Rect(290, 50, 80, 20));
+		button->setTitleforState(L"Bottom", UIControlStateNormal);
+		button->setTitleColorForState(Color_Black, UIControlStateNormal);
+		button->setTitleColorForState(Color_Green, UIControlStateHovered);
+		button->SetBackgroundColor(Color_White);
+		button->addTargetForControlEvents(this, "verticalAlignmentButtonClicked", UIControlEventClick);
+
+		window->addSubView(button);
+		verticalAlignmentButtons_[VerticalAlignmentBottom] = button;
+	}
+
+	{
+		UILabel* label = new UILabel;
+		label->InitWithBounds(Rect(150, 150, 200, 150));
+		label->setText(L"Label测试");
+		label->SetBackgroundColor(Color_White);
+		label->setTextAlignment(TextAlignmentLeft);
+		window->addSubView(label);
+
+		textLabel_ = label;
 	}
 
 	view_ = window;
 	window->setRootViewController(this);
+}
+
+ui::TextAlignment AppViewController::textAlignmentFromButton(UIButton* btn)
+{
+	for (int i = 0; i < textAlignmentButtonCount; ++i)
+	{
+		if (textAlignmentButtons_[i] == btn)
+			return (TextAlignment)i;
+	}
+	return TextAlignmentLeft;
+}
+
+ui::VerticalAlignment AppViewController::verticalAlignmentFromButton(UIButton* btn)
+{
+	for (int i = 0; i < verticalAlignmentButtonCount; ++i)
+	{
+		if (verticalAlignmentButtons_[i] == btn)
+			return (VerticalAlignment)i;
+	}
+	return VerticalAlignmentMiddle;
+}
+
+void AppViewController::textAlignmentButtonClicked(UIObject* target)
+{
+	UIButton* button = static_cast<UIButton*>(target);
+	textLabel_->setTextAlignment(textAlignmentFromButton(button));
+}
+
+void AppViewController::verticalAlignmentButtonClicked(ui::UIObject* target)
+{
+	UIButton* button = static_cast<UIButton*>(target);
+	textLabel_->setVerticalAlignment(verticalAlignmentFromButton(button));
+}
+
+void AppViewController::closeClicked()
+{
+	UIApplication::Get()->Quit();
 }
 

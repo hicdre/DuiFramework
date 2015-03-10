@@ -5,6 +5,8 @@
 namespace ui
 {
 	//根据内容变换不同的数据储存结构
+
+	//remove
 	class TextStorage
 	{
 	public:

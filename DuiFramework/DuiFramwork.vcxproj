@@ -286,16 +286,35 @@
     <ClCompile Include="uikit\render\cairo\cairo_render_context.cpp" />
     <ClCompile Include="uikit\render\cairo\cairo_font_manager.cpp" />
     <ClCompile Include="uikit\render\ui_render_engine.cpp" />
-    <ClCompile Include="uikit\text\glyph_line.cpp" />
-    <ClCompile Include="uikit\text\glyph_pagraph.cpp" />
-    <ClCompile Include="uikit\text\glyph_layout.cpp" />
+    <ClCompile Include="uikit\text\glyph_line.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="uikit\text\glyph_pagraph.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="uikit\text\glyph_layout.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="uikit\text\text_attribute_dictionary.cpp" />
     <ClCompile Include="uikit\text\text_attribute_element.cpp" />
-    <ClCompile Include="uikit\text\glyph_fragment.cpp" />
-    <ClCompile Include="uikit\text\text_document.cpp" />
-    <ClCompile Include="uikit\text\text_fragment.cpp" />
-    <ClCompile Include="uikit\text\text_pagraph.cpp" />
-    <ClCompile Include="uikit\text\text_storage.cpp" />
+    <ClCompile Include="uikit\text\glyph_fragment.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="uikit\text\text_document.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="uikit\text\text_fragment.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="uikit\text\text_line.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="uikit\text\text_pagraph.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="uikit\text\text_storage.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="uikit\ui_application.cpp" />
     <ClCompile Include="uikit\ui_object.cpp" />
     <ClCompile Include="uikit\ui_responder.cpp" />
@@ -581,16 +600,35 @@
     <ClInclude Include="uikit\render\ui_render_path.h" />
     <ClInclude Include="uikit\render\ui_render_context.h" />
     <ClInclude Include="uikit\render\ui_text_layout.h" />
-    <ClInclude Include="uikit\text\glyph_line.h" />
-    <ClInclude Include="uikit\text\glyph_pagraph.h" />
-    <ClInclude Include="uikit\text\glyph_layout.h" />
+    <ClInclude Include="uikit\text\glyph_line.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="uikit\text\glyph_pagraph.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="uikit\text\glyph_layout.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="uikit\text\text_attribute_dictionary.h" />
     <ClInclude Include="uikit\text\text_attribute_element.h" />
-    <ClInclude Include="uikit\text\glyph_fragment.h" />
-    <ClInclude Include="uikit\text\text_document.h" />
-    <ClInclude Include="uikit\text\text_fragment.h" />
-    <ClInclude Include="uikit\text\text_pagraph.h" />
-    <ClInclude Include="uikit\text\text_storage.h" />
+    <ClInclude Include="uikit\text\glyph_fragment.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="uikit\text\text_document.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="uikit\text\text_fragment.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="uikit\text\text_line.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="uikit\text\text_pagraph.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="uikit\text\text_storage.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="uikit\uikit.h" />
     <ClInclude Include="uikit\ui_application.h" />
     <ClInclude Include="uikit\ui_applictaion_delegate.h" />

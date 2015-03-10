@@ -6,7 +6,6 @@ namespace ui
 {
 	UILabel::UILabel()
 		: font_(UIFont::CreateDefault())
-		, attributeString_(new UIAttributeString)
 	{
 
 	}
@@ -18,9 +17,9 @@ namespace ui
 
 	void UILabel::setText(const std::wstring& text)
 	{
-		if (attributeString_->string() == text)
+		if (text_ == text)
 			return;
-		attributeString_.reset(new UIAttributeString(text));
+		text_ = text;
 		needsTextLayout_ = true;
 		SchedulePaint();
 	}
@@ -67,6 +66,8 @@ namespace ui
 		if (textAlignment_ == v)
 			return;
 		textAlignment_ = v;
+		needsTextLayout_ = true;
+		SchedulePaint();
 	}
 
 	void UILabel::setVerticalAlignment(VerticalAlignment v)
@@ -74,63 +75,59 @@ namespace ui
 		if (verticalAligment_ == v)
 			return;
 		verticalAligment_ = v;
-	}
-
-
-	void UILabel::setLineBreakMode(UILineBreakMode v)
-	{
-		if (lineBreakMode_ == v)
-			return;
-		lineBreakMode_ = v;
 		needsTextLayout_ = true;
+		SchedulePaint();
 	}
+
+
+// 	void UILabel::setLineBreakMode(UILineBreakMode v)
+// 	{
+// 		if (lineBreakMode_ == v)
+// 			return;
+// 		lineBreakMode_ = v;
+// 		needsTextLayout_ = true;
+// 	}
 
 
 	Rect UILabel::textRectForBounds(const Rect& boundsRect)
 	{
-		return boundsRect;
-// 		UITextLayout* layout = textLayout();
-// 		layout->SetBounds(boundsRect);
-// 		Rect textRect = layout->Layout();
-// 		if (!(textAlignment_ == TextAlignmentLeft || textRect.width() == boundsRect.width()))
-// 		{
-// 			int delta = boundsRect.width() - textRect.width();
-// 			if (textAlignment_ == TextAlignmentCenter) {
-// 				textRect.Offset(delta / 2, 0);
-// 			}
-// 			else { // TextAlignmentRight
-// 				textRect.Offset(delta, 0);
-// 			}
-// 		}
-// 
-// 		if (!(verticalAligment_ == VerticalAlignmentTop || textRect.height() == boundsRect.height()))
-// 		{
-// 			int delta = boundsRect.height() - textRect.height();
-// 			if (verticalAligment_ == VerticalAlignmentMiddle) {
-// 				textRect.Offset(0, delta / 2);
-// 			}
-// 			else { // VerticalAlignmentBottom
-// 				textRect.Offset(0, delta);
-// 			}
-// 		}
-// 		return textRect;
+		int width = font_->renderFont()->MeasureWidth(text_.c_str(), text_.size());
+		int height = font_->renderFont()->GetHeight();
+		Rect textRect(boundsRect.x(), boundsRect.y(), width, height);
+		if (!(textAlignment_ == TextAlignmentLeft || textRect.width() == boundsRect.width()))
+		{
+			int delta = boundsRect.width() - textRect.width();
+			if (textAlignment_ == TextAlignmentCenter) {
+				textRect.Offset(delta / 2, 0);
+			}
+			else { // TextAlignmentRight
+				textRect.Offset(delta, 0);
+			}
+		}
+
+		if (!(verticalAligment_ == VerticalAlignmentTop || textRect.height() == boundsRect.height()))
+		{
+			int delta = boundsRect.height() - textRect.height();
+			if (verticalAligment_ == VerticalAlignmentMiddle) {
+				textRect.Offset(0, delta / 2);
+			}
+			else { // VerticalAlignmentBottom
+				textRect.Offset(0, delta);
+			}
+		}
+		return textRect;
 	}
 
 	void UILabel::drawTextInRect(UIRenderContext* painter, const Rect& rect)
 	{
-		//painter->DrawText(text_, font_, textColor_);
 		UIScopedPainter helper(painter, Matrix(1.0, 0, 0, 1.0, rect.x(), rect.y()));
-		//textLayout()->Render(painter, textColor());
+		painter->DrawText(text_, font_, textColor_);
+// 		UIGlyph* glyphs = NULL;
+// 		size_t glyphsCount = 0;
+// 		scoped_refptr<UIRenderFont> font = font_->renderFont();
+// 		font->GetGlyphs(text_.c_str(), text_.size(), &glyphs, glyphsCount);
+// 		painter->ShowGlyphs(glyphs, glyphsCount, font, textColor_);
 	}
-
-// 	UITextLayout* UILabel::textLayout()
-// 	{
-// 		if (!textLayout_)
-// 		{
-// 			textLayout_ = UIRenderEngine::current()->CreateRenderTextLayout(font_, GetLocalBounds());
-// 		}
-// 		return textLayout_;
-// 	}
 
 	void UILabel::layoutText()
 	{
@@ -138,7 +135,6 @@ namespace ui
 			return;
 
 		needsTextLayout_ = false;
-		//textLayout()->SetText(text());
 		Rect rect = textRectForBounds(GetLocalBounds());
 		if (rect == textRectCached_)
 			return;
@@ -148,7 +144,7 @@ namespace ui
 
 	const std::wstring& UILabel::text() const
 	{
-		return attributeString_->string();
+		return text_;
 	}
 
 }

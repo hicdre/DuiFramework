@@ -74,8 +74,8 @@ namespace ui
 			return;
 		Layout();
 
-		if (textStorage_ == NULL)// 空字符串
-			return;
+// 		if (textStorage_ == NULL)// 空字符串
+// 			return;
 
 		
 //		textStorage_->Render(context, color);
@@ -91,11 +91,11 @@ namespace ui
 
 	void UICairoTextLayout::CleanLayoutResult()
 	{
-		if (textStorage_)
-		{
-			delete textStorage_;
-			textStorage_ = NULL;
-		}
+// 		if (textStorage_)
+// 		{
+// 			delete textStorage_;
+// 			textStorage_ = NULL;
+// 		}
 
 	}
 

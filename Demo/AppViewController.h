@@ -11,9 +11,15 @@ public:
 
 	virtual void viewWillAppear() override;
 
-	void buttonClicked();
-
-
+	void textAlignmentButtonClicked(ui::UIObject* target);
+	void verticalAlignmentButtonClicked(ui::UIObject* target);
+	void closeClicked();
 protected:
-
+	ui::TextAlignment textAlignmentFromButton(ui::UIButton* btn);
+	ui::VerticalAlignment verticalAlignmentFromButton(ui::UIButton* btn);
+	static const int textAlignmentButtonCount = 3;
+	static const int verticalAlignmentButtonCount = 3;
+	ui::UIButton* textAlignmentButtons_[textAlignmentButtonCount];
+	ui::UIButton* verticalAlignmentButtons_[verticalAlignmentButtonCount];
+	ui::UILabel* textLabel_;
 };

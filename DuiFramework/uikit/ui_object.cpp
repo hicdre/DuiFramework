@@ -19,7 +19,15 @@ namespace ui
 		auto iter = function_map_.find(s);
 		if (iter == function_map_.end())
 			return;
-		iter->second();
+		iter->second(NULL, 0);
+	}
+
+	void UIObject::performSelectorWithTargetAndEvent(const Selector& s, UIObject* target, uint32 e)
+	{
+		auto iter = function_map_.find(s);
+		if (iter == function_map_.end())
+			return;
+		iter->second(target, e);
 	}
 
 }

@@ -271,10 +271,9 @@ namespace ui
 	{
 		InitColor(color);
 
-		cairo_font_face_t* f = engine()->font_manager()->GetFont(font);
-		cairo_set_font_face(cairo_, f);
-		cairo_set_font_size(cairo_, font->font_size());
-
+		scoped_refptr<UIRenderFont> renderFont = const_cast<UIFont*>(font)->renderFont();
+		UICairoRenderFont* cairoFont = static_cast<UICairoRenderFont*>(renderFont.get());
+		cairo_set_scaled_font(cairo_, cairoFont->cairoScaledFont());
 		
 
 		std::string utf8_str = WideToMultiByte(text);
@@ -289,17 +288,13 @@ namespace ui
 		cairo_scaled_font_t* sf = cairo_get_scaled_font(cairo_);
 		cairo_scaled_font_text_extents(sf, utf8_str.c_str(), &extents);
 
-		cairo_scaled_font_text_to_glyphs(sf, 0, extents.height,
+		cairo_scaled_font_text_to_glyphs(sf, 0, cairoFont->GetAscent(),
 			utf8_str.c_str(), utf8_str.size(),
 			&glyphs, &num_glyphs,
 			&clusters, &num_clusters, &cluster_flags);
 
 
 		cairo_show_glyphs(cairo_, glyphs, num_glyphs);
-// 		cairo_show_text_glyphs(cairo_,
-// 			utf8_str.c_str(), utf8_str.size(),
-// 			glyphs, num_glyphs,
-// 			clusters, num_clusters, cluster_flags);
 
 		cairo_glyph_free(glyphs);
 		cairo_text_cluster_free(clusters);

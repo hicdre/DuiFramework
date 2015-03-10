@@ -6,6 +6,7 @@
 
 namespace ui
 {
+	//单行文字
 	class UILabel : public UIView
 	{
 	public:
@@ -33,8 +34,8 @@ namespace ui
 		void setVerticalAlignment(VerticalAlignment v);
 
 		//@property UILineBreakMode lineBreakMode;
-		UILineBreakMode lineBreakMode() const { return lineBreakMode_; }
-		void setLineBreakMode(UILineBreakMode v);
+// 		UILineBreakMode lineBreakMode() const { return lineBreakMode_; }
+// 		void setLineBreakMode(UILineBreakMode v);
 
 		virtual void OnPaint(UIRenderContext* painter) override;
 
@@ -45,7 +46,6 @@ namespace ui
 		void layoutText();
 		std::wstring text_;
 
-		scoped_ptr<UIAttributeString> attributeString_;
 		scoped_refptr<UIFont> font_;
 		Color textColor_{ Color_Black };
 		TextAlignment textAlignment_{ TextAlignmentLeft };
@@ -53,6 +53,6 @@ namespace ui
 		//scoped_refptr<UITextLayout> textLayout_;
 		Rect textRectCached_;
 		bool needsTextLayout_{ true };
-		UILineBreakMode lineBreakMode_{ UILineBreakByWordWrapping };
+		//UILineBreakMode lineBreakMode_{ UILineBreakByWordWrapping };
 	};
 }

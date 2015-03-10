@@ -105,7 +105,7 @@ namespace ui
 		{
 			if (iter->events & events)
 			{
-				iter->obj->performSelector(iter->sel);
+				iter->obj->performSelectorWithTargetAndEvent(iter->sel, this, iter->events);
 			}
 		}
 	}

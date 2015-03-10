@@ -9,11 +9,12 @@ namespace ui
 	class UIObject
 	{
 	public:
-		typedef std::function<void(void)> FunctionType;
+		typedef std::function<void(UIObject*, uint32)> FunctionType;
 		virtual ~UIObject();
 
 		void registerSelector(const Selector& s, FunctionType func);
 		void performSelector(const Selector& s);
+		void performSelectorWithTargetAndEvent(const Selector& s, UIObject* target, uint32 e);
 	private:
 		std::unordered_map<Selector, FunctionType> function_map_;
 	};

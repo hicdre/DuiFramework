@@ -14,6 +14,7 @@ namespace ui
 
 	UICairoRenderEngine::~UICairoRenderEngine()
 	{
+		font_manager_.reset();
 		cairo_shutdown();
 	}
 
